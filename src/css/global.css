@@ -1,0 +1,269 @@
+/* Fonts */
+
+/* @font-face {
+	font-family: 'Helvetica Neue';
+	src: url('../theme/fonts/helvetica-medium.woff2') format('woff2'),
+		url('../theme/fonts/helvetica-medium.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+} */
+
+/* Reset */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+a,
+button {
+	color: inherit;
+	text-decoration: none;
+}
+
+a:visited,
+button:visited {
+	color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+em,
+ul,
+li,
+ol,
+button,
+a {
+	font-variant-ligatures: none;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='submit'],
+input[type='button'],
+select,
+option,
+button,
+textarea {
+	-moz-appearance: none;
+	text-indent: 0.01px;
+	text-overflow: '';
+	border-radius: 0;
+	border: none;
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='tel']:focus,
+input[type='submit']:focus,
+input[type='button']:focus,
+select:focus,
+option:focus,
+button:focus,
+textarea:focus {
+	outline: none;
+}
+
+.disable-hover,
+.disable-hover * {
+	pointer-events: none !important;
+}
+
+a:focus,
+a:active {
+	outline: none;
+}
+
+* {
+	box-sizing: border-box;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: geometricPrecision;
+}
+
+/* *::selection {
+	background: #FF4444;
+	color: #fff;
+} */
+
+*::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+	background: transparent;
+}
+
+/* TODO • Enable when site is ready */
+.scrollbar-track {
+	display: none !important;
+}
+
+/* Lenis Config */
+.lenis.lenis-smooth {
+	scroll-behavior: auto;
+}
+
+.lenis {
+	height: auto;
+}
+
+.lenis.lenis-stopped {
+	overflow: hidden;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+	overscroll-behavior: contain;
+}
+
+
+.lenis-wrapper {
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	scrollbar-width: none !important;
+	height: calc(var(--vh, 1vh) * 100);
+}
+
+/* Make breakpoint for 1200px upwards for the above css */
+@media (min-width: 1200px) {
+	.lenis-wrapper {
+		height: 100vh;
+	}
+}

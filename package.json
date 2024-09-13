@@ -1,0 +1,41 @@
+{
+  "name": "next-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.8.0-rc.2",
+    "@apollo/experimental-nextjs-app-support": "^0.5.1",
+    "@storybook/addon-viewport": "^7.5.2",
+    "color": "^4.2.3",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "^14.0.2",
+    "next": "^14.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hotkeys-hook": "^4.4.1",
+    "styled-components": "^6.0.4",
+    "gsap": "^3.12.5",
+    "@studio-freight/lenis": "^1.0.42",
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.5.2",
+    "@storybook/addon-interactions": "^7.5.2",
+    "@storybook/addon-links": "^7.5.2",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/addon-themes": "^7.5.3",
+    "@storybook/blocks": "^7.5.2",
+    "@storybook/nextjs": "^7.5.2",
+    "@storybook/react": "^7.5.2",
+    "@storybook/testing-library": "^0.2.2",
+    "eslint-plugin-storybook": "^0.6.15",
+    "storybook": "^7.5.2"
+  }
+}

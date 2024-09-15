@@ -6,16 +6,21 @@ import React from 'react';
 
 // Styles
 // ------------
-import { Jacket, Text } from './styles';
+import { Jacket, Pulse } from './styles';
 
 // Component
 // ------------
 const DeleteMe = () => {
 	return (
 		<Jacket>
-			<img src="./logo.svg" alt="Tackl Logo" />
+			<picture>
+				<img src="./logo.svg" alt="Tackl Logo" />
+			</picture>
 
-			<Text>Welcome to Tackl 3</Text>
+			<Pulse>
+				<span />
+				<span />
+			</Pulse>
 		</Jacket>
 	);
 };

@@ -26,7 +26,7 @@ import Color from 'color';
 // ------
 const brandColors = {
 	primary: '#8000FF',
-	secondary: '#212121',
+	secondary: '#380377',
 	tertiary: '#121212',
 	quaternary: '#F7F7F7',
 	quinary: '#838383',

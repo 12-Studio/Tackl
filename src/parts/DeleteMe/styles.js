@@ -1,11 +1,23 @@
 // Imports
 // ------------
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { bp, Section } from '@tackl';
 import {} from '@tackl/type';
 
 // Exports
 // ------------
+const pulse = (props) => keyframes`
+	from {
+		transform: scale(1) translate(-50%, -50%);
+		border-color: ${props.theme.colors.global.white};
+	}
+
+	to {
+		transform: scale(4) translate(-50%, -50%);
+		border-color: transparent;
+	}
+`;
+
 export const Jacket = styled(Section)(
 	(props) => css`
 		position: relative;
@@ -13,8 +25,43 @@ export const Jacket = styled(Section)(
 		align-items: center;
 		justify-content: center;
 		height: 100svh;
+		background: ${props.theme.colors.brand.bc2};
+		overflow: hidden;
+
+		picture {
+			position: relative;
+			z-index: 2;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			width: 24rem;
+			height: 24rem;
+			background: ${props.theme.colors.global.white};
+			border-radius: 50%;
+
+			&:before {
+				content: '';
+				position: absolute;
+				z-index: 1;
+				inset: 0.6rem;
+				background: ${props.theme.colors.brand.bc1};
+				border-radius: 50%;
+			}
+
+			&:after {
+				content: '';
+				position: absolute;
+				z-index: 2;
+				inset: 1.2rem;
+				background: ${props.theme.colors.global.white};
+				border-radius: 50%;
+			}
+		}
 
 		img {
+			position: relative;
+			z-index: 3;
 			width: 100%;
 			max-width: 12rem;
 			height: auto;
@@ -22,21 +69,60 @@ export const Jacket = styled(Section)(
 	`
 );
 
-export const Text = styled.h1(
+export const Pulse = styled.div(
 	(props) => css`
 		position: absolute;
-		inset: auto 0 0 0;
+		z-index: -1;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 
-		font-size: 1rem;
-		font-family: ${props.theme.font.type.heading};
-		font-weight: 600;
-		text-align: center;
-		letter-spacing: 1em;
-		color: ${props.theme.colors.global.white};
-		line-height: 1.5;
-		text-transform: uppercase;
+		z-index: 1;
+		width: 24rem;
+		height: 24rem;
+		border-radius: 100%;
 
-		background: ${props.theme.colors.brand.bc1};
-		padding: 1.2rem;
+		span {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			display: block;
+			width: 100%;
+			height: 100%;
+
+			&:before,
+			&:after {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				transform-origin: top left;
+				content: '';
+				width: 90%;
+				height: 90%;
+				border: 1px solid ${props.theme.colors.global.white};
+				border-radius: 100%;
+				animation: ${pulse} 3s ease-in-out infinite;
+			}
+
+			&:first-child {
+				&:before {
+					animation-delay: 1s;
+				}
+				&:after {
+					animation-delay: 1.5s;
+				}
+			}
+
+			&:last-child {
+				&:before {
+					animation-delay: 0s;
+				}
+				&:after {
+					animation-delay: 0.5s;
+				}
+			}
+		}
 	`
 );

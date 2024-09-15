@@ -4,21 +4,30 @@ import React from 'react';
 import { ApolloLink, HttpLink } from '@apollo/client';
 import {
 	ApolloNextAppProvider,
+	NextSSRInMemoryCache,
 	SSRMultipartLink,
-	ApolloClient,
-	InMemoryCache,
-} from '@apollo/experimental-nextjs-app-support';
+	NextSSRApolloClient,
+} from '@apollo/experimental-nextjs-app-support/ssr';
 
 function makeClient() {
 	const httpLink = new HttpLink({
-		uri: 'https://graphql.datocms.com/',
-		headers: {
-			Authorization: `Bearer a4c6fe59e2ab3be824f5c4c5a29c70`,
-		},
+		uri: 'https://levinriegner.com/graphql',
 	});
 
-	return new ApolloClient({
-		cache: new InMemoryCache(),
+	// Auth token
+	// const authLink = setContext((_, { headers }) => {
+	// 	const token = 'H1jWFo1zh_9oNJsvmzuf20sFZCeh3yPK';
+
+	// 	return {
+	// 		headers: {
+	// 			...headers,
+	// 			authorization: token ? `Bearer ${token}` : '',
+	// 		},
+	// 	};
+	// });
+
+	return new NextSSRApolloClient({
+		cache: new NextSSRInMemoryCache(),
 		link:
 			typeof window === 'undefined'
 				? ApolloLink.from([
@@ -26,7 +35,7 @@ function makeClient() {
 							stripDefer: true,
 						}),
 						httpLink,
-					])
+				  ])
 				: httpLink,
 	});
 }

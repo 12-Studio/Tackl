@@ -3,7 +3,7 @@
 // Imports
 // ------------
 import { useLayoutEffect, useContext } from 'react';
-import Lenis from '@studio-freight/lenis';
+import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { GlobalContext } from '@parts/Contexts';
 
@@ -46,9 +46,6 @@ const SmoothScroll = ({ children }) => {
 };
 
 export default SmoothScroll;
-
-
-
 
 // NOTE • THIS IS A CUSTOM VERSION OF LENIS (USE ONLY IF NEEDED)
 // // Imports

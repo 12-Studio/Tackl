@@ -1,7 +1,7 @@
 // Imports
 // ------------
-import DeleteMe from '@/parts/DeleteMe';
 import React from 'react';
+import DeleteMe from '@/parts/DeleteMe';
 
 // Component
 // ------------

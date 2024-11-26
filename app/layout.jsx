@@ -17,7 +17,6 @@ import { Inter } from 'next/font/google';
 // ------------
 import '@/css/global.css';
 
-
 // Fonts
 // ------------
 const inter = Inter({
@@ -31,8 +30,8 @@ const inter = Inter({
 // ------------
 const RootLayout = ({ children }) => {
 	// NOTE • Font Classes
-	const classes = `${inter.variable}`
-	
+	const classes = `${inter.variable}`;
+
 	return (
 		<html lang="en">
 			<body className={classes}>
@@ -40,7 +39,6 @@ const RootLayout = ({ children }) => {
 					<ApolloWrapper>
 						<ThemeProvider theme={theme} key="themeprovider">
 							{process.env.NODE_ENV === 'development' && <GridExposer />}
-							
 							<Contexts>
 								<SmoothScroll>{children}</SmoothScroll>
 							</Contexts>
@@ -50,6 +48,6 @@ const RootLayout = ({ children }) => {
 			</body>
 		</html>
 	);
-}
+};
 
 export default RootLayout;

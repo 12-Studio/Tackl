@@ -267,3 +267,15 @@ a:active {
 		height: 100vh;
 	}
 }
+
+
+body {
+	transition-property: opacity, background, transform, filter;
+	transition-timing-function: cubic-bezier(0.430, 0.195, 0.020, 1.000);
+	transition-duration: 1s;
+}
+
+.page-transition {
+	opacity: 0;
+	filter: blur(10px);
+}

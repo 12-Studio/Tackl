@@ -28,7 +28,7 @@ const generateAlphaShades = (baseColor) => {
 // Theme
 // ------------
 export const theme = {
-	// NOTE • 1 • Colours
+	// NOTE • 1 • Colours
 	colors: {
 		global: {
 			white: '#ffffff',
@@ -67,7 +67,7 @@ export const theme = {
 		},
 	},
 
-	// NOTE • 2 • Spacing
+	// NOTE • 2 • Spacing
 	space: {
 		mpad: '0.8rem', // Mobile Padding
 		small: '4.8rem',
@@ -92,8 +92,14 @@ export const theme = {
 		},
 	},
 
-	// NOTE • 3 • Shadows
+	// NOTE • 3 • Shadows
 	grid: {
+		columns: {
+			mobile: 2,
+			tablet: 6,
+			desktop: 12,
+		},
+
 		breakpoints: {
 			small: '0px',
 			smedium: '390px',
@@ -106,22 +112,22 @@ export const theme = {
 		},
 
 		gutter: {
-			small: '1.6rem',
-			smedium: '1.6rem',
-			large: '1.6rem',
+			small: '2.4rem',
+			medium: '2.4rem',
+			large: '3.6rem',
 		},
 
 		maxSize: '1440px',
 	},
 
-	// NOTE • 3 • Shadows
+	// NOTE • 3 • Shadows
 	easing: {
 		bezzy: 'cubic-bezier(0.8, 0, 0, 1)',
 		bezzy2: 'cubic-bezier(0.430, 0.195, 0.020, 1.000)',
 		ease: '0.3s ease-in-out',
 	},
 
-	// NOTE • 3 • Shadows
+	// NOTE • 3 • Shadows
 	noscrollbars: css`
 		scrollbar-width: none; /* Firefox */
 		-ms-overflow-style: none; /* IE 10+ */

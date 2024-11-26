@@ -113,10 +113,6 @@ const sharedBlockStyles = (props) => css`
 	h4,
 	h5,
 	h6 {
-		color: ${theme.colors.brand.bc2};
-		margin: 0 0 1.2rem;
-
-		${bp.$large` margin: 0 0 2.4rem; `}
 	}
 
 	h1,
@@ -141,69 +137,12 @@ const sharedBlockStyles = (props) => css`
 	}
 
 	ul {
-		display: flex;
-		flex-flow: column;
-		gap: 1.2rem;
-		margin: 0 0 1.2rem;
-
-		${bp.$large` margin: 0 0 2.4rem; `}
-
 		li {
-			${spanStyles}
-			color: ${theme.colors.brand.bc280};
-
-			position: relative;
-			display: flex;
-			align-items: flex-start;
-			justify-content: flex-start;
-			padding-left: 1.8rem;
-
-			&:before {
-				content: '';
-				position: absolute;
-				top: 0.8rem;
-				left: 0;
-
-				width: 0.4rem;
-				height: 0.4rem;
-
-				background: ${theme.colors.brand.bc1};
-
-				${bp.$large`
-					top: 1rem;
-				`}
-			}
 		}
 	}
 
 	p {
 		${pStyles}
-		color: ${theme.colors.brand.bc260};
-		margin: 0 0 1.2rem;
-
-		${bp.$large` margin: 0 0 2.4rem; `}
-
-		span, a, strong, em {
-			color: ${theme.colors.brand.bc260};
-		}
-
-		&:last-child {
-			margin: 0;
-		}
-
-		strong,
-		a {
-			font-weight: ${(props) => theme.font.weight.bold};
-		}
-
-		a {
-			text-decoration: underline;
-			transition: ${theme.easing.ease};
-
-			&:hover {
-				color: ${theme.colors.brand.bc1};
-			}
-		}
 	}
 `;
 export const ContentBlock = styled.div`

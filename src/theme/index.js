@@ -3,62 +3,38 @@
 import { css, createGlobalStyle } from 'styled-components';
 import Color from 'color';
 
-// *** Theme Styling *** //
-// ------
-// 1. NOTE • Colours [Global, Social, Feedback, Brand]
-// ------
-// 2. NOTE • Spacing [Padding & Margin]
-// ------
-// 3. NOTE • Fonts [Type, Weight]
-// ------
-// 4. NOTE Grid [Breakpoints, Gutter, Max Grid Size]
-// ------
-// 5. NOTE • Easings [Bezzy, Global Ease]
-// ------
-// 6. NOTE • Magic Verticals
-// ------
-// 7. NOTE • No ScrollBars
-// ------
-// 8. NOTE • Alignments
-// ------
-
-// Exports
-// ------
+// Brand Colours
+// -------------
 const brandColors = {
-	primary: '#8000FF',
-	secondary: '#380377',
-	tertiary: '#121212',
-	quaternary: '#F7F7F7',
-	quinary: '#838383',
+	bc1: '#8000FF',
+	bc2: '#380377',
+	bc3: '#121212',
+	bc4: '#F7F7F7',
+	bc5: '#838383',
 };
 
+// Generate Alpha Shades
+// ------------
+const generateAlphaShades = (baseColor) => {
+	const color = Color(baseColor);
+	return Array.from({ length: 10 }, (_, i) => ({
+		[`o${i * 10}`]: color
+			.rgb()
+			.alpha(i / 10)
+			.string(),
+	})).reduce((acc, shade) => ({ ...acc, ...shade }), {});
+};
+
+// Theme
+// ------------
 export const theme = {
-	// 1. ANCHOR Colours
-	// ------
+	// NOTE • 1 • Colours
 	colors: {
 		global: {
 			white: '#ffffff',
-			whiteTrans: Color('#ffffff').rgb().alpha(0).toString(),
-			white10: Color('#ffffff').rgb().alpha(0.1).toString(),
-			white20: Color('#ffffff').rgb().alpha(0.2).toString(),
-			white30: Color('#ffffff').rgb().alpha(0.3).toString(),
-			white40: Color('#ffffff').rgb().alpha(0.4).toString(),
-			white50: Color('#ffffff').rgb().alpha(0.5).toString(),
-			white60: Color('#ffffff').rgb().alpha(0.6).toString(),
-			white70: Color('#ffffff').rgb().alpha(0.7).toString(),
-			white80: Color('#ffffff').rgb().alpha(0.8).toString(),
-			white90: Color('#ffffff').rgb().alpha(0.9).toString(),
 			black: '#000000',
-			blackTrans: Color('#000000').rgb().alpha(0).toString(),
-			black10: Color('#000000').rgb().alpha(0.1).toString(),
-			black20: Color('#000000').rgb().alpha(0.2).toString(),
-			black30: Color('#000000').rgb().alpha(0.3).toString(),
-			black40: Color('#000000').rgb().alpha(0.4).toString(),
-			black50: Color('#000000').rgb().alpha(0.5).toString(),
-			black60: Color('#000000').rgb().alpha(0.6).toString(),
-			black70: Color('#000000').rgb().alpha(0.7).toString(),
-			black80: Color('#000000').rgb().alpha(0.8).toString(),
-			black90: Color('#000000').rgb().alpha(0.9).toString(),
+			...generateAlphaShades('#ffffff'), // Generate white alpha shades
+			...generateAlphaShades('#000000'), // Generate black alpha shades
 		},
 
 		social: {
@@ -66,12 +42,9 @@ export const theme = {
 			twitter: '#1da1f2',
 			creativeMarket: '#8ba753',
 			slack: '#e01563',
-			skype: '#00aff0',
 			instagram: '#405de6',
 			dribbble: '#ea4c89',
-			behance: '#1769ff',
 			linkedin: '#0a66c2',
-			tiktok: '#FE2C55',
 		},
 
 		feedback: {
@@ -81,70 +54,28 @@ export const theme = {
 		},
 
 		brand: {
-			bc1: brandColors.primary,
-			bc1trans: Color(brandColors.primary).rgb().alpha(0).string(),
-			bc1o10: Color(brandColors.primary).rgb().alpha(0.1).string(),
-			bc1o20: Color(brandColors.primary).rgb().alpha(0.2).string(),
-			bc1o30: Color(brandColors.primary).rgb().alpha(0.3).string(),
-			bc1o40: Color(brandColors.primary).rgb().alpha(0.4).string(),
-			bc1o50: Color(brandColors.primary).rgb().alpha(0.5).string(),
-			bc1o60: Color(brandColors.primary).rgb().alpha(0.6).string(),
-			bc1o70: Color(brandColors.primary).rgb().alpha(0.7).string(),
-			bc1o80: Color(brandColors.primary).rgb().alpha(0.8).string(),
-			bc1o90: Color(brandColors.primary).rgb().alpha(0.9).string(),
-
-			bc2: brandColors.secondary,
-			bc2trans: Color(brandColors.secondary).rgb().alpha(0).string(),
-			bc2o10: Color(brandColors.secondary).rgb().alpha(0.1).string(),
-			bc2o20: Color(brandColors.secondary).rgb().alpha(0.2).string(),
-			bc2o30: Color(brandColors.secondary).rgb().alpha(0.3).string(),
-			bc2o40: Color(brandColors.secondary).rgb().alpha(0.4).string(),
-			bc2o50: Color(brandColors.secondary).rgb().alpha(0.5).string(),
-			bc2o60: Color(brandColors.secondary).rgb().alpha(0.6).string(),
-			bc2o70: Color(brandColors.secondary).rgb().alpha(0.7).string(),
-			bc2o80: Color(brandColors.secondary).rgb().alpha(0.8).string(),
-			bc2o90: Color(brandColors.secondary).rgb().alpha(0.9).string(),
-
-			bc3: brandColors.tertiary,
-			bc3trans: Color(brandColors.tertiary).rgb().alpha(0).string(),
-			bc3o10: Color(brandColors.tertiary).rgb().alpha(0.1).string(),
-			bc3o20: Color(brandColors.tertiary).rgb().alpha(0.2).string(),
-			bc3o30: Color(brandColors.tertiary).rgb().alpha(0.3).string(),
-			bc3o40: Color(brandColors.tertiary).rgb().alpha(0.4).string(),
-			bc3o50: Color(brandColors.tertiary).rgb().alpha(0.5).string(),
-			bc3o60: Color(brandColors.tertiary).rgb().alpha(0.6).string(),
-			bc3o70: Color(brandColors.tertiary).rgb().alpha(0.7).string(),
-			bc3o80: Color(brandColors.tertiary).rgb().alpha(0.8).string(),
-			bc3o90: Color(brandColors.tertiary).rgb().alpha(0.9).string(),
-
-			bc4: brandColors.quaternary,
-			bc4trans: Color(brandColors.quaternary).rgb().alpha(0).string(),
-			bc4o10: Color(brandColors.quaternary).rgb().alpha(0.1).string(),
-			bc4o20: Color(brandColors.quaternary).rgb().alpha(0.2).string(),
-			bc4o30: Color(brandColors.quaternary).rgb().alpha(0.3).string(),
-			bc4o40: Color(brandColors.quaternary).rgb().alpha(0.4).string(),
-			bc4o50: Color(brandColors.quaternary).rgb().alpha(0.5).string(),
-			bc4o60: Color(brandColors.quaternary).rgb().alpha(0.6).string(),
-			bc4o70: Color(brandColors.quaternary).rgb().alpha(0.7).string(),
-			bc4o80: Color(brandColors.quaternary).rgb().alpha(0.8).string(),
-			bc4o90: Color(brandColors.quaternary).rgb().alpha(0.9).string(),
-
-			bc5: brandColors.quinary,
+			...brandColors,
+			...Object.fromEntries(
+				Object.entries(brandColors).flatMap(([key, value]) => [
+					[key, value],
+					[`${key}trans`, Color(value).rgb().alpha(0).string()],
+					...Object.entries(generateAlphaShades(value)).map(
+						([shadeKey, shadeValue]) => [`${key}${shadeKey}`, shadeValue]
+					),
+				])
+			),
 		},
 	},
 
-	// 2. ANCHOR • Padding & Margin
-	// ------
+	// NOTE • 2 • Spacing
 	space: {
 		mpad: '0.8rem', // Mobile Padding
-		small: '4.8', // Small
-		medium: '5.6', // Medium
-		large: '6.4rem', // Large
-		xlarge: '6.4rem', // XLarge
+		small: '4.8rem',
+		medium: '5.6rem',
+		large: '6.4rem',
+		xlarge: '6.4rem',
 	},
 
-	// 3. ANCHOR • Fonts
-	// ------
 	font: {
 		type: {
 			heading: `'Change__me', 'Helvetica', Arial, sans-serif`,
@@ -161,8 +92,7 @@ export const theme = {
 		},
 	},
 
-	// 4. ANCHOR • Breakpoints
-	// ------
+	// NOTE • 3 • Shadows
 	grid: {
 		breakpoints: {
 			small: '0px',
@@ -184,33 +114,14 @@ export const theme = {
 		maxSize: '1440px',
 	},
 
-	// 5. ANCHOR • Easings
-	// ------
+	// NOTE • 3 • Shadows
 	easing: {
 		bezzy: 'cubic-bezier(0.8, 0, 0, 1)',
 		bezzy2: 'cubic-bezier(0.430, 0.195, 0.020, 1.000)',
 		ease: '0.3s ease-in-out',
 	},
 
-	// 6. ANCHOR • Magic Verticals
-	// ------
-	vh: css`
-		height: 100vh;
-		height: calc(var(--vh, 1vh) * 100);
-	`,
-
-	vhs: css`
-		height: 100vh;
-		height: calc(var(--vhs, 1vh) * 100);
-	`,
-
-	vhc: (value) => css`
-		height: ${value}vh;
-		height: calc(var(--vh, 1vh) * ${value});
-	`,
-
-	// 7. ANCHOR • No ScrollBars
-	// ------
+	// NOTE • 3 • Shadows
 	noscrollbars: css`
 		scrollbar-width: none; /* Firefox */
 		-ms-overflow-style: none; /* IE 10+ */
@@ -221,36 +132,10 @@ export const theme = {
 			background: transparent; /* Chrome/Safari/Webkit */
 		}
 	`,
-
-	// 8. ANCHOR • Alignments
-	// ------
-	valign: css`
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-	`,
-
-	valignReset: css`
-		position: relative;
-		top: auto;
-		transform: none;
-	`,
-
-	talign: css`
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	`,
-
-	talignReset: css`
-		position: relative;
-		top: auto;
-		left: auto;
-		transform: none;
-	`,
 };
 
+// Exports
+// ------------
 export const GlobalStyle = createGlobalStyle`
     body {  background: ${theme.colors.brand.bc3} }
     * { color: ${theme.colors.brand.bc4} }

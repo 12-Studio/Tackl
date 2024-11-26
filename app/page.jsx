@@ -1,5 +1,6 @@
 // Imports
 // ------------
+import DeleteMe from '@/parts/DeleteMe';
 import React from 'react';
 
 // Component
@@ -7,9 +8,7 @@ import React from 'react';
 const Page = () => {
 	return (
 		<>
-			{/*  */}
-			{/*  */}
-			{/*  */}
+			<DeleteMe />
 		</>
 	);
 };

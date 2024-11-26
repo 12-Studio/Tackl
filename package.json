@@ -11,17 +11,17 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@apollo/client": "^3.11.8",
-    "@apollo/experimental-nextjs-app-support": "^0.11.3",
+    "@apollo/client": "^3.11.10",
+    "@apollo/experimental-nextjs-app-support": "^0.11.6",
     "@storybook/addon-viewport": "^8.3.0",
     "color": "^4.2.3",
     "eslint-config-next": "^14.2.11",
     "gsap": "^3.12.5",
-    "lenis": "^1.1.13",
-    "next": "^14.2.11",
+    "lenis": "^1.1.17",
+    "next": "^15.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hotkeys-hook": "^4.5.1",
+    "react-hotkeys-hook": "^4.6.1",
     "styled-components": "^6.1.13"
   },
   "devDependencies": {

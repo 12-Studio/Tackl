@@ -2,6 +2,8 @@
 
 Our most advanced starter kit to date that provides the developer experience and infrastructure to build, scale, and secure a faster, more personalized Web.
 
+\*_ PLEASE READ – Storybook currently hasnt been updated to work with Next15, so when installing npm, use '--legacy-peer-deps' for the time being _
+
 This is a [Next.js](https://nextjs.org/)
 
 ## 🚀 Getting Started

@@ -13,9 +13,9 @@
   "dependencies": {
     "@apollo/client": "^3.11.10",
     "@apollo/experimental-nextjs-app-support": "^0.11.6",
-    "@storybook/addon-viewport": "^8.3.0",
+    "@storybook/addon-viewport": "^8.4.5",
     "color": "^4.2.3",
-    "eslint-config-next": "^14.2.11",
+    "eslint-config-next": "^15.0.3",
     "gsap": "^3.12.5",
     "lenis": "^1.1.17",
     "next": "^15.0.3",
@@ -25,16 +25,16 @@
     "styled-components": "^6.1.13"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^8.3.0",
-    "@storybook/addon-interactions": "^8.3.0",
-    "@storybook/addon-links": "^8.3.0",
-    "@storybook/addon-onboarding": "^8.3.0",
-    "@storybook/addon-themes": "^8.3.0",
-    "@storybook/blocks": "^8.3.0",
-    "@storybook/nextjs": "^8.3.0",
-    "@storybook/react": "^8.3.0",
+    "@storybook/addon-essentials": "^8.4.5",
+    "@storybook/addon-interactions": "^8.4.5",
+    "@storybook/addon-links": "^8.4.5",
+    "@storybook/addon-onboarding": "^8.4.5",
+    "@storybook/addon-themes": "^8.4.5",
+    "@storybook/blocks": "^8.4.5",
+    "@storybook/nextjs": "^8.4.5",
+    "@storybook/react": "^8.4.5",
     "@storybook/testing-library": "^0.2.2",
-    "eslint-plugin-storybook": "^0.8.0",
-    "storybook": "^8.3.0"
+    "eslint-plugin-storybook": "^0.11.1",
+    "storybook": "^8.4.5"
   }
 }

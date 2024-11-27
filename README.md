@@ -1,10 +1,12 @@
-## 💫 Tackl 2 - Website Starter Kit
+## 💫 Tackl 3 - Website Starter Kit
 
 Our most advanced starter kit to date that provides the developer experience and infrastructure to build, scale, and secure a faster, more personalized Web.
 
-\*_ PLEASE READ – Storybook currently hasnt been updated to work with Next15, so when installing npm, use '--legacy-peer-deps' for the time being _
+**`Storybook currently hasnt been updated to work with NextJS 15, so when installing npm, use '--legacy-peer-deps' for the time being`**
 
-This is a [Next.js](https://nextjs.org/)
+**`Checkout the 'docs' folder to understand how different things work.`**
+
+This is a [Next.js](https://nextjs.org/) project.
 
 ## 🚀 Getting Started
 
@@ -26,6 +28,15 @@ npm run build
 yarn build
 # or
 pnpm build
+```
+
+To serve a production build
+
+```bash
+npm run serve
+
+# you may need to install serve globally:
+npm i -g serve
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -51,6 +62,7 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
     ├── next-config.js
     ├── package-lock.json
     ├── package.json
+    ├── docs
     └── README.md
 
 1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
@@ -65,21 +77,21 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
 
 6.  **`.env`**: Short for "environment," is a simple text file used to store configuration settings and sensitive information for a project.
 
-7.  **`.env`**: A configuration file used with ESLint, a popular JavaScript and TypeScript linter. ESLint is a tool that helps developers maintain consistent coding styles and identify potential errors in their code. The .eslintrc file allows developers to customize ESLint's behavior for a specific project.
+7.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
 
-8.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+8.  **`.npmrc`**: A configuration file used with npm, the package manager for JavaScript. It allows developers to customize the behavior of npm for a specific project by setting various configuration options. Typically used for activating GSAP paid plans.
 
-9.  **`.npmrc`**: A configuration file used with npm, the package manager for JavaScript. It allows developers to customize the behavior of npm for a specific project by setting various configuration options. Typically used for activating GSAP paid plans.
+9.  **`deployment_guide`**: This file tells you how to deploy to AWS in complete, easy steps.
 
-10. **`deployment_guide`**: This file tells you how to deploy to AWS in complete, easy steps.
+10. **`jsconfig.json`**: A configuration file used in JavaScript and TypeScript projects to specify options for the TypeScript compiler (tsc) and improve the development experience by enabling features like IntelliSense in code editors.
 
-11. **`jsconfig.json`**: A configuration file used in JavaScript and TypeScript projects to specify options for the TypeScript compiler (tsc) and improve the development experience by enabling features like IntelliSense in code editors.
+11. **`next-config.js`**: A configuration file used in Next.js projects to customize the default behavior of the Next.js framework. It allows developers to modify various settings, configure plugins, and define custom behaviors for their Next.js applications.
 
-12. **`next-config.js`**: A configuration file used in Next.js projects to customize the default behavior of the Next.js framework. It allows developers to modify various settings, configure plugins, and define custom behaviors for their Next.js applications.
+12. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
 
-13. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+13. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
 
-14. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+14. **`docs`**: A folder containing all relevant documentation on how to use Tackl.
 
 15. **`README.md`**: A text file containing useful reference information about your project.
 

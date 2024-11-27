@@ -31,7 +31,6 @@ const inter = Inter({
 const RootLayout = ({ children }) => {
 	// NOTE • Font Classes
 	const classes = `${inter.variable}`;
-	semloh;
 
 	return (
 		<html lang="en">

@@ -9,7 +9,7 @@ import {} from '@tackl/type';
 const pulse = (props) => keyframes`
 	from {
 		transform: scale(1) translate(-50%, -50%);
-		border-color: ${props.theme.colors.global.white};
+		border-color: ${props.theme.colors.global.white.solid};
 	}
 
 	to {
@@ -37,7 +37,7 @@ export const Jacket = styled(Section)(
 
 			width: 24rem;
 			height: 24rem;
-			background: ${props.theme.colors.global.white};
+			background: ${props.theme.colors.global.white.solid};
 			border-radius: 50%;
 
 			&:before {
@@ -54,7 +54,7 @@ export const Jacket = styled(Section)(
 				position: absolute;
 				z-index: 2;
 				inset: 1.2rem;
-				background: ${props.theme.colors.global.white};
+				background: ${props.theme.colors.global.white.solid};
 				border-radius: 50%;
 			}
 		}
@@ -101,7 +101,7 @@ export const Pulse = styled.div(
 				content: '';
 				width: 90%;
 				height: 90%;
-				border: 1px solid ${props.theme.colors.global.white};
+				border: 1px solid ${props.theme.colors.global.white.solid};
 				border-radius: 100%;
 				animation: ${pulse} 3s ease-in-out infinite;
 			}

@@ -5,7 +5,7 @@
 import React, { memo } from 'react';
 import dynamic from 'next/dynamic';
 import StyledComponentsRegistry from '@utils/registry';
-import Contexts from '@parts/Contexts/Contexts';
+import Contexts from '@parts/Contexts';
 import { useScrollPerformance } from '@utils/useScrollPerformance';
 import { ApolloWrapper } from '@utils/apollo-wrapper';
 import { ThemeProvider } from 'styled-components';

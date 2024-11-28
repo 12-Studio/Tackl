@@ -1,204 +1,58 @@
-/* Fonts */
-
-/* @font-face {
-	font-family: 'Helvetica Neue';
-	src: url('../theme/fonts/helvetica-medium.woff2') format('woff2'),
-		url('../theme/fonts/helvetica-medium.woff') format('woff');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-} */
-
-/* Reset */
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+/* Base Reset
+   Simplified version of CSS reset that maintains essential resets while removing redundancy */
+* {
 	margin: 0;
 	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+	box-sizing: border-box;
+	-webkit-font-smoothing: subpixel-antialiased; /* Enable subpixel antialiasing for better text rendering */
+	-moz-osx-font-smoothing: grayscale; /* Enable grayscale antialiasing for better text rendering */
+	text-rendering: geometricPrecision; /* Improve text rendering quality */
 }
 
-/* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
+/* HTML5 Elements */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
 	display: block;
+}
+
+/* Typography & Links */
+html {
+	font-size: 62.5%; /* 10px base font size for easier rem calculations */
 }
 
 body {
 	line-height: 1;
 }
 
-ol,
-ul {
-	list-style: none;
-}
-
-blockquote,
-q {
-	quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-	content: '';
-	content: none;
-}
-
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-html {
-	font-size: 62.5%;
-}
-
-a,
-button {
+a {
 	color: inherit;
 	text-decoration: none;
 }
 
-a:visited,
-button:visited {
-	color: inherit;
+/* Lists */
+ol, ul {
+	list-style: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span,
-em,
-ul,
-li,
-ol,
-button,
-a {
-	font-variant-ligatures: none;
-}
-
-input[type='text'],
-input[type='email'],
-input[type='tel'],
-input[type='submit'],
-input[type='button'],
-select,
-option,
-button,
-textarea {
-	-moz-appearance: none;
-	text-indent: 0.01px;
-	text-overflow: '';
-	border-radius: 0;
+/* Form Elements */
+input, select, textarea, button {
 	border: none;
+	border-radius: 0;
+	background: none;
 }
 
-input[type='text']:focus,
-input[type='email']:focus,
-input[type='tel']:focus,
-input[type='submit']:focus,
-input[type='button']:focus,
-select:focus,
-option:focus,
-button:focus,
-textarea:focus {
+input:focus, select:focus, textarea:focus, button:focus {
 	outline: none;
+}
+
+/* Scrollbar & Performance */
+* {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+	display: none;
 }
 
 .disable-hover,
@@ -206,42 +60,13 @@ textarea:focus {
 	pointer-events: none !important;
 }
 
-a:focus,
-a:active {
-	outline: none;
-}
-
-* {
-	box-sizing: border-box;
-	-webkit-font-smoothing: subpixel-antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-rendering: geometricPrecision;
-}
-
-/* *::selection {
-	background: #FF4444;
-	color: #fff;
-} */
-
-*::-webkit-scrollbar {
-	display: none;
-	width: 0;
-	height: 0;
-	background: transparent;
-}
-
-/* TODO • Enable when site is ready */
-.scrollbar-track {
-	display: none !important;
-}
-
-/* Lenis Config */
-.lenis.lenis-smooth {
-	scroll-behavior: auto;
-}
-
+/* Lenis Smooth Scroll Configuration */
 .lenis {
 	height: auto;
+}
+
+.lenis.lenis-smooth {
+	scroll-behavior: auto;
 }
 
 .lenis.lenis-stopped {
@@ -252,27 +77,19 @@ a:active {
 	overscroll-behavior: contain;
 }
 
-
 .lenis-wrapper {
 	position: relative;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	scrollbar-width: none !important;
-	height: calc(var(--vh, 1vh) * 100);
+	scrollbar-width: none;
 }
 
-/* Make breakpoint for 1200px upwards for the above css */
-@media (min-width: 1200px) {
-	.lenis-wrapper {
-		height: 100vh;
-	}
-}
-
-
+/* Page Transitions */
 body {
-	transition-property: opacity, background, transform, filter;
-	transition-timing-function: cubic-bezier(0.430, 0.195, 0.020, 1.000);
-	transition-duration: 0.75s;
+	transition: opacity 0.75s cubic-bezier(0.430, 0.195, 0.020, 1.000),
+	            background 0.75s cubic-bezier(0.430, 0.195, 0.020, 1.000),
+	            transform 0.75s cubic-bezier(0.430, 0.195, 0.020, 1.000),
+	            filter 0.75s cubic-bezier(0.430, 0.195, 0.020, 1.000);
 }
 
 .page-transition {

@@ -272,7 +272,7 @@ a:active {
 body {
 	transition-property: opacity, background, transform, filter;
 	transition-timing-function: cubic-bezier(0.430, 0.195, 0.020, 1.000);
-	transition-duration: 1s;
+	transition-duration: 0.75s;
 }
 
 .page-transition {

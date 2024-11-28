@@ -1,51 +1,79 @@
 'use client';
 
+/**
+ * TransitionLink Component
+ *
+ * A custom Link component that adds page transition animations when navigating between pages.
+ * This component wraps Next.js Link component and adds a smooth transition effect by:
+ * 1. Preventing default navigation
+ * 2. Adding a transition class to trigger animation
+ * 3. Waiting for animation to complete
+ * 4. Performing the navigation
+ * 5. Cleaning up the transition class
+ *
+ * Performance optimizations:
+ * - Memoized sleep function to prevent recreation on each render
+ * - Cached body element reference using useRef
+ * - Constant transition duration defined outside component
+ */
+
 // Imports
 // ------------
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/navigation';
 
+// Constants
+// ------------
+const TRANSITION_DURATION = 750; // Duration in milliseconds for transition animation
+
 // Component
 // ------------
 const TransitionLink = ({ children, to, className, ...props }) => {
-	// NOTE •  Router
+	// Hooks
 	const router = useRouter();
+	const bodyRef = useRef(null);
 
-	// NOTE • Sleep Time
-	const sleepTime = 1000;
+	// Memoized sleep function to prevent recreation on each render
+	const sleep = useCallback(
+		(ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+		[]
+	);
 
-	// NOTE • Sleep Function
-	const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+	// Handle click with transition animation
+	const handleClick = useCallback(
+		async (e) => {
+			e.preventDefault();
 
-	// async handle click function
-	const handleClick = async (e) => {
-		// Prevent Default Stuff
-		e.preventDefault();
+			// Cache body reference
+			if (!bodyRef.current) {
+				bodyRef.current = document.querySelector('body');
+			}
 
-		// Grab the body element
-		const body = document.querySelector('body');
+			try {
+				// Start transition
+				bodyRef.current?.classList.add('page-transition');
+				// Wait for initial animation
+				await sleep(TRANSITION_DURATION);
 
-		// Add the class to the body
-		body?.classList.add('page-transition');
+				// Navigate to new page immediately after animation
+				router.push(to);
 
-		// Wait for the sleep time
-		await sleep(sleepTime);
+				// Wait for exit animation to complete before cleanup
+				// await sleep(TRANSITION_DURATION / 2);
+			} finally {
+				// Cleanup - ensure transition class is removed even if navigation fails
+				bodyRef.current?.classList.remove('page-transition');
+			}
+		},
+		[router, to, sleep]
+	);
 
-		// Push the router to the new page
-		router.push(to);
-
-		// Wait for the sleep time
-		await sleep(sleepTime);
-
-		// Remove the class from the body
-		body?.classList.remove('page-transition');
-	};
-
+	// Prepare link props
 	const linkProps = {
 		href: to,
-		className: className,
+		className,
 		onClick: handleClick,
 		...props,
 	};
@@ -56,10 +84,14 @@ const TransitionLink = ({ children, to, className, ...props }) => {
 // PropTypes
 // ------------
 TransitionLink.propTypes = {
-	to: PropTypes.string,
-	children: PropTypes.node,
+	/** Target URL for navigation */
+	to: PropTypes.string.isRequired,
+	/** Content to be rendered inside the link */
+	children: PropTypes.node.isRequired,
+	/** Optional className for styling */
+	className: PropTypes.string,
 };
 
 // Exports
 // ------------
-export default TransitionLink;
+export default React.memo(TransitionLink);

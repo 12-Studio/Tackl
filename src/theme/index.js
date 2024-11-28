@@ -3,38 +3,65 @@
 import { css, createGlobalStyle } from 'styled-components';
 import Color from 'color';
 
-// Brand Colours
+// Brand Colors
 // -------------
 const brandColors = {
-	bc1: '#8000FF',
-	bc2: '#380377',
-	bc3: '#121212',
-	bc4: '#F7F7F7',
-	bc5: '#838383',
+	bc1: '#8000FF', // Primary Purple
+	bc2: '#380377', // Dark Purple
+	bc3: '#121212', // Near Black
+	bc4: '#F7F7F7', // Off White
+	bc5: '#838383', // Gray
 };
 
-// Generate Alpha Shades
+// Generate Alpha Shades (0.0 to 1.0 opacity)
 // ------------
 const generateAlphaShades = (baseColor) => {
 	const color = Color(baseColor);
-	return Array.from({ length: 10 }, (_, i) => ({
-		[`o${i * 10}`]: color
-			.rgb()
+	const shades = {};
+
+	for (let i = 0; i < 10; i++) {
+		shades[`o${i * 10}`] = color
 			.alpha(i / 10)
-			.string(),
-	})).reduce((acc, shade) => ({ ...acc, ...shade }), {});
+			.rgb()
+			.string();
+	}
+
+	return shades;
 };
 
-// Theme
+// Cache commonly used alpha shades
+const whiteAlphas = generateAlphaShades('#ffffff');
+const blackAlphas = generateAlphaShades('#000000');
+
+// Generate brand color variations including transparency
+const brandColorVariations = Object.entries(brandColors).reduce(
+	(acc, [key, value]) => {
+		const color = Color(value);
+		return {
+			...acc,
+			[key]: value,
+			[`${key}trans`]: color.alpha(0).rgb().string(),
+			...Object.entries(generateAlphaShades(value)).reduce(
+				(shades, [shadeKey, shadeValue]) => ({
+					...shades,
+					[`${key}${shadeKey}`]: shadeValue,
+				}),
+				{}
+			),
+		};
+	},
+	{}
+);
+
+// Theme Configuration
 // ------------
 export const theme = {
-	// NOTE • 1 • Colours
 	colors: {
 		global: {
 			white: '#ffffff',
 			black: '#000000',
-			...generateAlphaShades('#ffffff'), // Generate white alpha shades
-			...generateAlphaShades('#000000'), // Generate black alpha shades
+			...whiteAlphas,
+			...blackAlphas,
 		},
 
 		social: {
@@ -53,21 +80,9 @@ export const theme = {
 			warning: '#ffae00',
 		},
 
-		brand: {
-			...brandColors,
-			...Object.fromEntries(
-				Object.entries(brandColors).flatMap(([key, value]) => [
-					[key, value],
-					[`${key}trans`, Color(value).rgb().alpha(0).string()],
-					...Object.entries(generateAlphaShades(value)).map(
-						([shadeKey, shadeValue]) => [`${key}${shadeKey}`, shadeValue]
-					),
-				])
-			),
-		},
+		brand: brandColorVariations,
 	},
 
-	// NOTE • 2 • Spacing
 	space: {
 		mpad: '0.8rem', // Mobile Padding
 		small: '4.8rem',
@@ -92,14 +107,12 @@ export const theme = {
 		},
 	},
 
-	// NOTE • 3 • Shadows
 	grid: {
 		columns: {
 			mobile: 2,
 			tablet: 6,
 			desktop: 12,
 		},
-
 		breakpoints: {
 			small: '0px',
 			smedium: '390px',
@@ -110,39 +123,34 @@ export const theme = {
 			huge: '1600px',
 			uber: '1800px',
 		},
-
 		gutter: {
 			small: '2.4rem',
 			medium: '2.4rem',
 			large: '3.6rem',
 		},
-
 		maxSize: '1440px',
 	},
 
-	// NOTE • 3 • Shadows
 	easing: {
 		bezzy: 'cubic-bezier(0.8, 0, 0, 1)',
 		bezzy2: 'cubic-bezier(0.430, 0.195, 0.020, 1.000)',
 		ease: '0.3s ease-in-out',
 	},
 
-	// NOTE • 3 • Shadows
 	noscrollbars: css`
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none; /* IE 10+ */
-
+		scrollbar-width: none;
+		-ms-overflow-style: none;
 		&::-webkit-scrollbar {
-			width: 0px;
-			height: 0px;
-			background: transparent; /* Chrome/Safari/Webkit */
+			width: 0;
+			height: 0;
+			background: transparent;
 		}
 	`,
 };
 
-// Exports
+// Global Styles
 // ------------
 export const GlobalStyle = createGlobalStyle`
-    body {  background: ${theme.colors.brand.bc3} }
-    * { color: ${theme.colors.brand.bc4} }
+	body { background: ${theme.colors.brand.bc3}; }
+	* { color: ${theme.colors.brand.bc4}; }
 `;

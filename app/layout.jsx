@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import StyledComponentsRegistry from '@utils/registry';
 import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
+import AnimationPlugins from '@parts/AnimationPlugins';
 import { useScrollPerformance } from '@utils/useScrollPerformance';
 import { ApolloWrapper } from '@utils/apollo-wrapper';
 import { ThemeProvider } from 'styled-components';
@@ -64,6 +65,7 @@ const RootLayout = memo(({ children }) => {
                             {process.env.NODE_ENV === 'development' && <GridExposer />}
                             {process.env.NODE_ENV === 'development' && <CookieBar />}
                             <Contexts>
+                                <AnimationPlugins />
                                 <SmoothScroll>{children}</SmoothScroll>
                             </Contexts>
                         </ThemeProvider>

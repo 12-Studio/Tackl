@@ -1,0 +1,136 @@
+import { Meta, Typeset } from '@storybook/blocks';
+import { theme } from '@theme';
+
+<Meta title="Typography" />
+
+export const typography = {
+	size: {
+		s1: 10,
+		s2: 10,
+		s3: 12,
+		m1: 12,
+		m2: 14,
+		m3: 18,
+		l1: 22,
+		l2: 28,
+		l3: 40,
+	},
+
+};
+
+export const SampleText = 'The quick brown fox jumps over the lazy dog';
+
+# Typography
+
+#
+
+#
+
+#
+
+## Headings
+
+**Font:** Change_me
+
+**Weights:** 500(medium), 600(semibold)
+
+<Typeset
+    fontFamily={theme.font.family.heading}
+    fontWeight={theme.font.weight.medium}
+    fontSizes={[Number(typography.size.l1), Number(typography.size.l2), Number(typography.size.l3)]}
+    sampleText={SampleText}
+/>
+
+**Font:** Change_me
+
+**Weights:** 300(light)
+
+<Typeset
+    fontFamily={theme.font.family.serif}
+    fontWeight={theme.font.weight.light}
+    fontSizes={[Number(typography.size.l1), Number(typography.size.l2), Number(typography.size.l3)]}
+    style={{
+        fontStyle: 'italic',
+    }}
+    sampleText={SampleText}
+/>
+
+## Paragraphs
+
+**Font:** Sharp Sans & Ogg Text
+
+**Weights:** 400(medium), 600(semibold)
+
+<Typeset
+    fontFamily={theme.font.family.heading}
+    fontWeight={theme.font.weight.semi}
+	fontSizes={[
+		Number(typography.size.m1),
+		Number(typography.size.m2),
+		Number(typography.size.m3),
+	]}
+
+    sampleText={SampleText}
+
+/>
+
+**Font:** Change_me
+
+**Weights:** 300(light)
+
+<Typeset
+	fontFamily={theme.font.family.serif}
+    fontWeight={theme.font.weight.light}
+	fontSizes={[
+		Number(typography.size.m1),
+		Number(typography.size.m2),
+		Number(typography.size.m3),
+	]}
+	style={{
+		fontStyle: 'italic',
+	}}
+    sampleText={SampleText}
+
+/>
+
+## Emphasis Text (Em)
+
+**Font:** Change_me
+
+**Weights:** 600(semibold)
+
+<Typeset
+    fontFamily={theme.font.family.heading}
+    fontWeight={theme.font.weight.semi}
+	fontSizes={[
+		Number(typography.size.s1),
+		Number(typography.size.s2),
+	]}
+    style={{
+        textTransform: 'uppercase',
+    }}
+
+    sampleText={SampleText}
+
+/>
+
+## Text Links (A)
+
+**Font:** Change_me
+
+**Weights:** 600(semibold)
+
+<Typeset
+    fontFamily={theme.font.family.heading}
+    fontWeight={theme.font.weight.semi}
+	fontSizes={[
+		Number(typography.size.s3),
+	]}
+    style={{
+        textTransform: 'uppercase',
+        textDecoration: 'underline'
+    }}
+
+    sampleText={SampleText}
+
+/>

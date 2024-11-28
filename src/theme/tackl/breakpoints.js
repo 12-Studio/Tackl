@@ -8,9 +8,21 @@ import { css } from 'styled-components';
 const sizes = theme.grid.breakpoints;
 const keys = Object.keys(sizes);
 
+// Pre-compute media query strings for better performance
+const upQueries = keys.reduce((acc, label) => {
+	acc[label] = `@media (min-width: ${sizes[label]})`;
+	return acc;
+}, {});
+
+const downQueries = keys.reduce((acc, label) => {
+	acc[label] = `@media (max-width: ${sizes[label]})`;
+	return acc;
+}, {});
+
+// Create breakpoint functions using pre-computed queries
 export const breakpointUp = keys.reduce((acc, label) => {
 	acc[label] = (...args) => css`
-		@media (min-width: ${sizes[label]}) {
+		${upQueries[label]} {
 			${css(...args)}
 		}
 	`;
@@ -19,22 +31,9 @@ export const breakpointUp = keys.reduce((acc, label) => {
 
 export const breakpointDown = keys.reduce((acc, label) => {
 	acc[label] = (...args) => css`
-		@media (max-width: ${sizes[label]}) {
+		${downQueries[label]} {
 			${css(...args)}
 		}
 	`;
 	return acc;
 }, {});
-
-// export const breakpointOnly = keys.reduce((acc, label) => {
-// 	let nextIndex = keys.indexOf(label) + 1;
-
-// 	acc[label] = (...args) => css`
-// 		@media (min-width: ${sizes[label]}) and (max-width: ${sizes[
-// 				keys[nextIndex]
-// 			]}) {
-// 			${css(...args)}
-// 		}
-// 	`;
-// 	return acc;
-// }, {});

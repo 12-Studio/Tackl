@@ -14,7 +14,7 @@
 
 // Imports
 // ------------
-import { useLayoutEffect, useContext } from 'react';
+import { useLayoutEffect, useContext, memo } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { GlobalContext } from '@parts/Contexts';
@@ -25,7 +25,7 @@ const SCROLL_LERP = 0.1; // Lower = smoother but slower, higher = faster but les
 
 // Component
 // ------------
-const SmoothScroll = ({ children }) => {
+const SmoothScroll = memo(({ children }) => {
 	// Get lenis instance from global context
 	const { lenis } = useContext(GlobalContext);
 
@@ -48,15 +48,30 @@ const SmoothScroll = ({ children }) => {
 		// Reset scroll position on mount
 		lenis.current.scrollTo(0, { immediate: true });
 
+		// Add performance monitoring
+		lenis.current.on('scroll', ({ velocity }) => {
+			if (Math.abs(velocity) > 50) {
+				document.body.classList.add('fast-scroll');
+			} else {
+				document.body.classList.remove('fast-scroll');
+			}
+		});
+
 		// Cleanup function
 		return () => {
+			// Remove scroll event listener
+			lenis.current.off('scroll');
+
+			// Remove GSAP ticker callback
 			gsap.ticker.remove(gsapTickerCallback);
+
+			// Destroy Lenis instance
 			lenis.current.destroy();
 		};
 	}, [lenis]); // Only re-run if lenis context changes
 
 	return children;
-};
+});
 
 // Export
 // ------------

@@ -3,6 +3,7 @@
 // Imports
 // ------------
 import React, { useRef, useMemo, createContext } from 'react';
+import { PerformanceProvider } from './Performance';
 
 // Context Definition
 // ------------
@@ -29,7 +30,7 @@ const Contexts = ({ children }) => {
 
 	return (
 		<GlobalContext.Provider value={contextValue}>
-			{children}
+			<PerformanceProvider>{children}</PerformanceProvider>
 		</GlobalContext.Provider>
 	);
 };

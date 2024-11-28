@@ -55,6 +55,18 @@ input:focus, select:focus, textarea:focus, button:focus {
 	display: none;
 }
 
+/* Optimize paint performance */
+.fast-scroll * {
+	will-change: transform;
+}
+
+/* Force GPU acceleration for smooth animations */
+.smooth-scroll {
+	transform: translateZ(0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
 .disable-hover,
 .disable-hover * {
 	pointer-events: none !important;

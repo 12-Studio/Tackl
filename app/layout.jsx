@@ -36,8 +36,9 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 const inter = Inter({
 	subsets: ['latin'],
 	display: 'swap', // Uses fallback font until Inter loads
-	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+	weight: ['400', '500', '700'],
 	variable: '--inter',
+	preload: true,
 });
 
 // Component

@@ -23,6 +23,7 @@ import React, { useCallback, useRef } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/navigation';
+import { useSleep } from '@utils/useSleep';
 
 // Constants
 // ------------
@@ -31,65 +32,59 @@ const TRANSITION_DURATION = 750; // Duration in milliseconds for transition anim
 // Component
 // ------------
 const TransitionLink = ({ children, to, className, ...props }) => {
-	// Hooks
-	const router = useRouter();
-	const bodyRef = useRef(null);
+    // Hooks
+    const router = useRouter();
+    const bodyRef = useRef(null);
 
-	// Memoized sleep function to prevent recreation on each render
-	const sleep = useCallback(
-		(ms) => new Promise((resolve) => setTimeout(resolve, ms)),
-		[]
-	);
+    // Handle click with transition animation
+    const handleClick = useCallback(
+        async e => {
+            e.preventDefault();
 
-	// Handle click with transition animation
-	const handleClick = useCallback(
-		async (e) => {
-			e.preventDefault();
+            // Cache body reference
+            if (!bodyRef.current) {
+                bodyRef.current = document.querySelector('body');
+            }
 
-			// Cache body reference
-			if (!bodyRef.current) {
-				bodyRef.current = document.querySelector('body');
-			}
+            try {
+                // Start transition
+                bodyRef.current?.classList.add('page-transition');
+                // Wait for initial animation
+                await useSleep(TRANSITION_DURATION);
 
-			try {
-				// Start transition
-				bodyRef.current?.classList.add('page-transition');
-				// Wait for initial animation
-				await sleep(TRANSITION_DURATION);
+                // Navigate to new page immediately after animation
+                router.push(to);
 
-				// Navigate to new page immediately after animation
-				router.push(to);
+                // Wait for exit animation to complete before cleanup
+                // await useSleep(TRANSITION_DURATION / 2);
+            } finally {
+                // Cleanup - ensure transition class is removed even if navigation fails
+                bodyRef.current?.classList.remove('page-transition');
+            }
+        },
+        [router, to, sleep]
+    );
 
-				// Wait for exit animation to complete before cleanup
-				// await sleep(TRANSITION_DURATION / 2);
-			} finally {
-				// Cleanup - ensure transition class is removed even if navigation fails
-				bodyRef.current?.classList.remove('page-transition');
-			}
-		},
-		[router, to, sleep]
-	);
+    // Prepare link props
+    const linkProps = {
+        href: to,
+        className,
+        onClick: handleClick,
+        ...props,
+    };
 
-	// Prepare link props
-	const linkProps = {
-		href: to,
-		className,
-		onClick: handleClick,
-		...props,
-	};
-
-	return <Link {...linkProps}>{children}</Link>;
+    return <Link {...linkProps}>{children}</Link>;
 };
 
 // PropTypes
 // ------------
 TransitionLink.propTypes = {
-	/** Target URL for navigation */
-	to: PropTypes.string.isRequired,
-	/** Content to be rendered inside the link */
-	children: PropTypes.node.isRequired,
-	/** Optional className for styling */
-	className: PropTypes.string,
+    /** Target URL for navigation */
+    to: PropTypes.string.isRequired,
+    /** Content to be rendered inside the link */
+    children: PropTypes.node.isRequired,
+    /** Optional className for styling */
+    className: PropTypes.string,
 };
 
 // Exports

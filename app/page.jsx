@@ -2,14 +2,13 @@
 // ------------
 import React from 'react';
 import DeleteMe from '@parts/DeleteMe';
-import Form from '@parts/Form';
+
 // Component
 // ------------
 const Page = () => {
     return (
         <>
             <DeleteMe />
-            <Form />
         </>
     );
 };

@@ -10,12 +10,11 @@
 ## 🎯 Key Features
 
 - **Next.js 15** - Latest version with App Router and React Server Components
-- **TypeScript** - Full type safety and enhanced developer experience
-- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
+- **TypeScript** - Full type safety and enhanced developer experience _Optional_
 - **ESLint & Prettier** - Code quality and formatting standards
 - **Storybook** - Component development and documentation
 - **Performance Context** - Built-in performance optimizations and user preference detection
-- **GSAP Integration** - Smooth animations and transitions
+- **GSAP** - Smooth animations and transitions
 - **Lenis** - Smooth scroll and parallax animations
 - **Responsive Images** - Automatic image optimization and responsive handling
 - **SEO Ready** - Built-in SEO components and best practices

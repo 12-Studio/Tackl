@@ -1,7 +1,7 @@
 // Imports
 // ------
 import styled, { css } from 'styled-components';
-import { Main, bp, Div } from '@tackl';
+import { Main, bp, Div, Aside } from '@tackl';
 
 // Exports
 // ------
@@ -9,22 +9,12 @@ export const Col = styled(Div)(
 	(props) => css`
 		height: 100%;
 
-		display: ${props.$isMobile ? `flex` : `none`};
-
-		${bp.medium`
-			display: ${props.$isTablet ? `flex` : `none`};
-		`}
-
-		${bp.large`
-			display: flex !important;
-		`}
-
 		span {
 			display: block;
 			opacity: ${props.$altColor ? 0.5 : 0.2};
 			background-color: ${props.$altColor
 				? props.theme.colors.feedback.negative
-				: props.theme.colors.grey.scale100};
+				: props.theme.colors.global.whiteo20};
 
 			width: 100%;
 			height: 100%;
@@ -33,7 +23,7 @@ export const Col = styled(Div)(
 	`
 );
 
-export const Jacket = styled(Main)(
+export const Jacket = styled(Aside)(
 	(props) => css`
 		position: fixed;
 		top: 0;

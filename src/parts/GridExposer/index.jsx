@@ -1,6 +1,6 @@
 // Imports
 // ------
-import React from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Grid } from '@waffl';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -8,30 +8,49 @@ import { useHotkeys } from 'react-hotkeys-hook';
 // ------
 import { Jacket, Col } from './styles';
 
+// Constants
+// ------
+const GRID_SIZE = 12;
+const MOBILE_COLUMNS = 2;
+const TABLET_COLUMNS = 6;
+
 // Component
 // ------
 const GridExposer = () => {
-	const [grid, setGrid] = React.useState(false);
-	const [altColor, setAltColor] = React.useState(true);
+	// State for grid visibility and color mode
+	const [isGridVisible, setIsGridVisible] = useState(false);
+	const [useAltColor, setUseAltColor] = useState(true);
 
-	useHotkeys('ctrl+g', () => {
-		setGrid((grid) => !grid);
-	});
-	useHotkeys('ctrl+f', () => {
-		setAltColor((altColor) => !altColor);
-	});
+	// Memoize toggle handlers to prevent recreating on each render
+	const toggleGrid = useCallback(() => {
+		setIsGridVisible((prev) => !prev);
+	}, []);
 
-	const array = [...Array(12)];
+	const toggleColor = useCallback(() => {
+		setUseAltColor((prev) => !prev);
+	}, []);
+
+	// Set up keyboard shortcuts
+	useHotkeys('ctrl+g', toggleGrid);
+	useHotkeys('ctrl+f', toggleColor);
+
+	// Memoize grid columns array to prevent recreation on each render
+	const gridColumns = useMemo(() => {
+		return Array.from({ length: GRID_SIZE }, (_, i) => (
+			<Col
+				key={i}
+				$isMobile={i < MOBILE_COLUMNS}
+				$isTablet={i < TABLET_COLUMNS}
+				$altColor={useAltColor}
+			>
+				<span />
+			</Col>
+		));
+	}, [useAltColor]);
 
 	return (
-		<Jacket $showGrid={grid} $altColor={altColor}>
-			<Grid className="grid">
-				{array.map((_, i) => (
-					<Col key={i} $isMobile={i < 2} $isTablet={i < 6} $altColor={altColor}>
-						<span />
-					</Col>
-				))}
-			</Grid>
+		<Jacket $showGrid={isGridVisible} $altColor={useAltColor}>
+			<Grid className="grid">{gridColumns}</Grid>
 		</Jacket>
 	);
 };

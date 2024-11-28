@@ -23,9 +23,9 @@ const { columns, gutter, maxSize } = theme.grid;
 const { small, medium, large } = gutter;
 
 // Pre-computed grid templates for better performance
-const mobileGrid = `repeat(${columns.mobile}, 1fr)`;
-const mediumGrid = `repeat(${columns.medium}, 1fr)`;
-const largeGrid = `repeat(${columns.large}, 1fr)`;
+const mobileGrid = `repeat(${columns?.mobile}, 1fr)`;
+const mediumGrid = `repeat(${columns?.tablet}, 1fr)`;
+const largeGrid = `repeat(${columns?.desktop}, 1fr)`;
 
 // Base styles to reduce recalculation
 const baseGridStyles = css`

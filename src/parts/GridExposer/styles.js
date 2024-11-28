@@ -14,7 +14,7 @@ export const Col = styled(Div)(
 			opacity: ${props.$altColor ? 0.5 : 0.2};
 			background-color: ${props.$altColor
 				? props.theme.colors.feedback.negative
-				: props.theme.colors.global.white};
+				: props.theme.colors.global.white.solid};
 
 			width: 100%;
 			height: 100%;

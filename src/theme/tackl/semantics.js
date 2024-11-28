@@ -8,104 +8,137 @@ import { theme } from '../';
 // --------------
 // 1. Margin
 // --------------
-const marginStyles = (props) => css`
-	${props.$marBottom &&
-	css`
-		margin-bottom: ${theme.space.small};
+const marginStyles = (props) => {
+	// Pre-compute common values
+	const smallSpace = theme.space.small;
+	const mediumSpace = theme.space.medium;
+	const largeSpace = theme.space.large;
 
-		${breakpointUp.medium` margin-bottom: ${theme.space.medium}; `}
-		${breakpointUp.large` margin-bottom: ${theme.space.large}; `}
-	`}
+	return css`
+		${props.$marBottom &&
+		css`
+			margin-bottom: ${smallSpace};
+			${breakpointUp.medium`margin-bottom: ${mediumSpace};`}
+			${breakpointUp.large`margin-bottom: ${largeSpace};`}
+		`}
 
-	${props.$marTop &&
-	css`
-		margin-top: ${theme.space.small};
+		${props.$marTop &&
+		css`
+			margin-top: ${smallSpace};
+			${breakpointUp.medium`margin-top: ${mediumSpace};`}
+			${breakpointUp.large`margin-top: ${largeSpace};`}
+		`}
+        
+        ${props.$mar &&
+		css`
+			margin-top: ${smallSpace};
+			margin-bottom: ${smallSpace};
+			${breakpointUp.medium`
+                margin-top: ${mediumSpace};
+                margin-bottom: ${mediumSpace};
+            `}
+			${breakpointUp.large`
+                margin-top: ${largeSpace};
+                margin-bottom: ${largeSpace};
+            `}
+		`}
 
-		${breakpointUp.medium` margin-top: ${theme.space.medium}; `}
-		${breakpointUp.large` margin-top: ${theme.space.large}; `}
-	`}
-    
-    ${props.mar &&
-	css`
-		margin-top: ${theme.space.small};
-		margin-bottom: ${theme.space.small};
+		${props.$marX &&
+		css`
+			margin-left: ${smallSpace};
+			margin-right: ${smallSpace};
+			${breakpointUp.medium`
+                margin-left: ${mediumSpace};
+                margin-right: ${mediumSpace};
+            `}
+			${breakpointUp.large`
+                margin-left: ${largeSpace};
+                margin-right: ${largeSpace};
+            `}
+		`}
 
-		${breakpointUp.medium`
-            margin-top: ${theme.space.medium};
-            margin-bottom: ${theme.space.medium};
-        `}
-
-		${breakpointUp.large`
-            margin-top: ${theme.space.large};
-            margin-bottom: ${theme.space.large};
-        `}
-	`}
-`;
+		${props.$marY &&
+		css`
+			margin-top: ${smallSpace};
+			margin-bottom: ${smallSpace};
+			${breakpointUp.medium`
+                margin-top: ${mediumSpace};
+                margin-bottom: ${mediumSpace};
+            `}
+			${breakpointUp.large`
+                margin-top: ${largeSpace};
+                margin-bottom: ${largeSpace};
+            `}
+		`}
+	`;
+};
 
 // --------------
 // 2. Padding
 // --------------
-const paddingStyles = (props) => css`
-	${props.$mpad &&
-	css`
-		padding-left: ${theme.space.mpad};
-		padding-right: ${theme.space.mpad};
+const paddingStyles = (props) => {
+	// Pre-compute common values
+	const smallSpace = theme.space.small;
+	const mediumSpace = theme.space.medium;
+	const largeSpace = theme.space.large;
+	const mpadSpace = theme.space.mpad;
 
-		${breakpointUp.large`
-            padding-left: 0px;
-            padding-right: 0px;
-        `}
-	`}
+	return css`
+		${props.$mpad &&
+		css`
+			padding-left: ${mpadSpace};
+			padding-right: ${mpadSpace};
+			${breakpointUp.large`
+                padding-left: 0;
+                padding-right: 0;
+            `}
+		`}
 
-	${props.$mpadLarge &&
-	css`
-		padding-left: ${theme.space.mpad};
-		padding-right: ${theme.space.mpad};
-	`}
+		${props.$mpadLarge &&
+		css`
+			padding-left: ${mpadSpace};
+			padding-right: ${mpadSpace};
+		`}
 
-    ${props.padBottom &&
-	css`
-		padding-bottom: ${theme.space.small};
+        ${props.$padBottom &&
+		css`
+			padding-bottom: ${smallSpace};
+			${breakpointUp.medium`padding-bottom: ${mediumSpace};`}
+			${breakpointUp.large`padding-bottom: ${largeSpace};`}
+		`}
 
-		${breakpointUp.medium` padding-bottom: ${theme.space.medium}; `}
-		${breakpointUp.large` padding-bottom: ${theme.space.large}; `}
-	`}
+        ${props.$padBottomSmall &&
+		css`
+			padding-bottom: calc(${smallSpace} / 2);
+			${breakpointUp.medium`padding-bottom: calc(${mediumSpace} / 2);`}
+			${breakpointUp.large`padding-bottom: calc(${largeSpace} / 2);`}
+		`}
 
-	${props.$padBottomSmall &&
-	css`
-		padding-bottom: calc(${theme.space.small} / 2);
-
-		${breakpointUp.medium` padding-bottom: calc(${theme.space.medium} /2);`}
-		${breakpointUp.large` padding-bottom: calc(${theme.space.large} /2);`}
-	`}
-
-    ${props.$padTop &&
-	css`
-		padding-top: ${theme.space.small};
-
-		${breakpointUp.medium` padding-top: ${theme.space.medium}; `}
-		${breakpointUp.large` padding-top: ${theme.space.large}; `}
-	`}
-    
-    ${props.$pad &&
-	css`
-		padding-top: ${theme.space.small};
-		padding-bottom: ${theme.space.small};
-
-		${breakpointUp.medium`
-            padding-top: ${theme.space.medium};
-            padding-bottom: ${theme.space.medium};
-        `}
-
-		${breakpointUp.large`
-            padding-top: ${theme.space.large};
-            padding-bottom: ${theme.space.large};
-        `}
-	`}
-`;
+        ${props.$padTop &&
+		css`
+			padding-top: ${smallSpace};
+			${breakpointUp.medium`padding-top: ${mediumSpace};`}
+			${breakpointUp.large`padding-top: ${largeSpace};`}
+		`}
+        
+        ${props.$pad &&
+		css`
+			padding-top: ${smallSpace};
+			padding-bottom: ${smallSpace};
+			${breakpointUp.medium`
+                padding-top: ${mediumSpace};
+                padding-bottom: ${mediumSpace};
+            `}
+			${breakpointUp.large`
+                padding-top: ${largeSpace};
+                padding-bottom: ${largeSpace};
+            `}
+		`}
+	`;
+};
 
 // --------------
-// 7. Export: Container Styles
+// 3. Container Styles
 // --------------
 export const semantics = css`
 	${paddingStyles}
@@ -113,25 +146,18 @@ export const semantics = css`
 `;
 
 // --------------
-// 8. Export: Grid Semantics
+// 4. Grid Semantics
 // --------------
+const breakpointKeys = Object.keys(theme.grid.breakpoints);
 
 export const gridSemantics = (props) => css`
-	/* Create a function that returns css for each breakpoint defined from an object of breakpoints */
-	${Object.keys(theme.grid.breakpoints).map(
-		(key) => css`
-			${props[`$${key}`] &&
+	${breakpointKeys.map(
+		(key) =>
+			props[`$${key}`] &&
 			css`
-				${breakpointUp[key]` grid-column: ${props[`$${key}`]};
-			`}
-			`}
-		`
+				${breakpointUp[key]`
+                grid-column: ${props[`$${key}`]};
+            `}
+			`
 	)}
 `;
-
-// make the code above compliant with styled-components v6
-// https://styled-components.com/docs/migrating-to-v5#deprecated-apis
-// https://styled-components.com/docs/api#deprecated-keyframes-interpolation
-// https://styled-components.com/docs/api#deprecated-fontface-interpolation
-// https://styled-components.com/docs/api#deprecated-css-interpolation
-// https://styled-components.com/docs/api#deprecated-attr-interpolation

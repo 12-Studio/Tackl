@@ -16,6 +16,7 @@
 - **Storybook** - Component development and documentation
 - **Performance Context** - Built-in performance optimizations and user preference detection
 - **GSAP Integration** - Smooth animations and transitions
+- **Lenis** - Smooth scroll and parallax animations
 - **Responsive Images** - Automatic image optimization and responsive handling
 - **SEO Ready** - Built-in SEO components and best practices
 - **Accessibility** - WCAG compliance and accessibility features

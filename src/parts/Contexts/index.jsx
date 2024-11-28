@@ -34,4 +34,6 @@ const Contexts = ({ children }) => {
 	);
 };
 
+// Exports
+// ------------
 export default Contexts;

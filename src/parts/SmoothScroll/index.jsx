@@ -1,5 +1,17 @@
 'use client';
 
+/**
+ * SmoothScroll Component
+ *
+ * This component implements smooth scrolling functionality using the Lenis library.
+ * It wraps the entire application content and provides a butter-smooth scroll experience.
+ *
+ * Key features:
+ * - Smooth scroll behavior with configurable lerp (linear interpolation)
+ * - GSAP integration for animation timing
+ * - Automatic cleanup on unmount
+ */
+
 // Imports
 // ------------
 import { useLayoutEffect, useContext } from 'react';
@@ -7,120 +19,112 @@ import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { GlobalContext } from '@parts/Contexts';
 
+// Constants
+// ------------
+const SCROLL_LERP = 0.1; // Lower = smoother but slower, higher = faster but less smooth
+
 // Component
 // ------------
 const SmoothScroll = ({ children }) => {
-	// NOTE • Context
+	// Get lenis instance from global context
 	const { lenis } = useContext(GlobalContext);
 
-	// NOTE • Activate & Destroy Lenis smooth scrolling
 	useLayoutEffect(() => {
+		// Initialize Lenis with optimized settings
 		lenis.current = new Lenis({
-			lerp: 0.1,
+			lerp: SCROLL_LERP,
+			// Uncomment to adjust scroll duration if needed
 			// duration: 1.2,
 		});
 
-		const scrollFn = (time) => {
-			lenis.current.raf(time);
-			requestAnimationFrame(scrollFn);
+		// Set up GSAP ticker for smooth animation frame updates
+		const gsapTickerCallback = (time) => {
+			lenis.current.raf(time * 1000);
 		};
 
-		gsap.ticker.add((time) => {
-			lenis.current.raf(time * 1000);
-		});
+		gsap.ticker.add(gsapTickerCallback);
+		gsap.ticker.lagSmoothing(0); // Disable lag smoothing for more accurate scrolling
 
-		gsap.ticker.lagSmoothing(0);
+		// Reset scroll position on mount
+		lenis.current.scrollTo(0, { immediate: true });
 
-		// Make sure lenis starts at the top
-		lenis.current.scrollTo(0, {
-			immediate: true,
-		});
-
-		// Cleanup
+		// Cleanup function
 		return () => {
+			gsap.ticker.remove(gsapTickerCallback);
 			lenis.current.destroy();
 		};
-	}, [lenis]);
+	}, [lenis]); // Only re-run if lenis context changes
 
 	return children;
 };
 
+// Export
+// ------------
 export default SmoothScroll;
 
-// NOTE • THIS IS A CUSTOM VERSION OF LENIS (USE ONLY IF NEEDED)
-// // Imports
-// // ------------
+/*
+ * Note: Alternative implementation with ScrollTrigger support is commented out below.
+ * Uncomment and modify if GSAP ScrollTrigger integration is needed.
+ */
+
+// // Alternative implementation with ScrollTrigger
+// // --------------------------------------------
 // import React from 'react';
 // import Lenis from '@studio-freight/lenis';
 // import { gsap } from 'gsap';
 // import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // import { GlobalContext } from '@parts/Contexts';
 
-// // Component
-// // ------------
 // const SmoothScroll = ({ children }) => {
-// 	// NOTE • Lenis smooth scrolling
-// 	const lenis = React.useRef();
-// 	const contentRef = React.useRef();
+//     const lenis = React.useRef();
+//     const contentRef = React.useRef();
+//     const { scrollProxy } = React.useContext(GlobalContext);
 
-// 	// NOTE • ScrollProxy Global Reference
-// 	const { scrollProxy } = React.useContext(GlobalContext);
+//     React.useLayoutEffect(() => {
+//         gsap.registerPlugin(ScrollTrigger);
 
-// 	// NOTE • Activate & Destroy Lenis smooth scrolling
-// 	React.useLayoutEffect(() => {
-// 		gsap.registerPlugin(ScrollTrigger);
+//         lenis.current = new Lenis({
+//             lerp: 0.1,
+//             wrapper: scrollProxy.current,
+//             content: contentRef.current,
+//         });
 
-// 		lenis.current = new Lenis({
-// 			lerp: 0.1,
-// 			wrapper: scrollProxy.current,
-// 			content: contentRef.current,
+//         const gsapTickerCallback = (time) => {
+//             lenis.current.raf(time * 1000);
+//         };
 
-// 			// easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-// 			// duration: 1.2,
-// 		});
+//         gsap.ticker.add(gsapTickerCallback);
 
-// 		const scrollFn = (time) => {
-// 			lenis.current.raf(time);
-// 			requestAnimationFrame(scrollFn);
-// 		};
+//         ScrollTrigger.scrollerProxy(scrollProxy.current, {
+//             scrollTop(value) {
+//                 if (arguments.length) {
+//                     lenis.current.scrollTo(value, { immediate: true });
+//                 }
+//                 return lenis.current.scroll;
+//             },
+//             getBoundingClientRect() {
+//                 return {
+//                     top: 0,
+//                     left: 0,
+//                     width: window.innerWidth,
+//                     height: window.innerHeight,
+//                 };
+//             },
+//         });
 
-// 		gsap.ticker.add((time) => {
-// 			lenis.current.raf(time * 1000);
-// 		});
+//         return () => {
+//             gsap.ticker.remove(gsapTickerCallback);
+//             lenis.current.destroy();
+//         };
+//     }, []);
 
-// 		// Gsap scrollerProxy for lenis
-// 		ScrollTrigger.scrollerProxy(scrollProxy.current, {
-// 			scrollTop(value) {
-// 				if (arguments.length) {
-// 					lenis.current.scrollTo(value, {
-// 						immediate: true,
-// 					});
-// 				}
-// 				return lenis.current.scroll; // getter
-// 			},
-// 			getBoundingClientRect() {
-// 				return {
-// 					top: 0,
-// 					left: 0,
-// 					width: window.innerWidth,
-// 					height: window.innerHeight,
-// 				};
-// 			},
-// 		});
-
-// 		// Cleanup
-// 		return () => {
-// 			lenis.current.destroy();
-// 		};
-// 	}, []);
-
-// 	return (
-// 		<div ref={scrollProxy} className="lenis-wrapper">
-// 			<div ref={contentRef} className="lenis-content">
-// 				{children}
-// 			</div>
-// 		</div>
-// 	);
+//     return (
+//         <div ref={scrollProxy} className="lenis-wrapper">
+//             <div ref={contentRef} className="lenis-content">
+//                 {children}
+//             </div>
+//         </div>
+//     );
 // };
 
 // export default SmoothScroll;

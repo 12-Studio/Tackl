@@ -24,7 +24,7 @@ export const Jacket = styled(Section)(
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 100svh;
+		height: 200svh;
 		background: ${props.theme.colors.brand.bc2};
 		overflow: hidden;
 

@@ -6,6 +6,7 @@ import React, { memo } from 'react';
 import dynamic from 'next/dynamic';
 import StyledComponentsRegistry from '@utils/registry';
 import Contexts from '@parts/Contexts/Contexts';
+import { useScrollPerformance } from '@utils/useScrollPerformance';
 import { ApolloWrapper } from '@utils/apollo-wrapper';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '@theme';
@@ -46,6 +47,9 @@ const inter = Inter({
 const RootLayout = memo(({ children }) => {
 	// NOTE • Font Classes
 	const classes = `${inter.variable}`;
+
+	// NOTE • Scroll Performance
+	useScrollPerformance();
 
 	return (
 		<html lang="en">

@@ -1,8 +1,27 @@
-## 💫 Tackl 3 - Website Starter Kit
+![Tackl 3 Banner](/src/images/readme-banner.png)
 
-A comprehensive starter kit designed to accelerate web development with best-in-class tooling, performance optimization, and developer experience. Built on Next.js, it provides everything needed to create fast, scalable, and maintainable web applications.
+✨ A comprehensive starter kit designed to accelerate web development with best-in-class tooling, performance optimization, and developer experience. Built on Next.js, it provides everything needed to create fast, scalable, and maintainable web applications. ✨
 
-**`For detailed documentation and guides on how to use this starter kit, please refer to the 'docs' directory.`**
+![Version Number](https://img.shields.io/badge/Version-3.0-8000FF)
+![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
+
+`For detailed documentation and guides on how to use this starter kit, please refer to the 'docs' directory.`
+
+## 🎯 Key Features
+
+- **Next.js 15** - Latest version with App Router and React Server Components
+- **TypeScript** - Full type safety and enhanced developer experience
+- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
+- **ESLint & Prettier** - Code quality and formatting standards
+- **Storybook** - Component development and documentation
+- **Performance Context** - Built-in performance optimizations and user preference detection
+- **GSAP Integration** - Smooth animations and transitions
+- **Responsive Images** - Automatic image optimization and responsive handling
+- **SEO Ready** - Built-in SEO components and best practices
+- **Accessibility** - WCAG compliance and accessibility features
+- **Documentation** - Comprehensive guides and API documentation
+
+---
 
 _`Note: Due to compatibility issues between Storybook and Next.js 15, please use the '--legacy-peer-deps' flag when running npm install until this is resolved in a future Storybook update.`_
 

@@ -1,12 +1,12 @@
 ## 💫 Tackl 3 - Website Starter Kit
 
-Our most advanced starter kit to date that provides the developer experience and infrastructure to build, scale, and secure a faster, more personalized Web.
+A comprehensive starter kit designed to accelerate web development with best-in-class tooling, performance optimization, and developer experience. Built on Next.js, it provides everything needed to create fast, scalable, and maintainable web applications.
 
-**`Storybook currently hasnt been updated to work with NextJS 15, so when installing npm, use '--legacy-peer-deps' for the time being`**
+**`For detailed documentation and guides on how to use this starter kit, please refer to the 'docs' directory.`**
 
-**`Checkout the 'docs' folder to understand how different things work.`**
+_`Note: Due to compatibility issues between Storybook and Next.js 15, please use the '--legacy-peer-deps' flag when running npm install until this is resolved in a future Storybook update.`_
 
-This is a [Next.js](https://nextjs.org/) project.
+This project is built with [Next.js](https://nextjs.org/), a powerful React framework that enables features like server-side rendering, static site generation, and optimized client-side routing. The starter kit leverages Next.js 15's advanced capabilities including the App Router, React Server Components, and built-in performance optimizations.
 
 ## 🚀 Getting Started
 
@@ -16,9 +16,6 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-Gsson is
 ```
 
 To create a production build
@@ -27,15 +24,12 @@ To create a production build
 npm run build
 # or
 yarn build
-# or
-pnpm build
 ```
 
 To serve a production build
 
 ```bash
 npm run serve
-
 # you may need to install serve globally:
 npm i -g serve
 ```
@@ -66,41 +60,67 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
     ├── docs
     └── README.md
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+1.  **`/node_modules`**: The core dependency directory containing all external packages and libraries your project relies on. These are automatically installed based on your package.json specifications and should never be manually modified or committed to version control.
 
-2.  **`/storybook`**: This directory contains everything storybook related, including setup files for tweaking the storybook interfaces, individual stories are created at the component level under `src/parts/YourComponent`
+2.  **`/storybook`**: Houses all Storybook configuration and setup files. Storybook is our component development environment where we build and test UI components in isolation. Individual component stories are co-located with their components in `src/parts/YourComponent` for better maintainability.
 
-3.  **`./app`**: This is the App directory, NextJS's latest way of building apps, this is different to the Pages directory, which you may see here time to time. [App Router](https://nextjs.org/docs/app)
+3.  **`./app`**: The main application directory utilizing Next.js 13+'s App Router architecture. This modern routing approach offers enhanced features like server components, layouts, and more streamlined data fetching compared to the legacy Pages Router. [Learn more about App Router](https://nextjs.org/docs/app)
 
-4.  **`./public`**: This directory is for storing assets such as fonts, images, icons or videos that you want to use inline within your application (non-dynamic data)
+4.  **`./public`**: Static asset directory for files that need to be publicly accessible. This includes images, fonts, icons, and other media files that don't require processing. Files in this directory are served as-is from the root URL path.
 
-5.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+5.  **`/src`**: The primary source code directory containing all front-end application code. This follows the conventional source directory structure and includes components, utilities, hooks, and other application logic organized in a modular fashion.
 
-6.  **`.env`**: Short for "environment," is a simple text file used to store configuration settings and sensitive information for a project.
+6.  **`.env`**: Environment configuration file storing sensitive data like API keys, database credentials, and other environment-specific variables. This file should never be committed to version control - use .env.example instead for documentation.
 
-7.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+7.  **`.gitignore`**: Version control configuration file that specifies which files and directories Git should ignore, such as node_modules, build outputs, and environment files.
 
-8.  **`.npmrc`**: A configuration file used with npm, the package manager for JavaScript. It allows developers to customize the behavior of npm for a specific project by setting various configuration options. Typically used for activating GSAP paid plans.
+8.  **`.npmrc`**: NPM configuration file that customizes package manager behavior for this project. In Tackl, it's primarily used for configuring GSAP Club access and other package-specific settings.
 
-9.  **`deployment_guide`**: This file tells you how to deploy to AWS in complete, easy steps.
+9.  **`deployment_guide`**: Comprehensive AWS deployment documentation providing step-by-step instructions for setting up and deploying your Tackl project to production.
 
-10. **`jsconfig.json`**: A configuration file used in JavaScript and TypeScript projects to specify options for the TypeScript compiler (tsc) and improve the development experience by enabling features like IntelliSense in code editors.
+10. **`jsconfig.json`**: JavaScript project configuration file that enhances development experience by enabling TypeScript-like features, custom path aliases, and better IntelliSense support in modern IDEs.
 
-11. **`next-config.js`**: A configuration file used in Next.js projects to customize the default behavior of the Next.js framework. It allows developers to modify various settings, configure plugins, and define custom behaviors for their Next.js applications.
+11. **`next-config.js`**: Next.js framework configuration file where you can customize build settings, add environment variables, configure plugins, and modify webpack behavior. Essential for tailoring Next.js to your project's needs.
 
-12. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+12. **`package-lock.json`**: Automatically generated dependency lock file that ensures consistent installations across different environments by recording the exact version of each installed package. Should be committed to version control but never manually edited.
 
-13. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+13. **`package.json`**: Project manifest file defining your application's dependencies, scripts, metadata, and other important configurations. This is the central configuration file for your Node.js/JavaScript project.
 
-14. **`docs`**: A folder containing all relevant documentation on how to use Tackl.
+14. **`docs`**: Comprehensive documentation directory containing detailed guides, best practices, and technical documentation specific to working with Tackl's features and conventions.
 
-15. **`README.md`**: A text file containing useful reference information about your project.
+15. **`README.md`**: The primary project documentation file providing an overview, setup instructions, and essential information for developers working with the project. You're reading it right now!
 
 ## 🎓Learning NextJS
 
-To learn more about Next.js, take a look at the following resources:
+Next.js is a powerful React framework that enables features like server-side rendering and static site generation. To deepen your understanding of Next.js and make the most of its capabilities, we recommend exploring these valuable resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js Documentation](https://nextjs.org/docs) - Comprehensive documentation covering all Next.js features, APIs, and best practices. Perfect for both beginners and advanced developers.
+- [Learn Next.js](https://nextjs.org/learn) - An interactive, hands-on tutorial that guides you through building a full Next.js application from scratch. Great for practical learning.
+- [Next.js Examples](https://github.com/vercel/next.js/tree/canary/examples) - A collection of example projects demonstrating various Next.js features and integration patterns.
+- [Next.js Discord Community](https://discord.com/invite/bUG2bvbtHy) - Join thousands of Next.js developers for real-time discussions, help, and networking.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The framework is open source and actively maintained by Vercel and the community. You can explore or contribute to [the Next.js GitHub repository](https://github.com/vercel/next.js/). Whether you're fixing bugs, adding features, or improving documentation, your contributions help make Next.js better for everyone!
+
+## 👥 Authors & Maintainers
+
+This project is developed and maintained by the 12 Studio Team:
+
+### Core Team
+
+- **Lead Developers**
+  - Joe Taylor (joe@12studio.agency)
+  - Adam Roberts (adam@12studio.agency)
+
+### Contributing
+
+We welcome contributions from the community! Please read our contribution guidelines before submitting pull requests.
+
+For support, feature requests, or bug reports, please:
+
+1. Check existing GitHub issues
+2. Create a new issue if needed
+3. Contact the development team at hello+tackl@12studio.agency
+
+### License
+
+This project is proprietary software owned by Tackl. All rights reserved.

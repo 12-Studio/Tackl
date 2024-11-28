@@ -1,170 +1,154 @@
-## Global State Management in Your Application
+# Global Context Usage Guide
 
-This guide explains how to set up and use the global state management provided in this project, built using React's Context API. The global state is integrated into the app via the RootLayout component, wrapping core functionality like smooth scrolling and Apollo GraphQL integration.
+## Overview
 
-### Table of Contents
+The GlobalContext provides shared state management across your application. It's already set up in the root layout, so this guide focuses on using and extending the context in your components.
 
-- Overview
-- Project Structure
-- Setup
-- Integrating the Context Provider
-- Accessing Global State
-- API Reference
-- Example Usage
+## Using the Context
 
-### Overview
+### Basic Usage
 
-This project provides a global state management system based on:
+To access global state in any component:
 
-- React Context API for managing and accessing shared state.
-- Integration with key providers like Styled Components, Apollo Client, and a custom SmoothScroll wrapper.
-- Easy integration and extension through React's component tree.
+```jsx
+import { useContext } from 'react';
+import { GlobalContext } from '@parts/Contexts';
 
-The global state is initialized and provided via Contexts, which wraps the app inside RootLayout.
+const YourComponent = () => {
+	const { lenis } = useContext(GlobalContext);
 
-### Project Structure
+	// Example: Smooth scroll to element
+	const handleScroll = () => {
+		lenis.current.scrollTo('#section-id', {
+			duration: 1.2, // Optional: customize duration
+			easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Optional: custom easing
+		});
+	};
 
-Here's a brief overview of the relevant files:
-
-1.  **Contexts/Contexts.jsx:** Defines the Contexts component, which initializes global values (e.g., lenis reference) and provides them via GlobalContext.
-
-2.  **Contexts/index.js:** Exports the GlobalContext object for use across the application.
-
-3.  **App/layout.js:** The root layout component, which sets up the application's global context, theme, and smooth scrolling.
-
-### Setup
-
-#### Integrating the Context Provider
-
-The RootLayout component is responsible for initializing the global state and wrapping the entire application with the necessary providers.
-
-JavaScript
-
+	return <button onClick={handleScroll}>Scroll to Section</button>;
+};
 ```
-// App/layout.js
-import React from 'react';
-import Contexts from '@parts/Contexts/Contexts';
-import SmoothScroll from '@parts/SmoothScroll';
-import { ThemeProvider } from 'styled-components';
-import { theme } from '@theme';
 
-const RootLayout = ({ children }) => (
-  <html lang="en">
-    <body>
-      <ThemeProvider theme={theme}>
-        <Contexts>
-          <SmoothScroll>{children}</SmoothScroll>
-        </Contexts>
-      </ThemeProvider>
-    </body>
-  </html>
+## Extending the Context
+
+### 1. Add New Context Values
+
+To add new global state, modify the Contexts component:
+
+```jsx
+const Contexts = ({ children }) => {
+	// Add new refs or state
+	const lenis = useRef(null);
+	const [theme, setTheme] = useState('light');
+	const [language, setLanguage] = useState('en');
+
+	// Include new values in context
+	const contextValue = useMemo(
+		() => ({
+			lenis,
+			theme,
+			setTheme,
+			language,
+			setLanguage,
+		}),
+		[theme, language] // Add dependencies for memoization
+	);
+
+	return (
+		<GlobalContext.Provider value={contextValue}>
+			{children}
+		</GlobalContext.Provider>
+	);
+};
+```
+
+#### index.jsx
+
+### 2. Using Extended Context
+
+Access new context values in components:
+
+```jsx
+const YourComponent = () => {
+	const { theme, setTheme, language } = useContext(GlobalContext);
+
+	return (
+		<div>
+			<p>Current Theme: {theme}</p>
+			<button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+				Toggle Theme
+			</button>
+			<p>Language: {language}</p>
+		</div>
+	);
+};
+```
+
+## Best Practices
+
+### 1. Performance Optimization
+
+- Use useMemo for computed values
+- Include only necessary dependencies in the dependency array
+
+```jsx
+const expensiveValue = useMemo(
+	() => computeExpensiveValue(dependency),
+	[dependency]
 );
-
-export default RootLayout;
-
 ```
 
-**Key Wrappers:**
+### 2. State Organization
 
-- **Contexts:** Provides global state management.
-- **SmoothScroll:** Enhances scrolling behavior across the app.
-- **ThemeProvider:** Applies the global theme using Styled Components.
+- Group related state together
+- Consider creating separate contexts for different domains
 
-### Accessing Global State
+```jsx
+// Example: Separate authentication context
+export const AuthContext = createContext({});
 
-Use the GlobalContext to access shared values like the lenis reference in any component.
+const AuthProvider = ({ children }) => {
+	const [user, setUser] = useState(null);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-**Import the Context:**
+	const value = useMemo(
+		() => ({
+			user,
+			setUser,
+			isAuthenticated,
+			setIsAuthenticated,
+		}),
+		[user, isAuthenticated]
+	);
 
-JSX File
-
-```
-import { useContext } from 'react';
-import { GlobalContext } from '@parts/Contexts';
-
-```
-
-**Access Context Values:**
-
-JSX File
-
-```
-const { lenis } = useContext(GlobalContext);
-
-useEffect(() => {
-  if (lenis.current) {
-    lenis.current.scrollTo(0); // Example usage
-  }
-}, [lenis]);
-
-```
-
-### API Reference
-
-#### Contexts Component
-
-Wraps the application with a global state provider.
-
-**Props:**
-
-- children (ReactNode): Components or elements to be wrapped.
-
-**Global State Provided:**
-
-- lenis: A useRef object for managing the smooth scrolling library.
-
-#### GlobalContext
-
-The context object created using React.createContext(). Use it with useContext to access global values.
-
-**Example:**
-
-JSX File
-
-```
-import { useContext } from 'react';
-import { GlobalContext } from '@parts/Contexts';
-
-const Example = () => {
-  const { lenis } = useContext(GlobalContext);
-
-  return <div>{lenis.current ? 'Lenis Initialized' : 'Not Ready'}</div>;
+	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
 ```
 
-### Example Usage
+### 3. Type Safety
 
-Here's how you might use the global context within your application:
+If using TypeScript, define interfaces for your context:
 
-**Setup RootLayout:**
+```jsx
+interface GlobalContextType {
+	lenis: React.RefObject<any>;
+	theme?: string;
+	setTheme?: (theme: string) => void;
+	// ... other properties
+}
 
-Ensure Contexts wraps your app in App/layout.js as shown earlier.
-
-**Consume Context in a Component:**
-
-JSX File
-
+export const GlobalContext =
+	createContext <
+	GlobalContextType >
+	{
+		lenis: { current: null },
+	};
 ```
-import React, { useContext } from 'react';
-import { GlobalContext } from '@parts/Contexts';
 
-const SmoothScrollController = () => {
-  const { lenis } = useContext(GlobalContext);
+## Current Available Values
 
-  return (
-    <button
-      onClick={() => {
-        if (lenis.current) {
-          lenis.current.scrollTo(500);
-        }
-      }}
-    >
-      Scroll Down
-    </button>
-  );
-};
+| Value | Type      | Description            | Usage Example                     |
+| ----- | --------- | ---------------------- | --------------------------------- |
+| lenis | RefObject | Smooth scroll instance | lenis.current.scrollTo('#target') |
 
-export default SmoothScrollController;
-
-```
+For more detailed information about specific context values and their usage, refer to the relevant feature documentation in the docs directory.

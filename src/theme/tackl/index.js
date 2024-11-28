@@ -14,56 +14,49 @@ import {
 	emStyles,
 } from './type';
 import { breakpointUp, breakpointDown } from './breakpoints';
-import { theme } from '@theme';
+
+// Base semantic components with shared styles
+const SemanticBase = css`
+	${semantics}
+	${gridSemantics}
+`;
 
 // --------------
 // 1. Semantics
 // --------------
 export const Section = styled.section`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
 export const Div = styled.div`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
 export const Main = styled.main`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
 export const Nav = styled.nav`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
 export const Article = styled.article`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
 export const Aside = styled.aside`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
 export const Header = styled.header`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
 export const Footer = styled.footer`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
-
 export const List = styled.ul`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
-
 export const ListItem = styled.li`
-	${semantics}
-	${gridSemantics}
+	${SemanticBase}
 `;
 
 // --------------
-// 3. Typography
+// 2. Typography
 // --------------
 export const H1 = styled.h1`
 	${h1Styles}
@@ -92,7 +85,6 @@ export const Em = styled.em`
 export const Span = styled.span`
 	${spanStyles}
 `;
-
 export const Quote = styled.q`
 	${gridSemantics}
 `;
@@ -106,45 +98,28 @@ export const bpd = breakpointDown;
 // --------------
 // 4. Content
 // --------------
-const sharedBlockStyles = (props) => css`
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-	}
-
+const sharedBlockStyles = css`
 	h1,
 	h2 {
 		${h2Styles}
 	}
-
 	h3 {
 		${h3Styles}
 	}
-
 	h4 {
 		${h4Styles}
 	}
-
 	h5 {
 		${h5Styles}
 	}
-
 	h6 {
 		${h6Styles}
 	}
-
-	ul {
-		li {
-		}
-	}
-
 	p {
 		${pStyles}
 	}
 `;
+
 export const ContentBlock = styled.div`
 	${sharedBlockStyles}
 	${gridSemantics}

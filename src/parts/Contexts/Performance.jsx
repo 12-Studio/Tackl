@@ -15,11 +15,12 @@ export const PerformanceProvider = ({ children }) => {
         () => ({
             // Checks if user has requested reduced motion
             // Useful for disabling/reducing animations for accessibility
-            isReducedMotion: window?.matchMedia('(prefers-reduced-motion: reduce)').matches,
+            isReducedMotion:
+                typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false,
 
             // Detects if device is in low-power mode
             // Can be used to disable heavy animations or effects
-            isLowPowerMode: navigator?.userAgent.includes('Low-Power'),
+            isLowPowerMode: typeof window !== 'undefined' ? navigator?.userAgent.includes('Low-Power') : false,
 
             // Gets screen pixel density
             // Useful for serving appropriate image resolutions

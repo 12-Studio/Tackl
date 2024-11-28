@@ -1,3 +1,10 @@
+// Theme Configuration Documentation
+// ===============================
+// This file exports a theme object and global styles for use with styled-components.
+// The theme provides consistent styling tokens across the application.
+// Access theme values in styled-components via props.theme:
+// ${props => props.theme.colors.brand.bc1}
+
 // Imports
 // -------
 import { css, createGlobalStyle } from 'styled-components';
@@ -5,6 +12,7 @@ import Color from 'color';
 
 // Brand Colors
 // -------------
+// Core brand colors that serve as the base for all color variations
 const brandColors = {
 	bc1: '#8000FF', // Primary Purple
 	bc2: '#380377', // Dark Purple
@@ -15,6 +23,8 @@ const brandColors = {
 
 // Generate Alpha Shades (0.0 to 1.0 opacity)
 // ------------
+// Creates opacity variations from 0.0 to 1.0 for any color
+// Usage: ${props => props.theme.colors.brand.bc1o50} (50% opacity of bc1)
 const generateAlphaShades = (baseColor) => {
 	const color = Color(baseColor);
 	const shades = {};
@@ -34,6 +44,8 @@ const whiteAlphas = generateAlphaShades('#ffffff');
 const blackAlphas = generateAlphaShades('#000000');
 
 // Generate brand color variations including transparency
+// Usage: ${props => props.theme.colors.brand.bc1trans} (fully transparent)
+// Usage: ${props => props.theme.colors.brand.bc1o80} (80% opacity)
 const brandColorVariations = Object.entries(brandColors).reduce(
 	(acc, [key, value]) => {
 		const color = Color(value);
@@ -55,13 +67,25 @@ const brandColorVariations = Object.entries(brandColors).reduce(
 
 // Theme Configuration
 // ------------
+// Usage in styled-components:
+// ${props => props.theme.colors.brand.bc1}
+// ${props => props.theme.space.medium}
+// ${props => props.theme.font.type.heading}
 export const theme = {
+	// Color Tokens
+	// Usage: ${props => props.theme.colors.global.white.solid}
+	// Usage: ${props => props.theme.colors.social.facebook}
+	// Usage: ${props => props.theme.colors.feedback.positive}
 	colors: {
 		global: {
-			white: '#ffffff',
-			black: '#000000',
-			...whiteAlphas,
-			...blackAlphas,
+			white: {
+				solid: '#ffffff',
+				...whiteAlphas, // Usage: props.theme.colors.global.white.o50
+			},
+			black: {
+				solid: '#000000',
+				...blackAlphas, // Usage: props.theme.colors.global.black.o50
+			},
 		},
 
 		social: {
@@ -83,6 +107,8 @@ export const theme = {
 		brand: brandColorVariations,
 	},
 
+	// Spacing Tokens
+	// Usage: ${props => props.theme.space.medium}
 	space: {
 		mpad: '0.8rem', // Mobile Padding
 		small: '4.8rem',
@@ -91,6 +117,9 @@ export const theme = {
 		xlarge: '6.4rem',
 	},
 
+	// Typography Tokens
+	// Usage: ${props => props.theme.font.type.heading}
+	// Usage: ${props => props.theme.font.weight.bold}
 	font: {
 		type: {
 			heading: `'Change__me', 'Helvetica', Arial, sans-serif`,
@@ -107,6 +136,9 @@ export const theme = {
 		},
 	},
 
+	// Grid System Configuration
+	// Used by the Grid component
+	// See: src/theme/waffl/index.ts
 	grid: {
 		columns: {
 			mobile: 2,
@@ -131,12 +163,16 @@ export const theme = {
 		maxSize: '1440px',
 	},
 
+	// Animation Tokens
+	// Usage: ${props => `transition: all ${props.theme.easing.ease}`}
 	easing: {
 		bezzy: 'cubic-bezier(0.8, 0, 0, 1)',
 		bezzy2: 'cubic-bezier(0.430, 0.195, 0.020, 1.000)',
 		ease: '0.3s ease-in-out',
 	},
 
+	// Utility Styles
+	// Usage: ${props => props.theme.noscrollbars}
 	noscrollbars: css`
 		scrollbar-width: none;
 		-ms-overflow-style: none;
@@ -150,6 +186,7 @@ export const theme = {
 
 // Global Styles
 // ------------
+// Automatically applied to the entire application
 export const GlobalStyle = createGlobalStyle`
 	body { background: ${theme.colors.brand.bc3}; }
 	* { color: ${theme.colors.brand.bc4}; }

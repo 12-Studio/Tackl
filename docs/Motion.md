@@ -1,17 +1,17 @@
-# Framer Motion: Using AnimatePresence for Animations
+# Motion: Using AnimatePresence for Animations
 
-Framer Motion is a popular React animation library that makes it easy to implement animations with modern and declarative code. This documentation explains how to use AnimatePresence for animating components when they are added or removed from the DOM.
+Motion (formerly Framer Motion) is a popular React animation library that makes it easy to implement animations with modern and declarative code. This documentation explains how to use AnimatePresence for animating components when they are added or removed from the DOM.
 
 ## What is AnimatePresence?
 
-AnimatePresence is a utility from Framer Motion that enables animations for components entering and leaving the DOM. It is particularly useful for conditional rendering where you want to apply transitions when elements are shown or hidden.
+AnimatePresence is a utility from Motion that enables animations for components entering and leaving the DOM. It is particularly useful for conditional rendering where you want to apply transitions when elements are shown or hidden.
 
 ### Basic Setup
 
 Import the necessary components:
 
 ```jsx
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion';
 ```
 
 Example: Animating a Modal
@@ -19,7 +19,7 @@ Here's a simple example of using AnimatePresence to animate a modal appearing an
 
 ```jsx
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion';
 
 const ModalExample = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,7 +71,7 @@ You can also animate list items when they are added or removed.
 
 ```jsx
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion';
 
 const ListExample = () => {
     const [items, setItems] = useState([1, 2, 3]);
@@ -158,3 +158,5 @@ const item = {
 ### Conclusion
 
 AnimatePresence is a powerful tool for managing enter and exit animations in React. By leveraging Framer Motion’s declarative API, you can create polished UI transitions with minimal effort. Use these examples and tips as a foundation for implementing animations in your projects.
+
+Read more about Framer Motion [here](https://motion.dev/).

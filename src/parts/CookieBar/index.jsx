@@ -18,6 +18,7 @@
 // Imports
 // ------------
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { storage } from '@utils/useLocalStorage';
 
 // Styles
@@ -30,7 +31,14 @@ const COOKIE_CONSENT_KEY = 'cookie-consent-given';
 
 // Component
 // ------------
-const CookieBar = () => {
+const CookieBar = ({
+    message = 'This website uses cookies to enhance your experience. By continuing to use this site, you agree to our use of cookies.',
+    acceptButtonText = 'Accept',
+    declineButtonText = 'Decline',
+    onAccept,
+    onDecline,
+    className,
+}) => {
     /** State to control visibility of the cookie banner */
     const [isVisible, setIsVisible] = useState(false);
 
@@ -49,6 +57,7 @@ const CookieBar = () => {
     const handleAccept = () => {
         storage.set(COOKIE_CONSENT_KEY, true);
         setIsVisible(false);
+        if (onAccept) onAccept();
     };
 
     /**
@@ -63,22 +72,31 @@ const CookieBar = () => {
             document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
         });
         setIsVisible(false);
+        if (onDecline) onDecline();
     };
 
     if (!isVisible) return null;
 
     return (
-        <Jacket>
-            <p>
-                This website uses cookies to enhance your experience. By continuing to use this site, you agree to our
-                use of cookies.
-            </p>
+        <Jacket className={className}>
+            <p>{message}</p>
             <div>
-                <button onClick={handleAccept}>Accept</button>
-                <button onClick={handleDecline}>Decline</button>
+                <button onClick={handleAccept}>{acceptButtonText}</button>
+                <button onClick={handleDecline}>{declineButtonText}</button>
             </div>
         </Jacket>
     );
+};
+
+// PropTypes
+// ------------
+CookieBar.propTypes = {
+    message: PropTypes.string,
+    acceptButtonText: PropTypes.string,
+    declineButtonText: PropTypes.string,
+    onAccept: PropTypes.func,
+    onDecline: PropTypes.func,
+    className: PropTypes.string,
 };
 
 // Exports

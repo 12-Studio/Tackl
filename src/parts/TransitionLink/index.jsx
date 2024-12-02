@@ -11,10 +11,13 @@
  * 4. Performing the navigation
  * 5. Cleaning up the transition class
  *
- * Performance optimizations:
- * - Memoized sleep function to prevent recreation on each render
- * - Cached body element reference using useRef
- * - Constant transition duration defined outside component
+ * @component
+ * @example
+ * ```jsx
+ * <TransitionLink to="/about">
+ *   Go to About Page
+ * </TransitionLink>
+ * ```
  */
 
 // Imports
@@ -35,6 +38,7 @@ const TransitionLink = ({ children, to, className, ...props }) => {
     // Hooks
     const router = useRouter();
     const bodyRef = useRef(null);
+    const sleep = useSleep();
 
     // Handle click with transition animation
     const handleClick = useCallback(
@@ -85,6 +89,10 @@ TransitionLink.propTypes = {
     children: PropTypes.node.isRequired,
     /** Optional className for styling */
     className: PropTypes.string,
+};
+
+TransitionLink.defaultProps = {
+    className: '',
 };
 
 // Exports

@@ -2,32 +2,34 @@
 
 // Imports
 // ------------
-import { createContext, useMemo } from 'react';
+import { createContext, useMemo, useEffect, useState } from 'react';
 
 // Context Definition
 // ------------
-export const PerformanceContext = createContext({});
+export const PerformanceContext = createContext({
+    isReducedMotion: false,
+    isLowPowerMode: false,
+    devicePixelRatio: 1,
+});
 
 // Component
 // ------------
 export const PerformanceProvider = ({ children }) => {
-    const value = useMemo(
-        () => ({
-            // Checks if user has requested reduced motion
-            // Useful for disabling/reducing animations for accessibility
-            isReducedMotion:
-                typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false,
+    const [performanceState, setPerformanceState] = useState({
+        isReducedMotion: false,
+        isLowPowerMode: false,
+        devicePixelRatio: 1,
+    });
 
-            // Detects if device is in low-power mode
-            // Can be used to disable heavy animations or effects
-            isLowPowerMode: typeof window !== 'undefined' ? navigator?.userAgent.includes('Low-Power') : false,
+    useEffect(() => {
+        setPerformanceState({
+            isReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+            isLowPowerMode: navigator?.userAgent.includes('Low-Power'),
+            devicePixelRatio: window.devicePixelRatio,
+        });
+    }, []);
 
-            // Gets screen pixel density
-            // Useful for serving appropriate image resolutions
-            devicePixelRatio: typeof window !== 'undefined' ? window.devicePixelRatio : 1,
-        }),
-        []
-    );
+    const value = useMemo(() => performanceState, [performanceState]);
 
     return <PerformanceContext.Provider value={value}>{children}</PerformanceContext.Provider>;
 };

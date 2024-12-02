@@ -26,52 +26,55 @@ const SCROLL_LERP = 0.1; // Lower = smoother but slower, higher = faster but les
 // Component
 // ------------
 const SmoothScroll = memo(({ children }) => {
-	// Get lenis instance from global context
-	const { lenis } = useContext(GlobalContext);
+    // Get lenis instance from global context
+    const { lenis } = useContext(GlobalContext);
 
-	useLayoutEffect(() => {
-		// Initialize Lenis with optimized settings
-		lenis.current = new Lenis({
-			lerp: SCROLL_LERP,
-			// Uncomment to adjust scroll duration if needed
-			// duration: 1.2,
-		});
+    useLayoutEffect(() => {
+        // Initialize Lenis with optimized settings
+        lenis.current = new Lenis({
+            lerp: SCROLL_LERP,
+            // Uncomment to adjust scroll duration if needed
+            // duration: 1.2,
+        });
 
-		// Set up GSAP ticker for smooth animation frame updates
-		const gsapTickerCallback = (time) => {
-			lenis.current.raf(time * 1000);
-		};
+        // Set up GSAP ticker for smooth animation frame updates
+        const gsapTickerCallback = time => {
+            lenis.current.raf(time * 1000);
+        };
 
-		gsap.ticker.add(gsapTickerCallback);
-		gsap.ticker.lagSmoothing(0); // Disable lag smoothing for more accurate scrolling
+        gsap.ticker.add(gsapTickerCallback);
+        gsap.ticker.lagSmoothing(0); // Disable lag smoothing for more accurate scrolling
 
-		// Reset scroll position on mount
-		lenis.current.scrollTo(0, { immediate: true });
+        // Reset scroll position on mount
+        lenis.current.scrollTo(0, { immediate: true });
 
-		// Add performance monitoring
-		lenis.current.on('scroll', ({ velocity }) => {
-			if (Math.abs(velocity) > 50) {
-				document.body.classList.add('fast-scroll');
-			} else {
-				document.body.classList.remove('fast-scroll');
-			}
-		});
+        // Add performance monitoring
+        lenis.current.on('scroll', ({ velocity }) => {
+            if (Math.abs(velocity) > 50) {
+                document.body.classList.add('fast-scroll');
+            } else {
+                document.body.classList.remove('fast-scroll');
+            }
+        });
 
-		// Cleanup function
-		return () => {
-			// Remove scroll event listener
-			lenis.current.off('scroll');
+        // Cleanup function
+        return () => {
+            // Remove scroll event listener
+            lenis.current.off('scroll');
 
-			// Remove GSAP ticker callback
-			gsap.ticker.remove(gsapTickerCallback);
+            // Remove GSAP ticker callback
+            gsap.ticker.remove(gsapTickerCallback);
 
-			// Destroy Lenis instance
-			lenis.current.destroy();
-		};
-	}, [lenis]); // Only re-run if lenis context changes
+            // Destroy Lenis instance
+            lenis.current.destroy();
+        };
+    }, [lenis]); // Only re-run if lenis context changes
 
-	return children;
+    return children;
 });
+
+// Add display name for debugging
+SmoothScroll.displayName = 'SmoothScroll';
 
 // Export
 // ------------

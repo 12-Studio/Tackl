@@ -54,13 +54,13 @@ const TransitionLink = ({ children, to, className, ...props }) => {
                 // Start transition
                 bodyRef.current?.classList.add('page-transition');
                 // Wait for initial animation
-                await useSleep(TRANSITION_DURATION);
+                await sleep(TRANSITION_DURATION);
 
                 // Navigate to new page immediately after animation
                 router.push(to);
 
                 // Wait for exit animation to complete before cleanup
-                // await useSleep(TRANSITION_DURATION / 2);
+                // await sleep(TRANSITION_DURATION / 2);
             } finally {
                 // Cleanup - ensure transition class is removed even if navigation fails
                 bodyRef.current?.classList.remove('page-transition');

@@ -7,6 +7,4 @@ import styled from 'styled-components';
 export const Jacket = styled.svg`
     width: 2.4rem;
     height: 2.4rem;
-
-    fill: white;
 `;

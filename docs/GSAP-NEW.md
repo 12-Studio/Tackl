@@ -2,6 +2,8 @@
 
 GSAP itself is completely framework-agnostic and can be used in any JS framework without any special wrappers or dependencies. However, this hook solves a few React-specific friction points for you so that you can just focus on the fun stuff. 🤘🏻
 
+For a video walkthrough and more help see [GSAP React](https://gsap.com/resources/React)
+
 ## Overview
 
 `useGSAP()` is a drop-in replacement for `useEffect()` or `useLayoutEffect()` that automatically handles cleanup using `gsap.context()`. Cleanup is important in React and Context makes it simple.

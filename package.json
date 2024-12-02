@@ -14,6 +14,7 @@
   "dependencies": {
     "@apollo/client": "3.11.10",
     "@apollo/experimental-nextjs-app-support": "0.11.6",
+    "@gsap/react": "^2.1.1",
     "color": "4.2.3",
     "eslint-config-next": "15.0.3",
     "graphql": "^16.9.0",

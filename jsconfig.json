@@ -1,17 +1,18 @@
 {
-	"compilerOptions": {
-		"paths": {
-			"@/*": ["./src/*"],
-			"@parts/*": ["./src/parts/*"],
-			"@icon": ["./src/parts/Icon"],
-			"@contexts": ["./src/parts/Contexts"],
-			"@waffl": ["./src/theme/waffl"],
-			"@theme": ["./src/theme"],
-			"@theme/*": ["./src/theme/*"],
-			"@tackl": ["./src/theme/tackl"],
-			"@tackl/*": ["./src/theme/tackl/*"],
-			"@utils/*": ["./src/utils/*"],
-			"@public/*": ["./public/*"]
-		}
-	}
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./src/*"],
+            "@parts/*": ["./src/components/*"],
+            "@c/*": ["./src/components/*"],
+            "@i": ["./src/parts/Icon"],
+            "@contexts": ["./src/parts/Contexts"],
+            "@waffl": ["./src/theme/waffl"],
+            "@theme": ["./src/theme"],
+            "@theme/*": ["./src/theme/*"],
+            "@tackl": ["./src/theme/tackl"],
+            "@tackl/*": ["./src/theme/tackl/*"],
+            "@utils/*": ["./src/utils/*"],
+            "@public/*": ["./public/*"]
+        }
+    }
 }

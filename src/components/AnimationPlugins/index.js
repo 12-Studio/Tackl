@@ -21,12 +21,12 @@
 // ------------
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { memo, useEffect } from 'react';
+import { memo, useLayoutEffect } from 'react';
 
 // Component
 // ------------
 const AnimationPlugins = memo(() => {
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Register GSAP plugins only on client-side
         gsap.registerPlugin(ScrollTrigger);
     }, []);

@@ -87,7 +87,10 @@ const RootLayout = memo(({ children }) => {
                         <ThemeProvider theme={theme} key="themeprovider">
                             {/* GridExposer only rendered in development environment */}
                             {process.env.NODE_ENV === 'development' && <GridExposer />}
-                            {process.env.NODE_ENV === 'development' && <CookieBar />}
+
+                            {/* CookieBar only rendered in production environment */}
+                            {process.env.NODE_ENV === 'production' && <CookieBar />}
+
                             <Contexts>
                                 <AnimationPlugins />
                                 <SmoothScroll>{children}</SmoothScroll>

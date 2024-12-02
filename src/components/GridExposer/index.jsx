@@ -1,3 +1,28 @@
+/**
+ * GridExposer Component
+ * ====================
+ * A development tool component that displays a visual grid overlay to help with layout and alignment.
+ * The grid can be toggled on/off and color schemes can be switched using keyboard shortcuts.
+ *
+ * Features:
+ * - Toggleable grid overlay (Ctrl + G)
+ * - Switchable color schemes (Ctrl + F)
+ * - Responsive grid columns for mobile, tablet and desktop
+ * - Performance optimized with useMemo and useCallback
+ *
+ * Props:
+ * None
+ *
+ * Keyboard Shortcuts:
+ * - Ctrl + G: Toggle grid visibility
+ * - Ctrl + F: Toggle color scheme
+ *
+ * Constants:
+ * - GRID_SIZE: Total number of columns (12)
+ * - MOBILE_COLUMNS: Number of columns for mobile view (2)
+ * - TABLET_COLUMNS: Number of columns for tablet view (6)
+ */
+
 // Imports
 // ------
 import React, { useState, useMemo, useCallback, useEffect } from 'react';

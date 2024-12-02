@@ -9,21 +9,19 @@
 
 ## 🎯 Key Features
 
-- **Next.js 15** - Latest version with App Router and React Server Components
-- **TypeScript** - Full type safety and enhanced developer experience _Optional_
-- **ESLint & Prettier** - Code quality and formatting standards
-- **Storybook** - Component development and documentation
-- **Performance Context** - Built-in performance optimizations and user preference detection
-- **GSAP** - Smooth animations and transitions
-- **Lenis** - Smooth scroll and parallax animations
-- **Responsive Images** - Automatic image optimization and responsive handling
-- **SEO Ready** - Built-in SEO components and best practices
-- **Accessibility** - WCAG compliance and accessibility features
-- **Documentation** - Comprehensive guides and API documentation
+-   **Next.js 15** - Latest version with App Router and React Server Components
+-   **TypeScript** - Full type safety and enhanced developer experience _Optional_
+-   **ESLint & Prettier** - Code quality and formatting standards
+-   **Storybook** - Component development and documentation
+-   **Performance Context** - Built-in performance optimizations and user preference detection
+-   **GSAP** - Smooth animations and transitions
+-   **Lenis** - Smooth scroll and parallax animations
+-   **Responsive Images** - Automatic image optimization and responsive handling
+-   **SEO Ready** - Built-in SEO components and best practices
+-   **Accessibility** - WCAG compliance and accessibility features
+-   **Documentation** - Comprehensive guides and API documentation
 
 ---
-
-_`Note: Due to compatibility issues between Storybook and Next.js 15, please use the '--legacy-peer-deps' flag when running npm install until this is resolved in a future Storybook update.`_
 
 This project is built with [Next.js](https://nextjs.org/), a powerful React framework that enables features like server-side rendering, static site generation, and optimized client-side routing. The starter kit leverages Next.js 15's advanced capabilities including the App Router, React Server Components, and built-in performance optimizations.
 
@@ -113,10 +111,10 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
 
 Next.js is a powerful React framework that enables features like server-side rendering and static site generation. To deepen your understanding of Next.js and make the most of its capabilities, we recommend exploring these valuable resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - Comprehensive documentation covering all Next.js features, APIs, and best practices. Perfect for both beginners and advanced developers.
-- [Learn Next.js](https://nextjs.org/learn) - An interactive, hands-on tutorial that guides you through building a full Next.js application from scratch. Great for practical learning.
-- [Next.js Examples](https://github.com/vercel/next.js/tree/canary/examples) - A collection of example projects demonstrating various Next.js features and integration patterns.
-- [Next.js Discord Community](https://discord.com/invite/bUG2bvbtHy) - Join thousands of Next.js developers for real-time discussions, help, and networking.
+-   [Next.js Documentation](https://nextjs.org/docs) - Comprehensive documentation covering all Next.js features, APIs, and best practices. Perfect for both beginners and advanced developers.
+-   [Learn Next.js](https://nextjs.org/learn) - An interactive, hands-on tutorial that guides you through building a full Next.js application from scratch. Great for practical learning.
+-   [Next.js Examples](https://github.com/vercel/next.js/tree/canary/examples) - A collection of example projects demonstrating various Next.js features and integration patterns.
+-   [Next.js Discord Community](https://discord.com/invite/bUG2bvbtHy) - Join thousands of Next.js developers for real-time discussions, help, and networking.
 
 The framework is open source and actively maintained by Vercel and the community. You can explore or contribute to [the Next.js GitHub repository](https://github.com/vercel/next.js/). Whether you're fixing bugs, adding features, or improving documentation, your contributions help make Next.js better for everyone!
 
@@ -126,9 +124,9 @@ This project is developed and maintained by the 12 Studio Team:
 
 ### Core Team
 
-- **Lead Developers**
-  - Joe Taylor (joe@12studio.agency)
-  - Adam Roberts (adam@12studio.agency)
+-   **Lead Developers**
+    -   Joe Taylor (joe@12studio.agency)
+    -   Adam Roberts (adam@12studio.agency)
 
 ### Contributing
 

@@ -1,6 +1,8 @@
 // Imports
 // ---------
 import styled, { css } from 'styled-components';
+import type { RuleSet } from 'styled-components/dist/types';
+
 import { semantics, gridSemantics } from './semantics';
 import {
 	h1Styles,
@@ -15,8 +17,13 @@ import {
 } from './type';
 import { breakpointUp, breakpointDown } from './breakpoints';
 
+// Types
+// ------
+type SemanticStyles = RuleSet<object>;
+
+
 // Base semantic components with shared styles
-const SemanticBase = css`
+const SemanticBase: SemanticStyles = css`
 	${semantics}
 	${gridSemantics}
 `;
@@ -24,68 +31,68 @@ const SemanticBase = css`
 // --------------
 // 1. Semantics
 // --------------
-export const Section = styled.section`
+export const Section = styled.section<{}>`
 	${SemanticBase}
 `;
-export const Div = styled.div`
+export const Div = styled.div<{}>`
 	${SemanticBase}
 `;
-export const Main = styled.main`
+export const Main = styled.main<{}>`
 	${SemanticBase}
 `;
-export const Nav = styled.nav`
+export const Nav = styled.nav<{}>`
 	${SemanticBase}
 `;
-export const Article = styled.article`
+export const Article = styled.article<{}>`
 	${SemanticBase}
 `;
-export const Aside = styled.aside`
+export const Aside = styled.aside<{}>`
 	${SemanticBase}
 `;
-export const Header = styled.header`
+export const Header = styled.header<{}>`
 	${SemanticBase}
 `;
-export const Footer = styled.footer`
+export const Footer = styled.footer<{}>`
 	${SemanticBase}
 `;
-export const List = styled.ul`
+export const List = styled.ul<{}>`
 	${SemanticBase}
 `;
-export const ListItem = styled.li`
+export const ListItem = styled.li<{}>`
 	${SemanticBase}
 `;
 
 // --------------
 // 2. Typography
 // --------------
-export const H1 = styled.h1`
+export const H1 = styled.h1<{}>`
 	${h1Styles}
 `;
-export const H2 = styled.h2`
+export const H2 = styled.h2<{}>`
 	${h2Styles}
 `;
-export const H3 = styled.h3`
+export const H3 = styled.h3<{}>`
 	${h3Styles}
 `;
-export const H4 = styled.h4`
+export const H4 = styled.h4<{}>`
 	${h4Styles}
 `;
-export const H5 = styled.h5`
+export const H5 = styled.h5<{}>`
 	${h5Styles}
 `;
-export const H6 = styled.h6`
+export const H6 = styled.h6<{}>`
 	${h6Styles}
 `;
-export const P = styled.p`
+export const P = styled.p<{}>`
 	${pStyles}
 `;
-export const Em = styled.em`
+export const Em = styled.em<{}>`
 	${emStyles}
 `;
-export const Span = styled.span`
+export const Span = styled.span<{}>`
 	${spanStyles}
 `;
-export const Quote = styled.q`
+export const Quote = styled.q<{}>`
 	${gridSemantics}
 `;
 
@@ -98,7 +105,7 @@ export const bpd = breakpointDown;
 // --------------
 // 4. Content
 // --------------
-const sharedBlockStyles = css`
+const sharedBlockStyles: SemanticStyles = css`
 	h1,
 	h2 {
 		${h2Styles}
@@ -120,11 +127,11 @@ const sharedBlockStyles = css`
 	}
 `;
 
-export const ContentBlock = styled.div`
+export const ContentBlock = styled.div<{}>`
 	${sharedBlockStyles}
 	${gridSemantics}
 `;
 
-export const ContentBlockStyles = css`
+export const ContentBlockStyles: SemanticStyles = css`
 	${sharedBlockStyles}
 `;

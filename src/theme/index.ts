@@ -5,16 +5,143 @@
 // Access theme values in styled-components via props.theme:
 // ${props => props.theme.colors.brand.bc1[50]} (50% opacity)
 // ${props => props.theme.colors.brand.bc1.solid} (solid color or you could use 100)
+//
+// Theme Structure
+// --------------
+// colors:
+//   - global: Common colors like white/black with alpha variations
+//   - social: Social media platform colors
+//   - feedback: Colors for success/error/warning states
+//   - brand: Core brand colors with alpha variations
+//
+// space:
+//   Consistent spacing tokens for margins/padding
+//   mpad: Mobile-specific padding
+//   small-xlarge: Responsive spacing scales
+//
+// font:
+//   Typography configuration
+//   family: Font families for different text styles
+//   weight: Standard font weights from light to bold
+//
+// grid:
+//   Layout system configuration
+//   columns: Responsive column counts
+//   breakpoints: Screen size breakpoints
+//   gutter: Space between grid columns
+//   maxSize: Maximum content width
+//
+// easing:
+//   Animation timing functions
+//   bezzy/bezzy2: Custom cubic-bezier curves
+//   ease: Standard easing
+//
+// noscrollbars:
+//   Utility to hide scrollbars across browsers
 
 // Imports
 // -------
 import { css, createGlobalStyle } from 'styled-components';
 import Color from 'color';
 
+// Types
+// ------
+type BrandColors = {
+    bc1: string;
+    bc2: string;
+    bc3: string;
+    bc4: string;
+    bc5: string;
+}
+
+type AlphaShades = {
+    [key: number]: string;
+    solid: string;
+}
+
+type BrandColorVariations = {
+    [K in keyof BrandColors]: AlphaShades;
+}
+
+type Theme = {
+    colors: {
+        global: {
+            white: AlphaShades;
+            black: AlphaShades;
+        };
+        social: {
+            facebook: string;
+            twitter: string;
+            creativeMarket: string;
+            slack: string;
+            instagram: string;
+            dribbble: string;
+            linkedin: string;
+        };
+        feedback: {
+            positive: string;
+            negative: string;
+            warning: string;
+        };
+        brand: BrandColorVariations;
+    };
+    space: {
+        mpad: string;
+        small: string;
+        medium: string;
+        large: string;
+        xlarge: string;
+    };
+    font: {
+        family: {
+            heading: string;
+            mono: string;
+            hand: string;
+            body: string;
+        };
+        weight: {
+            light: number;
+            regular: number;
+            medium: number;
+            semi: number;
+            bold: number;
+        };
+    };
+    grid: {
+        columns: {
+            mobile: number;
+            tablet: number;
+            desktop: number;
+        };
+        breakpoints: {
+            small: string;
+            smedium: string;
+            medium: string;
+            large: string;
+            xlarge: string;
+            xxlarge: string;
+            huge: string;
+            uber: string;
+        };
+        gutter: {
+            small: string;
+            medium: string;
+            large: string;
+        };
+        maxSize: string;
+    };
+    easing: {
+        bezzy: string;
+        bezzy2: string;
+        ease: string;
+    };
+    noscrollbars: ReturnType<typeof css>;
+}
+
 // Brand Colors
 // -------------
 // Core brand colors that serve as the base for all color variations
-const brandColors = {
+const brandColors: BrandColors = {
     bc1: '#8000FF', // Primary Purple
     bc2: '#380377', // Dark Purple
     bc3: '#121212', // Near Black
@@ -26,9 +153,9 @@ const brandColors = {
 // ------------
 // Creates opacity variations from 0.0 to 1.0 for any color
 // Usage: ${props => props.theme.colors.brand.bc1[50]} (50% opacity)
-const generateAlphaShades = baseColor => {
+const generateAlphaShades = (baseColor: string): Omit<AlphaShades, 'solid'> => {
     const color = Color(baseColor);
-    const shades = {};
+    const shades: { [key: number]: string } = {};
 
     for (let i = 0; i <= 100; i += 5) {
         shades[i] = color
@@ -48,7 +175,7 @@ const blackAlphas = generateAlphaShades('#000000');
 // Usage: ${props => props.theme.colors.brand.bc1[0]} (fully transparent)
 // Usage: ${props => props.theme.colors.brand.bc1[80]} (80% opacity)
 // Usage: ${props => props.theme.colors.brand.bc1.solid} (solid color)
-const brandColorVariations = Object.entries(brandColors).reduce((acc, [key, value]) => {
+const brandColorVariations: BrandColorVariations = Object.entries(brandColors).reduce((acc, [key, value]) => {
     return {
         ...acc,
         [key]: {
@@ -56,7 +183,7 @@ const brandColorVariations = Object.entries(brandColors).reduce((acc, [key, valu
             solid: value,
         },
     };
-}, {});
+}, {} as BrandColorVariations);
 
 // Theme Configuration
 // ------------
@@ -64,7 +191,7 @@ const brandColorVariations = Object.entries(brandColors).reduce((acc, [key, valu
 // ${props => props.theme.colors.brand.bc1[50]} (50% opacity)
 // ${props => props.theme.space.medium}
 // ${props => props.theme.font.family.heading}
-export const theme = {
+export const theme: Theme = {
     // Color Tokens
     // Usage: ${props => props.theme.colors.global.white[50]} (50% opacity)
     // Usage: ${props => props.theme.colors.global.white.solid}
@@ -181,6 +308,7 @@ export const theme = {
 // Global Styles
 // ------------
 // Automatically applied to the entire application
+// Sets default background and text colors
 export const GlobalStyle = createGlobalStyle`
 	body { background: ${theme.colors.brand.bc3[100]}; }
 	* { color: ${theme.colors.brand.bc4[100]}; }

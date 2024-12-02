@@ -32,6 +32,7 @@ When using GSAP plugins, you need to import them separately and register them:
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
 // Ideally register plugins in the root component not on the component that uses the plugin
+// We do the imports for this in the root component <AnimationPlugins>
 gsap.registerPlugin(ScrollTrigger);
 ```
 

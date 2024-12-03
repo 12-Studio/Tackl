@@ -7,32 +7,29 @@ import PropTypes from 'prop-types';
 
 // Styles
 // ------------
-import { Jacket, Pulse } from './styles';
+import { Jacket } from './styles';
 
 // Component
 // ------------
-const DeleteMe = ({ logoSrc = './logo.svg', logoAlt = 'Tackl Logo' }) => {
-	return (
-		<Jacket>
-			<picture>
-				<img src={logoSrc} alt={logoAlt} />
-			</picture>
+const DeleteMe = ({ logoSrc = './logo-alt.svg', logoAlt = 'Tackl Logo' }) => {
+    return (
+        <Jacket>
+            <picture>
+                <img src={logoSrc} alt={logoAlt} />
+            </picture>
 
-			<Pulse>
-				<span />
-				<span />
-			</Pulse>
-		</Jacket>
-	);
+            <span>Welcome to Tackl</span>
+        </Jacket>
+    );
 };
 
 // Prop Types
 // ------------
 DeleteMe.propTypes = {
-	/** Source URL for the logo image */
-	logoSrc: PropTypes.string,
-	/** Alt text for the logo image */
-	logoAlt: PropTypes.string,
+    /** Source URL for the logo image */
+    logoSrc: PropTypes.string,
+    /** Alt text for the logo image */
+    logoAlt: PropTypes.string,
 };
 
 // Exports

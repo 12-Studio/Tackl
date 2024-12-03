@@ -156,7 +156,7 @@ type Theme = {
 const brandColors: BrandColors = {
     bc1: '#8000FF', // Primary Purple
     bc2: '#380377', // Dark Purple
-    bc3: '#121212', // Near Black
+    bc3: '#210048', // Near Black
     bc4: '#F7F7F7', // Off White
     bc5: '#838383', // Gray
 };
@@ -271,10 +271,10 @@ export const theme: Theme = {
     // Usage: ${props => props.theme.font.weight.bold}
     font: {
         family: {
-            heading: `'Change__me', 'Helvetica', Arial, sans-serif`,
-            mono: `'Change__me', 'Helvetica', Arial, sans-serif`,
-            hand: `'Change__me', 'Helvetica', Arial, sans-serif`,
-            body: `'Change__me', 'Helvetica', Arial, sans-serif`,
+            heading: `'Inter', 'Helvetica', Arial, sans-serif`,
+            mono: `'Inter', 'Helvetica', Arial, sans-serif`,
+            hand: `'Inter', 'Helvetica', Arial, sans-serif`,
+            body: `'Inter', 'Helvetica', Arial, sans-serif`,
         },
         weight: {
             light: 300,

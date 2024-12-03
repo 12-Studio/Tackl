@@ -1,23 +1,11 @@
 // Imports
 // ------------
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 import { bp, Section } from '@tackl';
 import {} from '@tackl/type';
 
 // Exports
 // ------------
-const pulse = props => keyframes`
-	from {
-		transform: scale(1) translate(-50%, -50%);
-		border-color: ${props.theme.colors.global.white[100]};
-	}
-
-	to {
-		transform: scale(4) translate(-50%, -50%);
-		border-color: transparent;
-	}
-`;
-
 export const Jacket = styled(Section)(
     props => css`
         position: relative;
@@ -34,95 +22,34 @@ export const Jacket = styled(Section)(
             display: flex;
             align-items: center;
             justify-content: center;
-
-            width: 24rem;
-            height: 24rem;
-            background: ${props.theme.colors.global.white[100]};
-            border-radius: 50%;
-
-            &:before {
-                content: '';
-                position: absolute;
-                z-index: 1;
-                inset: 0.6rem;
-                background: ${props.theme.colors.brand.bc1[100]};
-                border-radius: 50%;
-            }
-
-            &:after {
-                content: '';
-                position: absolute;
-                z-index: 2;
-                inset: 1.2rem;
-                background: ${props.theme.colors.global.white[100]};
-                border-radius: 50%;
-            }
+            width: 100%;
+            pointer-events: none;
         }
 
         img {
             position: relative;
             z-index: 3;
             width: 100%;
-            max-width: 12rem;
+            max-width: 30vw;
             height: auto;
         }
-    `
-);
-
-export const Pulse = styled.div(
-    props => css`
-        position: absolute;
-        z-index: -1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        z-index: 1;
-        width: 24rem;
-        height: 24rem;
-        border-radius: 100%;
 
         span {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: block;
-            width: 100%;
-            height: 100%;
+            z-index: 4;
+            pointer-events: none;
+            inset: auto auto 6rem 50%;
+            transform: translateX(-50%);
 
-            &:before,
-            &:after {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                transform-origin: top left;
-                content: '';
-                width: 90%;
-                height: 90%;
-                border: 1px solid ${props.theme.colors.global.white[100]};
-                border-radius: 100%;
-                animation: ${pulse} 3s ease-in-out infinite;
-            }
-
-            &:first-child {
-                &:before {
-                    animation-delay: 1s;
-                }
-                &:after {
-                    animation-delay: 1.5s;
-                }
-            }
-
-            &:last-child {
-                &:before {
-                    animation-delay: 0s;
-                }
-                &:after {
-                    animation-delay: 0.5s;
-                }
-            }
+            color: ${props.theme.colors.global.white[100]};
+            text-align: center;
+            font-family: ${props.theme.font.family.heading};
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: ${props.theme.font.weight.bold};
+            line-height: normal;
+            letter-spacing: 1rem;
+            text-transform: uppercase;
         }
     `
 );

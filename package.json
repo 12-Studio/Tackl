@@ -40,7 +40,6 @@
     "ajv": "^8.17.1",
     "ajv-keywords": "^5.1.0",
     "eslint-plugin-storybook": "0.11.1",
-    "storybook": "^8.4.6",
-    "util": "^0.12.5"
+    "storybook": "^8.4.6"
   }
 }

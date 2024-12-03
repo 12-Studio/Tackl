@@ -91,7 +91,19 @@ type Theme = {
         medium: string;
         large: string;
         xlarge: string;
+        col: string;
+        colx2: string;
     };
+    gap: {
+        xs: string;
+        s: string;
+        m: string;
+        l: string;
+        xl: string;
+        xxl: string;
+        huge: string;
+        uber: string;
+    },
     font: {
         family: {
             heading: string;
@@ -231,11 +243,27 @@ export const theme: Theme = {
     // Spacing Tokens
     // Usage: ${props => props.theme.space.medium}
     space: {
-        mpad: '0.8rem', // Mobile Padding
+        mpad: '1.2rem', // Mobile Padding
         small: '4.8rem',
-        medium: '5.6rem',
-        large: '6.4rem',
-        xlarge: '6.4rem',
+        medium: '6rem',
+        large: '8.4rem',
+        xlarge: '12rem',
+        col: 'clamp(8.333vh, 8.333vw, 100vw)',
+        colx2: 'clamp(6.666vh, 16.666vw, 100vw)',
+        
+    },
+
+    // Gap Tokens
+    // Usage: ${props => props.theme.gap.s}
+    gap: {
+        xs: '0.4rem',
+        s: '0.8rem',
+        m: '1.6rem',
+        l: '2.4rem',
+        xl: '3.2rem',
+        xxl: '4rem',
+        huge: '4.8rem',
+        uber: '6.4rem',
     },
 
     // Typography Tokens

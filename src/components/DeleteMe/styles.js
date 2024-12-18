@@ -23,7 +23,6 @@ export const Jacket = styled(Section)(
             align-items: center;
             justify-content: center;
             width: 100%;
-            pointer-events: none;
         }
 
         img {

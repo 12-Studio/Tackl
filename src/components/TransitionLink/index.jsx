@@ -60,7 +60,7 @@ const TransitionLink = ({ children, to, className, ...props }) => {
                 router.push(to);
 
                 // Wait for exit animation to complete before cleanup
-                // await sleep(TRANSITION_DURATION / 2);
+                await sleep(TRANSITION_DURATION / 2);
             } finally {
                 // Cleanup - ensure transition class is removed even if navigation fails
                 bodyRef.current?.classList.remove('page-transition');

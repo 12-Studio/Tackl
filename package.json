@@ -10,7 +10,9 @@
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
         "serve": "serve ./out",
-        "commit": "node .gitmessage.js"
+        "commit": "node .gitmessage.js",
+        "postinstall": "husky",
+        "test": "echo \"No tests specified\" && exit 0"
     },
     "dependencies": {
         "@apollo/client": "^3.12.3",

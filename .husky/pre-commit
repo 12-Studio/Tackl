@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+# Ensure we can interact with the terminal
+[ -t 1 ] && exec < /dev/tty
+
+# Check if this is a recursive call
+if [ -n "$HUSKY_SKIP_HOOKS" ]; then
+    exit 0
+fi
+
+# Set flag to prevent recursive calls
+export HUSKY_SKIP_HOOKS=1
+
+# Run our custom commit message script and store the exit code
+node .gitmessage.js
+RESULT=$?
+
+# If the script was successful, use the generated commit message
+if [ $RESULT -eq 0 ]; then
+    # Use the generated commit message and bypass further hooks
+    git commit --no-verify --file=.git/COMMIT_EDITMSG
+    exit $?
+else
+    exit 1
+fi
+
+npm test

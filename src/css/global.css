@@ -106,5 +106,6 @@ body {
 
 .page-transition {
 	opacity: 0;
-	filter: blur(10px);
+	/* filter: blur(10px) */
+	/* Testing a change */
 }

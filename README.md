@@ -55,6 +55,24 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.jsx`. The page auto-updates as you edit the file.
 
+## Committing code
+
+This project uses Husky and a custom commit message script to ensure consistent and informative commit messages. When you're ready to commit your changes:
+
+1. Stage your changes:
+
+```bash
+git add .
+```
+
+2. Commit your changes:
+
+```bash
+git commit
+```
+
+3. Husky will take care of the rest and ask you some important questions to help you create a good commit message.
+
 ## 🧐 What's inside?
 
 A quick look at the top-level files and directories you'll see in a Tackl project.

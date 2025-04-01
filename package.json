@@ -21,12 +21,12 @@
         "eslint-config-next": "^15.1.1",
         "graphql": "^16.10.0",
         "graphql-tag": "^2.12.6",
-        "gsap": "^3.12.5",
-        "lenis": "^1.1.18",
+        "gsap": "^3.12.7",
+        "lenis": "^1.2.3",
         "next": "^15.1.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
-        "styled-components": "6.1.13"
+        "styled-components": "^6.1.16"
     },
     "devDependencies": {
         "@storybook/addon-essentials": "^8.4.7",

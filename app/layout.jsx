@@ -11,7 +11,7 @@ import AnimationPlugins from '@parts/AnimationPlugins';
 import { useScrollPerformance } from '@utils/useScrollPerformance';
 import { ApolloWrapper } from '@utils/apollo-wrapper';
 import { ThemeProvider } from 'styled-components';
-import { theme } from '@theme';
+import { theme, GlobalStyle } from '@theme';
 import { Inter } from 'next/font/google';
 // import localFont from 'next/font/local';
 
@@ -85,6 +85,8 @@ const RootLayout = memo(({ children }) => {
                     <ApolloWrapper>
                         {/* ThemeProvider with explicit key to help React's reconciliation process */}
                         <ThemeProvider theme={theme} key="themeprovider">
+                            <GlobalStyle />
+
                             {/* GridExposer only rendered in development environment */}
                             {process.env.NODE_ENV === 'development' && <GridExposer />}
 

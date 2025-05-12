@@ -16,6 +16,8 @@ const Page = () => {
 // SEO Metadata
 // ------------
 export const metadata = {
+    metadataBase: new URL('please_change_this'),
+
     // Basic Metadata
     title: 'please_change_this',
     description: 'please_change_this',

@@ -52,3 +52,10 @@ export const Jacket = styled(Section)(
         }
     `
 );
+
+export const Background = styled.div(
+    props => css`
+        position: absolute;
+        inset: 0;
+    `
+);

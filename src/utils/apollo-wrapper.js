@@ -1,36 +1,24 @@
 'use client';
 
 import React from 'react';
-import { ApolloLink, HttpLink } from '@apollo/client';
-import {
-    ApolloNextAppProvider,
-    NextSSRInMemoryCache,
-    SSRMultipartLink,
-    NextSSRApolloClient,
-} from '@apollo/experimental-nextjs-app-support/ssr';
+import { ApolloClient, InMemoryCache, HttpLink, ApolloProvider } from '@apollo/client';
 
 function makeClient() {
     const httpLink = new HttpLink({
         uri: 'https://graphql.datocms.com/',
         headers: {
-            Authorization: `Bearer 171b3bfa7a4b550df0c80b1a7243a9`,
+            Authorization: `Bearer 6115697da72921825459258d06bdc5`,
         },
     });
 
-    return new NextSSRApolloClient({
-        cache: new NextSSRInMemoryCache(),
-        link:
-            typeof window === 'undefined'
-                ? ApolloLink.from([
-                      new SSRMultipartLink({
-                          stripDefer: true,
-                      }),
-                      httpLink,
-                  ])
-                : httpLink,
+    return new ApolloClient({
+        cache: new InMemoryCache(),
+        link: httpLink,
+        ssrMode: typeof window === 'undefined',
     });
 }
 
 export const ApolloWrapper = ({ children }) => {
-    return <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>;
+    const client = makeClient();
+    return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

@@ -97,7 +97,7 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
 
 1.  **`/node_modules`**: The core dependency directory containing all external packages and libraries your project relies on. These are automatically installed based on your package.json specifications and should never be manually modified or committed to version control.
 
-2.  **`/storybook`**: Houses all Storybook configuration and setup files. Storybook is our component development environment where we build and test UI components in isolation. Individual component stories are co-located with their components in `src/parts/YourComponent` for better maintainability.
+2.  **`/storybook`**: Houses all Storybook configuration and setup files. Storybook is our component development environment where we build and test UI components in isolation. Individual component stories are co-located with their components in `src/parts/YourComponent` for better maintainability. Note that fonts must be imported into `.storybook/preview.js` to be available in your stories (see example in that file for importing Inter font).
 
 3.  **`./app`**: The main application directory utilizing Next.js 13+'s App Router architecture. This modern routing approach offers enhanced features like server components, layouts, and more streamlined data fetching compared to the legacy Pages Router. [Learn more about App Router](https://nextjs.org/docs/app)
 

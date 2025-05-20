@@ -2,8 +2,7 @@
 
 // Imports
 // ------------
-import { useQuery } from '@apollo/client';
-import { gql } from '@apollo/client';
+import { gql, useSuspenseQuery } from '@apollo/client';
 
 // Dynamic Caching
 // ------------
@@ -13,8 +12,8 @@ export const dynamic = 'force-dynamic';
 // ------------
 const query = gql`
     query {
-        example {
-            changeme
+        home {
+            title
         }
     }
 `;
@@ -22,8 +21,9 @@ const query = gql`
 // Export Hook
 // ------------
 export const useData = () => {
-    const { data } = useQuery(query, {
+    const { data } = useSuspenseQuery(query, {
         suspense: true,
     });
+
     return data;
 };

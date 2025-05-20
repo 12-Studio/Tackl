@@ -13,7 +13,7 @@ function makeClient() {
     const httpLink = new HttpLink({
         uri: 'https://graphql.datocms.com/',
         headers: {
-            Authorization: `Bearer 171b3bfa7a4b550df0c80b1a7243a9`,
+            Authorization: `Bearer change_me`,
         },
     });
 

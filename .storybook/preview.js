@@ -3,14 +3,15 @@
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '@theme';
-import { Inter } from 'next/font/google';
+import { inter } from '@theme/fonts';
 
-// Initialize fonts
-const inter = Inter({
-    subsets: ['latin'],
-    display: 'swap',
-    variable: '--inter',
-});
+// Styles
+// ------------
+import '@/css/global.css';
+// import './fonts.css';
+
+// Add the font variable class
+document.body.classList.add(inter.variable);
 
 const customViewports = {
     mobile: {
@@ -53,9 +54,7 @@ const customViewports = {
 // Create a theme decorator that wraps MDX content
 const withTheme = StoryFn => (
     <ThemeProvider theme={theme}>
-        <div className={inter.variable}>
-            <StoryFn />
-        </div>
+        <StoryFn />
     </ThemeProvider>
 );
 
@@ -80,7 +79,7 @@ const preview = {
             },
         },
         viewport: {
-            viewports: customViewports, // newViewports would be an ViewportMap. (see below for examples)
+            viewports: customViewports,
             defaultViewport: 'Desktop',
         },
     },

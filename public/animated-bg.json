@@ -232,6 +232,46 @@
             ],
             "data": { "uniforms": {} },
             "windowWidth": 1440
+        },
+        {
+            "breakpoints": [],
+            "visible": true,
+            "aspectRatio": 1,
+            "userDownsample": 1,
+            "layerType": "effect",
+            "type": "vignette",
+            "usesPingPong": false,
+            "radius": 0.5,
+            "trackMouse": 0,
+            "mouseMomentum": 0,
+            "animating": false,
+            "isMask": 0,
+            "states": {
+                "appear": [
+                    {
+                        "type": "appear",
+                        "id": "55726b4d-99cc-4dc0-b615-1b77696b56d4",
+                        "prop": "radius",
+                        "transition": { "ease": "easeOutSine", "duration": 2000, "delay": 0 },
+                        "complete": false,
+                        "progress": 0,
+                        "value": 0,
+                        "endValue": 0.82,
+                        "initialized": false,
+                        "breakpoints": [],
+                        "uniformData": { "type": "1f", "name": "uRadius" }
+                    }
+                ],
+                "scroll": [],
+                "hover": []
+            },
+            "compiledFragmentShaders": [
+                "#version 300 es\nprecision highp float; in vec3 vVertexPosition; in vec2 vTextureCoord; uniform sampler2D uTexture; uniform float uRadius; uniform vec2 uResolution;out vec4 fragColor; mat2 rot(float a) { return mat2(cos(a),-sin(a),sin(a),cos(a)); } void main() { vec2 uv = vTextureCoord; vec4 color = texture(uTexture, uv); float luma = dot(color.rgb, vec3(0.299, 0.587, 0.114)); float displacement = (luma - 0.5) * 0.0000 * 0.5; vec2 aspectRatio = vec2(uResolution.x/uResolution.y, 1.0); vec2 skew = vec2(0.5000, 1.0 - 0.5000); float halfRadius = uRadius * 0.5; float innerEdge = halfRadius - 1.0000 * halfRadius * 0.5; float outerEdge = halfRadius + 1.0000 * halfRadius * 0.5; vec2 pos = vec2(0.5, 0.5); const float TWO_PI = 6.28318530718; vec2 scaledUV = uv * aspectRatio * rot(0.0000 * TWO_PI) * skew; vec2 scaledPos = pos * aspectRatio * rot(0.0000 * TWO_PI) * skew; float radius = distance(scaledUV, scaledPos); float falloff = smoothstep(innerEdge + displacement, outerEdge + displacement, radius); vec3 finalColor;finalColor = mix(color.rgb, mix(color.rgb, vec3(0, 0, 0), 1.0000), falloff); color = mix(color * (1.-falloff), vec4(finalColor * color.a, color.a), 1.0000); fragColor = color;}"
+            ],
+            "compiledVertexShaders": [
+                "#version 300 es\nprecision mediump float;in vec3 aVertexPosition; in vec2 aTextureCoord;uniform mat4 uMVMatrix; uniform mat4 uPMatrix; uniform mat4 uTextureMatrix;out vec2 vTextureCoord; out vec3 vVertexPosition;void main() { gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0); vTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy; }"
+            ],
+            "data": { "depth": false, "uniforms": {}, "isBackground": false }
         }
     ],
     "options": {

@@ -12,7 +12,7 @@ import { Jacket, Background } from './styles';
 
 // Data
 // ------------
-import { useData } from './data';
+// import { useData } from './data';
 
 // Component
 // ------------
@@ -21,7 +21,7 @@ const DeleteMe = () => {
     const sceneId = 'unicorn-studio';
 
     // Data
-    const { home } = useData();
+    // const { home } = useData();
 
     useEffect(() => {
         UnicornStudio.addScene({

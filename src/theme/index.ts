@@ -271,10 +271,10 @@ export const theme: Theme = {
     // Usage: ${props => props.theme.font.weight.bold}
     font: {
         family: {
-            heading: `'var(--inter)', 'Helvetica', Arial, sans-serif`,
-            mono: `'var(--inter)', 'Helvetica', Arial, sans-serif`,
-            hand: `'var(--inter)', 'Helvetica', Arial, sans-serif`,
-            body: `'var(--inter)', 'Helvetica', Arial, sans-serif`,
+            heading: `var(--inter), 'Times', Arial, sans-serif`,
+            mono: `var(--inter) 'Times', Arial, sans-serif`,
+            hand: `var(--inter)', 'Times', Arial, sans-serif`,
+            body: `var(--inter), 'Times', Arial, sans-serif`,
         },
         weight: {
             light: 300,

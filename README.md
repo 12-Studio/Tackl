@@ -19,6 +19,7 @@
 -   **Responsive Images** - Automatic image optimization and responsive handling
 -   **SEO Ready** - Built-in SEO components and best practices
 -   **Accessibility** - WCAG compliance and accessibility features
+-   **Centralized Font Management** - Fonts are defined once in `theme/fonts.js` and shared across both Next.js and Storybook
 -   **Documentation** - Comprehensive guides and API documentation
 
 ---

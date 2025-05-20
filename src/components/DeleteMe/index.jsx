@@ -10,10 +10,18 @@ import UnicornStudio from '@utils/unicornStudio.umd.js';
 // ------------
 import { Jacket, Background } from './styles';
 
+// Data
+// ------------
+import { useData } from './data';
+
 // Component
 // ------------
-const DeleteMe = ({ logoSrc = './logo-alt.svg', logoAlt = 'Tackl Logo' }) => {
+const DeleteMe = () => {
+    // Scene ID
     const sceneId = 'unicorn-studio';
+
+    // Data
+    const { home } = useData();
 
     useEffect(() => {
         UnicornStudio.addScene({
@@ -49,23 +57,8 @@ const DeleteMe = ({ logoSrc = './logo-alt.svg', logoAlt = 'Tackl Logo' }) => {
     return (
         <Jacket>
             <Background id={sceneId} />
-            {/* 
-            <picture>
-                <img src={logoSrc} alt={logoAlt} />
-            </picture>
-
-            <span>Welcome to Tackl</span> */}
         </Jacket>
     );
-};
-
-// Prop Types
-// ------------
-DeleteMe.propTypes = {
-    /** Source URL for the logo image */
-    logoSrc: PropTypes.string,
-    /** Alt text for the logo image */
-    logoAlt: PropTypes.string,
 };
 
 // Exports

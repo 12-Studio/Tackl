@@ -1,14 +1,14 @@
 // Imports
 // ------------
 import React from 'react';
-import CurvedMarqueeText from '@parts/CurvedMarqueeText';
+import DeleteMe from '@parts/DeleteMe';
 
 // Component
 // ------------
 const Page = () => {
     return (
         <>
-            <CurvedMarqueeText text="Designer ✦ Developer ✦ Director ✦ " />
+            <DeleteMe />
         </>
     );
 };

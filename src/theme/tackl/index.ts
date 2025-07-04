@@ -135,3 +135,20 @@ export const ContentBlock = styled.div<{}>`
 export const ContentBlockStyles: SemanticStyles = css`
 	${sharedBlockStyles}
 `;
+
+
+export const getGlobal = (color, opacity) => props => {
+    return props.theme.colors.global[color]?.[opacity !== undefined ? opacity : 100];
+};
+
+export const getBrand = (color, opacity) => props => {
+    return props.theme.colors.brand[color]?.[opacity !== undefined ? opacity : 100];
+};
+
+export const getGap = (gapSize: string) => props => {
+    return props.theme.gap[gapSize];
+};
+
+export const getRadius = (radiusSize: string) => props => {
+    return props.theme.br[radiusSize];
+};

@@ -69,3 +69,5 @@ export const Grid = styled(Div)(
 		`}
 	`
 );
+
+export default Grid;

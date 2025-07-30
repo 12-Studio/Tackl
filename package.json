@@ -17,6 +17,7 @@
     "dependencies": {
         "@apollo/client": "^3.12.3",
         "@datocms/cda-client": "^0.2.7",
+        "@gsap/react": "^2.1.2",
         "@react-three/drei": "^10.2.0",
         "@react-three/fiber": "^9.1.2",
         "color": "^5.0.0",

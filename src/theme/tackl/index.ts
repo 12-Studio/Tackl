@@ -40,6 +40,9 @@ export const Div = styled.div<{}>`
 export const Main = styled.main<{}>`
 	${SemanticBase}
 `;
+export const Waffl = styled('waffl-grid')<{}>`
+	${SemanticBase}
+`;
 export const Nav = styled.nav<{}>`
 	${SemanticBase}
 `;

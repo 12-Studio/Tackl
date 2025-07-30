@@ -2,7 +2,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Div } from '../tackl';
+import { bp, Div, Waffl } from '../tackl';
 import { theme } from '../';
 
 // Interfaces
@@ -37,7 +37,7 @@ const baseGridStyles = css`
 // Helper function for gutter calculation
 const getGutter = (noGutter: boolean, size: string) => noGutter ? '0' : size;
 
-export const Grid = styled(Div)(
+export const Grid = styled(Waffl)(
 	(props: GridInterface) => css`
 		${baseGridStyles}
 		grid-template-columns: ${mobileGrid};

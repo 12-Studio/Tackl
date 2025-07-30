@@ -2,8 +2,8 @@
 // ------------
 import React from 'react';
 import Content from './Content';
-import { performRequest } from '@utils/datocms';
-import { GET_HOME } from '@queries/getHome';
+// import { performRequest } from '@utils/datocms';
+// import { GET_HOME } from '@queries/getHome';
 
 // Data fetching at build time
 // ------------
@@ -21,9 +21,13 @@ async function getHomeData() {
 // Component
 // ------------
 const Page = async () => {
-    const data = await getHomeData();
+    // const data = await getHomeData();
 
-    return <Content data={data} />;
+    return (
+        <Content
+        // data={data}
+        />
+    );
 };
 
 // SEO Metadata

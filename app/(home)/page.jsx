@@ -2,11 +2,28 @@
 // ------------
 import React from 'react';
 import Content from './Content';
+import { performRequest } from '@utils/datocms';
+import { GET_HOME } from '@queries/getHome';
+
+// Data fetching at build time
+// ------------
+async function getHomeData() {
+    try {
+        const data = await performRequest(GET_HOME);
+        return data;
+    } catch (error) {
+        console.error('Failed to fetch data from DatoCMS:', error);
+        // Return fallback data or null to prevent app crash
+        return null;
+    }
+}
 
 // Component
 // ------------
-const Page = () => {
-    return <Content />;
+const Page = async () => {
+    const data = await getHomeData();
+
+    return <Content data={data} />;
 };
 
 // SEO Metadata

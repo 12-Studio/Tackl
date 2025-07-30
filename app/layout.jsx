@@ -2,20 +2,19 @@
 
 // Imports
 // ------------
-import React, { memo } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
 import StyledComponentsRegistry from '@utils/registry';
 import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
 import AnimationPlugins from '@parts/AnimationPlugins';
-import { useScrollPerformance } from '@utils/useScrollPerformance';
 import { ThemeProvider } from 'styled-components';
 import { theme, GlobalStyle } from '@theme';
 import { inter } from '@theme/fonts';
 
 // Styles
 // ------------
-import '@/css/global.css';
+import '@css/global.css';
 
 // Dynamic imports
 // ------------
@@ -33,14 +32,9 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 
 // Component
 // ------------
-// Using memo to prevent unnecessary re-renders of the root layout
-// This is especially important since this component wraps the entire application
-const RootLayout = memo(({ children }) => {
+const RootLayout = ({ children }) => {
     // NOTE • Font Classes
     const classes = `${inter.variable}`;
-
-    // NOTE • Scroll Performance
-    useScrollPerformance();
 
     return (
         <html lang="en">
@@ -65,7 +59,7 @@ const RootLayout = memo(({ children }) => {
             </body>
         </html>
     );
-});
+};
 
 // DisplayName added for better debugging in React DevTools
 RootLayout.displayName = 'RootLayout';

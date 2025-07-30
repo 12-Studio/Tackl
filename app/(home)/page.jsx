@@ -1,16 +1,12 @@
 // Imports
 // ------------
 import React from 'react';
-import DeleteMe from '@parts/DeleteMe';
+import Content from './Content';
 
 // Component
 // ------------
 const Page = () => {
-    return (
-        <>
-            <DeleteMe />
-        </>
-    );
+    return <Content />;
 };
 
 // SEO Metadata

@@ -61,3 +61,21 @@ Development tool for visualizing grid layout and alignment
 ### 6. Project Structure
 
 Organized file structure optimized for scalability and maintainability
+
+### 7. Custom Font Management
+
+Tackl provides a centralized approach to managing custom fonts across your application:
+
+#### Font Configuration
+
+Custom fonts are defined in `/src/theme/fonts.js`:
+
+-   Use `next/font/local` for self-hosted fonts
+-   Use `next/font/google` for Google Fonts
+-   Each font is configured with:
+    -   Source files/weights
+    -   Display strategy
+    -   Preloading settings
+    -   CSS variable name
+
+Example configuration:

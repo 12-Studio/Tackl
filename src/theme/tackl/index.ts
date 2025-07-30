@@ -2,20 +2,19 @@
 // ---------
 import styled, { css } from 'styled-components';
 import type { RuleSet } from 'styled-components/dist/types';
-
+import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
 import { semantics, gridSemantics } from './semantics';
-import {
-	h1Styles,
-	h2Styles,
-	h3Styles,
-	h4Styles,
-	h5Styles,
-	h6Styles,
-	pStyles,
-	spanStyles,
-	emStyles,
-} from './type';
 import { breakpointUp, breakpointDown } from './breakpoints';
+import {
+	headingXXL,
+	headingXL,
+	headingL,
+	headingM,
+	headingSM,
+	headingS,
+	bodyM,
+} from './type';
+
 
 // Types
 // ------
@@ -40,7 +39,14 @@ export const Div = styled.div<{}>`
 export const Main = styled.main<{}>`
 	${SemanticBase}
 `;
+export const Waffl = styled('waffl-grid')<{}>`
+	${SemanticBase}
+`;
 export const Nav = styled.nav<{}>`
+	${SemanticBase}
+`;
+
+export const Form = styled.form<{}>`
 	${SemanticBase}
 `;
 export const Article = styled.article<{}>`
@@ -62,38 +68,70 @@ export const ListItem = styled.li<{}>`
 	${SemanticBase}
 `;
 
+// Additional HTML5 tags
+export const Figure = styled.figure<{}>`
+	${SemanticBase}
+`;
+export const FigCaption = styled.figcaption<{}>`
+	${SemanticBase}
+`;
+export const Mark = styled.mark<{}>`
+	${SemanticBase}
+`;
+export const Time = styled.time<{}>`
+	${SemanticBase}
+`;
+export const Output = styled.output<{}>`
+	${SemanticBase}
+`;
+export const Details = styled.details<{}>`
+	${SemanticBase}
+`;
+export const Summary = styled.summary<{}>`
+	${SemanticBase}
+`;
+export const Dialog = styled.dialog<{}>`
+	${SemanticBase}
+`;
+export const Progress = styled.progress<{}>`
+	${SemanticBase}
+`;
+export const Meter = styled.meter<{}>`
+	${SemanticBase}
+`;
+
 // --------------
 // 2. Typography
 // --------------
 export const H1 = styled.h1<{}>`
-	${h1Styles}
+	${SemanticBase}
 `;
 export const H2 = styled.h2<{}>`
-	${h2Styles}
+	${SemanticBase}
 `;
 export const H3 = styled.h3<{}>`
-	${h3Styles}
+	${SemanticBase}
 `;
 export const H4 = styled.h4<{}>`
-	${h4Styles}
+	${SemanticBase}
 `;
 export const H5 = styled.h5<{}>`
-	${h5Styles}
+	${SemanticBase}
 `;
 export const H6 = styled.h6<{}>`
-	${h6Styles}
+	${SemanticBase}
 `;
 export const P = styled.p<{}>`
-	${pStyles}
+	${SemanticBase}
 `;
 export const Em = styled.em<{}>`
-	${emStyles}
+	${SemanticBase}
 `;
 export const Span = styled.span<{}>`
-	${spanStyles}
+	${SemanticBase}
 `;
 export const Quote = styled.q<{}>`
-	${gridSemantics}
+	${SemanticBase}
 `;
 
 // --------------
@@ -106,28 +144,30 @@ export const bpd = breakpointDown;
 // 4. Content
 // --------------
 const sharedBlockStyles: SemanticStyles = css`
-	h1,
+	h1 {
+		${headingXXL}
+	}
 	h2 {
-		${h2Styles}
+		${headingXL}
 	}
 	h3 {
-		${h3Styles}
+		${headingL}
 	}
 	h4 {
-		${h4Styles}
+		${headingM}
 	}
 	h5 {
-		${h5Styles}
+		${headingSM}
 	}
 	h6 {
-		${h6Styles}
+		${headingS}
 	}
 	p {
-		${pStyles}
+		${bodyM}
 	}
 `;
 
-export const ContentBlock = styled.div<{}>`
+export const ContentBlock = styled(Div)<{}>`
 	${sharedBlockStyles}
 	${gridSemantics}
 `;
@@ -135,3 +175,40 @@ export const ContentBlock = styled.div<{}>`
 export const ContentBlockStyles: SemanticStyles = css`
 	${sharedBlockStyles}
 `;
+
+
+export const getGlobal = (color, opacity) => props => {
+    return props.theme.colors.global[color]?.[opacity !== undefined ? opacity : 100];
+};
+
+export const getBrand = (color, opacity) => props => {
+    return props.theme.colors.brand[color]?.[opacity !== undefined ? opacity : 100];
+};
+
+export const getGap = (gapSize: string) => props => {
+    return props.theme.gap[gapSize];
+};
+
+export const getSpace = (spaceSize: string) => props => {
+    return props.theme.space[spaceSize];
+};
+
+export const getFont = (fontFamily: string) => props => {
+    return props.theme.font.family[fontFamily];
+};
+
+export const getFontWeight = (fontWeight: string) => props => {
+    return props.theme.font.weight[fontWeight];
+};
+
+export const getRadius = (radiusSize: string) => props => {
+    return props.theme.br[radiusSize];
+};
+
+export const getEase = (easeSize: string) => props => {
+    return props.theme.easing[easeSize];
+};
+
+export const getVw = useVw;
+export const getVwMobile = useVwMobile;
+export const getVwTablet = useVwTablet;

@@ -18,16 +18,16 @@
         "paths": {
             "@/*": ["./src/*"],
             "@parts/*": ["./src/components/*"],
-            "@c/*": ["./src/components/*"],
-            "@i": ["./src/parts/Icon"],
             "@contexts": ["./src/parts/Contexts"],
             "@waffl": ["./src/theme/waffl"],
+            "@waffl/*": ["./src/theme/waffl/*"],
+            "@css/*": ["./src/css/*"],
+            "@queries/*": ["./app/queries/*"],
             "@theme": ["./src/theme"],
             "@theme/*": ["./src/theme/*"],
             "@tackl": ["./src/theme/tackl"],
             "@tackl/*": ["./src/theme/tackl/*"],
-            "@utils/*": ["./src/utils/*"],
-            "@public/*": ["./public/*"]
+            "@utils/*": ["./src/utils/*"]
         }
     },
     "include": ["src/**/*"],

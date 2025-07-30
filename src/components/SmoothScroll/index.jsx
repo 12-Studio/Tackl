@@ -14,7 +14,7 @@
 
 // Imports
 // ------------
-import { useLayoutEffect, useContext, memo } from 'react';
+import { useLayoutEffect, useContext } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { GlobalContext } from '@parts/Contexts';
@@ -25,7 +25,7 @@ const SCROLL_LERP = 0.1; // Lower = smoother but slower, higher = faster but les
 
 // Component
 // ------------
-const SmoothScroll = memo(({ children }) => {
+const SmoothScroll = ({ children }) => {
     // Get lenis instance from global context
     const { lenis } = useContext(GlobalContext);
 
@@ -71,7 +71,7 @@ const SmoothScroll = memo(({ children }) => {
     }, [lenis]); // Only re-run if lenis context changes
 
     return children;
-});
+};
 
 // Add display name for debugging
 SmoothScroll.displayName = 'SmoothScroll';

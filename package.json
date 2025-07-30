@@ -15,7 +15,6 @@
         "test": "echo \"No tests specified\" && exit 0"
     },
     "dependencies": {
-        "@apollo/client": "^3.13.9",
         "@datocms/cda-client": "^0.2.7",
         "@gsap/react": "^2.1.2",
         "@react-three/drei": "^10.6.1",

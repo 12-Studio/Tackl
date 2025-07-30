@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren, HTMLAttributes } from 'react';
 
 // Register the custom element only on the client
 if (typeof window !== 'undefined' && !customElements.get('waffl-grid')) {
@@ -11,7 +11,9 @@ if (typeof window !== 'undefined' && !customElements.get('waffl-grid')) {
 }
 
 // React wrapper component
-const Grid = ({ children, ...props }) => {
+type GridProps = PropsWithChildren<HTMLAttributes<HTMLElement>>;
+
+const Grid: React.FC<GridProps> = ({ children, ...props }) => {
     return React.createElement('waffl-grid', props, children);
 };
 

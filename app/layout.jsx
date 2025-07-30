@@ -14,6 +14,7 @@ import { inter } from '@theme/fonts';
 
 // Styles
 // ------------
+import '@waffl/WebComponent';
 import '@css/global.css';
 
 // Dynamic imports

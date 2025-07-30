@@ -20,6 +20,7 @@
             "@parts/*": ["./src/components/*"],
             "@contexts": ["./src/parts/Contexts"],
             "@waffl": ["./src/theme/waffl"],
+            "@waffl/*": ["./src/theme/waffl/*"],
             "@css/*": ["./src/css/*"],
             "@queries/*": ["./app/queries/*"],
             "@theme": ["./src/theme"],

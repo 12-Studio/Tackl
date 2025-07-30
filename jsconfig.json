@@ -7,6 +7,7 @@
             "@css/*": ["./src/css/*"],
             "@contexts": ["./src/parts/Contexts"],
             "@waffl": ["./src/theme/waffl"],
+            "@waffl/*": ["./src/theme/waffl/*"],
             "@theme": ["./src/theme"],
             "@theme/*": ["./src/theme/*"],
             "@tackl": ["./src/theme/tackl"],

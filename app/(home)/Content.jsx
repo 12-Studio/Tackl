@@ -4,15 +4,14 @@
 // ------------
 import React from 'react';
 import PropTypes from 'prop-types';
+import DeleteMe from '@parts/DeleteMe';
 
 // Component
 // ------------
 const Content = ({ data }) => {
     return (
         <>
-            {/*  */}
-            {/*  */}
-            {/*  */}
+            <DeleteMe />
         </>
     );
 };
@@ -25,5 +24,5 @@ Content.propTypes = {
 
 // Exports
 // ------------
-Content.displayName = 'Content';
+Content.displayName = 'Page Content';
 export default Content;

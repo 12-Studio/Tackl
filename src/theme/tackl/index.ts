@@ -2,8 +2,9 @@
 // ---------
 import styled, { css } from 'styled-components';
 import type { RuleSet } from 'styled-components/dist/types';
-
+import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
 import { semantics, gridSemantics } from './semantics';
+import { breakpointUp, breakpointDown } from './breakpoints';
 import {
 	h1Styles,
 	h2Styles,
@@ -15,7 +16,7 @@ import {
 	spanStyles,
 	emStyles,
 } from './type';
-import { breakpointUp, breakpointDown } from './breakpoints';
+
 
 // Types
 // ------
@@ -152,6 +153,26 @@ export const getGap = (gapSize: string) => props => {
     return props.theme.gap[gapSize];
 };
 
+export const getSpace = (spaceSize: string) => props => {
+    return props.theme.space[spaceSize];
+};
+
+export const getFont = (fontFamily: string) => props => {
+    return props.theme.font.family[fontFamily];
+};
+
+export const getFontWeight = (fontWeight: string) => props => {
+    return props.theme.font.weight[fontWeight];
+};
+
 export const getRadius = (radiusSize: string) => props => {
     return props.theme.br[radiusSize];
 };
+
+export const getEase = (easeSize: string) => props => {
+    return props.theme.easing[easeSize];
+};
+
+export const getVw = useVw;
+export const getVwMobile = useVwMobile;
+export const getVwTablet = useVwTablet;

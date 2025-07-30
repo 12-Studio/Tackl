@@ -18,17 +18,25 @@
  *   margin: ${getVw(24)};    // Responsive margin
  * `;
  */
+
+import { theme } from '@theme';
+const { xxlarge, smedium, medium } = theme.grid.breakpoints;
+
+const desktop = Number(xxlarge.replace('px', ''));
+const tablet = Number(medium.replace('px', ''));
+const mobile = Number(smedium.replace('px', ''));
+
 export const getVw = (px: number): string => {
-    const vw = (px / 1440) * 100;
+    const vw = (px / desktop) * 100;
     return `${vw.toFixed(2)}vw`;
 };
 
 export const getVwMobile = (px: number): string => {
-    const vw = (px / 402) * 100;
+    const vw = (px / mobile) * 100;
     return `${vw.toFixed(2)}vw`;
 };
 
 export const getVwTablet = (px: number): string => {
-    const vw = (px / 768) * 100;
+    const vw = (px / tablet) * 100;
     return `${vw.toFixed(2)}vw`;
 };

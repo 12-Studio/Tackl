@@ -4,7 +4,7 @@
             "@/*": ["./src/*"],
             "@parts/*": ["./src/components/*"],
             "@queries/*": ["./app/queries/*"],
-            "@css/*": ["./src/css/*"]
+            "@css/*": ["./src/css/*"],
             "@contexts": ["./src/components/Contexts"],
             "@waffl": ["./src/theme/waffl"],
             "@waffl/*": ["./src/theme/waffl/*"],

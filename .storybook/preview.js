@@ -1,4 +1,4 @@
-/** @type { import('@storybook/react').Preview } */
+/** @type { import('@storybook/nextjs').Preview } */
 
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 import { ThemeProvider } from 'styled-components';

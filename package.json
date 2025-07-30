@@ -29,19 +29,14 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "styled-components": "^6.1.19",
-    "three": "^0.177.0"
+    "three": "^0.178.0"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^8.6.14",
-    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-docs": "^9.0.18",
     "@storybook/addon-links": "^9.0.18",
     "@storybook/addon-onboarding": "^9.0.18",
     "@storybook/addon-themes": "^9.0.18",
-    "@storybook/addon-viewport": "^8.6.14",
-    "@storybook/blocks": "^8.6.14",
     "@storybook/nextjs": "^9.0.18",
-    "@storybook/react": "^9.0.18",
-    "@storybook/test": "^8.6.14",
     "ajv": "^8.17.1",
     "ajv-keywords": "^5.1.0",
     "eslint-plugin-storybook": "9.0.18",

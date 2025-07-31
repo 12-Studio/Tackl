@@ -79,3 +79,20 @@ jspm_packages/
 
 # Optional REPL history
 .node_repl_history
+
+
+# Lighthouse output directories
+.lighthouseci/
+.lighthouse/
+lhci_reports/
+lhci-results/
+# Common report files
+lighthouse-report.html
+lighthouse-report.json
+lhr-*.json
+# Ignore any custom output folders
+lh-output/
+# Ignore any temp files
+*.lhci-*
+# Ignore any screenshots
+*.png

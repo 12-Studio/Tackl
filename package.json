@@ -29,7 +29,8 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "styled-components": "^6.1.19",
-    "three": "^0.178.0"
+    "three": "^0.178.0",
+    "unicornstudio-react": "^1.4.29"
   },
   "devDependencies": {
     "@storybook/addon-docs": "^9.0.18",

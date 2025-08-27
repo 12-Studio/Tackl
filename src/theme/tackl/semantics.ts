@@ -11,12 +11,8 @@ interface StyleProps {
     $marBottom?: boolean;
     $marTop?: boolean;
     $mar?: boolean;
-    $marX?: boolean;
-    $marY?: boolean;
     $mpad?: boolean;
-    $mpadLarge?: boolean;
     $padBottom?: boolean;
-    $padBottomSmall?: boolean;
     $padTop?: boolean;
     $pad?: boolean;
     [key: string]: any; // For dynamic grid props
@@ -27,65 +23,30 @@ interface StyleProps {
 // 1. Margin
 // --------------
 const marginStyles = (props: StyleProps): RuleSet<object> => {
-    const smallSpace = theme.space.small;
-    const mediumSpace = theme.space.medium;
-    const largeSpace = theme.space.large;
+    const s = theme.space.small;
+    const m = theme.space.medium;
+    const l = theme.space.large;
 
     return css`
         ${props.$marBottom &&
         css`
-            margin-bottom: ${smallSpace};
-            ${breakpointUp.medium`margin-bottom: ${mediumSpace};`}
-            ${breakpointUp.large`margin-bottom: ${largeSpace};`}
+            margin-bottom: ${s};
+            ${breakpointUp.medium`margin-bottom: ${m};`}
+            ${breakpointUp.large`margin-bottom: ${l};`}
         `}
 
         ${props.$marTop &&
         css`
-            margin-top: ${smallSpace};
-            ${breakpointUp.medium`margin-top: ${mediumSpace};`}
-            ${breakpointUp.large`margin-top: ${largeSpace};`}
+            margin-top: ${s};
+            ${breakpointUp.medium`margin-top: ${m};`}
+            ${breakpointUp.large`margin-top: ${l};`}
         `}
         
         ${props.$mar &&
         css`
-            margin-top: ${smallSpace};
-            margin-bottom: ${smallSpace};
-            ${breakpointUp.medium`
-                margin-top: ${mediumSpace};
-                margin-bottom: ${mediumSpace};
-            `}
-            ${breakpointUp.large`
-                margin-top: ${largeSpace};
-                margin-bottom: ${largeSpace};
-            `}
-        `}
-
-        ${props.$marX &&
-        css`
-            margin-left: ${smallSpace};
-            margin-right: ${smallSpace};
-            ${breakpointUp.medium`
-                margin-left: ${mediumSpace};
-                margin-right: ${mediumSpace};
-            `}
-            ${breakpointUp.large`
-                margin-left: ${largeSpace};
-                margin-right: ${largeSpace};
-            `}
-        `}
-
-        ${props.$marY &&
-        css`
-            margin-top: ${smallSpace};
-            margin-bottom: ${smallSpace};
-            ${breakpointUp.medium`
-                margin-top: ${mediumSpace};
-                margin-bottom: ${mediumSpace};
-            `}
-            ${breakpointUp.large`
-                margin-top: ${largeSpace};
-                margin-bottom: ${largeSpace};
-            `}
+            margin-block: ${s};
+            ${breakpointUp.medium` margin-block: ${m}; `}
+            ${breakpointUp.large` margin-block: ${l}; `}
         `}
     `;
 };
@@ -94,61 +55,37 @@ const marginStyles = (props: StyleProps): RuleSet<object> => {
 // 2. Padding
 // --------------
 const paddingStyles = (props: StyleProps): RuleSet<object> => {
-    const smallSpace = theme.space.small;
-    const mediumSpace = theme.space.medium;
-    const largeSpace = theme.space.large;
-    const mpadSpace = theme.space.mpad;
+    const s = theme.space.small;
+    const m = theme.space.medium;
+    const l = theme.space.large;
+    const mpad = theme.space.mpad;
 
     return css`
         ${props.$mpad &&
         css`
-            padding-left: ${mpadSpace};
-            padding-right: ${mpadSpace};
-            ${breakpointUp.large`
-                padding-left: 0;
-                padding-right: 0;
-            `}
-        `}
-
-        ${props.$mpadLarge &&
-        css`
-            padding-left: ${mpadSpace};
-            padding-right: ${mpadSpace};
+            padding-inline: ${mpad};
+            ${breakpointUp.large` padding-inline: 0; `}
         `}
 
         ${props.$padBottom &&
         css`
-            padding-bottom: ${smallSpace};
-            ${breakpointUp.medium`padding-bottom: ${mediumSpace};`}
-            ${breakpointUp.large`padding-bottom: ${largeSpace};`}
-        `}
-
-        ${props.$padBottomSmall &&
-        css`
-            padding-bottom: calc(${smallSpace} / 2);
-            ${breakpointUp.medium`padding-bottom: calc(${mediumSpace} / 2);`}
-            ${breakpointUp.large`padding-bottom: calc(${largeSpace} / 2);`}
+            padding-block: ${s};
+            ${breakpointUp.medium`padding-block: ${m};`}
+            ${breakpointUp.large`padding-block: ${l};`}
         `}
 
         ${props.$padTop &&
         css`
-            padding-top: ${smallSpace};
-            ${breakpointUp.medium`padding-top: ${mediumSpace};`}
-            ${breakpointUp.large`padding-top: ${largeSpace};`}
+            padding-block: ${s};
+            ${breakpointUp.medium` padding-block: ${m};`}
+            ${breakpointUp.large` padding-block: ${l};`}
         `}
         
         ${props.$pad &&
         css`
-            padding-top: ${smallSpace};
-            padding-bottom: ${smallSpace};
-            ${breakpointUp.medium`
-                padding-top: ${mediumSpace};
-                padding-bottom: ${mediumSpace};
-            `}
-            ${breakpointUp.large`
-                padding-top: ${largeSpace};
-                padding-bottom: ${largeSpace};
-            `}
+            padding-block: ${s};
+            ${breakpointUp.medium` padding-block: ${m}; `}
+            ${breakpointUp.large` padding-block: ${l}; `}
         `}
     `;
 };

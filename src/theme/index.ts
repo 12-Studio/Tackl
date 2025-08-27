@@ -87,10 +87,10 @@ type Theme = {
     };
     space: {
         mpad: string;
-        small: string;
-        medium: string;
-        large: string;
-        xlarge: string;
+        s: string;
+        m: string;
+        l: string;
+        xl: string;
         col: string;
         colx2: string;
     };
@@ -126,19 +126,19 @@ type Theme = {
             desktop: number;
         };
         breakpoints: {
-            small: string;
-            smedium: string;
-            medium: string;
-            large: string;
-            xlarge: string;
-            xxlarge: string;
+            s: string;
+            sm: string;
+            m: string;
+            l: string;
+            xl: string;
+            xxl: string;
             huge: string;
             uber: string;
         };
         gutter: {
-            small: string;
-            medium: string;
-            large: string;
+            s: string;
+            m: string;
+            l: string;
         };
         maxSize: string;
     };
@@ -244,10 +244,10 @@ export const theme: Theme = {
     // Usage: ${props => props.theme.space.medium}
     space: {
         mpad: '1.2rem', // Mobile Padding
-        small: '4.8rem',
-        medium: '6rem',
-        large: '8.4rem',
-        xlarge: '12rem',
+        s: '4.8rem',
+        m: '6rem',
+        l: '8.4rem',
+        xl: '12rem',
         col: 'clamp(8.333vh, 8.333vw, 100vw)',
         colx2: 'clamp(6.666vh, 16.666vw, 100vw)',
         
@@ -295,19 +295,19 @@ export const theme: Theme = {
             desktop: 12,
         },
         breakpoints: {
-            small: '0px',
-            smedium: '390px',
-            medium: '700px',
-            large: '1024px',
-            xlarge: '1200px',
-            xxlarge: '1400px',
+            s: '0px',
+            sm: '390px',
+            m: '700px',
+            l: '1024px',
+            xl: '1200px',
+            xxl: '1400px',
             huge: '1600px',
             uber: '1800px',
         },
         gutter: {
-            small: '2.4rem',
-            medium: '2.4rem',
-            large: '3.6rem',
+            s: '2.4rem',
+            m: '2.4rem',
+            l: '3.6rem',
         },
         maxSize: '1440px',
     },

@@ -20,11 +20,11 @@
  */
 
 import { theme } from '@theme';
-const { xxlarge, smedium, medium } = theme.grid.breakpoints;
+const { xxl, sm, m } = theme.grid.breakpoints;
 
-const desktop = Number(xxlarge.replace('px', ''));
-const tablet = Number(medium.replace('px', ''));
-const mobile = Number(smedium.replace('px', ''));
+const desktop = Number(xxl.replace('px', ''));
+const tablet = Number(m.replace('px', ''));
+const mobile = Number(sm.replace('px', ''));
 
 export const getVw = (px: number): string => {
     const vw = (px / desktop) * 100;

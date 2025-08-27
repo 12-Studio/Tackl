@@ -23,30 +23,30 @@ interface StyleProps {
 // 1. Margin
 // --------------
 const marginStyles = (props: StyleProps): RuleSet<object> => {
-    const s = theme.space.small;
-    const m = theme.space.medium;
-    const l = theme.space.large;
+    const s = theme.space.s;
+    const m = theme.space.m;
+    const l = theme.space.l;
 
     return css`
         ${props.$marBottom &&
         css`
             margin-bottom: ${s};
-            ${breakpointUp.medium`margin-bottom: ${m};`}
-            ${breakpointUp.large`margin-bottom: ${l};`}
+            ${breakpointUp.m`margin-bottom: ${m};`}
+            ${breakpointUp.l`margin-bottom: ${l};`}
         `}
 
         ${props.$marTop &&
         css`
             margin-top: ${s};
-            ${breakpointUp.medium`margin-top: ${m};`}
-            ${breakpointUp.large`margin-top: ${l};`}
+            ${breakpointUp.m`margin-top: ${m};`}
+            ${breakpointUp.l`margin-top: ${l};`}
         `}
         
         ${props.$mar &&
         css`
             margin-block: ${s};
-            ${breakpointUp.medium` margin-block: ${m}; `}
-            ${breakpointUp.large` margin-block: ${l}; `}
+            ${breakpointUp.m` margin-block: ${m}; `}
+            ${breakpointUp.l` margin-block: ${l}; `}
         `}
     `;
 };
@@ -55,37 +55,37 @@ const marginStyles = (props: StyleProps): RuleSet<object> => {
 // 2. Padding
 // --------------
 const paddingStyles = (props: StyleProps): RuleSet<object> => {
-    const s = theme.space.small;
-    const m = theme.space.medium;
-    const l = theme.space.large;
+    const s = theme.space.s;
+    const m = theme.space.m;
+    const l = theme.space.l;
     const mpad = theme.space.mpad;
 
     return css`
         ${props.$mpad &&
         css`
             padding-inline: ${mpad};
-            ${breakpointUp.large` padding-inline: 0; `}
+            ${breakpointUp.l` padding-inline: 0; `}
         `}
 
         ${props.$padBottom &&
         css`
             padding-block: ${s};
-            ${breakpointUp.medium`padding-block: ${m};`}
-            ${breakpointUp.large`padding-block: ${l};`}
+            ${breakpointUp.m`padding-block: ${m};`}
+            ${breakpointUp.l`padding-block: ${l};`}
         `}
 
         ${props.$padTop &&
         css`
             padding-block: ${s};
-            ${breakpointUp.medium` padding-block: ${m};`}
-            ${breakpointUp.large` padding-block: ${l};`}
+            ${breakpointUp.m` padding-block: ${m};`}
+            ${breakpointUp.l` padding-block: ${l};`}
         `}
         
         ${props.$pad &&
         css`
             padding-block: ${s};
-            ${breakpointUp.medium` padding-block: ${m}; `}
-            ${breakpointUp.large` padding-block: ${l}; `}
+            ${breakpointUp.m` padding-block: ${m}; `}
+            ${breakpointUp.l` padding-block: ${l}; `}
         `}
     `;
 };

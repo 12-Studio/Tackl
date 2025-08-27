@@ -54,8 +54,8 @@ export const h0Styles: RuleSet<object> = css`
     ${baseHeadingStyles}
     font-size: 6rem;
     line-height: 1.2;
-    ${bp.smedium`font-size: 6.8rem;`}
-    ${bp.xlarge`font-size: 16.8rem;`}
+
+    ${bp.l`font-size: 16.8rem;`}
 `;
 
 
@@ -63,7 +63,8 @@ export const headingXXL: RuleSet<object> = css`
     ${baseHeadingStyles}
     font-size: 5.8rem;
     line-height: 1.2;
-    ${bp.xlarge`
+
+    ${bp.l`
         font-size: 14.4rem;
         line-height: 1;
     `}
@@ -73,28 +74,32 @@ export const headingXL: RuleSet<object> = css`
     ${baseHeadingStyles}
     font-size: 4.8rem;
     line-height: 1.2;
-    ${bp.xlarge`font-size: 9rem;`}
+
+    ${bp.l`font-size: 9rem;`}
 `;
 
 export const headingL: RuleSet<object> = css`
     ${baseHeadingStyles}
     font-size: 4rem;
     line-height: 1.32;
-    ${bp.xlarge`font-size: 6rem;`}
+
+    ${bp.l`font-size: 6rem;`}
 `;
 
 export const headingM: RuleSet<object> = css`
     ${baseHeadingStyles}
     font-size: 3rem;
     line-height: 1.32;
-    ${bp.large`font-size: 4.8rem;`}
+
+    ${bp.l`font-size: 4.8rem;`}
 `;
 
 export const headingSM: RuleSet<object> = css`
     ${baseHeadingStyles}
     font-size: 2.4rem;
     line-height: 1.32;
-    ${bp.large`font-size: 4rem;`}
+
+    ${bp.l`font-size: 4rem;`}
 `;
 
 export const headingS: RuleSet<object> = css`
@@ -103,7 +108,8 @@ export const headingS: RuleSet<object> = css`
     line-height: 1.32;
     font-weight: ${semi};
     text-transform: uppercase;
-    ${bp.large`font-size: 1.4rem;`}
+
+    ${bp.l`font-size: 1.4rem;`}
 `;
 
 // Body styles with memoized shared styles
@@ -111,5 +117,6 @@ export const bodyM: RuleSet<object> = css`
     ${baseBodyStyles}
     font-size: 1.6rem;
     line-height: 1.44;
-    ${bp.xlarge`font-size: 2.2rem;`}
+    
+    ${bp.l`font-size: 2.2rem;`}
 `;

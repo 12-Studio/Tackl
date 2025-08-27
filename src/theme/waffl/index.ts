@@ -20,7 +20,7 @@ interface GridInterface {
 // Constants
 // ------------
 const { columns, gutter, maxSize } = theme.grid;
-const { small, medium, large } = gutter;
+
 
 // Pre-computed grid templates for better performance
 const mobileGrid = `repeat(${columns?.mobile}, 1fr)`;
@@ -29,42 +29,51 @@ const largeGrid = `repeat(${columns?.desktop}, 1fr)`;
 
 // Base styles to reduce recalculation
 const baseGridStyles = css`
-	display: grid;
+	--grid-columns: ${mobileGrid};
+    --grid-gutter: ${gutter.s};
+    --grid-margin: ${gutter.s};
+
+    display: grid;
 	contain: layout;
-	margin: 0 auto;
-	width: 100%;
+	grid-template-columns: var(--grid-columns);
+    column-gap: var(--grid-gutter);
+
+    padding-inline: var(--grid-margin);
+    margin: 0 auto;
+    width: 100%;
+
+	${bp.m`
+		--grid-columns: ${mediumGrid};
+		--grid-gutter: ${gutter.m};
+		--grid-margin: calc(var(--grid-gutter) / 2);
+	`}
+
+	${bp.l`
+		--grid-columns: ${largeGrid};
+		--grid-gutter: ${gutter.l};
+		--grid-margin: calc(var(--grid-gutter) / 2);
+	`}
 `;
 
-// Helper function for gutter calculation
-const getGutter = (noGutter: boolean, size: string) => noGutter ? '0' : size;
+// Pre-compute all possible CSS combinations
+const gridVariants = {
+	noGutter: css` column-gap: 0; `,
+    noMargin: css` padding-inline: 0; `,
+    isFullscreen: css` height: 100%; `,
+	isCenter: css` place-items: center; `,
+	isFixed: css` max-width: ${maxSize}; `,
+};
 
 export const Grid = styled(Waffl)(
 	(props: GridInterface) => css`
 		${baseGridStyles}
-		grid-template-columns: ${mobileGrid};
-		column-gap: ${getGutter(props.$noGutter, small)};
-		padding-left: ${small};
-		padding-right: ${small};
-		max-width: ${props.$isFixed ? maxSize : 'none'};
 
-		${bp.medium`
-			grid-template-columns: ${mediumGrid};
-			column-gap: ${getGutter(props.$noGutter, medium)};
-			padding-left: ${medium};
-			padding-right: ${medium};
-		`}
-
-		${bp.large`
-			grid-template-columns: ${largeGrid};
-			column-gap: ${getGutter(props.$noGutter, large)};
-			padding-left: calc(${large} / 2);
-			padding-right: calc(${large} / 2);
-		`}
-
-		${props.$noMargin && css`padding: 0;`}
-		${props.$isFullscreen && css`height: 100lvh;`}
-		${props.$isFullscreenTop && css`height: 100svh;`}
-		${props.$isCenter && css` place-items: center; `}
+		${props.$noGutter && gridVariants.noGutter}
+		${props.$isFixed && gridVariants.isFixed}
+		${props.$noMargin && gridVariants.noMargin}
+        ${props.$isFullscreen && gridVariants.isFullscreen}
+        ${props.$isFullscreenTop && gridVariants.isFullscreenTop}
+        ${props.$isCenter && gridVariants.isCenter}
 	`
 );
 

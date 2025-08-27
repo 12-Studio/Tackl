@@ -13,16 +13,9 @@ import { Jacket, Background } from './styles';
 // Component
 // ------------
 const DeleteMe = ({ projectId = 'p3qwmwgkcE3DmuIEtPzz' }) => {
-    const [scott, joe] = useRefs();
-
-    React.useEffect(() => {
-        console.log(scott.current);
-        console.log(joe.current);
-    }, [scott, joe]);
-
     return (
-        <Jacket ref={scott}>
-            <Background style={{ '--unicorn-width': '100%', '--unicorn-height': '100%' }} ref={joe}>
+        <Jacket>
+            <Background style={{ '--unicorn-width': '100%', '--unicorn-height': '100%' }}>
                 <UnicornScene
                     projectId={projectId}
                     width="100%"

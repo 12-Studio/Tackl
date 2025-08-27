@@ -2,7 +2,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Div, Waffl } from '../tackl';
+import { bp, Waffl } from '../tackl';
 import { theme, Theme } from '../';
 
 // Interfaces
@@ -64,16 +64,16 @@ const gridVariants = {
 	isFixed: css` max-width: ${maxSize}; `,
 };
 
-export const Grid = styled(Waffl)(
+
+export const Grid = styled(Waffl)<GridInterface>(
 	(props: GridInterface) => css`
 		${baseGridStyles}
 
 		${props.$noGutter && gridVariants.noGutter}
 		${props.$isFixed && gridVariants.isFixed}
 		${props.$noMargin && gridVariants.noMargin}
-        ${props.$isFullscreen && gridVariants.isFullscreen}
-        ${props.$isFullscreenTop && gridVariants.isFullscreenTop}
-        ${props.$isCenter && gridVariants.isCenter}
+		${props.$isFullscreen && gridVariants.isFullscreen}
+		${props.$isCenter && gridVariants.isCenter}
 	`
 );
 

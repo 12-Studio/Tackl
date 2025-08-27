@@ -64,10 +64,7 @@ export const Grid = styled(Waffl)(
 		${props.$noMargin && css`padding: 0;`}
 		${props.$isFullscreen && css`height: 100lvh;`}
 		${props.$isFullscreenTop && css`height: 100svh;`}
-		${props.$isCenter && css`
-			align-items: center;
-			justify-content: center;
-		`}
+		${props.$isCenter && css` place-items: center; `}
 	`
 );
 

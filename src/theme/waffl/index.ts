@@ -30,6 +30,7 @@ const largeGrid = `repeat(${columns?.desktop}, 1fr)`;
 // Base styles to reduce recalculation
 const baseGridStyles = css`
 	display: grid;
+	contain: layout;
 	margin: 0 auto;
 	width: 100%;
 `;

@@ -3,12 +3,12 @@
 // ------------
 import styled, { css } from 'styled-components';
 import { bp, Div, Waffl } from '../tackl';
-import { theme } from '../';
+import { theme, Theme } from '../';
 
 // Interfaces
 // ------------
 interface GridInterface {
-	theme?: any;
+	theme?: Theme;
 	$noMargin?: boolean;
 	$isFixed?: boolean;
 	$isFullscreen?: boolean;

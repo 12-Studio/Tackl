@@ -21,7 +21,7 @@ const DeleteMe = ({ projectId = 'p3qwmwgkcE3DmuIEtPzz' }) => {
                     height="100%"
                     scale={1}
                     dpi={1}
-                    fps={60}
+                    fps={120}
                     altText="Interactive 3D scene"
                     ariaLabel="Animated background scene"
                     lazyLoad={false}

@@ -8,7 +8,6 @@
  * - Toggleable grid overlay (Ctrl + G)
  * - Switchable color schemes (Ctrl + F)
  * - Responsive grid columns for mobile, tablet and desktop
- * - Performance optimized with useMemo and useCallback
  *
  * Props:
  * None
@@ -25,7 +24,7 @@
 
 // Imports
 // ------
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Grid } from '@waffl';
 
 // Styles
@@ -45,7 +44,7 @@ const GridExposer = () => {
     const [isGridVisible, setIsGridVisible] = useState(false);
     const [useAltColor, setUseAltColor] = useState(true);
 
-    // Memoize toggle handlers to prevent recreating on each render
+    // Toggle handlers
     const toggleGrid = useCallback(() => {
         setIsGridVisible(prev => !prev);
     }, []);
@@ -72,14 +71,12 @@ const GridExposer = () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [toggleGrid, toggleColor]);
 
-    // Memoize grid columns array to prevent recreation on each render
-    const gridColumns = useMemo(() => {
-        return Array.from({ length: GRID_SIZE }, (_, i) => (
-            <Col key={i} $isMobile={i < MOBILE_COLUMNS} $isTablet={i < TABLET_COLUMNS} $altColor={useAltColor}>
-                <span />
-            </Col>
-        ));
-    }, [useAltColor]);
+    // No memoization: gridColumns is created on each render
+    const gridColumns = Array.from({ length: GRID_SIZE }, (_, i) => (
+        <Col key={i} $isMobile={i < MOBILE_COLUMNS} $isTablet={i < TABLET_COLUMNS} $altColor={useAltColor}>
+            <span />
+        </Col>
+    ));
 
     return (
         <Jacket $showGrid={isGridVisible} $altColor={useAltColor}>

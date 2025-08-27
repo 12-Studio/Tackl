@@ -2,7 +2,6 @@ import React, { PropsWithChildren, HTMLAttributes } from 'react';
 
 // Register the custom element only on the client
 if (typeof window !== 'undefined' && !customElements.get('waffl-grid')) {
-    console.log('Registering waffl-grid component');
     class WafflGridElement extends window.HTMLElement {
         constructor() {
             super();
@@ -20,7 +19,6 @@ if (typeof window !== 'undefined' && !customElements.get('waffl-grid')) {
         }
     }
     customElements.define('waffl-grid', WafflGridElement);
-    console.log('waffl-grid registered:', customElements.get('waffl-grid'));
 }
 
 // React wrapper component

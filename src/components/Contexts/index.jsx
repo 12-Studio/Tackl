@@ -7,7 +7,9 @@ import { PerformanceProvider } from './Performance';
 
 // Context Definition
 // ------------
-export const GlobalContext = createContext({});
+export const GlobalContext = createContext({
+    lenis: null,
+});
 
 // Component
 // ------------
@@ -17,22 +19,22 @@ export const GlobalContext = createContext({});
  * @param {React.ReactNode} props.children - Child components to be wrapped by the context
  */
 const Contexts = ({ children }) => {
-	// Create a stable reference for the lenis smooth scroll instance
-	const lenis = useRef(null);
+    // Create a stable reference for the lenis smooth scroll instance
+    const lenis = useRef(null);
 
-	// Memoize the context value to prevent unnecessary re-renders
-	const contextValue = useMemo(
-		() => ({
-			lenis, // Smooth scroll reference available globally
-		}),
-		[] // Empty dependency array since ref is stable
-	);
+    // Memoize the context value to prevent unnecessary re-renders
+    const contextValue = useMemo(
+        () => ({
+            lenis, // Smooth scroll reference available globally
+        }),
+        [] // Empty dependency array since ref is stable
+    );
 
-	return (
-		<GlobalContext.Provider value={contextValue}>
-			<PerformanceProvider>{children}</PerformanceProvider>
-		</GlobalContext.Provider>
-	);
+    return (
+        <GlobalContext.Provider value={contextValue}>
+            <PerformanceProvider>{children}</PerformanceProvider>
+        </GlobalContext.Provider>
+    );
 };
 
 // Exports

@@ -2,8 +2,6 @@
 
 // Imports
 // ------------
-import React from 'react';
-import { useRefs } from '@utils/useRefs';
 import UnicornScene from 'unicornstudio-react/next';
 
 // Styles

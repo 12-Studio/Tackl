@@ -5,10 +5,12 @@
         "paths": {
             "@/*": ["./src/*"],
             "@parts/*": ["./src/components/*"],
+            "@css/*": ["./src/css/*"],
             "@c/*": ["./src/components/*"],
             "@i": ["./src/components/Icon"],
             "@contexts": ["./src/components/Contexts"],
             "@waffl": ["./src/theme/waffl"],
+            "@waffl/*": ["./src/theme/waffl/*"],
             "@theme": ["./src/theme"],
             "@theme/*": ["./src/theme/*"],
             "@tackl": ["./src/theme/tackl"],

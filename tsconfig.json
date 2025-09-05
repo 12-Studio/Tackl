@@ -1,0 +1,73 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@parts/*": [
+        "./src/components/*"
+      ],
+      "@contexts": [
+        "./src/parts/Contexts"
+      ],
+      "@waffl": [
+        "./src/theme/waffl"
+      ],
+      "@waffl/*": [
+        "./src/theme/waffl/*"
+      ],
+      "@css/*": [
+        "./src/css/*"
+      ],
+      "@queries/*": [
+        "./app/queries/*"
+      ],
+      "@theme": [
+        "./src/theme"
+      ],
+      "@theme/*": [
+        "./src/theme/*"
+      ],
+      "@tackl": [
+        "./src/theme/tackl"
+      ],
+      "@tackl/*": [
+        "./src/theme/tackl/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

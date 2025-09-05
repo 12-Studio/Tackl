@@ -2,7 +2,6 @@
 
 // Imports
 // ------------
-import React from 'react';
 import PropTypes from 'prop-types';
 import DeleteMe from '@parts/DeleteMe';
 

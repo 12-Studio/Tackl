@@ -148,6 +148,12 @@ export type Theme = {
         bezzy3: string;
         ease: string;
     };
+    br: {
+        s: string;
+        m: string;
+        l: string;
+        round: string;
+    };
     noscrollbars: ReturnType<typeof css>;
 }
 
@@ -267,6 +273,14 @@ export const theme: Theme = {
         uber: '6.4rem',
     },
 
+    // Border Radius Tokens
+    br: {
+        s: '0.6rem',
+        m: '1.2rem',
+        l: '1.8rem',
+        round: '9999px',
+    },
+
     // Typography Tokens
     // Usage: ${props => props.theme.font.family.heading}
     // Usage: ${props => props.theme.font.weight.bold}
@@ -321,6 +335,7 @@ export const theme: Theme = {
         bezzy3: 'cubic-bezier(0.5, 0, 0, 1)',
         ease: '0.3s ease-in-out',
     },
+
 
     // Utility Styles
     // Usage: ${props => props.theme.noscrollbars}

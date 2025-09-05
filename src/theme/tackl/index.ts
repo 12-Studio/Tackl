@@ -5,7 +5,7 @@ import type { RuleSet } from 'styled-components/dist/types';
 import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
 import { semantics, gridSemantics } from './semantics';
 import { breakpointUp, breakpointDown } from './breakpoints';
-import { theme, Theme } from '../';
+import { Theme } from '../';
 import {
 	headingXXL,
 	headingXL,
@@ -178,41 +178,40 @@ export const ContentBlockStyles: SemanticStyles = css`
 `;
 
 
-export const getGlobal = (color: string, opacity?: number) => (props: { theme: any }) => {
-    return props.theme.colors.global[color]?.[opacity !== undefined ? opacity : 100];
+export const getGlobal = (color: keyof Theme['colors']['global'], opacity?: number) => (props: { theme: Theme }) => {
+	const global = props.theme.colors?.global;
+    return global?.[color]?.[opacity !== undefined ? opacity : 100];
 };
 
-export const getBrand = (color: string, lightness: string, opacity?: number) => (props: { theme: any }) => {
-    return props.theme.colors.brand[color]?.[lightness]?.[opacity !== undefined ? opacity : 100];
+export const getBrand = (color: keyof Theme['colors']['brand'], lightness: keyof Theme['colors']['brand'][keyof Theme['colors']['brand']], opacity?: number) => (props: { theme: Theme }) => {
+	const brand = props.theme.colors?.brand;
+    return brand?.[color]?.[lightness]?.[opacity !== undefined ? opacity : 100];
 };
 
-export const getMono = (color: string) => (props: { theme: any }) => {
-	return props.theme.colors.mono[color];
-};
-
-export const getGap = (gapSize: string) => (props: { theme: any }) => {
+export const getGap = (gapSize: keyof Theme['gap']) => (props: { theme: Theme }) => {
     return props.theme.gap[gapSize];
 };
 
-export const getSpace = (spaceSize: string) => (props: { theme: any }) => {
+export const getSpace = (spaceSize: keyof Theme['space']) => (props: { theme: Theme }) => {
     return props.theme.space[spaceSize];
 };
 
-export const getFont = (fontFamily: string) => (props: { theme: any }) => {
+export const getFont = (fontFamily: keyof Theme['font']['family']) => (props: { theme: Theme }) => {
     return props.theme.font.family[fontFamily];
 };
 
-export const getFontWeight = (fontWeight: string) => (props: { theme: any }) => {
+export const getFontWeight = (fontWeight: keyof Theme['font']['weight']) => (props: { theme: Theme }) => {
     return props.theme.font.weight[fontWeight];
 };
 
-export const getRadius = (radiusSize: string) => (props: { theme: any }) => {
+export const getRadius = (radiusSize: keyof Theme['br']) => (props: { theme: Theme }) => {
     return props.theme.br[radiusSize];
 };
 
-export const getEase = (easeSize: string) => (props: { theme: any }) => {
+export const getEase = (easeSize: keyof Theme['easing']) => (props: { theme: Theme }) => {
     return props.theme.easing[easeSize];
 };
+
 export const getVw = useVw;
 export const getVwMobile = useVwMobile;
 export const getVwTablet = useVwTablet;

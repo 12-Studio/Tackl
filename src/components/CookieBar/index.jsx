@@ -35,9 +35,9 @@ const CookieBar = ({
     message = 'This website uses cookies to enhance your experience. By continuing to use this site, you agree to our use of cookies.',
     acceptButtonText = 'Accept',
     declineButtonText = 'Decline',
-    onAccept,
-    onDecline,
-    className,
+    onAccept = () => {},
+    onDecline = () => {},
+    className = '',
 }) => {
     /** State to control visibility of the cookie banner */
     const [isVisible, setIsVisible] = useState(false);

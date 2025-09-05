@@ -37,7 +37,9 @@ const Client = ({ children }) => {
                         {process.env.NODE_ENV === 'development' && <GridExposer />}
 
                         {/* CookieBar only rendered in production environment */}
-                        {process.env.NODE_ENV === 'production' && <CookieBar />}
+                        {process.env.NODE_ENV === 'production' && (
+                            <CookieBar />
+                        )}
 
                         <Contexts>
                             <AnimationPlugins />

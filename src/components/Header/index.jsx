@@ -3,6 +3,8 @@
 // Imports
 // ------------
 import PropTypes from 'prop-types';
+import { use, useEffect } from 'react';
+import { GlobalContext } from '@parts/Contexts';
 
 // Styles
 // ------------
@@ -11,6 +13,12 @@ import { Jacket } from './styles';
 // Component
 // ------------
 const Header = ({ data }) => {
+    const { lenis } = use(GlobalContext);
+
+    useEffect(() => {
+        console.log(lenis);
+    }, [lenis]);
+
     return (
         <Jacket>
             {/*  */}

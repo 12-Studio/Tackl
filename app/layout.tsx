@@ -1,6 +1,7 @@
 // Imports
 // ------------
 import '@waffl/WebComponent';
+import Contexts from '@parts/Contexts';
 import Client from './Client';
 import Server from './Server';
 
@@ -12,9 +13,11 @@ import '@css/global.css';
 // ------------
 const RootLayout = ({ children }) => {
     return (
-        <Server>
-            <Client>{children}</Client>
-        </Server>
+        <Contexts>
+            <Server>
+                <Client>{children}</Client>
+            </Server>
+        </Contexts>
     );
 };
 

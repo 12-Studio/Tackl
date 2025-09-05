@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import StyledComponentsRegistry from '@utils/registry';
 import SmoothScroll from '@parts/SmoothScroll';
-import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
 import AnimationPlugins from '@parts/AnimationPlugins';
 import { ThemeProvider } from 'styled-components';
@@ -41,10 +40,9 @@ const Client = ({ children }) => {
                             <CookieBar />
                         )}
 
-                        <Contexts>
+                        
                             <AnimationPlugins />
                             <SmoothScroll>{children}</SmoothScroll>
-                        </Contexts>
                     </ThemeProvider>
                 </StyledComponentsRegistry>
             </body>

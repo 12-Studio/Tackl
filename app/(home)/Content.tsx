@@ -2,23 +2,23 @@
 
 // Imports
 // ------------
-import PropTypes from 'prop-types';
 import DeleteMe from '@parts/DeleteMe';
+
+
+// Interface
+// ------------
+interface ContentProps {
+    data: object;
+}
 
 // Component
 // ------------
-const Content = ({ data }) => {
+const Content = ({ data }: ContentProps) => {
     return (
         <>
             <DeleteMe />
         </>
     );
-};
-
-// PropTypes
-// ------------
-Content.propTypes = {
-    data: PropTypes.object,
 };
 
 // Exports

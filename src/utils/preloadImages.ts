@@ -15,7 +15,7 @@
  * @param {string} src - The URL of the image to preload.
  * @returns {Promise<HTMLImageElement>} A promise that resolves to the loaded HTMLImageElement.
  */
-export const preloadImage = (src /*: string*/) /*: Promise<HTMLImageElement>*/ => {
+export const preloadImage = (src: string): Promise<HTMLImageElement> => {
     return new Promise((resolve, reject) => {
         const img = new Image();
 
@@ -52,7 +52,7 @@ export const preloadImage = (src /*: string*/) /*: Promise<HTMLImageElement>*/ =
  * @param {string[]} urls - An array of image URLs to preload.
  * @returns {Promise<HTMLImageElement[]>} A promise that resolves to an array of loaded HTMLImageElements.
  */
-export const preloadImages = (urls /*: string[]*/) /*: Promise<HTMLImageElement[]>*/ => {
+export const preloadImages = (urls: string[]): Promise<HTMLImageElement[]> => {
     return Promise.all(urls.map(preloadImage));
 };
 

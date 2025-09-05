@@ -2,28 +2,16 @@
 
 // Imports
 // ------------
-import React from 'react';
+import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import StyledComponentsRegistry from '@utils/registry';
+import SmoothScroll from '@parts/SmoothScroll';
 import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
 import AnimationPlugins from '@parts/AnimationPlugins';
 import { ThemeProvider } from 'styled-components';
 import { theme, GlobalStyle } from '@theme';
 import { inter } from '@theme/fonts';
-
-// Styles
-// ------------
-import '@waffl/WebComponent';
-import '@css/global.css';
-
-// Dynamic imports
-// ------------
-// Lazy load SmoothScroll component since it's not needed for initial render
-// Disabled SSR to avoid hydration issues with scroll behavior
-const SmoothScroll = dynamic(() => import('@parts/SmoothScroll'), {
-    ssr: false,
-});
 
 // Lazy load GridExposer since it's only used in development
 // Disabled SSR as it's not critical for server rendering
@@ -33,7 +21,7 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 
 // Component
 // ------------
-const RootLayout = ({ children }) => {
+const Client = ({ children }) => {
     // NOTE • Font Classes
     const classes = `${inter.variable}`;
 
@@ -62,7 +50,13 @@ const RootLayout = ({ children }) => {
     );
 };
 
-// DisplayName added for better debugging in React DevTools
-RootLayout.displayName = 'RootLayout';
+// PropTypes
+// ------------
+Client.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
-export default RootLayout;
+// Exports
+// ------------
+Client.displayName = 'Client';
+export default Client;

@@ -6,16 +6,18 @@ if (typeof window !== 'undefined' && !customElements.get('waffl-grid')) {
         constructor() {
             super();
             this.attachShadow({ mode: 'open' });
-            this.shadowRoot.innerHTML = `
-                <style>
-                    :host {
-                        display: grid;
-                        contain: layout;
-                        margin: 0 auto;
-                    }
-                </style>
-                <slot></slot>
-            `;
+            if (this.shadowRoot) {
+                this.shadowRoot.innerHTML = `
+                    <style>
+                        :host {
+                            display: grid;
+                            contain: layout;
+                            margin: 0 auto;
+                        }
+                    </style>
+                    <slot></slot>
+                `;
+            }
         }
     }
     customElements.define('waffl-grid', WafflGridElement);

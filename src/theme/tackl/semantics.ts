@@ -101,7 +101,7 @@ export const semantics = css`
 // --------------
 // 4. Grid Semantics
 // --------------
-const breakpointKeys = Object.keys(theme.grid.breakpoints);
+const breakpointKeys = Object.keys(theme.grid.breakpoints) as (keyof typeof theme.grid.breakpoints)[];
 
 export const gridSemantics = (props: StyleProps): RuleSet<object> => css`
     ${breakpointKeys.map(

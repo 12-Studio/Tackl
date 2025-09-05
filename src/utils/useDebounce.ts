@@ -27,11 +27,11 @@
  */
 import { useCallback, useRef } from 'react';
 
-export function useDebounce(fn, delay) {
-    const timerRef = useRef(null);
+export function useDebounce<T extends (...args: any[]) => any>(fn: T, delay: number) {
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     return useCallback(
-        (...args) => {
+        (...args: Parameters<T>) => {
             if (timerRef.current) {
                 clearTimeout(timerRef.current);
             }

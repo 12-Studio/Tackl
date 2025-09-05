@@ -63,7 +63,7 @@ type BrandColorVariations = {
     [K in keyof BrandColors]: AlphaShades;
 }
 
-type Theme = {
+export type Theme = {
     colors: {
         global: {
             white: AlphaShades;

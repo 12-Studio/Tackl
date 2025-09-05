@@ -5,8 +5,9 @@
         "paths": {
             "@/*": ["./src/*"],
             "@parts/*": ["./src/components/*"],
-            "@css/*": ["./src/css/*"],
             "@c/*": ["./src/components/*"],
+            "@css/*": ["./src/css/*"],
+            "@queries/*": ["./app/queries/*"],
             "@i": ["./src/components/Icon"],
             "@contexts": ["./src/components/Contexts"],
             "@waffl": ["./src/theme/waffl"],

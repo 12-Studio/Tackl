@@ -5,6 +5,7 @@ import type { RuleSet } from 'styled-components/dist/types';
 import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
 import { semantics, gridSemantics } from './semantics';
 import { breakpointUp, breakpointDown } from './breakpoints';
+import { theme, Theme } from '../';
 import {
 	headingXXL,
 	headingXL,
@@ -177,38 +178,41 @@ export const ContentBlockStyles: SemanticStyles = css`
 `;
 
 
-export const getGlobal = (color, opacity) => props => {
+export const getGlobal = (color: string, opacity?: number) => (props: { theme: any }) => {
     return props.theme.colors.global[color]?.[opacity !== undefined ? opacity : 100];
 };
 
-export const getBrand = (color, opacity) => props => {
-    return props.theme.colors.brand[color]?.[opacity !== undefined ? opacity : 100];
+export const getBrand = (color: string, lightness: string, opacity?: number) => (props: { theme: any }) => {
+    return props.theme.colors.brand[color]?.[lightness]?.[opacity !== undefined ? opacity : 100];
 };
 
-export const getGap = (gapSize: string) => props => {
+export const getMono = (color: string) => (props: { theme: any }) => {
+	return props.theme.colors.mono[color];
+};
+
+export const getGap = (gapSize: string) => (props: { theme: any }) => {
     return props.theme.gap[gapSize];
 };
 
-export const getSpace = (spaceSize: string) => props => {
+export const getSpace = (spaceSize: string) => (props: { theme: any }) => {
     return props.theme.space[spaceSize];
 };
 
-export const getFont = (fontFamily: string) => props => {
+export const getFont = (fontFamily: string) => (props: { theme: any }) => {
     return props.theme.font.family[fontFamily];
 };
 
-export const getFontWeight = (fontWeight: string) => props => {
+export const getFontWeight = (fontWeight: string) => (props: { theme: any }) => {
     return props.theme.font.weight[fontWeight];
 };
 
-export const getRadius = (radiusSize: string) => props => {
+export const getRadius = (radiusSize: string) => (props: { theme: any }) => {
     return props.theme.br[radiusSize];
 };
 
-export const getEase = (easeSize: string) => props => {
+export const getEase = (easeSize: string) => (props: { theme: any }) => {
     return props.theme.easing[easeSize];
 };
-
 export const getVw = useVw;
 export const getVwMobile = useVwMobile;
 export const getVwTablet = useVwTablet;

@@ -2,7 +2,6 @@
 
 // Imports
 // ------------
-import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import StyledComponentsRegistry from '@utils/registry';
 import SmoothScroll from '@parts/SmoothScroll';
@@ -21,7 +20,7 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 
 // Component
 // ------------
-const Client = ({ children }) => {
+const Client = ({ children }: { children: React.ReactNode }) => {
     // NOTE • Font Classes
     const classes = `${inter.variable}`;
 
@@ -50,12 +49,6 @@ const Client = ({ children }) => {
             </body>
         </html>
     );
-};
-
-// PropTypes
-// ------------
-Client.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 // Exports

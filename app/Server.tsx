@@ -1,6 +1,5 @@
 // Imports
 // ------------
-import PropTypes from 'prop-types';
 import Header from '@parts/Header';
 // import { performRequest } from '@utils/datocms';
 // import { GET_GLOBAL } from '@queries/getGlobal';
@@ -20,22 +19,16 @@ import Header from '@parts/Header';
 
 // Component
 // ------------
-const Server = async ({ children }) => {
+const Server = async ({ children }: { children: React.ReactNode }) => {
     // const data = await getGlobalData();
 
     return (
         <>
-            <Header data={null} />
+            <Header />
             {children}
             {/* <Footer /> */}
         </>
     );
-};
-
-// PropTypes
-// ------------
-Server.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 // Exports

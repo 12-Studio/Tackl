@@ -11,12 +11,12 @@ import { Jacket } from './styles';
 // Interfaces
 // ------------
 interface HeaderProps {
-    data: object;
+    
 }
 
 // Component
 // ------------
-const Header = ({ data }: HeaderProps) => {
+const Header = ({  }: HeaderProps) => {
     return (
         <Jacket>
             {/*  */}

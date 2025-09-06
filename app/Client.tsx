@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import StyledComponentsRegistry from '@utils/registry';
 import SmoothScroll from '@parts/SmoothScroll';
 import CookieBar from '@parts/CookieBar';
+import Contexts from '@parts/Contexts';
 import AnimationPlugins from '@parts/AnimationPlugins';
 import { ThemeProvider } from 'styled-components';
 import { theme, GlobalStyle } from '@theme';
@@ -40,9 +41,10 @@ const Client = ({ children }) => {
                             <CookieBar />
                         )}
 
-                        
+                        <Contexts>
                             <AnimationPlugins />
                             <SmoothScroll>{children}</SmoothScroll>
+                        </Contexts>
                     </ThemeProvider>
                 </StyledComponentsRegistry>
             </body>

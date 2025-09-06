@@ -8,7 +8,7 @@ import DeleteMe from '@parts/DeleteMe';
 // Interface
 // ------------
 interface ContentProps {
-    data: object;
+    data: any;
 }
 
 // Component

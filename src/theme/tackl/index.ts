@@ -179,13 +179,13 @@ export const ContentBlockStyles: SemanticStyles = css`
 
 
 export const getGlobal = (color: keyof Theme['colors']['global'], opacity?: number) => (props: { theme: Theme }) => {
-	const global = props.theme.colors?.global;
+	const global = props.theme.colors.global;
     return global?.[color]?.[opacity !== undefined ? opacity : 100];
 };
 
-export const getBrand = (color: keyof Theme['colors']['brand'], lightness: keyof Theme['colors']['brand'][keyof Theme['colors']['brand']], opacity?: number) => (props: { theme: Theme }) => {
+export const getBrand = (color: keyof Theme['colors']['brand'], opacity?: number) => (props: { theme: Theme }) => {
 	const brand = props.theme.colors?.brand;
-    return brand?.[color]?.[lightness]?.[opacity !== undefined ? opacity : 100];
+    return brand?.[color]?.[opacity !== undefined ? opacity : 'solid'];
 };
 
 export const getGap = (gapSize: keyof Theme['gap']) => (props: { theme: Theme }) => {

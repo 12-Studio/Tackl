@@ -23,9 +23,7 @@ const Page = async () => {
     // const data = await getHomeData();
 
     return (
-        <Content
-        // data={data}
-        />
+        <Content data={null} />
     );
 };
 

@@ -9,10 +9,9 @@ import {} from '@tackl/type';
 export const Jacket = styled(Header)(
     props => css`
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100svh;
+        z-index: 999;
+        inset: 0 0 auto 0;
+        height: 6rem;
         background: ${getBrand('bc2')};
         overflow: hidden;
     `

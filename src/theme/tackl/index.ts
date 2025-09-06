@@ -178,14 +178,19 @@ export const ContentBlockStyles: SemanticStyles = css`
 `;
 
 
-export const getGlobal = (color: keyof Theme['colors']['global'], opacity?: number) => (props: { theme: Theme }) => {
-	const global = props.theme.colors.global;
+export const getGlobal = (color: keyof Theme['colors']['global'], opacity?: number) => (props: any) => {
+    const global = props.theme.colors.global;
     return global?.[color]?.[opacity !== undefined ? opacity : 100];
 };
 
 export const getBrand = (color: keyof Theme['colors']['brand'], opacity?: number) => (props: { theme: Theme }) => {
 	const brand = props.theme.colors?.brand;
     return brand?.[color]?.[opacity !== undefined ? opacity : 'solid'];
+};
+
+
+export const getFeedback = (color: keyof Theme['colors']['feedback']) => (props: any) => {
+    return props.theme.colors.feedback[color];
 };
 
 export const getGap = (gapSize: keyof Theme['gap']) => (props: { theme: Theme }) => {
@@ -208,7 +213,7 @@ export const getRadius = (radiusSize: keyof Theme['br']) => (props: { theme: The
     return props.theme.br[radiusSize];
 };
 
-export const getEase = (easeSize: keyof Theme['easing']) => (props: { theme: Theme }) => {
+export const getEase = (easeSize: keyof Theme['easing']) => (props: any) => {
     return props.theme.easing[easeSize];
 };
 

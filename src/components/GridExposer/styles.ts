@@ -1,11 +1,24 @@
 // Imports
 // ------
 import styled, { css } from 'styled-components';
-import { Main, bp, Div, Aside } from '@tackl';
+import { Main, bp, Div, Aside, getEase, getGlobal, getFeedback } from '@tackl';
+import { Theme } from '@theme';
+
+
+// Interfaces
+// ------
+interface ColProps {
+    $altColor?: boolean;
+}
+
+interface JacketProps {
+    $showGrid?: boolean;
+    $altColor?: boolean;
+}
 
 // Exports
 // ------
-export const Col = styled(Div)(
+export const Col = styled(Div)<ColProps>(
     props => css`
         height: 100%;
 
@@ -13,8 +26,8 @@ export const Col = styled(Div)(
             display: block;
             opacity: ${props.$altColor ? 0.5 : 0.2};
             background-color: ${props.$altColor
-                ? props.theme.colors.feedback.negative
-                : props.theme.colors.global.white.solid};
+                ? getFeedback('negative')
+                : getGlobal('white')};
 
             width: 100%;
             height: 100%;
@@ -23,7 +36,7 @@ export const Col = styled(Div)(
     `
 );
 
-export const Jacket = styled(Aside)(
+export const Jacket = styled(Aside)<JacketProps>(
     props => css`
         position: fixed;
         top: 0;
@@ -32,7 +45,7 @@ export const Jacket = styled(Aside)(
         width: 100%;
         height: ${props.$showGrid ? `100%` : `0%`};
         pointer-events: none;
-        transition: all 1s ${props.theme.easing.bezzy};
+        transition: all 1s ${getEase('bezzy')};
 
         > .grid {
             height: 100%;

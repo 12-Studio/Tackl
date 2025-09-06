@@ -2,15 +2,20 @@
 
 // Imports
 // ------------
-import PropTypes from 'prop-types';
 
 // Styles
 // ------------
 import { Jacket } from './styles';
 
+// Interfaces
+// ------------
+interface FooterProps {
+    
+}
+
 // Component
 // ------------
-const Footer = ({ data }) => {
+const Footer = ({ }: FooterProps) => {
     return (
         <Jacket>
             {/*  */}
@@ -18,13 +23,7 @@ const Footer = ({ data }) => {
             {/*  */}
         </Jacket>
     );
-};
-
-// PropTypes
-// ------------
-Footer.propTypes = {
-    data: PropTypes.object,
-};
+}
 
 // Exports
 // ------------

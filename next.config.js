@@ -34,7 +34,7 @@ const nextConfig = {
     reactStrictMode: true,
 
     // Ensure trailing slashes are added to all routes
-    trailingSlash: false,
+    trailingSlash: true,
 
     // Styled Components settings
     compiler: {

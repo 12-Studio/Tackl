@@ -10,7 +10,7 @@ import '@css/global.css';
 
 // Component
 // ------------
-const RootLayout = ({ children }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <Client>
             <Server>{children}</Server>

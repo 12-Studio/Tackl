@@ -4,7 +4,6 @@
 // ------------
 import DeleteMe from '@parts/DeleteMe';
 
-
 // Interface
 // ------------
 interface ContentProps {

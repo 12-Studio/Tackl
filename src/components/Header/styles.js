@@ -11,8 +11,5 @@ export const Jacket = styled(Header)(
         position: fixed;
         z-index: 999;
         inset: 0 0 auto 0;
-        height: 6rem;
-        background: ${getBrand('bc2')};
-        overflow: hidden;
     `
 );

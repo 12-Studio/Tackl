@@ -17,6 +17,16 @@ interface GridInterface {
 	$noGutter?: boolean;
 }
 
+export interface GridProps {
+    $s?: string;
+    $m?: string;
+    $l?: string;
+    $xl?: string;
+    $xxl?: string;
+    $huge?: string;
+    $uber?: string;
+}
+
 // Constants
 // ------------
 const { columns, gutter, maxSize } = theme.grid;

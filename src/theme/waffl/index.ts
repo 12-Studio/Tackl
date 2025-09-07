@@ -15,6 +15,7 @@ interface GridInterface {
 	$isFullscreenTop?: boolean;
 	$isCenter?: boolean;
 	$noGutter?: boolean;
+	children?: React.ReactNode;
 }
 
 export interface GridProps {

@@ -4,8 +4,15 @@ const nextConfig = {
     images: {
         formats: ['image/avif', 'image/webp'],
         minimumCacheTTL: 60,
+        // imageSizes defines the set of fixed image widths (in pixels) that Next.js will generate for images
+        // when using the "sizes" attribute or for static image imports. These are typically used for icons,
+        // avatars, or other images that are rendered at specific, small sizes.
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-        deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+
+        // deviceSizes defines the set of viewport widths (in pixels) that Next.js considers when generating
+        // responsive images. These values are used to create different image versions for various device screen
+        // sizes, enabling optimal image loading and performance across mobile, tablet, and desktop devices.
+        deviceSizes: [390, 640, 750, 828, 1080, 1200, 1400, 1920, 2048, 3840],
         remotePatterns: [
             {
                 protocol: 'https',

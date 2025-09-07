@@ -3,12 +3,13 @@
 // Imports
 // ------------
 import React, { useRef, useMemo, createContext } from 'react';
+import Lenis from 'lenis';
 import { PerformanceProvider } from './Performance';
 
 // Context Definition
 // ------------
 export const GlobalContext = createContext({
-    lenis: { current: null } as React.RefObject<HTMLDivElement | null>
+    lenis: { current: null } as React.RefObject<Lenis | null>
 });
 
 // Component
@@ -20,7 +21,8 @@ export const GlobalContext = createContext({
  */
 const Contexts = ({ children }: { children: React.ReactNode }) => {
     // Create a stable reference for the lenis smooth scroll instance
-    const lenis = useRef<HTMLDivElement>(null);
+    const lenis = useRef<Lenis | null>(null);
+    
 
     // Memoize the context value to prevent unnecessary re-renders
     const contextValue = useMemo(

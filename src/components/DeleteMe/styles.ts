@@ -1,19 +1,20 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section } from '@tackl';
-import {} from '@tackl/type';
+import { bp, Div, getBrand, getGlobal, getEase } from '@tackl';
+import { } from '@tackl/type';
+
 
 // Exports
 // ------------
-export const Jacket = styled(Section)(
+export const Jacket = styled(Div)(
     props => css`
         position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100svh;
-        background: ${props.theme.colors.brand.bc2[100]};
+        background: ${getBrand('bc2')};
         overflow: hidden;
     `
 );

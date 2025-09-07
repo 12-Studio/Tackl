@@ -26,10 +26,15 @@ import { useGSAP } from '@gsap/react';
 
 // This needs to be wrapped in a component since we're using 'use client'
 // and need to handle SSR properly
-export default function AnimationPlugins() {
+const AnimationPlugins = () => {
     useLayoutEffect(() => {
         gsap.registerPlugin(ScrollTrigger, useGSAP);
     }, []);
 
     return null;
 }
+
+// Exports
+// ------------
+AnimationPlugins.displayName = 'AnimationPlugins';
+export default AnimationPlugins;

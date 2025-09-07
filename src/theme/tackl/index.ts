@@ -183,7 +183,7 @@ export const getGlobal = (color: keyof Theme['colors']['global'], opacity?: numb
     return global?.[color]?.[opacity !== undefined ? opacity : 100];
 };
 
-export const getBrand = (color: keyof Theme['colors']['brand'], opacity?: number) => (props: { theme: Theme }) => {
+export const getBrand = (color: keyof Theme['colors']['brand'], opacity?: number) => (props: any) => {
 	const brand = props.theme.colors?.brand;
     return brand?.[color]?.[opacity !== undefined ? opacity : 'solid'];
 };
@@ -193,23 +193,23 @@ export const getFeedback = (color: keyof Theme['colors']['feedback']) => (props:
     return props.theme.colors.feedback[color];
 };
 
-export const getGap = (gapSize: keyof Theme['gap']) => (props: { theme: Theme }) => {
+export const getGap = (gapSize: keyof Theme['gap']) => (props: any) => {
     return props.theme.gap[gapSize];
 };
 
-export const getSpace = (spaceSize: keyof Theme['space']) => (props: { theme: Theme }) => {
+export const getSpace = (spaceSize: keyof Theme['space']) => (props: any) => {
     return props.theme.space[spaceSize];
 };
 
-export const getFont = (fontFamily: keyof Theme['font']['family']) => (props: { theme: Theme }) => {
+export const getFont = (fontFamily: keyof Theme['font']['family']) => (props: any) => {
     return props.theme.font.family[fontFamily];
 };
 
-export const getFontWeight = (fontWeight: keyof Theme['font']['weight']) => (props: { theme: Theme }) => {
+export const getFontWeight = (fontWeight: keyof Theme['font']['weight']) => (props: any) => {
     return props.theme.font.weight[fontWeight];
 };
 
-export const getRadius = (radiusSize: keyof Theme['br']) => (props: { theme: Theme }) => {
+export const getRadius = (radiusSize: keyof Theme['br']) => (props: any) => {
     return props.theme.br[radiusSize];
 };
 

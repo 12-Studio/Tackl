@@ -8,7 +8,7 @@ import { PerformanceProvider } from './Performance';
 // Context Definition
 // ------------
 export const GlobalContext = createContext({
-    lenis: null,
+    lenis: { current: null } as React.RefObject<HTMLDivElement | null>
 });
 
 // Component
@@ -18,16 +18,16 @@ export const GlobalContext = createContext({
  * @param {Object} props - Component props
  * @param {React.ReactNode} props.children - Child components to be wrapped by the context
  */
-const Contexts = ({ children }) => {
+const Contexts = ({ children }: { children: React.ReactNode }) => {
     // Create a stable reference for the lenis smooth scroll instance
-    const lenis = useRef(null);
+    const lenis = useRef<HTMLDivElement>(null);
 
     // Memoize the context value to prevent unnecessary re-renders
     const contextValue = useMemo(
         () => ({
-            lenis, // Smooth scroll reference available globally
+            lenis,
         }),
-        [] // Empty dependency array since ref is stable
+        [] 
     );
 
     return (

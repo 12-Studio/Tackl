@@ -14,7 +14,7 @@ export const PerformanceContext = createContext({
 
 // Component
 // ------------
-export const PerformanceProvider = ({ children }) => {
+export const PerformanceProvider = ({ children }: { children: React.ReactNode }) => {
     const [performanceState, setPerformanceState] = useState({
         isReducedMotion: false,
         isLowPowerMode: false,

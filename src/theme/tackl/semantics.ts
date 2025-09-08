@@ -7,7 +7,7 @@ import { theme } from '..';
 
 // Types
 // ------
-interface StyleProps {
+export interface SemanticProps {
     $marBottom?: boolean;
     $marTop?: boolean;
     $mar?: boolean;
@@ -22,7 +22,7 @@ interface StyleProps {
 // --------------
 // 1. Margin
 // --------------
-const marginStyles = (props: StyleProps): RuleSet<object> => {
+const marginStyles = (props: SemanticProps): RuleSet<object> => {
     const s = theme.space.s;
     const m = theme.space.m;
     const l = theme.space.l;
@@ -54,7 +54,7 @@ const marginStyles = (props: StyleProps): RuleSet<object> => {
 // --------------
 // 2. Padding
 // --------------
-const paddingStyles = (props: StyleProps): RuleSet<object> => {
+const paddingStyles = (props: SemanticProps): RuleSet<object> => {
     const s = theme.space.s;
     const m = theme.space.m;
     const l = theme.space.l;
@@ -103,7 +103,7 @@ export const semantics = css`
 // --------------
 const breakpointKeys = Object.keys(theme.grid.breakpoints) as (keyof typeof theme.grid.breakpoints)[];
 
-export const gridSemantics = (props: StyleProps): RuleSet<object> => css`
+export const gridSemantics = (props: SemanticProps): RuleSet<object> => css`
     ${breakpointKeys.map(
         key =>
             props[`$${key}`] &&

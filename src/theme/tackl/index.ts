@@ -3,7 +3,7 @@
 import styled, { css } from 'styled-components';
 import type { RuleSet } from 'styled-components/dist/types';
 import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
-import { semantics, gridSemantics } from './semantics';
+import { semantics, gridSemantics, SemanticProps } from './semantics';
 import { breakpointUp, breakpointDown } from './breakpoints';
 import { Theme } from '../';
 import {
@@ -31,107 +31,107 @@ const SemanticBase: SemanticStyles = css`
 // --------------
 // 1. Semantics
 // --------------
-export const Section = styled.section<{}>`
+export const Section = styled.section<SemanticProps>`
 	${SemanticBase}
 `;
-export const Div = styled.div<{}>`
+export const Div = styled.div<SemanticProps>`
 	${SemanticBase}
 `;
-export const Main = styled.main<{}>`
+export const Main = styled.main<SemanticProps>`
 	${SemanticBase}
 `;
-export const Waffl = styled('waffl-grid')<{}>`
+export const Waffl = styled('waffl-grid')<SemanticProps>`
 	${SemanticBase}
 `;
-export const Nav = styled.nav<{}>`
+export const Nav = styled.nav<SemanticProps>`
 	${SemanticBase}
 `;
 
-export const Form = styled.form<{}>`
+export const Form = styled.form<SemanticProps>`
 	${SemanticBase}
 `;
-export const Article = styled.article<{}>`
+export const Article = styled.article<SemanticProps>`
 	${SemanticBase}
 `;
-export const Aside = styled.aside<{}>`
+export const Aside = styled.aside<SemanticProps>`
 	${SemanticBase}
 `;
-export const Header = styled.header<{}>`
+export const Header = styled.header<SemanticProps>`
 	${SemanticBase}
 `;
-export const Footer = styled.footer<{}>`
+export const Footer = styled.footer<SemanticProps>`
 	${SemanticBase}
 `;
-export const List = styled.ul<{}>`
+export const List = styled.ul<SemanticProps>`
 	${SemanticBase}
 `;
-export const ListItem = styled.li<{}>`
+export const ListItem = styled.li<SemanticProps>`
 	${SemanticBase}
 `;
 
 // Additional HTML5 tags
-export const Figure = styled.figure<{}>`
+export const Figure = styled.figure<SemanticProps>`
 	${SemanticBase}
 `;
-export const FigCaption = styled.figcaption<{}>`
+export const FigCaption = styled.figcaption<SemanticProps>`
 	${SemanticBase}
 `;
-export const Mark = styled.mark<{}>`
+export const Mark = styled.mark<SemanticProps>`
 	${SemanticBase}
 `;
-export const Time = styled.time<{}>`
+export const Time = styled.time<SemanticProps>`
 	${SemanticBase}
 `;
-export const Output = styled.output<{}>`
+export const Output = styled.output<SemanticProps>`
 	${SemanticBase}
 `;
-export const Details = styled.details<{}>`
+export const Details = styled.details<SemanticProps>`
 	${SemanticBase}
 `;
-export const Summary = styled.summary<{}>`
+export const Summary = styled.summary<SemanticProps>`
 	${SemanticBase}
 `;
-export const Dialog = styled.dialog<{}>`
+export const Dialog = styled.dialog<SemanticProps>`
 	${SemanticBase}
 `;
-export const Progress = styled.progress<{}>`
+export const Progress = styled.progress<SemanticProps>`
 	${SemanticBase}
 `;
-export const Meter = styled.meter<{}>`
+export const Meter = styled.meter<SemanticProps>`
 	${SemanticBase}
 `;
 
 // --------------
 // 2. Typography
 // --------------
-export const H1 = styled.h1<{}>`
+export const H1 = styled.h1<SemanticProps>`
 	${SemanticBase}
 `;
-export const H2 = styled.h2<{}>`
+export const H2 = styled.h2<SemanticProps>`
 	${SemanticBase}
 `;
-export const H3 = styled.h3<{}>`
+export const H3 = styled.h3<SemanticProps>`
 	${SemanticBase}
 `;
-export const H4 = styled.h4<{}>`
+export const H4 = styled.h4<SemanticProps>`
 	${SemanticBase}
 `;
-export const H5 = styled.h5<{}>`
+export const H5 = styled.h5<SemanticProps>`
 	${SemanticBase}
 `;
-export const H6 = styled.h6<{}>`
+export const H6 = styled.h6<SemanticProps>`
 	${SemanticBase}
 `;
-export const P = styled.p<{}>`
+export const P = styled.p<SemanticProps>`
 	${SemanticBase}
 `;
-export const Em = styled.em<{}>`
+export const Em = styled.em<SemanticProps>`
 	${SemanticBase}
 `;
-export const Span = styled.span<{}>`
+export const Span = styled.span<SemanticProps>`
 	${SemanticBase}
 `;
-export const Quote = styled.q<{}>`
+export const Quote = styled.q<SemanticProps>`
 	${SemanticBase}
 `;
 
@@ -168,7 +168,7 @@ const sharedBlockStyles: SemanticStyles = css`
 	}
 `;
 
-export const ContentBlock = styled(Div)<{}>`
+export const ContentBlock = styled(Div)<SemanticProps>`
 	${sharedBlockStyles}
 	${gridSemantics}
 `;

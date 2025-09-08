@@ -38,15 +38,11 @@ const {
 const baseHeadingStyles: RuleSet<object> = css`
     font-weight: ${regular};
     font-family: ${heading};
-    ${gridSemantics}
-    ${semantics}
 `;
 
 const baseBodyStyles: RuleSet<object> = css`
     font-family: ${body};
     font-weight: ${regular};
-    ${gridSemantics}
-    ${semantics}
 `;
 
 // Rest of your styles...

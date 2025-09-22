@@ -1,114 +1,104 @@
 // Imports
 // ------------
+import { performRequest } from '@utils/datocms';
+import { GET_HOME } from '../queries/getHome';
 import Content from './Content';
-// import { performRequest } from '@utils/datocms';
-// import { GET_HOME } from '@queries/getHome';
 
 // Data fetching at build time
 // ------------
-// async function getHomeData() {
-//     try {
-//         const data = await performRequest(GET_HOME);
-//         return data;
-//     } catch (error) {
-//         console.error('Failed to fetch data from DatoCMS:', error);
-//         // Return fallback data or null to prevent app crash
-//         return null;
-//     }
-// }
+async function getHomeData() {
+	try {
+		const data = await performRequest(GET_HOME);
+		return data;
+	} catch (error) {
+		console.error('Failed to fetch data from DatoCMS:', error);
+		// Return fallback data or null to prevent app crash
+		return null;
+	}
+}
 
 // Component
 // ------------
 const Page = async () => {
-    // const data = await getHomeData();
+	const data = await getHomeData();
 
-    return (
-        <Content data={null} />
-    );
+	return <Content data={data} />;
 };
 
 // SEO Metadata
 // ------------
-// export async function generateMetadata() {
-//     const data = await getHomeData();
+export const generateMetadata = async () => {
+	const data = await getHomeData();
 
-//     return {
-//         title: data?.title || 'Default Title',
-//         metadataBase: new URL('https://changeme.com'),
+	return {
+		metadataBase: new URL('https://sirio-strategies.com'),
 
-//         // Basic Metadata
-//         title: 'please_change_this',
-//         description: 'please_change_this',
-//         keywords: 'keyword1, keyword2, keyword3',
-//         robots: 'index, follow',
+		// Basic Metadata
+		title: 'Sirio Strategies - Home',
+		description: 'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
+		keywords: 'strategy, consulting, business, solutions',
+		robots: 'index, follow',
 
-//         // Open Graph
-//         openGraph: {
-//             type: 'website', // Missing: website, article, product, etc.
-//             title: 'please_change_this',
-//             description: 'please_change_this',
-//             url: 'please_change_this',
-//             siteName: 'please_change_this', // Missing: website name
-//             locale: 'en_US', // Missing: locale
-//             images: [
-//                 {
-//                     url: 'please_change_this',
-//                     width: 1200,
-//                     height: 630,
-//                     alt: 'please_change_this',
-//                     type: 'image/jpeg', // Missing: image type
-//                 },
-//             ],
-//         },
+		// Open Graph
+		openGraph: {
+			type: 'website',
+			title: 'Sirio Strategies - Home',
+			description: 'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
+			url: 'https://sirio-strategies.com',
+			siteName: 'Sirio Strategies',
+			locale: 'en_US',
+			images: [
+				{
+					url: '/og-image.jpg',
+					width: 1200,
+					height: 630,
+					alt: 'Sirio Strategies',
+					type: 'image/jpeg',
+				},
+			],
+		},
 
-//         // Twitter
-//         twitter: {
-//             card: 'summary_large_image', // Corrected from twitterCard
-//             site: '@username', // Missing: Twitter @username
-//             creator: '@username', // Missing: content creator's Twitter
-//             title: 'please_change_this',
-//             description: 'please_change_this',
-//             image: 'please_change_this',
-//         },
+		// Twitter
+		twitter: {
+			card: 'summary_large_image',
+			site: '@siriostrategies',
+			creator: '@siriostrategies',
+			title: 'Sirio Strategies - Home',
+			description: 'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
+			image: '/og-image.jpg',
+		},
 
-//         // Schema.org
-//         schema: {
-//             '@context': 'https://schema.org', // Missing: context
-//             '@type': 'please_change_this', // Corrected from schemaType
-//             name: 'please_change_this',
-//             description: 'please_change_this',
-//             url: 'please_change_this',
-//             image: 'please_change_this',
-//             author: {
-//                 // Missing: author information
-//                 '@type': 'Person',
-//                 name: 'Author Name',
-//             },
-//             datePublished: 'YYYY-MM-DD', // Missing: publication date
-//             dateModified: 'YYYY-MM-DD', // Missing: modification date
-//         },
+		// Schema.org
+		schema: {
+			'@context': 'https://schema.org',
+			'@type': 'Organization',
+			name: 'Sirio Strategies',
+			description: 'Your trusted partner for strategic solutions',
+			url: 'https://sirio-strategies.com',
+			image: '/og-image.jpg',
+			author: {
+				'@type': 'Person',
+				name: 'Sirio Strategies Team',
+			},
+			datePublished: '2024-01-01',
+			dateModified: '2024-01-01',
+		},
 
-//         // Additional Options
-//         alternates: {
-//             // Missing: alternative versions
-//             canonical: 'https://example.com/page',
-//             languages: {
-//                 'en-US': 'https://example.com/en/page',
-//                 'es-ES': 'https://example.com/es/page',
-//             },
-//         },
+		// Additional Options
+		alternates: {
+			canonical: 'https://sirio-strategies.com',
+			languages: {
+				'en-US': 'https://sirio-strategies.com',
+			},
+		},
 
-//         // Verification
-//         verification: {
-//             // Missing: site verification
-//             google: 'google-site-verification-code',
-//             yandex: 'yandex-verification-code',
-//             other: {
-//                 me: ['your-social-profile-url'],
-//             },
-//         },
-//     };
-// }
+		// Verification
+		verification: {
+			google: 'your-google-verification-code',
+			yandex: 'your-yandex-verification-code',
+		},
+	};
+};
 
 // Exports
 // ------------

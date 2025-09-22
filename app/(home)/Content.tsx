@@ -2,22 +2,24 @@
 
 // Imports
 // ------------
-import DeleteMe from '@parts/DeleteMe';
+import HomeHero from '@/components/HomeHero';
 
-// Interface
+// Interfaces
 // ------------
-interface ContentProps {
-    data: any;
-}
+import { HomeProps } from '@/types/home';
 
 // Component
 // ------------
-const Content = ({ data }: ContentProps) => {
-    return (
-        <>
-            <DeleteMe />
-        </>
-    );
+const Content = ({ data }: HomeProps) => {
+	const { pageTitle, subtext } = data.page;
+
+	return (
+		<>
+			<HomeHero pageTitle={pageTitle} subtext={subtext} />
+
+			<div style={{ height: '200vh', background: 'red', position: 'relative', zIndex: 999 }} />
+		</>
+	);
 };
 
 // Exports

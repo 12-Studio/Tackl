@@ -3,7 +3,7 @@
 // Imports
 // ------------
 import Lenis from 'lenis';
-import React, { createContext, useMemo, useRef } from 'react';
+import { createContext, useRef, useState } from 'react';
 import { PerformanceProvider } from './Performance';
 
 // Context Definition
@@ -23,13 +23,16 @@ const Contexts = ({ children }: { children: React.ReactNode }) => {
 	// Create a stable reference for the lenis smooth scroll instance
 	const lenis = useRef<Lenis | null>(null);
 
-	// Memoize the context value to prevent unnecessary re-renders
-	const contextValue = useMemo(
-		() => ({
-			lenis,
-		}),
-		[]
-	);
+	const [headerSize, setHeaderSize] = useState<number>(0);
+	const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
+	const contextValue = {
+		lenis,
+		headerSize, // Header size state
+		setHeaderSize, // Function to update header size
+		menuOpen,
+		setMenuOpen,
+	};
 
 	return (
 		<GlobalContext.Provider value={contextValue}>

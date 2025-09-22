@@ -1,7 +1,6 @@
 // Imports
 // ------
 import { breakpointUp as bp } from '@/theme/tackl/breakpoints';
-import { getBrand } from '@tackl';
 import { theme } from '@theme';
 import { css, RuleSet } from 'styled-components';
 
@@ -94,7 +93,6 @@ const baseBodyStyles: RuleSet = css`
 
 export const bodyM: RuleSet = css`
 	${baseBodyStyles}
-	color: ${getBrand('bc5')};
 	font-size: 2rem;
 	line-height: 1.32;
 

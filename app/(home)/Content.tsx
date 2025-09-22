@@ -4,6 +4,7 @@
 // ------------
 import HomeHero from '@parts/HomeHero';
 import Introduction from '@parts/Introduction';
+import WhatWeDo from '@parts/WhatWeDo';
 
 // Interfaces
 // ------------
@@ -12,13 +13,32 @@ import { HomeProps } from '@/types/home';
 // Component
 // ------------
 const Content = ({ data }: HomeProps) => {
-	const { pageTitle, subtext, ethosText } = data.page;
+	const {
+		pageTitle,
+		subtext,
+		ethosText,
+		strategyTitle,
+		strategyText,
+		insightsTitle,
+		insightsText,
+		evaluateTitle,
+		evaluateText,
+	} = data.page;
 
 	return (
 		<>
 			<HomeHero pageTitle={pageTitle} subtext={subtext} />
 
 			<Introduction text={ethosText} />
+
+			<WhatWeDo
+				strategyTitle={strategyTitle}
+				strategyText={strategyText}
+				insightsTitle={insightsTitle}
+				insightsText={insightsText}
+				evaluateTitle={evaluateTitle}
+				evaluateText={evaluateText}
+			/>
 
 			<div
 				style={{

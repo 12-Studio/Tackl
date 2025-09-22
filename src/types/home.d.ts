@@ -11,7 +11,8 @@ export interface HomeProps {
 
 export interface PageProps extends
     Hero,
-    Introduction
+    Introduction,
+    WhatWeDo
 {};
 
 export interface Hero {
@@ -21,4 +22,19 @@ export interface Hero {
 
 export interface Introduction {
     ethosText: string;
+}
+
+export interface WhatWeDo {
+    strategyTitle: string;
+    strategyText: {
+        value: unknown;
+    };
+    insightsTitle: string;
+    insightsText: {
+        value: unknown;
+    };
+    evaluateTitle: string;
+    evaluateText: {
+        value: unknown;
+    };
 }

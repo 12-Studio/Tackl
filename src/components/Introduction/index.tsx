@@ -32,7 +32,7 @@ const Introduction = ({ text }: IntroductionProps) => {
 	useAnimation(
 		({ isDesktop }) => {
 			if (target.current) {
-				const tl = gsap.timeline({
+				const clipTimeline = gsap.timeline({
 					scrollTrigger: {
 						trigger: trigger.current,
 						start: 'top 100%',
@@ -57,7 +57,7 @@ const Introduction = ({ text }: IntroductionProps) => {
 				gsap.set(trigger.current, before);
 
 				// Animate the trigger
-				tl.fromTo(trigger.current, before, after);
+				clipTimeline.fromTo(trigger.current, before, after);
 			}
 		},
 		{ scope: trigger }

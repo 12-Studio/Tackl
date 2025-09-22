@@ -72,7 +72,7 @@ const Hero = ({ pageTitle, subtext }: HeroProps) => {
 		<>
 			<Jacket>
 				<Grid $isCenter $isFullscreen>
-					<Content $s='1/3' $m='1/7' $l='2/12' ref={target}>
+					<Content $l='2/12' ref={target}>
 						<Title>{pageTitle}</Title>
 
 						<SubContent>

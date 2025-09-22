@@ -27,7 +27,6 @@ const Video = forwardRef<any, VideoProps>(({ url }, ref) => {
 
 	// NOTE • Functions
 	const handleReady = useCallback(() => {
-		console.log('Video ready');
 		if (mounted.current) {
 			setReady(true);
 		}
@@ -35,35 +34,19 @@ const Video = forwardRef<any, VideoProps>(({ url }, ref) => {
 
 	// NOTE • Handle video end with fade transition
 	const handleEnded = useCallback(() => {
-		if (mounted.current && playerRef.current) {
+		if (mounted.current) {
 			setIsFading(true);
 
 			// Fade out over 1 second
 			fadeTimer.current = setTimeout(() => {
 				if (mounted.current) {
-					// Try different methods to seek back to start
-					try {
-						if (typeof playerRef.current.seekTo === 'function') {
-							playerRef.current.seekTo(0, 'seconds');
-						} else if (
-							typeof playerRef.current.seekTo === 'function'
-						) {
-							playerRef.current.seekTo(0);
-						} else {
-							console.log(
-								'Available methods:',
-								Object.keys(playerRef.current)
-							);
-							// Fallback: restart by setting playing to false then true
-							setReady(false);
-							setTimeout(() => setReady(true), 100);
+					// Restart video by toggling ready state
+					setReady(false);
+					setTimeout(() => {
+						if (mounted.current) {
+							setReady(true);
 						}
-					} catch (error) {
-						console.error('Error seeking:', error);
-						// Fallback: restart by setting playing to false then true
-						setReady(false);
-						setTimeout(() => setReady(true), 100);
-					}
+					}, 100);
 					setIsFading(false);
 				}
 			}, FADE_DURATION);

@@ -5,7 +5,6 @@
 
 // REVIEW — Usage: ${getSpace('m')}
 
-
 // Imports
 // ------------
 import { Space } from './interface';
@@ -13,9 +12,9 @@ import { Space } from './interface';
 // Exports
 // ------------
 export const space: Space = {
-    s: '4.8rem',
-    m: '6rem',
-    l: '8.4rem',
-    xl: '12rem',
-    col: '8.333vw',
-}
+	s: '4.8rem',
+	m: '6rem',
+	l: 'calc(8.333vw + 1.8rem)',
+	xl: 'calc(8.333vw + 1.8rem)',
+	col: 'calc(8.333vw + 1.8rem)',
+};

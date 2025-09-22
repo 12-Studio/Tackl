@@ -8,11 +8,7 @@ import { Jacket } from './styles';
 
 // Interfaces
 // ------------
-interface IconProps {
-	type: keyof typeof ICON_MAP;
-	className?: string;
-	onClick?: () => void;
-}
+import { IconProps } from './interface';
 
 /**
  * Icon Component
@@ -44,7 +40,7 @@ interface IconProps {
 
 // Icon map to avoid repetitive if statements
 // ------------
-const ICON_MAP = {
+const ICON_MAP: Record<string, { viewBox: string; path: React.ReactNode }> = {
 	facebook: {
 		viewBox: '0 0 24 24',
 		path: (
@@ -63,7 +59,10 @@ const ICON_MAP = {
 			<>
 				<rect x='20' y='17' width='8' height='8' />
 				<polyline points='2 21 24 3 46 21' strokeLinecap='butt' />
-				<polyline points='19 45 19 33 29 33 29 45' strokeLinecap='butt' />
+				<polyline
+					points='19 45 19 33 29 33 29 45'
+					strokeLinecap='butt'
+				/>
 				<polyline points='7 24 7 45 41 45 41 24' />
 				<line x1='9' y1='15.273' x2='9' y2='7' strokeLinecap='butt' />
 			</>
@@ -84,8 +83,16 @@ const ICON_MAP = {
 		viewBox: '0 0 36 36',
 		path: (
 			<>
-				<path d='M18 7.5V28.5' strokeLinecap='round' strokeLinejoin='round' />
-				<path d='M28.5 18L18 28.5L7.5 18' strokeLinecap='round' strokeLinejoin='round' />
+				<path
+					d='M18 7.5V28.5'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				/>
+				<path
+					d='M28.5 18L18 28.5L7.5 18'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				/>
 			</>
 		),
 	},
@@ -93,9 +100,27 @@ const ICON_MAP = {
 		viewBox: '0 0 24 24',
 		path: (
 			<>
-				<path d='M12 19V5' strokeLinecap='round' strokeLinejoin='round' />
-				<path d='M5 12l7-7 7 7' strokeLinecap='round' strokeLinejoin='round' />
+				<path
+					d='M12 19V5'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				/>
+				<path
+					d='M5 12l7-7 7 7'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				/>
 			</>
+		),
+	},
+	chat: {
+		viewBox: '0 0 48 48',
+		path: (
+			<path
+				d='M42 23.0001C42.0069 25.6398 41.3901 28.2438 40.2 30.6001C38.7889 33.4235 36.6195 35.7984 33.9349 37.4586C31.2503 39.1188 28.1565 39.9988 25 40.0001C22.3603 40.0069 19.7562 39.3902 17.4 38.2001L6 42.0001L9.8 30.6001C8.60986 28.2438 7.99312 25.6398 8 23.0001C8.00122 19.8436 8.88122 16.7498 10.5414 14.0652C12.2017 11.3806 14.5765 9.21119 17.4 7.80006C19.7562 6.60992 22.3603 5.99317 25 6.00006H26C30.1687 6.23004 34.1061 7.98958 37.0583 10.9418C40.0105 13.894 41.77 17.8314 42 22.0001V23.0001Z'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
 		),
 	},
 	// Add other icons here following same pattern...
@@ -107,7 +132,9 @@ const Icon = memo(({ type, className, onClick }: IconProps) => {
 
 	// If icon type not found, log error and return null
 	if (!iconConfig) {
-		console.error(`Icon type "${type}" not found. Please check the type prop passed to Icon component.`);
+		console.error(
+			`Icon type "${type}" not found. Please check the type prop passed to Icon component.`
+		);
 		return null;
 	}
 

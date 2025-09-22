@@ -1,24 +1,26 @@
 {
-    "compilerOptions": {
-        "jsx": "react-jsx",
-        "allowJs": true,
-        "baseUrl": "./",
-        "paths": {
-            "@/*": ["src/*"],
-            "@parts/*": ["src/components/*"],
-            "@c/*": ["src/components/*"],
-            "@css/*": ["src/css/*"],
-            "@queries/*": ["src/app/queries/*"],
-            "@i": ["src/components/Icon"],
-            "@contexts": ["src/components/Contexts"],
-            "@tackl": ["src/theme/tackl"],
-            "@tackl/*": ["src/theme/tackl/*"],
-            "@waffl": ["src/theme/tackl/waffl"],
-            "@waffl/*": ["src/theme/tackl/waffl/*"],
-            "@theme": ["src/theme"],
-            "@theme/*": ["src/theme/*"],
-            "@utils/*": ["src/utils/*"],
-            "@public/*": ["public/*"]
-        }
-    }
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"allowJs": true,
+		"baseUrl": "./",
+		"paths": {
+			"@/*": ["src/*"],
+			"@parts/*": ["src/components/*"],
+			"@c/*": ["src/components/*"],
+			"@css/*": ["src/css/*"],
+			"@queries/*": ["src/app/queries/*"],
+			"@i": ["src/components/Icon"],
+			"@contexts": ["src/components/Contexts"],
+			"@tackl": ["src/theme/tackl"],
+			"@tackl/*": ["src/theme/tackl/*"],
+			"@waffl": ["src/theme/tackl/waffl"],
+			"@waffl/*": ["src/theme/tackl/waffl/*"],
+			"@theme": ["src/theme"],
+			"@theme/*": ["src/theme/*"],
+			"@types/*": ["src/types/*"],
+			"@types": ["src/types"],
+			"@utils/*": ["src/utils/*"],
+			"@public/*": ["public/*"]
+		}
+	}
 }

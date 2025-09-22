@@ -14,7 +14,7 @@ import { Content, FakeJacket, Jacket, Media, ScrollButtonPos, SubContent, SubTex
 
 // Interfaces
 // ------------
-import { HeroProps } from '@/types/home';
+import { HeroProps } from './interface';
 
 // Component
 // ------------

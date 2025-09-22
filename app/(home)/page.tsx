@@ -1,41 +1,42 @@
 // Imports
 // ------------
-import { performRequest } from '@utils/datocms';
-import { GET_HOME } from '../queries/getHome';
+// import { performRequest } from '@utils/datocms';
+// import { GET_HOME } from '../queries/getHome';
 import Content from './Content';
 
 // Data fetching at build time
 // ------------
-async function getHomeData() {
-	try {
-		const data = await performRequest(GET_HOME);
-		return data;
-	} catch (error) {
-		console.error('Failed to fetch data from DatoCMS:', error);
-		// Return fallback data or null to prevent app crash
-		return null;
-	}
-}
+// async function getHomeData() {
+// 	try {
+// 		const data = await performRequest(GET_HOME);
+// 		return data;
+// 	} catch (error) {
+// 		console.error('Failed to fetch data from DatoCMS:', error);
+// 		// Return fallback data or null to prevent app crash
+// 		return null;
+// 	}
+// }
 
 // Component
 // ------------
 const Page = async () => {
-	const data = await getHomeData();
+	// const data = await getHomeData();
 
-	return <Content data={data} />;
+	return <Content data={{ page: null }} />;
 };
 
 // SEO Metadata
 // ------------
 export const generateMetadata = async () => {
-	const data = await getHomeData();
+	// const data = await getHomeData();
 
 	return {
 		metadataBase: new URL('https://sirio-strategies.com'),
 
 		// Basic Metadata
 		title: 'Sirio Strategies - Home',
-		description: 'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
+		description:
+			'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
 		keywords: 'strategy, consulting, business, solutions',
 		robots: 'index, follow',
 
@@ -43,7 +44,8 @@ export const generateMetadata = async () => {
 		openGraph: {
 			type: 'website',
 			title: 'Sirio Strategies - Home',
-			description: 'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
+			description:
+				'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
 			url: 'https://sirio-strategies.com',
 			siteName: 'Sirio Strategies',
 			locale: 'en_US',
@@ -64,7 +66,8 @@ export const generateMetadata = async () => {
 			site: '@siriostrategies',
 			creator: '@siriostrategies',
 			title: 'Sirio Strategies - Home',
-			description: 'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
+			description:
+				'Welcome to Sirio Strategies - Your trusted partner for strategic solutions',
 			image: '/og-image.jpg',
 		},
 

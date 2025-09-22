@@ -7,7 +7,7 @@ import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
 import SmoothScroll from '@parts/SmoothScroll';
 import { GlobalStyle, theme } from '@theme';
-import { heebo } from '@theme/fonts';
+import { inter } from '@theme/fonts';
 import StyledComponentsRegistry from '@utils/registry';
 import dynamic from 'next/dynamic';
 import { ThemeProvider } from 'styled-components';
@@ -22,7 +22,7 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 // ------------
 const Client = ({ children }: { children: React.ReactNode }) => {
 	// NOTE • Font Classes
-	const classes = `${heebo.variable}`;
+	const classes = `${inter.variable}`;
 
 	return (
 		<html lang='en'>
@@ -33,7 +33,9 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 						<GlobalStyle />
 
 						{/* GridExposer only rendered in development environment */}
-						{process.env.NODE_ENV === 'development' && <GridExposer />}
+						{process.env.NODE_ENV === 'development' && (
+							<GridExposer />
+						)}
 
 						{/* CookieBar only rendered in production environment */}
 						{process.env.NODE_ENV === 'production' && <CookieBar />}

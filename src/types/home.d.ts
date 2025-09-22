@@ -5,15 +5,8 @@
 // ------------
 export interface HomeProps {
     data: {
-        page: PageProps;    
+        page: any;
     }
 }
 
-export interface PageProps extends
-    Hero
-{};
-
-export interface Hero {
-    pageTitle: string;
-    subtext: string;
-}
+export interface PageProps{};

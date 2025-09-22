@@ -5,9 +5,37 @@ import { emphasis, headingM, headingXL } from '@tackl/type';
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
+// Interfaces
+// ------------
+interface JacketProps {
+	$isTop?: boolean;
+	$isUpward?: boolean;
+}
+
+interface MenuItemProps {
+	$isActive?: boolean;
+	$isMobileOnly?: boolean;
+}
+
+interface MobileMenuItemProps {
+	$isLast?: boolean;
+}
+
+interface MobileToggleProps {
+	$isOpen?: boolean;
+}
+
+interface MobileMenuProps {
+	$isOpen?: boolean;
+}
+
+interface CTAProps {
+	$isActive?: boolean;
+}
+
 // Exports
 // ------------
-export const Jacket = styled(Header)(
+export const Jacket = styled(Header)<JacketProps>(
 	props => css`
 		z-index: 9999;
 
@@ -64,7 +92,7 @@ export const Menu = styled.nav(
 	`
 );
 
-export const MenuItem = styled.li(
+export const MenuItem = styled.li<MenuItemProps>(
 	props => css`
 		position: relative;
 		pointer-events: ${props.$isActive ? 'none' : 'all'};
@@ -135,14 +163,14 @@ export const MenuItem = styled.li(
 	`
 );
 
-export const CTA = styled(Link)(
+export const CTA = styled(Link)<CTAProps>(
 	props => css`
 		${emphasis}
 		position: relative;
 		color: transparent;
 		transition: ${props.theme.easing.ease};
 		overflow: hidden;
-		border-bottom: 2px solid ${getBrand('bc5')};
+		border-bottom: 2px solid ${getBrand('bc5', props.$isActive ? 50 : 100)};
 		padding-bottom: 0.6rem;
 		display: none;
 
@@ -181,7 +209,7 @@ export const CTA = styled(Link)(
 	`
 );
 
-export const MobileMenuItem = styled.li(
+export const MobileMenuItem = styled.li<MobileMenuItemProps>(
 	props => css`
 		opacity: 0;
 		transform: translateY(2.4rem);
@@ -208,7 +236,7 @@ export const MobileMenuItem = styled.li(
 	`
 );
 
-export const MobileToggle = styled.button(
+export const MobileToggle = styled.button<MobileToggleProps>(
 	props => css`
 		position: relative;
 		width: 3.6rem;
@@ -237,7 +265,8 @@ export const MobileToggle = styled.button(
 
 				${props.$isOpen &&
 				css`
-					transform: translate(-100%, -1.9rem) scaleX(1) rotate(-90deg);
+					transform: translate(-100%, -1.9rem) scaleX(1)
+						rotate(-90deg);
 				`}
 			}
 
@@ -264,12 +293,17 @@ export const MobileToggle = styled.button(
 	`
 );
 
-export const MobileMenu = styled.ul(
+export const MobileMenu = styled.ul<MobileMenuProps>(
 	props => css`
 		position: fixed;
 		z-index: 998;
 		inset: 0;
-		background: linear-gradient(180deg, ${getBrand('bc1')} 0%, ${getBrand('bc2')} 50%, ${getBrand('bc3')} 100%);
+		background: linear-gradient(
+			180deg,
+			${getBrand('bc1')} 0%,
+			${getBrand('bc2')} 50%,
+			${getBrand('bc3')} 100%
+		);
 
 		display: flex;
 		flex-direction: column;

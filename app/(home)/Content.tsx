@@ -2,7 +2,7 @@
 
 // Imports
 // ------------
-import HomeHero from '@/components/HomeHero';
+import HomeHero from '@parts/HomeHero';
 
 // Interfaces
 // ------------

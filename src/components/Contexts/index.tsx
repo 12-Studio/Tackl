@@ -10,6 +10,10 @@ import { PerformanceProvider } from './Performance';
 // ------------
 export const GlobalContext = createContext({
 	lenis: { current: null } as React.RefObject<Lenis | null>,
+	headerSize: 0,
+	setHeaderSize: (value: number) => {},
+	menuOpen: false,
+	setMenuOpen: (value: boolean) => {},
 });
 
 // Component

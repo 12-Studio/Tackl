@@ -11,7 +11,16 @@ import { use, useEffect, useRef, useState } from 'react';
 
 // Styles
 // ------------
-import { CTA, Home, Jacket, Menu, MenuItem, MobileMenu, MobileMenuItem, MobileToggle } from './styles';
+import {
+	CTA,
+	Home,
+	Jacket,
+	Menu,
+	MenuItem,
+	MobileMenu,
+	MobileMenuItem,
+	MobileToggle,
+} from './styles';
 
 // Constants
 const MENU_ITEMS = [
@@ -40,15 +49,14 @@ const Header = () => {
 	});
 
 	// NOTE • refs
-	const header = useRef();
+	const header = useRef<HTMLDivElement>(null);
 
-	// NOTE • Globally Set the header size
+	// NOTE • Globally Set the header size
 	useEffect(() => {
-		setHeaderSize(header.current.offsetHeight / 10);
-
-		// Set the header size as a CSS variable on the body
 		if (header.current) {
-			document.body.style.setProperty('--header-size', `${header.current.offsetHeight / 10}rem`);
+			const height = header.current.offsetHeight / 10;
+			setHeaderSize(height);
+			document.body.style.setProperty('--header-size', `${height}rem`);
 		}
 	}, [setHeaderSize]);
 
@@ -62,7 +70,7 @@ const Header = () => {
 
 		let lastScrollY = 0;
 
-		const handleScroll = ({ scroll }) => {
+		const handleScroll = ({ scroll }: { scroll: number }) => {
 			const isScrollingUp = scroll < lastScrollY;
 			lastScrollY = scroll;
 
@@ -81,13 +89,13 @@ const Header = () => {
 
 	// NOTE ª If menu is open stop lenis scrolling
 	useEffect(() => {
-		let timer;
+		let timer: NodeJS.Timeout;
 
 		if (menuOpen) {
-			lenis.current.stop();
+			lenis.current?.stop();
 		} else {
 			timer = setTimeout(() => {
-				lenis.current.start();
+				lenis.current?.start();
 			}, 500);
 		}
 
@@ -101,11 +109,15 @@ const Header = () => {
 		setMenuOpen(!menuOpen);
 	};
 
-	// ANCHOR ª It's safe to use the useResponsive hook here since our header and menus are position: fixed, so there's no risk of content layout shift (CLS) as nothing on the page moves.
+	// REVIEW • It's safe to use the useResponsive hook here since our header and menus are position: fixed, so there's no risk of content layout shift (CLS) as nothing on the page moves.
 
 	return (
 		<>
-			<Jacket ref={header} $isUpward={scrollPosition.upward} $isTop={scrollPosition.top}>
+			<Jacket
+				ref={header}
+				$isUpward={scrollPosition.upward}
+				$isTop={scrollPosition.top}
+			>
 				<Home href='/'>
 					<Logo />
 				</Home>
@@ -126,7 +138,10 @@ const Header = () => {
 										$isActive={pathname === item.href}
 										$isMobileOnly={item.mobileOnly}
 									>
-										<Link href={item.href} data-label={item.label}>
+										<Link
+											href={item.href}
+											data-label={item.label}
+										>
 											{item.label}
 										</Link>
 									</MenuItem>
@@ -134,7 +149,11 @@ const Header = () => {
 							</ul>
 						</Menu>
 
-						<CTA href='/contact' data-label='Chat to a strategist' $isActive={pathname === '/contact'}>
+						<CTA
+							href='/contact'
+							data-label='Chat to a strategist'
+							$isActive={pathname === '/contact'}
+						>
 							Chat to a strategist
 						</CTA>
 					</>
@@ -144,7 +163,10 @@ const Header = () => {
 			{isMobile && (
 				<MobileMenu $isOpen={menuOpen}>
 					{MENU_ITEMS.map(item => (
-						<MobileMenuItem key={item.href} $isLast={item.href === '/contact'}>
+						<MobileMenuItem
+							key={item.href}
+							$isLast={item.href === '/contact'}
+						>
 							<Link href={item.href}>{item.label}</Link>
 						</MobileMenuItem>
 					))}

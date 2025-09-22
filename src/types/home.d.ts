@@ -3,17 +3,17 @@
 
 // Exports
 // ------------
-export interface HomeProps extends Hero{
+export interface HomeProps {
     data: {
         page: PageProps;    
     }
 }
 
 export interface PageProps extends
-    HeroProps
+    Hero
 {};
 
-export interface HeroProps {
+export interface Hero {
     pageTitle: string;
     subtext: string;
 }

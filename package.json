@@ -32,6 +32,7 @@
 		"next": "^15.5.2",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
+		"react-player": "^3.3.3",
 		"styled-components": "^6.1.19",
 		"three": "^0.180.0",
 		"unicornstudio-react": "^1.4.29"

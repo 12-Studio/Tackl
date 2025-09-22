@@ -2,7 +2,8 @@
 
 // Imports
 // ------------
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import ReactPlayer from 'react-player';
 
 // Interfaces
 // ------------
@@ -14,63 +15,107 @@ const FADE_DURATION = 1000; // ms
 
 // Component
 // ------------
-const Video = forwardRef<HTMLVideoElement, VideoProps>(({ url }, ref) => {
-	const localRef = useRef<HTMLVideoElement>(null);
-	const videoRef = ref || localRef;
+const Video = forwardRef<any, VideoProps>(({ url }, ref) => {
+	// NOTE • State
+	const [ready, setReady] = useState(false);
+	const [isFading, setIsFading] = useState(false);
 
+	// NOTE • Refs
+	const playerRef = useRef<any>(null);
+	const mounted = useRef(false);
+	const fadeTimer = useRef<NodeJS.Timeout | null>(null);
+
+	// NOTE • Functions
+	const handleReady = useCallback(() => {
+		console.log('Video ready');
+		if (mounted.current) {
+			setReady(true);
+		}
+	}, []);
+
+	// NOTE • Handle video end with fade transition
+	const handleEnded = useCallback(() => {
+		if (mounted.current && playerRef.current) {
+			setIsFading(true);
+
+			// Fade out over 1 second
+			fadeTimer.current = setTimeout(() => {
+				if (mounted.current) {
+					// Try different methods to seek back to start
+					try {
+						if (typeof playerRef.current.seekTo === 'function') {
+							playerRef.current.seekTo(0, 'seconds');
+						} else if (
+							typeof playerRef.current.seekTo === 'function'
+						) {
+							playerRef.current.seekTo(0);
+						} else {
+							console.log(
+								'Available methods:',
+								Object.keys(playerRef.current)
+							);
+							// Fallback: restart by setting playing to false then true
+							setReady(false);
+							setTimeout(() => setReady(true), 100);
+						}
+					} catch (error) {
+						console.error('Error seeking:', error);
+						// Fallback: restart by setting playing to false then true
+						setReady(false);
+						setTimeout(() => setReady(true), 100);
+					}
+					setIsFading(false);
+				}
+			}, FADE_DURATION);
+		}
+	}, []);
+
+	// NOTE • Cleanup function
+	const cleanup = useCallback(() => {
+		// Clear fade timer
+		if (fadeTimer.current) {
+			clearTimeout(fadeTimer.current);
+			fadeTimer.current = null;
+		}
+	}, []);
+
+	// NOTE • Initialize
 	useEffect(() => {
-		const video = typeof videoRef === 'function' ? null : videoRef?.current;
-		if (!video) return;
+		mounted.current = true;
 
-		// Start with opacity 0
-		video.style.opacity = '0';
-
-		const handleCanPlay = () => {
-			// Fade in when video can play
-			video.style.transition = `opacity ${FADE_DURATION}ms ease-in-out`;
-			video.style.opacity = '1';
-		};
-
-		const handleTimeUpdate = () => {
-			if (!video.duration || isNaN(video.duration)) return;
-
-			const timeLeft = video.duration - video.currentTime;
-
-			// Fade out when 1 second remaining
-			if (timeLeft <= 1) {
-				video.style.transition = `opacity ${FADE_DURATION}ms ease-in-out`;
-				video.style.opacity = '0';
-			}
-		};
-
-		const handleEnded = () => {
-			// Reset opacity for loop
-			video.style.opacity = '0';
-		};
-
-		video.addEventListener('canplay', handleCanPlay);
-		video.addEventListener('timeupdate', handleTimeUpdate);
-		video.addEventListener('ended', handleEnded);
-
-		// Clean up
 		return () => {
-			video.removeEventListener('canplay', handleCanPlay);
-			video.removeEventListener('timeupdate', handleTimeUpdate);
-			video.removeEventListener('ended', handleEnded);
+			mounted.current = false;
+			cleanup();
 		};
-	}, [url, videoRef]);
+	}, [cleanup]);
+
+	// NOTE • Forward ref to player
+	useEffect(() => {
+		if (ref) {
+			if (typeof ref === 'function') {
+				ref(playerRef.current);
+			} else {
+				ref.current = playerRef.current;
+			}
+		}
+	}, [ref]);
 
 	return (
-		<video
-			ref={videoRef}
+		<ReactPlayer
+			ref={playerRef}
 			src={url}
-			autoPlay
-			loop
+			onReady={handleReady}
+			onEnded={handleEnded}
+			playing={!isFading}
 			muted
+			autoPlay
+			loop={false}
 			playsInline
-			controls
+			width='100%'
+			height='100%'
+			controls={false}
 			style={{
-				opacity: 0,
+				opacity: isFading ? 0 : 1,
 				transition: `opacity ${FADE_DURATION}ms ease-in-out`,
 			}}
 		/>

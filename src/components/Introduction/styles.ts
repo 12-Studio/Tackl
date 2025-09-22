@@ -4,10 +4,6 @@ import { H2, Section, bp, getBrand } from '@tackl';
 import { headingL, headingM } from '@tackl/type';
 import styled, { css } from 'styled-components';
 
-// Interfaces
-// ------------
-interface CHANGE_ME {}
-
 // Exports
 // ------------
 export const Jacket = styled(Section)(
@@ -19,15 +15,6 @@ export const Jacket = styled(Section)(
 		height: 100svh;
 		z-index: 2;
 		background: ${getBrand('bc1')};
-
-		&:after {
-			content: '';
-			position: absolute;
-			inset: 0;
-			background: ${getBrand('bc2')};
-			opacity: 0.05;
-			pointer-events: none;
-		}
 	`
 );
 

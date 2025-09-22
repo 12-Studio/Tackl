@@ -1,6 +1,6 @@
 // Imports
 // ------------
-import '@waffl/WebComponent';
+import '@/theme/tackl/waffl/WebComponent';
 import Client from './Client';
 import Server from './Server';
 

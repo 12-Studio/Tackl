@@ -25,7 +25,7 @@
 // Imports
 // ------
 import React, { useState, useCallback, useEffect } from 'react';
-import { Grid } from '@waffl';
+import { Grid } from '@/theme/tackl/waffl';
 
 // Styles
 // ------
@@ -73,7 +73,13 @@ const GridExposer = () => {
 
     // No memoization: gridColumns is created on each render
     const gridColumns = Array.from({ length: GRID_SIZE }, (_, i) => (
-        <Col key={i} $isMobile={i < MOBILE_COLUMNS} $isTablet={i < TABLET_COLUMNS} $altColor={useAltColor}>
+        <Col
+            key={i}
+            $isMobile={i < MOBILE_COLUMNS}
+            $isTablet={i < TABLET_COLUMNS}
+            $altColor={useAltColor}
+            style={{ gridColumn: i + 1 }}
+        >
             <span />
         </Col>
     ));

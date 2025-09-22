@@ -1,28 +1,15 @@
 // Imports
 // ------
 import { css } from 'styled-components';
-import type { RuleSet } from 'styled-components/dist/types';
-import { breakpointUp } from './breakpoints';
-import { theme } from '..';
-
-// Types
-// ------
-export interface SemanticProps {
-    $marBottom?: boolean;
-    $marTop?: boolean;
-    $mar?: boolean;
-    $mpad?: boolean;
-    $padBottom?: boolean;
-    $padTop?: boolean;
-    $pad?: boolean;
-    [key: string]: any; // For dynamic grid props
-}
+import { breakpointUp } from '../breakpoints';
+import { theme } from '@theme';
+import { SemanticProps } from './interface';
 
 // Exports
 // --------------
 // 1. Margin
 // --------------
-const marginStyles = (props: SemanticProps): RuleSet<object> => {
+const marginStyles = (props: SemanticProps) => {
     const s = theme.space.s;
     const m = theme.space.m;
     const l = theme.space.l;
@@ -54,18 +41,12 @@ const marginStyles = (props: SemanticProps): RuleSet<object> => {
 // --------------
 // 2. Padding
 // --------------
-const paddingStyles = (props: SemanticProps): RuleSet<object> => {
+const paddingStyles = (props: SemanticProps) => {
     const s = theme.space.s;
     const m = theme.space.m;
     const l = theme.space.l;
-    const mpad = theme.space.mpad;
 
     return css`
-        ${props.$mpad &&
-        css`
-            padding-inline: ${mpad};
-            ${breakpointUp.l` padding-inline: 0; `}
-        `}
 
         ${props.$padBottom &&
         css`
@@ -93,9 +74,9 @@ const paddingStyles = (props: SemanticProps): RuleSet<object> => {
 // --------------
 // 3. Container Styles
 // --------------
-export const semantics = css`
-    ${paddingStyles}
-    ${marginStyles}
+export const semantics = (props: SemanticProps) => css`
+    ${paddingStyles(props)}
+    ${marginStyles(props)}
 `;
 
 // --------------
@@ -103,7 +84,7 @@ export const semantics = css`
 // --------------
 const breakpointKeys = Object.keys(theme.grid.breakpoints) as (keyof typeof theme.grid.breakpoints)[];
 
-export const gridSemantics = (props: SemanticProps): RuleSet<object> => css`
+export const gridSemantics = (props: SemanticProps) => css`
     grid-column: 1/-1;
     
     ${breakpointKeys.map(

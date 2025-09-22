@@ -2,8 +2,10 @@
 // ------------
 import { Inter } from 'next/font/google';
 // import localFont from 'next/font/local';
+import { Fonts } from './interface';
 
-// Inter font configuration optimized with swap display for better loading performance
+
+// SECTION • Inter font configuration optimized with swap display for better loading performance
 export const inter = Inter({
     subsets: ['latin'],
     display: 'swap', // Uses fallback font until Inter loads
@@ -12,7 +14,7 @@ export const inter = Inter({
     preload: true,
 });
 
-// Local font configuration
+// SECTION • Local font configuration
 // export const customFont = localFont({
 //     src: [
 //         {
@@ -32,6 +34,27 @@ export const inter = Inter({
 //         }
 //     ],
 //     display: 'swap',
-//     variable: '--custom-font',
+//     variable: bodyFont,
 //     preload: true,
 // });
+
+
+// Exports
+// ------------
+export const fonts: Fonts = {
+    family: {
+        heading: `var(--inter), Arial, sans-serif`,
+        body: `var(--inter), Arial, sans-serif`,
+        mono: `var(--inter), Arial, sans-serif`,
+        script: `var(--inter), Arial, sans-serif`,
+    },
+    weight: {
+        light: 300,
+        regular: 400,
+        medium: 500,
+        semi: 600,
+        bold: 700,
+        heavy: 800,
+        black: 900,
+    },
+}

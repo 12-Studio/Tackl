@@ -1,8 +1,8 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Header, getBrand, getGlobal } from '@tackl';
-import {} from '@tackl/type';
+import { bp, Header, getBrand, getGlobal } from '@/theme/tackl';
+import {} from '@/theme/tackl/type';
 
 // Exports
 // ------------

@@ -2,15 +2,8 @@
 // ------
 import { theme } from '@theme';
 import { css } from 'styled-components';
-import type { RuleSet } from 'styled-components/dist/types';
+import { Sizes, BreakpointKey, MediaQueries, BreakpointMap } from './interface';
 
-// Types
-// ------
-type Sizes = typeof theme.grid.breakpoints;
-type BreakpointKey = keyof Sizes;
-type MediaQueries = Record<BreakpointKey, string>;
-type BreakpointFunction = (...args: Parameters<typeof css>) => RuleSet<object>;
-type BreakpointMap = Record<BreakpointKey, BreakpointFunction>;
 
 // Exports
 // ------

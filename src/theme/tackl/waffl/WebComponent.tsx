@@ -12,7 +12,7 @@ if (typeof window !== 'undefined' && !customElements.get('waffl-grid')) {
                         :host {
                             display: grid;
                             contain: layout;
-                            margin: 0 auto;
+                            margin-inline: auto;
                         }
                     </style>
                     <slot></slot>

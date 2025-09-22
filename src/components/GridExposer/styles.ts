@@ -1,14 +1,16 @@
 // Imports
 // ------
 import styled, { css } from 'styled-components';
-import { Main, bp, Div, Aside, getEase, getGlobal, getFeedback } from '@tackl';
-import { Theme } from '@theme';
+import { bp, Div, Aside, getEase, getGlobal, getFeedback } from '@/theme/tackl';
 
 
 // Interfaces
 // ------
 interface ColProps {
     $altColor?: boolean;
+    $isMobile?: boolean;
+    $isTablet?: boolean;
+    $isDesktop?: boolean;
 }
 
 interface JacketProps {
@@ -21,6 +23,21 @@ interface JacketProps {
 export const Col = styled(Div)<ColProps>(
     props => css`
         height: 100%;
+        display: none;
+
+        ${props.$isMobile && css`
+            display: block;
+        `}
+
+        ${bp.m`
+            ${props.$isTablet && css`
+                display: block;
+            `}
+        `}
+
+        ${bp.l`
+            display: block;
+        `}
 
         span {
             display: block;

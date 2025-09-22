@@ -11,6 +11,7 @@ type GridProps = {
 // NOTE — The main semantics object structure
 export interface SemanticProps extends GridProps {
     children?: React.ReactNode;
+    ref?: React.Ref<unknown>;
     $marBottom?: boolean;
     $marTop?: boolean;
     $mar?: boolean;

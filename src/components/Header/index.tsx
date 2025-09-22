@@ -124,9 +124,9 @@ const Header = () => {
 
 				{isMobile ? (
 					<MobileToggle onClick={handleMenu} $isOpen={menuOpen}>
-						<span></span>
-						<span></span>
-						<span></span>
+						<span />
+						<span />
+						<span />
 					</MobileToggle>
 				) : (
 					<>

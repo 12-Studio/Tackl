@@ -16,7 +16,7 @@ export const Jacket = styled(Section)(
 		${sharedHeroStyles}
 
 		position: fixed;
-		z-index: 10;
+		z-index: 1;
 		inset: 0 0 auto 0;
 		background: ${getBrand('bc1')};
 	`
@@ -178,7 +178,11 @@ export const Media = styled(Div)(
 
 		&:after {
 			z-index: 2;
-			background: linear-gradient(0deg, ${getBrand('bc1')} 0%, ${getBrand('bc1', 0)} 100%);
+			background: linear-gradient(
+				0deg,
+				${getBrand('bc1')} 0%,
+				${getBrand('bc1', 0)} 100%
+			);
 
 			${bp.l`
                 background: linear-gradient(90deg, ${getBrand('bc1')} var(--offset), ${getBrand('bc1', 0)} 100%);

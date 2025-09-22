@@ -3,6 +3,7 @@
 // Imports
 // ------------
 import HomeHero from '@parts/HomeHero';
+import Introduction from '@parts/Introduction';
 
 // Interfaces
 // ------------
@@ -11,13 +12,22 @@ import { HomeProps } from '@/types/home';
 // Component
 // ------------
 const Content = ({ data }: HomeProps) => {
-	const { pageTitle, subtext } = data.page;
+	const { pageTitle, subtext, ethosText } = data.page;
 
 	return (
 		<>
 			<HomeHero pageTitle={pageTitle} subtext={subtext} />
 
-			<div style={{ height: '200vh', background: 'red', position: 'relative', zIndex: 999 }} />
+			<Introduction text={ethosText} />
+
+			<div
+				style={{
+					height: '200vh',
+					background: 'red',
+					position: 'relative',
+					zIndex: 999,
+				}}
+			/>
 		</>
 	);
 };

@@ -3,9 +3,15 @@
 import { bp, getBrand, getEase } from '@tackl';
 import styled, { css } from 'styled-components';
 
+// Interfaces
+// ------------
+interface JacketProps {
+	$isDown: boolean;
+}
+
 // Exports
 // ------------
-export const Jacket = styled.a(
+export const Jacket = styled.button<JacketProps>(
 	props => css`
 		--size: 6rem;
 		--size-l: 8.4rem;
@@ -100,7 +106,7 @@ export const Jacket = styled.a(
 
 			&:nth-child(1) {
 				stroke: ${getBrand('bc1')};
-				transform: translate(-50%, ${props.isDown ? 300 : -300}%);
+				transform: translate(-50%, ${props.$isDown ? 300 : -300}%);
 				opacity: 0;
 			}
 

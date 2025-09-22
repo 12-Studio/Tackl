@@ -10,10 +10,15 @@ export interface HomeProps {
 }
 
 export interface PageProps extends
-    Hero
+    Hero,
+    Introduction
 {};
 
 export interface Hero {
     pageTitle: string;
     subtext: string;
+}
+
+export interface Introduction {
+    ethosText: string;
 }

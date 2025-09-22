@@ -10,14 +10,24 @@
 }
 
 /* HTML5 Elements */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
 	display: block;
 }
 
 /* Typography & Links */
 html {
 	font-size: 62.5%; /* 10px base font size for easier rem calculations */
+	interpolate-size: allow-keywords; /* Allow keywords in interpolate-size – Not well supported yet in all browsers */
 }
 
 body {
@@ -30,18 +40,25 @@ a {
 }
 
 /* Lists */
-ol, ul {
+ol,
+ul {
 	list-style: none;
 }
 
 /* Form Elements */
-input, select, textarea, button {
+input,
+select,
+textarea,
+button {
 	border: none;
 	border-radius: 0;
 	background: none;
 }
 
-input:focus, select:focus, textarea:focus, button:focus {
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
 	outline: none;
 }
 
@@ -98,10 +115,11 @@ input:focus, select:focus, textarea:focus, button:focus {
 
 /* Page Transitions */
 body {
-	transition: opacity 0.75s cubic-bezier(0.430, 0.195, 0.020, 1.000),
-	            background 0.75s cubic-bezier(0.430, 0.195, 0.020, 1.000),
-	            transform 0.75s cubic-bezier(0.430, 0.195, 0.020, 1.000),
-	            filter 0.75s cubic-bezier(0.430, 0.195, 0.020, 1.000);
+	transition:
+		opacity 0.75s cubic-bezier(0.43, 0.195, 0.02, 1),
+		background 0.75s cubic-bezier(0.43, 0.195, 0.02, 1),
+		transform 0.75s cubic-bezier(0.43, 0.195, 0.02, 1),
+		filter 0.75s cubic-bezier(0.43, 0.195, 0.02, 1);
 }
 
 .page-transition {

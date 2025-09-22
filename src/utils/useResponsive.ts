@@ -17,7 +17,7 @@
  * const isDesktop = useIsDesktop();
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const DESKTOP_BREAKPOINT = 1024;
 
@@ -25,10 +25,10 @@ const DESKTOP_BREAKPOINT = 1024;
  * Object returned by {@link useResponsive}.
  */
 export interface ResponsiveState {
-    /** True if the viewport is less than the desktop breakpoint. */
-    isMobile: boolean;
-    /** True if the viewport is at least the desktop breakpoint. */
-    isDesktop: boolean;
+	/** True if the viewport is less than the desktop breakpoint. */
+	isMobile: boolean;
+	/** True if the viewport is at least the desktop breakpoint. */
+	isDesktop: boolean;
 }
 
 /**
@@ -41,35 +41,45 @@ export interface ResponsiveState {
  * if (isMobile) return <MobileComponent />;
  */
 export function useResponsive(): ResponsiveState {
-    const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
-    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const [windowWidth, setWindowWidth] = useState<number>(0);
+	const [isMounted, setIsMounted] = useState<boolean>(false);
+	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Debounced resize handler
-    const handleResize = useCallback(() => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-        timeoutRef.current = setTimeout(() => {
-            setWindowWidth(window.innerWidth);
-        }, 100);
-    }, []);
+	// Debounced resize handler
+	const handleResize = useCallback(() => {
+		if (timeoutRef.current) {
+			clearTimeout(timeoutRef.current);
+		}
+		timeoutRef.current = setTimeout(() => {
+			setWindowWidth(window.innerWidth);
+		}, 100);
+	}, []);
 
-    useEffect(() => {
-        // Set initial width (in case SSR)
-        setWindowWidth(typeof window !== 'undefined' ? window.innerWidth : 0);
+	useEffect(() => {
+		// Mark as mounted and set initial width
+		setIsMounted(true);
+		setWindowWidth(window.innerWidth);
 
-        window.addEventListener('resize', handleResize, { passive: true });
+		window.addEventListener('resize', handleResize, { passive: true });
 
-        return () => {
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [handleResize]);
+		return () => {
+			if (timeoutRef.current) clearTimeout(timeoutRef.current);
+			window.removeEventListener('resize', handleResize);
+		};
+	}, [handleResize]);
 
-    return {
-        isMobile: windowWidth < DESKTOP_BREAKPOINT,
-        isDesktop: windowWidth >= DESKTOP_BREAKPOINT,
-    };
+	// Return safe defaults during SSR and before mount
+	if (!isMounted) {
+		return {
+			isMobile: false,
+			isDesktop: false,
+		};
+	}
+
+	return {
+		isMobile: windowWidth < DESKTOP_BREAKPOINT,
+		isDesktop: windowWidth >= DESKTOP_BREAKPOINT,
+	};
 }
 
 /**
@@ -82,8 +92,8 @@ export function useResponsive(): ResponsiveState {
  * if (isMobile) { ... }
  */
 export function useIsMobile(): boolean {
-    const { isMobile } = useResponsive();
-    return isMobile;
+	const { isMobile } = useResponsive();
+	return isMobile;
 }
 
 /**
@@ -96,6 +106,6 @@ export function useIsMobile(): boolean {
  * if (isDesktop) { ... }
  */
 export function useIsDesktop(): boolean {
-    const { isDesktop } = useResponsive();
-    return isDesktop;
+	const { isDesktop } = useResponsive();
+	return isDesktop;
 }

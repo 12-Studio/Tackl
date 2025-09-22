@@ -14,10 +14,6 @@ const Content = ({ data }: HomeProps) => {
 	return (
 		<>
 			<DeleteMe />
-
-			<div style={{ height: 2000, background: 'red' }} />
-			<div style={{ height: 2000, background: 'blue' }} />
-			<div style={{ height: 2000, background: 'green' }} />
 		</>
 	);
 };

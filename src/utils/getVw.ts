@@ -22,21 +22,21 @@
 import { theme } from '@theme';
 const { xxl, sm, m } = theme.grid.breakpoints;
 
-const desktop = Number(xxl.replace('px', ''));
-const tablet = Number(m.replace('px', ''));
-const mobile = Number(sm.replace('px', ''));
+const desktop = Number(xxl?.replace('px', '') || '1920');
+const tablet = Number(m?.replace('px', '') || '768');
+const mobile = Number(sm?.replace('px', '') || '375');
 
 export const getVw = (px: number): string => {
-    const vw = (px / desktop) * 100;
-    return `${vw.toFixed(2)}vw`;
+	const vw = (px / desktop) * 100;
+	return `${vw.toFixed(2)}vw`;
 };
 
 export const getVwMobile = (px: number): string => {
-    const vw = (px / mobile) * 100;
-    return `${vw.toFixed(2)}vw`;
+	const vw = (px / mobile) * 100;
+	return `${vw.toFixed(2)}vw`;
 };
 
 export const getVwTablet = (px: number): string => {
-    const vw = (px / tablet) * 100;
-    return `${vw.toFixed(2)}vw`;
+	const vw = (px / tablet) * 100;
+	return `${vw.toFixed(2)}vw`;
 };

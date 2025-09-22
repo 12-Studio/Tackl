@@ -25,3 +25,11 @@ export const Background = styled.div(
         inset: 0;
     `
 );
+
+
+export const Col = styled(Div)(
+    props => css`
+        height: 10rem;
+        background: yellow;
+    `
+);

@@ -104,6 +104,8 @@ export const semantics = css`
 const breakpointKeys = Object.keys(theme.grid.breakpoints) as (keyof typeof theme.grid.breakpoints)[];
 
 export const gridSemantics = (props: SemanticProps): RuleSet<object> => css`
+    grid-column: 1/-1;
+    
     ${breakpointKeys.map(
         key =>
             props[`$${key}`] &&

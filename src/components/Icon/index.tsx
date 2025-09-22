@@ -8,11 +8,7 @@ import { Jacket } from './styles';
 
 // Interfaces
 // ------------
-interface IconProps {
-	type: keyof typeof ICON_MAP;
-	className?: string;
-	onClick?: () => void;
-}
+import { IconProps } from './interface';
 
 /**
  * Icon Component
@@ -44,7 +40,7 @@ interface IconProps {
 
 // Icon map to avoid repetitive if statements
 // ------------
-const ICON_MAP = {
+const ICON_MAP: Record<string, { viewBox: string; path: React.ReactNode }> = {
 	facebook: {
 		viewBox: '0 0 24 24',
 		path: (
@@ -57,47 +53,6 @@ const ICON_MAP = {
 			<path d='M24,8.2C24,8.2,24,8.2,24,8.2c0-0.1,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0,0,0,0,0-0.1c0,0,0,0,0-0.1 c0,0,0,0,0,0c0,0,0,0,0-0.1c0,0,0,0,0,0c0,0,0,0-0.1-0.1c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0l-11-7.3 c-0.3-0.2-0.8-0.2-1.1,0l-11,7.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0,0,0,0,0c0,0,0,0-0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0.1 c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1v7.3 c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0,0,0.1 c0,0,0,0,0,0c0,0,0,0,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0l11,7.3c0.2,0.1,0.4,0.2,0.6,0.2 c0.2,0,0.4-0.1,0.6-0.2l11-7.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0-0.1 c0,0,0,0,0,0c0,0,0,0,0-0.1c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0-0.1,0-0.1V8.3 C24,8.3,24,8.3,24,8.2z M13,3l8.1,5.4l-3.6,2.4l-4.5-3V3z M11,3v4.8l-4.5,3L2.9,8.3L11,3z M2.1,10.3L4.6,12l-2.6,1.7V10.3z M11,21 l-8.1-5.4l3.6-2.4l4.5,3V21z M12,14.4L8.4,12L12,9.6l3.6,2.4L12,14.4z M13,21v-4.8l4.5-3l3.6,2.4L13,21z M21.9,13.7L19.4,12l2.6-1.7 V13.7z' />
 		),
 	},
-	home: {
-		viewBox: '0 0 48 48',
-		path: (
-			<>
-				<rect x='20' y='17' width='8' height='8' />
-				<polyline points='2 21 24 3 46 21' strokeLinecap='butt' />
-				<polyline points='19 45 19 33 29 33 29 45' strokeLinecap='butt' />
-				<polyline points='7 24 7 45 41 45 41 24' />
-				<line x1='9' y1='15.273' x2='9' y2='7' strokeLinecap='butt' />
-			</>
-		),
-	},
-	partnership: {
-		viewBox: '0 0 48 48',
-		path: (
-			<g strokeLinecap='round' strokeLinejoin='round'>
-				<circle cx='9' cy='9' r='5' />
-				<path d='M21,29c-7-3.583-7-10-13-10a6,6,0,0,0-6,6V43H14V31' />
-				<path d='M27,29c7-3.583,7-10,13-10a6,6,0,0,1,6,6V43H34V31' />
-				<circle cx='39' cy='9' r='5' />
-			</g>
-		),
-	},
-	arrowDown: {
-		viewBox: '0 0 36 36',
-		path: (
-			<>
-				<path d='M18 7.5V28.5' strokeLinecap='round' strokeLinejoin='round' />
-				<path d='M28.5 18L18 28.5L7.5 18' strokeLinecap='round' strokeLinejoin='round' />
-			</>
-		),
-	},
-	arrowUp: {
-		viewBox: '0 0 24 24',
-		path: (
-			<>
-				<path d='M12 19V5' strokeLinecap='round' strokeLinejoin='round' />
-				<path d='M5 12l7-7 7 7' strokeLinecap='round' strokeLinejoin='round' />
-			</>
-		),
-	},
 	// Add other icons here following same pattern...
 };
 
@@ -107,7 +62,9 @@ const Icon = memo(({ type, className, onClick }: IconProps) => {
 
 	// If icon type not found, log error and return null
 	if (!iconConfig) {
-		console.error(`Icon type "${type}" not found. Please check the type prop passed to Icon component.`);
+		console.error(
+			`Icon type "${type}" not found. Please check the type prop passed to Icon component.`
+		);
 		return null;
 	}
 

@@ -19,20 +19,20 @@
 
 // Imports
 // ------------
-import { useLayoutEffect } from 'react';
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
+import { useLayoutEffect } from 'react';
 
 // This needs to be wrapped in a component since we're using 'use client'
 // and need to handle SSR properly
 const AnimationPlugins = () => {
-    useLayoutEffect(() => {
-        gsap.registerPlugin(ScrollTrigger, useGSAP);
-    }, []);
+	useLayoutEffect(() => {
+		gsap.registerPlugin(ScrollTrigger, useGSAP);
+	}, []);
 
-    return null;
-}
+	return null;
+};
 
 // Exports
 // ------------

@@ -50,16 +50,16 @@ const paddingStyles = (props: SemanticProps) => {
 
         ${props.$padBottom &&
         css`
-            padding-block: ${s};
-            ${breakpointUp.m`padding-block: ${m};`}
-            ${breakpointUp.l`padding-block: ${l};`}
+            padding-bottom: ${s};
+            ${breakpointUp.m`padding-bottom: ${m};`}
+            ${breakpointUp.l`padding-bottom: ${l};`}
         `}
 
         ${props.$padTop &&
         css`
-            padding-block: ${s};
-            ${breakpointUp.m` padding-block: ${m};`}
-            ${breakpointUp.l` padding-block: ${l};`}
+            padding-top: ${s};
+            ${breakpointUp.m` padding-top: ${m};`}
+            ${breakpointUp.l` padding-top: ${l};`}
         `}
         
         ${props.$pad &&

@@ -42,8 +42,8 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 	}, []);
 
 	return (
-		<html lang='en'>
-			<body className={classes}>
+		<html lang='en' className={classes}>
+			<body>
 				<StyledComponentsRegistry>
 					<ThemeProvider theme={theme} key='themeprovider'>
 						<GlobalStyle />

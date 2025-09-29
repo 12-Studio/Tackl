@@ -51,6 +51,13 @@ export const theme: Theme = {
 // ------------
 // NOTE • This is the global style applied to the body and all elements.
 export const GlobalStyle = createGlobalStyle`
-	body { background: ${theme.colors.global.black[100]}; }
-	* { color: ${theme.colors.global.white[100]}; }
+	/* In the event we need to use our theme values in the CSS */
+	html {
+		--bezzy: ${theme.easing.bezzy};
+		--bezzy2: ${theme.easing.bezzy2};
+		--bezzy3: ${theme.easing.bezzy3};
+	}
+
+	body { background: var(--black) }
+	* { color: var(--white) }
 `;

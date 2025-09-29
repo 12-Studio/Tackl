@@ -2,6 +2,7 @@
 // ------------
 // import { performRequest } from '@utils/datocms';
 // import { GET_HOME } from '../queries/getHome';
+// import { Metadata } from 'next';
 import Content from './Content';
 
 // Data fetching at build time
@@ -27,15 +28,14 @@ const Page = async () => {
 
 // SEO Metadata
 // ------------
-// export async function generateMetadata() {
+// export async function generateMetadata(): Promise<Metadata> {
 //     const data = await getHomeData();
 
 //     return {
-//         title: data?.title || 'Default Title',
+//         title: data?.title || 'CHANGE ME',
 //         metadataBase: new URL('https://changeme.com'),
 
 //         // Basic Metadata
-//         title: 'please_change_this',
 //         description: 'please_change_this',
 //         keywords: 'keyword1, keyword2, keyword3',
 //         robots: 'index, follow',
@@ -66,25 +66,18 @@ const Page = async () => {
 //             creator: '@username', // Missing: content creator's Twitter
 //             title: 'please_change_this',
 //             description: 'please_change_this',
-//             image: 'please_change_this',
+//             images: [
+//                 {
+//                     url: 'please_change_this',
+//                     width: 1200,
+//                     height: 630,
+//                     alt: 'please_change_this',
+//                 },
+//             ],
 //         },
 
-//         // Schema.org
-//         schema: {
-//             '@context': 'https://schema.org', // Missing: context
-//             '@type': 'please_change_this', // Corrected from schemaType
-//             name: 'please_change_this',
-//             description: 'please_change_this',
-//             url: 'please_change_this',
-//             image: 'please_change_this',
-//             author: {
-//                 // Missing: author information
-//                 '@type': 'Person',
-//                 name: 'Author Name',
-//             },
-//             datePublished: 'YYYY-MM-DD', // Missing: publication date
-//             dateModified: 'YYYY-MM-DD', // Missing: modification date
-//         },
+//         // Schema.org (handled via other metadata properties)
+//         // Note: Next.js generates structured data from other metadata properties
 
 //         // Additional Options
 //         alternates: {

@@ -16,10 +16,19 @@ import { DeleteMeProps } from './interface';
 // Component
 // ------------
 
-const DeleteMe: React.FC<DeleteMeProps> = ({ projectId = 'p3qwmwgkcE3DmuIEtPzz' }) => {
+const DeleteMe: React.FC<DeleteMeProps> = ({
+	projectId = 'p3qwmwgkcE3DmuIEtPzz',
+}) => {
 	return (
 		<Jacket>
-			<Background style={{ '--unicorn-width': '100%', '--unicorn-height': '100%' } as React.CSSProperties}>
+			<Background
+				style={
+					{
+						'--unicorn-width': '100%',
+						'--unicorn-height': '100%',
+					} as React.CSSProperties
+				}
+			>
 				<UnicornScene
 					projectId={projectId}
 					width='100%'

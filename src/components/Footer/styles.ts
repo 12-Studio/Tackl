@@ -1,13 +1,13 @@
 // Imports
 // ------------
+import { Footer } from '@/theme/tackl';
+import {} from '@tackl/type';
 import styled, { css } from 'styled-components';
-import { bp, Footer, getBrand, getGlobal } from '@/theme/tackl';
-import {} from '@/theme/tackl/type';
 
 // Exports
 // ------------
 export const Jacket = styled(Footer)(
-    props => css`
-        /*  */
-    `
+	props => css`
+		/*  */
+	`
 );

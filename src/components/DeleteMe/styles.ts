@@ -1,7 +1,6 @@
 // Imports
 // ------------
-import { Div, getBrand } from '@/theme/tackl';
-import {} from '@/theme/tackl/type';
+import { Div, getGlobal } from '@/theme/tackl';
 import styled, { css } from 'styled-components';
 
 // Exports
@@ -13,7 +12,7 @@ export const Jacket = styled(Div)(
 		align-items: center;
 		justify-content: center;
 		height: 100svh;
-		background: ${getBrand('bc2')};
+		background: ${getGlobal('black')};
 		overflow: hidden;
 	`
 );

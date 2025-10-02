@@ -1,6 +1,6 @@
-import { execSync } from 'child_process';
-import fs from 'fs';
-import prompts from 'prompts';
+const prompts = require('prompts');
+const { execSync } = require('child_process');
+const fs = require('fs');
 
 (async () => {
 	try {

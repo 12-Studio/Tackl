@@ -1,7 +1,20 @@
 {
 	"name": "tackl",
-	"version": "3.2.2",
-	"private": true,
+	"version": "1.0.0",
+	"description": "The ultimate Next.js starter kit!",
+	"type": "module",
+	"bin": {
+		"tackl": "./bin/tackl.js"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=20.0.0"
+	},
+	"author": "joebentaylor1995",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/12-studio/tackl"
+	},
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"build": "next build",
@@ -34,7 +47,10 @@
 		"react-datocms": "^7.2.2",
 		"react-dom": "^19.1.1",
 		"styled-components": "^6.1.19",
-		"unicornstudio-react": "^1.4.29"
+		"unicornstudio-react": "^1.4.29",
+		"picocolors": "^1.0.0",
+		"prompts": "^2.4.2",
+		"tar": "^7.4.3"
 	},
 	"devDependencies": {
 		"@lhci/cli": "^0.15.1",
@@ -58,8 +74,7 @@
 		"eslint-plugin-storybook": "^9.1.4",
 		"husky": "^9.1.7",
 		"prettier": "^3.6.2",
-		"storybook": "^9.1.4",
-		"prompts": "^2.4.2"
+		"storybook": "^9.1.4"
 	},
 	"husky": {
 		"hooks": {

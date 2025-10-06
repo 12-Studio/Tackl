@@ -1,6 +1,6 @@
 {
 	"name": "tackl",
-	"version": "1.0.9",
+	"version": "1.0.10",
 	"description": "The ultimate Next.js starter kit with Waffl Grid system",
 	"type": "module",
 	"bin": {

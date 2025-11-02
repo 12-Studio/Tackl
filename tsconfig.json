@@ -1,45 +1,89 @@
 {
-	"compilerOptions": {
-		"target": "es6",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"incremental": true,
-		"baseUrl": "./",
-		"paths": {
-			"@/*": ["src/*"],
-			"@parts/*": ["src/components/*"],
-			"@c/*": ["src/components/*"],
-			"@css/*": ["src/css/*"],
-			"@queries/*": ["src/app/queries/*"],
-			"@i": ["src/components/Icon"],
-			"@contexts": ["src/components/Contexts"],
-			"@tackl": ["src/theme/tackl"],
-			"@tackl/*": ["src/theme/tackl/*"],
-			"@waffl": ["src/theme/tackl/waffl"],
-			"@waffl/*": ["src/theme/tackl/waffl/*"],
-			"@theme": ["src/theme"],
-			"@types/*": ["src/types/*"],
-			"@types": ["src/types"],
-			"@theme/*": ["src/theme/*"],
-			"@utils/*": ["src/utils/*"],
-			"@public/*": ["public/*"]
-		},
-		"plugins": [
-			{
-				"name": "next"
-			}
-		]
-	},
-	"include": ["src/**/*", ".next/types/**/*.ts"],
-	"exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@parts/*": [
+        "src/components/*"
+      ],
+      "@c/*": [
+        "src/components/*"
+      ],
+      "@css/*": [
+        "src/css/*"
+      ],
+      "@queries/*": [
+        "src/app/queries/*"
+      ],
+      "@i": [
+        "src/components/Icon"
+      ],
+      "@contexts": [
+        "src/components/Contexts"
+      ],
+      "@tackl": [
+        "src/theme/tackl"
+      ],
+      "@tackl/*": [
+        "src/theme/tackl/*"
+      ],
+      "@waffl": [
+        "src/theme/tackl/waffl"
+      ],
+      "@waffl/*": [
+        "src/theme/tackl/waffl/*"
+      ],
+      "@theme": [
+        "src/theme"
+      ],
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@types": [
+        "src/types"
+      ],
+      "@theme/*": [
+        "src/theme/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@public/*": [
+        "public/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "src/**/*",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

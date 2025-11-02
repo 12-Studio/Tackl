@@ -113,17 +113,27 @@ button:focus {
 	scrollbar-width: none;
 }
 
-/* Page Transitions */
-body {
-	transition:
-		opacity 0.75s var(--bezzy2),
-		background 0.75s var(--bezzy2),
-		transform 0.75s var(--bezzy2),
-		filter 0.75s var(--bezzy2);
+/* Page Transitions using the new transitions API*/
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none !important;
 }
 
-.page-transition {
-	opacity: 0;
-	/* filter: blur(10px) */
-	/* Testing a change */
+::view-transition-group(root) {
+	z-index: auto !important;
+}
+
+::view-transition-image-pair(root) {
+	isolation: isolate;
+	/* NOTE • Change to whatever property you want to animate */
+	will-change: transform, opacity, clip-path;
+	z-index: 1;
+}
+
+::view-transition-new(root) {
+	z-index: 2;
+}
+
+::view-transition-old(root) {
+	z-index: 1;
 }

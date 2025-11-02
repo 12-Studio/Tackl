@@ -11,6 +11,7 @@ import StyledComponentsRegistry from '@utils/registry';
 import { gsap } from 'gsap';
 import type { LenisRef } from 'lenis/react';
 import { ReactLenis } from 'lenis/react';
+import { ViewTransitions } from 'next-view-transitions';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef } from 'react';
 import { ThemeProvider } from 'styled-components';
@@ -42,33 +43,37 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 	}, []);
 
 	return (
-		<html lang='en' className={classes}>
-			<body>
-				<StyledComponentsRegistry>
-					<ThemeProvider theme={theme} key='themeprovider'>
-						<GlobalStyle />
+		<ViewTransitions>
+			<html lang='en' className={classes}>
+				<body>
+					<StyledComponentsRegistry>
+						<ThemeProvider theme={theme} key='themeprovider'>
+							<GlobalStyle />
 
-						{/* GridExposer only rendered in development environment */}
-						{process.env.NODE_ENV === 'development' && (
-							<GridExposer />
-						)}
+							{/* GridExposer only rendered in development environment */}
+							{process.env.NODE_ENV === 'development' && (
+								<GridExposer />
+							)}
 
-						{/* CookieBar only rendered in production environment */}
-						{process.env.NODE_ENV === 'production' && <CookieBar />}
+							{/* CookieBar only rendered in production environment */}
+							{process.env.NODE_ENV === 'production' && (
+								<CookieBar />
+							)}
 
-						<Contexts>
-							<ReactLenis
-								root
-								options={{ autoRaf: false }}
-								ref={lenisRef}
-							/>
-							<AnimationPlugins />
-							{children}
-						</Contexts>
-					</ThemeProvider>
-				</StyledComponentsRegistry>
-			</body>
-		</html>
+							<Contexts>
+								<ReactLenis
+									root
+									options={{ autoRaf: false }}
+									ref={lenisRef}
+								/>
+								<AnimationPlugins />
+								{children}
+							</Contexts>
+						</ThemeProvider>
+					</StyledComponentsRegistry>
+				</body>
+			</html>
+		</ViewTransitions>
 	);
 };
 

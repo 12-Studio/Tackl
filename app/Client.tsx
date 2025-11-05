@@ -44,33 +44,35 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<ViewTransitions>
-			<html lang='en' className={classes}>
+			<html lang='en' className={classes} suppressHydrationWarning>
 				<body>
-					<StyledComponentsRegistry>
-						<ThemeProvider theme={theme} key='themeprovider'>
-							<GlobalStyle />
+					<main id='page' style={{ viewTransitionName: 'page' }}>
+						<StyledComponentsRegistry>
+							<ThemeProvider theme={theme} key='themeprovider'>
+								<GlobalStyle />
 
-							{/* GridExposer only rendered in development environment */}
-							{process.env.NODE_ENV === 'development' && (
-								<GridExposer />
-							)}
+								{/* GridExposer only rendered in development environment */}
+								{process.env.NODE_ENV === 'development' && (
+									<GridExposer />
+								)}
 
-							{/* CookieBar only rendered in production environment */}
-							{process.env.NODE_ENV === 'production' && (
-								<CookieBar />
-							)}
+								{/* CookieBar only rendered in production environment */}
+								{process.env.NODE_ENV === 'production' && (
+									<CookieBar />
+								)}
 
-							<Contexts>
-								<ReactLenis
-									root
-									options={{ autoRaf: false }}
-									ref={lenisRef}
-								/>
-								<AnimationPlugins />
-								{children}
-							</Contexts>
-						</ThemeProvider>
-					</StyledComponentsRegistry>
+								<Contexts>
+									<ReactLenis
+										root
+										options={{ autoRaf: false }}
+										ref={lenisRef}
+									/>
+									<AnimationPlugins />
+									{children}
+								</Contexts>
+							</ThemeProvider>
+						</StyledComponentsRegistry>
+					</main>
 				</body>
 			</html>
 		</ViewTransitions>

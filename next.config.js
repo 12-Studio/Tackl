@@ -52,6 +52,10 @@ const nextConfig = {
 	// Ensure trailing slashes are added to all routes
 	trailingSlash: true,
 
+	experimental: {
+		webVitalsAttribution: ['CLS', 'LCP'],
+	},
+
 	// Styled Components settings
 	compiler: {
 		// styledComponents: true,

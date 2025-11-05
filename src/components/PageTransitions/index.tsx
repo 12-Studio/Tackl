@@ -20,10 +20,9 @@ export const exampleTransition = () => {
 		],
 		{
 			duration: PAGE_TRANSITION_DURATION / 2,
-			delay: 0,
 			easing: 'ease-in-out',
 			fill: 'forwards',
-			pseudoElement: '::view-transition-old(root)',
+			pseudoElement: '::view-transition-old(page)',
 		}
 	);
 
@@ -42,7 +41,7 @@ export const exampleTransition = () => {
 			delay: 0,
 			easing: 'ease-in-out',
 			fill: 'forwards',
-			pseudoElement: '::view-transition-new(root)',
+			pseudoElement: '::view-transition-new(page)',
 		}
 	);
 };

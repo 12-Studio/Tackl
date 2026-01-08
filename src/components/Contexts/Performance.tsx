@@ -2,36 +2,106 @@
 
 // Imports
 // ------------
-import { createContext, useMemo, useEffect, useState } from 'react';
+import { createContext, useEffect, useMemo, useRef, useState } from 'react';
 
 // Context Definition
 // ------------
 export const PerformanceContext = createContext({
-    isReducedMotion: false,
-    isLowPowerMode: false,
-    devicePixelRatio: 1,
+	isReducedMotion: false,
+	isLowPowerMode: false,
+	devicePixelRatio: 1,
 });
 
 // Component
 // ------------
-export const PerformanceProvider = ({ children }: { children: React.ReactNode }) => {
-    const [performanceState, setPerformanceState] = useState({
-        isReducedMotion: false,
-        isLowPowerMode: false,
-        devicePixelRatio: 1,
-    });
+export const PerformanceProvider = ({
+	children,
+}: {
+	children: React.ReactNode;
+}) => {
+	const [performanceState, setPerformanceState] = useState({
+		isReducedMotion: false,
+		isLowPowerMode: false,
+		devicePixelRatio: 1,
+	});
 
-    useEffect(() => {
-        setPerformanceState({
-            isReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-            isLowPowerMode: navigator?.userAgent.includes('Low-Power'),
-            devicePixelRatio: window.devicePixelRatio,
-        });
-    }, []);
+	// Track if component is mounted to prevent state updates after unmount
+	const isMountedRef = useRef(true);
+	const mediaQueryRef = useRef<MediaQueryList | null>(null);
 
-    const value = useMemo(() => performanceState, [performanceState]);
+	useEffect(() => {
+		// Safety check for SSR
+		if (typeof window === 'undefined') {
+			return;
+		}
 
-    return <PerformanceContext.Provider value={value}>{children}</PerformanceContext.Provider>;
+		isMountedRef.current = true;
+
+		// Initialize state
+		const updatePerformanceState = () => {
+			if (!isMountedRef.current) return;
+
+			setPerformanceState({
+				isReducedMotion: window.matchMedia(
+					'(prefers-reduced-motion: reduce)'
+				).matches,
+				isLowPowerMode:
+					(typeof navigator !== 'undefined' &&
+						navigator?.userAgent?.includes('Low-Power')) ||
+					false,
+				devicePixelRatio: window.devicePixelRatio || 1,
+			});
+		};
+
+		// Initial state update
+		updatePerformanceState();
+
+		// Listen for changes to reduced motion preference
+		const mediaQuery = window.matchMedia(
+			'(prefers-reduced-motion: reduce)'
+		);
+		mediaQueryRef.current = mediaQuery;
+
+		// Modern browsers support addEventListener on MediaQueryList
+		const handleChange = () => {
+			if (isMountedRef.current) {
+				updatePerformanceState();
+			}
+		};
+
+		if (mediaQuery.addEventListener) {
+			mediaQuery.addEventListener('change', handleChange);
+		} else {
+			// Fallback for older browsers
+			mediaQuery.addListener(handleChange);
+		}
+
+		// Cleanup function to prevent memory leaks
+		return () => {
+			isMountedRef.current = false;
+
+			if (mediaQueryRef.current) {
+				if (mediaQueryRef.current.removeEventListener) {
+					mediaQueryRef.current.removeEventListener(
+						'change',
+						handleChange
+					);
+				} else {
+					// Fallback for older browsers
+					mediaQueryRef.current.removeListener(handleChange);
+				}
+				mediaQueryRef.current = null;
+			}
+		};
+	}, []);
+
+	const value = useMemo(() => performanceState, [performanceState]);
+
+	return (
+		<PerformanceContext.Provider value={value}>
+			{children}
+		</PerformanceContext.Provider>
+	);
 };
 
 // For documentation, see `docs/PerformanceContext.md`

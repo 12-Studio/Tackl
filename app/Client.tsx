@@ -2,7 +2,7 @@
 
 // Imports
 // ------------
-import AnimationPlugins from '@parts/AnimationPlugins';
+import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
 import { GlobalStyle, theme } from '@theme';
@@ -67,7 +67,6 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 										options={{ autoRaf: false }}
 										ref={lenisRef}
 									/>
-									<AnimationPlugins />
 									{children}
 								</Contexts>
 							</ThemeProvider>

@@ -31,8 +31,6 @@
 	"dependencies": {
 		"@datocms/cda-client": "^0.2.10",
 		"@gsap/react": "^2.1.2",
-		"@react-three/drei": "^10.7.7",
-		"@react-three/fiber": "^9.5.0",
 		"color": "^5.0.3",
 		"graphql": "^16.12.0",
 		"graphql-tag": "^2.12.6",

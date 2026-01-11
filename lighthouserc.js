@@ -2,7 +2,7 @@ module.exports = {
     ci: {
         collect: {
             url: ['http://localhost:3000'],
-            startServerCommand: 'npm run build && npm run start',
+            startServerCommand: 'pnpm run build && pnpm run start',
             startServerReadyPattern: 'Ready in',
             numberOfRuns: 3,
         },

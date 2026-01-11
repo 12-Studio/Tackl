@@ -23,8 +23,6 @@ if [ $RESULT -eq 0 ]; then
     unset HUSKY_SKIP_HOOKS
     exit $EXIT_CODE
 else
-    unset HUSKY_SKIP_HOOKS
-    exit 1
+	unset HUSKY_SKIP_HOOKS
+	exit 1
 fi
-
-npm test

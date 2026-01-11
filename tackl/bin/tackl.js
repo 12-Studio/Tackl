@@ -63,9 +63,9 @@ ${pc.bold('Options:')}
   -h, --help         Show this help message
 
 ${pc.bold('Examples:')}
-  tackl my-app                    # Creates project with npm install + git init
+  tackl my-app                    # Creates project with pnpm install + git init
   tackl my-app --no-install       # Creates project with git init only
-  tackl my-app --no-git           # Creates project with npm install only
+  tackl my-app --no-git           # Creates project with pnpm install only
   tackl my-app --no-install --no-git  # Creates project only
 
 ${pc.bold('Repository:')} https://github.com/12-studio/tackl
@@ -176,13 +176,13 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 			fs.rmSync(gitPath, { recursive: true, force: true });
 	} catch {}
 
-	// Remove any existing lock files to ensure npm is used
+	// Remove any existing lock files to ensure pnpm is used
 	try {
 		const yarnLock = path.join(targetDir, 'yarn.lock');
-		const pnpmLock = path.join(targetDir, 'pnpm-lock.yaml');
+		const npmLock = path.join(targetDir, 'package-lock.json');
 		if (fs.existsSync(yarnLock)) fs.unlinkSync(yarnLock);
-		if (fs.existsSync(pnpmLock)) fs.unlinkSync(pnpmLock);
-		log.step('🧹 Cleaned up lock files to ensure npm usage');
+		if (fs.existsSync(npmLock)) fs.unlinkSync(npmLock);
+		log.step('🧹 Cleaned up lock files to ensure pnpm usage');
 	} catch {}
 
 	// Patch package name
@@ -199,14 +199,7 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 		}
 	}
 
-	// Create .npmrc to ensure npm is used
-	try {
-		const npmrcPath = path.join(targetDir, '.npmrc');
-		fs.writeFileSync(npmrcPath, 'package-lock=true\n');
-		log.step('📝 Created .npmrc to ensure npm usage');
-	} catch (e) {
-		log.warn(`Could not create .npmrc: ${e.message}`);
-	}
+	// Note: pnpm doesn't require .npmrc for basic usage
 
 	if (doGit) {
 		try {
@@ -229,28 +222,28 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 
 	if (doInstall) {
 		try {
-			log.step('📦 Installing dependencies with npm...');
+			log.step('📦 Installing dependencies with pnpm...');
 
 			// Disable Husky during installation to prevent Git issues
 			const originalEnv = { ...process.env };
 			process.env.HUSKY = '0';
 
-			execSync('npm install', { cwd: targetDir, stdio: 'inherit' });
+			execSync('pnpm install', { cwd: targetDir, stdio: 'inherit' });
 
 			// Restore environment
 			process.env = originalEnv;
 
-			// Try to fix audit issues automatically
+			// Check for security vulnerabilities
 			try {
-				log.step('🔧 Fixing security vulnerabilities...');
-				execSync('npm audit fix', { cwd: targetDir, stdio: 'inherit' });
-				log.ok('Security vulnerabilities fixed!');
+				log.step('🔍 Checking for security vulnerabilities...');
+				execSync('pnpm audit', { cwd: targetDir, stdio: 'inherit' });
+				log.ok('Security check completed!');
 			} catch (e) {
 				log.warn(
-					'Some vulnerabilities could not be automatically fixed.'
+					'Some security vulnerabilities were found.'
 				);
 				log.info(
-					'You can run "npm audit fix --force" manually if needed.'
+					'Review vulnerabilities with "pnpm audit" and update packages as needed.'
 				);
 			}
 
@@ -268,8 +261,8 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 	);
 	console.log(`  Next steps:`);
 	console.log(`  1) cd ${rel}`);
-	if (!doInstall) console.log(`  2) npm install`);
-	console.log(`  ${doInstall ? '2' : '3'}) npm run dev`);
+	if (!doInstall) console.log(`  2) pnpm install`);
+	console.log(`  ${doInstall ? '2' : '3'}) pnpm run dev`);
 }
 
 main().catch(e => {

@@ -5,7 +5,7 @@ The ultimate Next.js starter kit with Waffl Grid system.
 ## Installation
 
 ```bash
-npm install -g tackl
+pnpm add -g tackl
 ```
 
 ## Usage

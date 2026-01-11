@@ -31,25 +31,21 @@ This project is built with [Next.js](https://nextjs.org/), a powerful React fram
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
+pnpm run dev
 ```
 
 To create a production build
 
 ```bash
-npm run build
-# or
-yarn build
+pnpm run build
 ```
 
 To serve a production build
 
 ```bash
-npm run serve
+pnpm run serve
 # you may need to install serve globally:
-npm i -g serve
+pnpm add -g serve
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -91,7 +87,7 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
     ├── .deployment_guide.md
     ├── .jsconfig.json
     ├── next.config.js
-    ├── package-lock.json
+    ├── pnpm-lock.yaml
     ├── package.json
     ├── docs
     └── README.md
@@ -110,7 +106,7 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
 
 7.  **`.gitignore`**: Version control configuration file that specifies which files and directories Git should ignore, such as node_modules, build outputs, and environment files.
 
-8.  **`.npmrc`**: NPM configuration file that customizes package manager behavior for this project. In Tackl, it's primarily used for configuring GSAP Club access and other package-specific settings.
+8.  **`.npmrc`**: Package manager configuration file that customizes pnpm behavior for this project. In Tackl, it's primarily used for configuring GSAP Club access and other package-specific settings.
 
 9.  **`deployment_guide`**: Comprehensive AWS deployment documentation providing step-by-step instructions for setting up and deploying your Tackl project to production.
 
@@ -120,7 +116,7 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
 
 12. **`next.config.js`**: Next.js framework configuration file where you can customize build settings, add environment variables, configure plugins, and modify webpack behavior. Essential for tailoring Next.js to your project's needs.
 
-13. **`package-lock.json`**: Automatically generated dependency lock file that ensures consistent installations across different environments by recording the exact version of each installed package. Should be committed to version control but never manually edited.
+13. **`pnpm-lock.yaml`**: Automatically generated dependency lock file that ensures consistent installations across different environments by recording the exact version of each installed package. Should be committed to version control but never manually edited.
 
 14. **`package.json`**: Project manifest file defining your application's dependencies, scripts, metadata, and other important configurations. This is the central configuration file for your Node.js/JavaScript project.
 

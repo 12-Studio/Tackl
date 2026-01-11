@@ -14,6 +14,8 @@ export const Jacket = styled(Div)(
 		height: 100svh;
 		background: ${getGlobal('black')};
 		overflow: hidden;
+
+		color: ${getGlobal('white')};
 	`
 );
 
@@ -21,6 +23,7 @@ export const Background = styled.div(
 	props => css`
 		position: absolute;
 		inset: 0;
+		z-index: 1;
 	`
 );
 

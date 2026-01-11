@@ -19,7 +19,6 @@
 // ------------
 import { isDocument } from '@utils/isDocument';
 import { storage } from '@utils/useLocalStorage';
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 // Styles
@@ -89,17 +88,6 @@ const CookieBar = ({
 			</div>
 		</Jacket>
 	);
-};
-
-// PropTypes
-// ------------
-CookieBar.propTypes = {
-	message: PropTypes.string,
-	acceptButtonText: PropTypes.string,
-	declineButtonText: PropTypes.string,
-	onAccept: PropTypes.func,
-	onDecline: PropTypes.func,
-	className: PropTypes.string,
 };
 
 // Exports

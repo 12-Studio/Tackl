@@ -1,33 +1,9 @@
 // Imports
 // ------------
-// import { performRequest } from '@utils/datocms';
-// import { GET_HOME } from '../queries/getHome';
-import DeleteMe from '@parts/DeleteMe';
+// import { Metadata } from 'next';
 
-// Data fetching at build time
+// SEO
 // ------------
-// async function getHomeData() {
-// 	try {
-// 		const data = await performRequest(GET_HOME);
-// 		return data;
-// 	} catch (error) {
-// 		console.error('Failed to fetch data from DatoCMS:', error);
-// 		// Return fallback data or null to prevent app crash
-// 		return null;
-// 	}
-// }
-
-// Component
-// ------------
-const Page = async () => {
-	// const data = await getHomeData();
-
-	return (
-		<>
-			<DeleteMe />
-		</>
-	);
-};
 
 // SEO Metadata
 // ------------
@@ -104,6 +80,13 @@ const Page = async () => {
 //     };
 // }
 
+// Component
+// ------------
+const Layout = ({ children }: { children: React.ReactNode }) => {
+	return children;
+};
+
 // Exports
 // ------------
-export default Page;
+Layout.displayName = 'Layout';
+export default Layout;

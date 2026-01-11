@@ -9,7 +9,7 @@
 
 ## 🎯 Key Features
 
-- **Next.js 15** - Latest version with App Router and React Server Components
+- **Next.js 16** - Latest version with App Router and React Server Components
 - **TypeScript** - Full type safety and enhanced developer experience _Optional_
 - **ESLint & Prettier** - Code quality and formatting standards
 - **Storybook** - Component development and documentation

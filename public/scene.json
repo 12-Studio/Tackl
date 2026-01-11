@@ -1,0 +1,328 @@
+{
+	"history": [
+		{
+			"breakpoints": [],
+			"visible": true,
+			"aspectRatio": 1,
+			"userDownsample": 1,
+			"layerType": "effect",
+			"type": "gradient",
+			"usesPingPong": false,
+			"speed": 0.25,
+			"trackMouse": 0,
+			"trackAxes": "xy",
+			"mouseMomentum": 0,
+			"texture": false,
+			"animating": false,
+			"isMask": 0,
+			"compiledFragmentShaders": [
+				"#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform vec2 uMousePos;vec3 getColor(int index) {\nswitch(index) {\ncase 0: return vec3(0.050980392156862744, 0.058823529411764705, 0.10980392156862745);\ncase 1: return vec3(0, 0, 0);\ncase 2: return vec3(0, 0, 0);\ncase 3: return vec3(0, 0, 0);\ncase 4: return vec3(0, 0, 0);\ncase 5: return vec3(0, 0, 0);\ncase 6: return vec3(0, 0, 0);\ncase 7: return vec3(0, 0, 0);\ncase 8: return vec3(0, 0, 0);\ncase 9: return vec3(0, 0, 0);\ncase 10: return vec3(0, 0, 0);\ncase 11: return vec3(0, 0, 0);\ncase 12: return vec3(0, 0, 0);\ncase 13: return vec3(0, 0, 0);\ncase 14: return vec3(0, 0, 0);\ncase 15: return vec3(0, 0, 0);\ndefault: return vec3(0.0);\n}\n}const float PI = 3.14159265;vec2 rotate(vec2 coord, float angle) {\nfloat s = sin(angle);\nfloat c = cos(angle);\nreturn vec2(\ncoord.x * c - coord.y * s,\ncoord.x * s + coord.y * c\n);\n}out vec4 fragColor;vec3 getColor(vec2 uv) {return vec3(0.050980392156862744, 0.058823529411764705, 0.10980392156862745);\n}void main() {vec2 uv = vTextureCoord;\nvec2 pos = vec2(0.82719811968337, 0.8116846983151877) + mix(vec2(0), (uMousePos-0.5), 0.0000);\nuv -= pos;\nuv /= max(0.5000*2., 1e-5);\nuv = rotate(uv, (0.0000 - 0.5) * 2. * PI);\nvec4 color = vec4(getColor(uv), 1.0000);\nfragColor = color;\n}"
+			],
+			"compiledVertexShaders": [
+				"#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = aTextureCoord;\n}"
+			],
+			"data": {
+				"downSample": 0.5,
+				"depth": false,
+				"uniforms": {},
+				"isBackground": true
+			},
+			"id": "effect"
+		},
+		{
+			"breakpoints": [],
+			"aspectRatio": 1,
+			"userDownsample": 1,
+			"opacity": 1,
+			"effects": [],
+			"trackMouse": 0.01,
+			"anchorPoint": 8,
+			"mouseMomentum": 0.55,
+			"mask": 0,
+			"maskDepthLayer": 1,
+			"dispersion": 0,
+			"axisTilt": 1,
+			"states": {
+				"appear": [
+					{
+						"local": {
+							"pendingChanges": {},
+							"changeDebouncer": null,
+							"dragSession": null
+						},
+						"type": "appear",
+						"id": "3daebefe-06c9-4cee-991b-f78505650eca",
+						"prop": "opacity",
+						"transition": {
+							"ease": "easeInOutSine",
+							"delay": 75,
+							"duration": 1200
+						},
+						"complete": false,
+						"progress": 0,
+						"value": 0,
+						"endValue": 0.93,
+						"initialized": false,
+						"breakpoints": [],
+						"loop": "none",
+						"loopDelay": 0,
+						"uniformData": {
+							"type": "1f",
+							"name": "uOpacity",
+							"value": 1
+						}
+					},
+					{
+						"local": {
+							"pendingChanges": {},
+							"changeDebouncer": null,
+							"dragSession": null
+						},
+						"type": "appear",
+						"id": "fa33b4cb-da19-45ce-b427-911123eab8fc",
+						"prop": "dispersion",
+						"transition": {
+							"duration": 1000,
+							"ease": "easeInOutSine",
+							"delay": 0
+						},
+						"complete": false,
+						"progress": 0,
+						"value": 1,
+						"endValue": 0,
+						"initialized": false,
+						"breakpoints": [],
+						"loop": "none",
+						"loopDelay": 0,
+						"uniformData": {
+							"type": "1f",
+							"name": "uDispersion",
+							"value": 0
+						}
+					}
+				],
+				"scroll": [],
+				"hover": []
+			},
+			"layerType": "image",
+			"width": 450,
+			"widthMode": 1,
+			"height": 415.3333830880559,
+			"heightMode": 1,
+			"left": 0.5,
+			"top": 0.4992592316177467,
+			"src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJMYXllcl8xIiB2aWV3Qm94PSIwIDAgNDA2LjU3IDM3Ni4zIiB3aWR0aD0iMTIxOS43MSIgaGVpZ2h0PSIxMTI4LjkiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuY2xzLTEgewogICAgICAgIGZpbGw6IG5vbmU7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgZmlsbDogI2ZmZmZmZjAwOwogICAgICB9CgogICAgICAuY2xzLTMgewogICAgICAgIGZpbGw6ICNmZmZmZmYwMDsKICAgICAgfQoKICAgICAgLmNscy00IHsKICAgICAgICBmaWxsOiAjZmZmOwogICAgICB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xODkuOTYsMTAzLjcybDEuMjYuNDdjLjM4LS4yNC43Ny0uNDUsMS4xNi0uNjQtLjgxLjA1LTEuNjIuMTEtMi40My4xNloiLz4KICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0yMjUuMjgsMjAuNzVjLTI0LjgxLDkuMzktNDQuMTIsMjQuMjEtNTkuMTcsNDQuOSw0LjAyLTUsMTcuNzUtMTguODQsNTAuNDctMjUuNDksMS41NSw2Ljc3LDIuOTMsMTMuMTksNC41LDE5LjU2LDEuMzEsNS4zMSw1LDYuODksMTAuODMsNS45Ny04LjEyLTE0LTkuNjYtMjguODctNi42My00NC45NVoiLz4KICA8cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik0yMzUuMjMsMTAxLjMxYzE1LjYxLjQ5LDMwLjY3LDMuNzksNDQuODcsMTAuNTksOC40OCw0LjA2LDExLjg4LDMuOTUsMjQuMzUtLjY4LTUuOTgtNC43MS0xMS4wNy05LjMxLTE2LjcyLTEzLjA3LTE4LjI0LTEyLjEtMzguNzgtMTcuMDMtNjAuMzEtMTguODYtMjcuMzYtMi4zMi01NC4xNiwxLjYyLTgwLjg1LDYuOTYtNy44MSwxLjU2LTguMzksMi41MS02LjUsMTAuNjgtMi4yNS0uMjUtNC4yOS0uMjYtNi4yMi0uNzQtOS4zNi0yLjMxLTE4LjY0LTUuMDItMjguMDYtNy4wNy0xMS45My0yLjYtMjEuNTEsMi4xMS0yNi43NiwxMy4xMi0yLjc4LDUuODQtNC41NiwxMi4xNS03LjE3LDE4LjA5LTIuNDQsNS41NS01LjQsMTAuODctOC4xMywxNi4zLS42My0uMTEtMS4yNS0uMjItMS44OC0uMzQtLjQ1LTMuMjUtLjktNi41MS0xLjQ3LTEwLjctMi43MiwxLjg2LTUuMTksMy4zNi03LjQ1LDUuMTQtMTQuNywxMS41OC0yNi42NiwyNS41NC0zNS42LDQxLjk4LS4yMy40My0uMzguOTYtLjQ3LDEuNTQsMTAuOTguODQsNDIuNDkuMjMsNjcuMjMtMjkuNzktMi4yNCwyLjM0LTQuODYsNC40NS03LjEzLDYuNzctLjE0LS4yNC0uMjktLjQ5LS40My0uNzMsMy40OS0xMC42NSw2LjY5LTIxLjQsMTAuNTQtMzEuOTIsNi4wMi0xNi40NSwyMS4xNS0yMy40LDM3LjMyLTE3LjUzLjkuMzMsMS43MS45LDMuMzgsMS44LTguNDUsMy42MS0xMS44LDEwLjIzLTE0LjM1LDE3Ljk2LDAsMCwyMS40LTkuNzQsNTUuODYtMTQuODMsNS4zNy0uOTgsOC45NywxLjMzLDEyLjgxLDcuODYsMy41Nyw2LjA4LDUuNjIsMTIuNjUsNS4wMywxOS41OCwwLDAsNi41OS00LjE1LDQuMS0yOS4yNGwtMS4yNi0uNDdjLjgtLjA2LDEuNjEtLjExLDIuNDMtLjE2LDUuMDgtMi40NSwxMC43NS0uNjUsMTIuNDcsNS4zOCwxLjcsNS45OSwyLjQyLDEyLjI4LDMuMjMsMTguNDguMjEsMS42MS0uODMsMy4zOC0xLjExLDQuMzgsMCwwLDEwLjQ4LTYuMzIsNS40OS0yOC44LjA2LDAsLjEzLDAsLjE5LDAtLjEtLjE4LS4yLS4zNi0uMzEtLjU0LDcuNC0uNDEsMTUuMTYtMS4zOSwyMi44OC0xLjE1Wk01NC4yOCwxNTcuMTVjLTUuMzUsNC45My0xMS44NSw3LjU0LTIwLjEsOC4zLDMuMzktNy43OSw4LjQxLTEyLjg0LDE1LjEzLTE1Ljk1LDEuNDMtLjY2LDQuNzMuNTgsNS44MywxLjk5Ljg0LDEuMDguMzEsNC41OS0uODYsNS42NloiLz4KICA8cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik0yODEuMDIsMTkwLjgyYy0yLjU4LTItNS44Ny0zLjA5LTkuMzYtNC4xNSw3LjU5LDE5LjI1LDQuNzIsMzcuMDktNS4yOCw1My45OC02LjU5LDExLjEzLTE1LjEyLDIwLjQ2LTI3LjE5LDI1LjExLDAsMCwzNy44NC0xMiw1Mi44Mi00Ni43NS0xLjA5LTEwLjQ3LTEuODItMjEuMTEtMTAuOTktMjguMTlaIi8+CiAgPHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMzQyLjI1LDE0OS42NGMtNi4wMSwxLjc5LTEyLjAxLDMuNTktMTguNTksNS41NiwyLjE5LDMuNDEsMy45NSw2LjE1LDUuMjcsOC4yMiwxMy4zNy01LjAyLDI2LjQ0LTkuOTMsMzguOS0xNC42MSwwLDAtNDguNjYtOS41NS04MC41LDYuODUsMTcuNzEtOC42LDM1Ljg4LTEwLjQ3LDU0LjkyLTYuMDFaIi8+CiAgPHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMTkyLjM3LDE3MC4wMmMtLjMyLDQuMjQtMi4yNiw3LjU2LTUuMzgsOS43OSwxMC4yMi00LjIxLDIzLjE5LTExLjk2LDIuMDMtMTguNiwzLjUzLDEuMjMsMy42Myw1LjA4LDMuMzUsOC44MVoiLz4KICA8cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik0xNjYuMSw2NS42NWMtLjQ1LjYyLS45MSwxLjIyLTEuMzUsMS44NSwxMi4xMS0uOTMsMjMuNjMtMi4xMiwzNS4xOC0yLjU4LDUuNzQtLjIzLDguNDUtMS43Niw5LjA0LTguMDUuNTktNi4yNSwzLjI2LTEyLjIsNy42LTE2LjcxLTMyLjcyLDYuNjQtNDYuNDUsMjAuNDktNTAuNDcsMjUuNDlaIi8+CiAgPHBhdGggY2xhc3M9ImNscy00IiBkPSJNNDA0LjksMTU5LjI4Yy0xOS4xOC0yNy4yMi00NS40Ni00Mi4yNS03OC40OC00NS44My0xLjkxLS4yMS00LjMxLTEuMDctNS40NC0yLjQ3LTE2Ljk2LTIxLjA4LTM5LjEzLTMzLjYzLTY0LjkxLTQwLjY0LTIuODktLjc5LTYuMDItMi45NS03Ljc0LTUuMzktNy43MS0xMC45My0xMS44MS0yMy4yOS0xMC41Mi0zNi42OC45MS05LjQ3LDMuMzQtMTguOCw1LjExLTI4LjI3LS43Ni4xMi0yLjM4LjI2LTMuOTQuNjQtMzUuOCw4LjYyLTY0LjkzLDI3LjczLTg1LjY3LDU3Ljk5LTcuMjcsMTAuNjEtMTQuOTEsMTcuNzEtMjcuNTYsMTkuNjItMy4yMS40OC01LjgyLjg5LTguOTYtLjY0LTE5LjI0LTkuNDEtNDEuNjkuMS00OC45OSwyMC4yNS0uOTksMi43Mi0zLjEsNS40OS01LjQ1LDcuMTktMjQuNzksMTcuOTEtNDUuMDIsMzkuOTUtNjAuOTgsNjYuMDItMS44LDIuOTQtMS43NSw1LjI3LS4zMSw4LjI3LDguNTIsMTcuNzUsMjYuNiwyOC4xNSw0Ni40MywyNi42OSwxLjc4LS4xMywzLjgzLjQxLDUuNDIsMS4yNSw2Ljk3LDMuNzEsMTMuNzIsNy44MywyMC43NSwxMS4zOSwyLjI2LDEuMTQsNS40OSwyLjAzLDcuNywxLjI5LDguNjQtMi44OSwxNS45Mi0uMTcsMjMuMDUsNC4yNi42OS40MywxLjU0LjY0LDIuMzMuODgsMTQuOTcsNC42MSwyOS42NiwyLjk5LDQ0LjAyLTIuNDMsNy40MS0yLjc5LDE0LjU4LTYuMjUsMjAuNzMtOC45Miw2LDguMzMsMTEuMTUsMTYuODksMTcuNjksMjQuMjIsNy4yMSw4LjA5LDIwLjA1LDEzLjQyLDI1Ljk3LDEyLjQ0LS40OC0xLjA5LS45NS0yLjE1LTEuNDItMy4yLTkuMDItMjAuMTgtLjc4LTQ0LjYsMTguNjItNTUuMTUsMTQuMjktNy43OCwyNy4wMS0xLjA4LDI4Ljg1LDE1LjA4LDEuMjcsMTEuMTQtMS4wOSwyMS42OC02LjA2LDMxLjQzLTQuOCw5LjQtMTAuNjUsMTguMjUtMTUuOTQsMjcuMTgsMTIuMDctNC42NSwyMC42LTEzLjk4LDI3LjE5LTI1LjExLDEwLTE2Ljg5LDEyLjg3LTM0LjczLDUuMjgtNTMuOTgsMy40OSwxLjA2LDYuNzcsMi4xNSw5LjM2LDQuMTUsOS4xNyw3LjA4LDkuOSwxNy43MiwxMC45OSwyOC4xOSw0LjUtOS42LDYuMTQtMTkuNCwzLjUtMjkuNjMtMy4zMy0xMi44NS0xNC45NC0yMS4yOS0yOS45Ny0yMi4xMy0xNS4zMi0uODYtMjkuOSwyLjUzLTQzLjY5LDguNjgtMTguNjgsOC4zNC0zNy4wMiwxNy40NC01NS40MywyNi4zNy0xMS45MSw1Ljc4LTI0LjE2LDEwLjU4LTM3LjQyLDExLjY0LTMuNi4yOS04LjU5LS42My0xMC43OC0yLjk5LTIuOTEtMy4xNC45MS02LjU0LDMuMjItOS4zMy4xOC0uMjIuMTgtLjU5LjQzLTEuNTItMi43OS4yOC01LjUuMDktNy44OC44OS02LjkyLDIuMzMtMTMuNyw1LjEtMjAuNTYsNy42Mi0yLjQ5LjkyLTUuMDEsMS45Mi03LjYsMi4zMi0xLjQxLjIyLTMuMDEtLjc0LTQuNTItMS4xNi41Ny0xLjMuODMtMi45LDEuNzYtMy44MiwxLjc1LTEuNzUsMy44My0zLjIsNS44OC00LjYxLDEyLjgtOC44LDI3Ljg0LTEwLjQyLDQyLjUxLTEzLjI2LDEwLjEtMS45NiwyMC40NC0zLjIzLDMwLjItNi4zLDExLjUyLTMuNjIsMTYuOTYtMTMuMzQsMTUuMTktMjQuNDItMS4wNy02LjY3LTQuNzQtMTEuOTQtOS42Ni0xNi40OC0xMy4xMy0xMi4xMi00My41Mi0xNi4zNi02MC44OCwxLjE5LTkuODQsOS45NS0xNS44MiwyMi4xLTIxLjM5LDM0LjYyLTIuODMsNi4zNi01Ljc3LDEyLjcxLTkuMjEsMTguNzYtMS45LDMuMzQtNS4wOCw1LjY5LTkuNDIsNC41NiwyLjIyLTQuOTYsNC4zOC05LjgsNi41NC0xNC42NC0uNDctLjI4LS45NC0uNTYtMS40MS0uODUtMS4yNiwxLTIuNTIsMi0zLjc4LDMtMTUuODMsMTIuNjEtMzkuNjgsOC41Ni01MC4wMy04LjctLjY5LTEuMTQtLjk2LTMuMDItLjc0LTQuNTYuMDgtLjU4LjIzLTEuMTEuNDctMS41NCw4Ljk0LTE2LjQ0LDIwLjktMzAuNCwzNS42LTQxLjk4LDIuMjYtMS43OCw0LjczLTMuMjgsNy40NS01LjE0LjU4LDQuMTksMS4wMiw3LjQ0LDEuNDcsMTAuNy42My4xMSwxLjI1LjIyLDEuODguMzQsMi43My01LjQyLDUuNjgtMTAuNzUsOC4xMy0xNi4zLDIuNjEtNS45Myw0LjM5LTEyLjI0LDcuMTctMTguMDksNS4yNS0xMS4wMSwxNC44My0xNS43MiwyNi43Ni0xMy4xMiw5LjQyLDIuMDUsMTguNjksNC43NiwyOC4wNiw3LjA3LDEuOTMuNDgsMy45OC40OCw2LjIyLjc0LTEuODgtOC4xNy0xLjMtOS4xMiw2LjUtMTAuNjgsMjYuNjktNS4zMyw1My40OS05LjI4LDgwLjg1LTYuOTYsMjEuNTIsMS44Myw0Mi4wNyw2Ljc2LDYwLjMxLDE4Ljg2LDUuNjYsMy43NSwxMC43NSw4LjM2LDE2LjcyLDEzLjA3LTEyLjQ4LDQuNjMtMTUuODcsNC43NC0yNC4zNS42OC0xNC4yLTYuOC0yOS4yNi0xMC4xLTQ0Ljg3LTEwLjU5LTcuNzItLjI0LTE1LjQ5Ljc0LTIyLjg4LDEuMTUuMS4xOC4yLjM2LjMxLjU0LDQuNDgsNy45Myw4LjU5LDE1LjE5LDEyLjY2LDIyLjM4di0xNC42MWMxNi40Mi0zLjc3LDQ1LjgxLDEuNDMsNTMuNDEsNy45LTguNTksNS4yMS0xNy4zMiwxMC41MS0yNi4wNCwxNS44MS4yNC4zOS40OC43Ny43MywxLjE2LDQ5LjE1LTIwLjQ3LDk1LjI3LTMuNzEsMTE0LjQzLDEzLjE2LTEyLjQ3LDQuNjgtMjUuNTMsOS41OS0zOC45LDE0LjYxLTEuMzMtMi4wNy0zLjA4LTQuODEtNS4yNy04LjIyLDYuNTgtMS45NywxMi41OS0zLjc2LDE4LjU5LTUuNTYtMTkuMDMtNC40Ni0zNy4yMS0yLjU5LTU0LjkyLDYuMDEsNC4yMSwyLjExLDguMTksMy44MywxMS45LDYuMDIsMTAuOTYsNi40OCwxNi42NiwxNS45OSwxNS45MiwyOC45Ni0uNTgsMTAuMjMtNC40NCwxOS40Mi05LjMsMjguMjEtMTIuNTYsMjIuNzItMzAsNDEuNTItNDguMzksNTkuNDgtOC45Nyw4Ljc3LTE4LjQsMTcuMDYtMjcuNzYsMjUuNjgsNi40NiwyLjk3LDExLjk2LDYuNTcsMTIuNiwxNC4zMy45LDEwLjk0LTEwLjcxLDI4LjYxLTIxLjY0LDMyLjQ3LDQuOTEtMTkuNzEsNS40MS0zOS4xNC0yLjI3LTU4LjAzLTcuODYtMTkuMzItMjEuNS0zMi43NS00Mi42LTM5LjksMzcuNTksMzcuMjQsNDQuMTYsODguNCwxNC43MywxMjMuNDMsMi45MS0uNDIsNS4zMS0uNjgsNy42Ny0xLjEyLDQxLjkxLTcuODIsNjguMTUtNDYuODQsNjAuMzItODQuMzMtLjMzLTEuNTYuOTQtMy45OSwyLjIxLTUuMjcsOC44LTguODYsMTguMDctMTcuMjYsMjYuNjgtMjYuMjksMjEuMDgtMjIuMDksMzcuOTItNDYuNzgsNDUuODctNzYuNzguNDUtMS43LDEuOTktMy40OSwzLjUyLTQuNDgsMTUuMjgtOS45MSwzMi4wNC0xNS4zNSw1MC4yOC0xNS45MSw2LjM3LS4yLDEyLjc1LS4wMywxOS40OS0uMDMtLjY3LTEuMTMtMS4xMi0yLTEuNjgtMi43OVpNOTMuNzYsMTgxLjIzYzQuNjMtMTEuMjcsOS40NS0yMi40NiwxOC4yNC0zMS4yNyw1LjkzLTUuOTUsMTIuNzktMTAuMjIsMjEuNi05LjgyLDcuMDIuMzIsMTEuNzcsNi40Niw5LjU5LDEyLjAyLTEuMTYsMi45Ni0yLjU1LDMuOTctNS41MiwxLjcyLTMuOTQtMi45OC04LjE2LTUuNTctMTMuMTEtOC45MS45Nyw2Ljk3LDEuODEsMTIuOTYsMi43OCwxOS45OC00LjU2LTIuMDYtOC4zNi0zLjc5LTEyLjU2LTUuNjktMy4xMyw1LjA2LTYuMjIsMTAuMDUtOS4zLDE1LjA0LjIxLjE5LjQyLjM5LjYzLjU4LDMuMDUtMS44OCw2LjI1LTMuNTYsOS4xMi01LjY5LDIuNDgtMS44Myw0LjU0LTIuMDQsNy4yMS0uMzksMi45NCwxLjgyLDYuMTgsMy4xNiwxMC4wMSw1LjA2LS4yNC01LjI5LS40NC05Ljk2LS43LTE1Ljc5LDUuNTEsMy40MiwxMC4zMSw2LjQsMTUuNTYsOS42Ni4xNy0zLjE0LjA3LTUuNzQuNDktOC4yNC43OC00LjYyLDIuNDEtOC44Niw3LjczLTkuODgsMy45Ni0uNzYsOC41MywyLjU1LDEwLjc4LDcuNDIsMi4xNyw0LjcyLDEuNTQsOS44NC0yLjc3LDEyLjQ2LTMuOTksMi40My04LjY5LDQuMjItMTMuMjksNS4wMy0xOS42NCwzLjQ1LTM5LjQxLDYuMjktNTkuMjIsMTQuNCwxLjE1LTMuMjcsMS44My01LjUzLDIuNzMtNy43Wk0yMjEuMDgsNTkuNzNjLTEuNTctNi4zNy0yLjk1LTEyLjc5LTQuNS0xOS41Ni00LjM1LDQuNTEtNy4wMSwxMC40Ni03LjYsMTYuNzEtLjYsNi4yOS0zLjMsNy44Mi05LjA0LDguMDUtMTEuNTUuNDctMjMuMDcsMS42NS0zNS4xOCwyLjU4LjQ0LS42My45LTEuMjMsMS4zNS0xLjg1LDE1LjA2LTIwLjcsMzQuMzYtMzUuNTEsNTkuMTctNDQuOS0zLjAyLDE2LjA4LTEuNDgsMzAuOTQsNi42Myw0NC45NS01LjgzLjkyLTkuNTItLjY2LTEwLjgzLTUuOTdaIi8+CiAgPHBhdGggY2xhc3M9ImNscy00IiBkPSJNMTI3Ljc3LDEwMi44NmMtMS42Ny0uOS0yLjQ4LTEuNDgtMy4zOC0xLjgtMTYuMTYtNS44Ny0zMS4zLDEuMDctMzcuMzIsMTcuNTMtMy44NSwxMC41Mi03LjA1LDIxLjI3LTEwLjU0LDMxLjkyLjE0LjI0LjI5LjQ5LjQzLjczLDIuMjctMi4zMiw0Ljg5LTQuNDMsNy4xMy02Ljc3LDEuMjItMS4yNywyLjMzLTIuNjEsMy4yLTQuMDksMy40MS01LjgzLDcuOTctOC45MSwxNC4yNC0xMC40OSw1LjE1LTEuMywxMC4yLTMuOTksMTEuODgtOS4wNSwyLjU1LTcuNzMsNS45LTE0LjM1LDE0LjM1LTE3Ljk2Wk05NC4yLDEyNC4yOWMuMjItNy45OCw2LjI3LTE0LjgzLDE0LjUxLTE2Ljc1Ljk3LDkuNzUuMDksMTAuNzgtMTQuNTEsMTYuNzVaIi8+CiAgPHBhdGggY2xhc3M9ImNscy00IiBkPSJNMTgyLjEsMTEzLjg2Yy0zLjg0LTYuNTMtNy40NC04Ljg0LTEyLjgxLTcuODYtMS43NC4zMi0zLjY3Ljk4LTUuODYsMS45Niw3LjcyLDguMzEsMTUuNTksMTYuNzcsMjMuNywyNS40OC42LTYuOTItMS40Ni0xMy41LTUuMDMtMTkuNThaIi8+CiAgPHBhdGggY2xhc3M9ImNscy00IiBkPSJNMjA4LjA5LDEyNy40MmMtLjgxLTYuMi0xLjUzLTEyLjUtMy4yMy0xOC40OC0xLjcxLTYuMDMtNy4zOS03LjgzLTEyLjQ3LTUuMzgtLjM5LjE5LS43OC40LTEuMTYuNjQsNS4yOSw5LjI4LDEwLjU3LDE4LjUyLDE1Ljc2LDI3LjYuMjctMSwxLjMyLTIuNzcsMS4xMS00LjM4WiIvPgogIDxwYXRoIGNsYXNzPSJjbHMtNCIgZD0iTTQ5LjMyLDE0OS41Yy02LjcyLDMuMTEtMTEuNzQsOC4xNy0xNS4xMywxNS45NSw4LjI1LS43NywxNC43Ni0zLjM4LDIwLjEtOC4zLDEuMTctMS4wOCwxLjctNC41OC44Ni01LjY2LTEuMS0xLjQxLTQuNC0yLjY2LTUuODMtMS45OVoiLz4KICA8cGF0aCBjbGFzcz0iY2xzLTQiIGQ9Ik0xOTIuMzcsMTcwLjAyYy4yOC0zLjcyLjE4LTcuNTctMy4zNS04LjgxLTMuODIsNy42Ny03LjM3LDE0LjgtMTAuODIsMjEuNzEsMy40Ny0uMzgsNi40Ni0xLjQ1LDguNzgtMy4xMSwzLjEyLTIuMjMsNS4wNi01LjU1LDUuMzgtOS43OVoiLz4KICA8cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0xNjMuNTUsMTY5LjUxYzQuMzItMi42Miw0Ljk1LTcuNzUsMi43Ny0xMi40Ni0yLjI1LTQuODgtNi44Mi04LjE4LTEwLjc4LTcuNDItNS4zMiwxLjAyLTYuOTYsNS4yNi03LjczLDkuODgtLjQyLDIuNTEtLjMyLDUuMS0uNDksOC4yNC01LjI1LTMuMjYtMTAuMDUtNi4yNC0xNS41Ni05LjY2LjI2LDUuODIuNDcsMTAuNS43LDE1Ljc5LTMuODMtMS45LTcuMDctMy4yNC0xMC4wMS01LjA2LTIuNjctMS42NS00Ljc0LTEuNDUtNy4yMS4zOS0yLjg3LDIuMTMtNi4wNiwzLjgxLTkuMTIsNS42OS0uMjEtLjE5LS40Mi0uMzktLjYzLS41OCwzLjA5LTQuOTksNi4xNy05Ljk4LDkuMy0xNS4wNCw0LjIsMS45LDguMDEsMy42MywxMi41Niw1LjY5LS45OC03LjAxLTEuODEtMTMuMDEtMi43OC0xOS45OCw0Ljk1LDMuMzMsOS4xNyw1LjkzLDEzLjExLDguOTEsMi45NywyLjI0LDQuMzYsMS4yMyw1LjUyLTEuNzIsMi4xNy01LjU2LTIuNTctMTEuNy05LjU5LTEyLjAyLTguODEtLjQtMTUuNjcsMy44Ny0yMS42LDkuODItOC43OSw4LjgxLTEzLjYxLDIwLTE4LjI0LDMxLjI3LS44OSwyLjE4LTEuNTgsNC40NC0yLjczLDcuNywxOS44Mi04LjExLDM5LjU4LTEwLjk0LDU5LjIyLTE0LjQsNC42MS0uODEsOS4zLTIuNiwxMy4yOS01LjAzWiIvPgogIDxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTk0LjIsMTI0LjI5YzE0LjYtNS45NywxNS40OC03LDE0LjUxLTE2Ljc1LTguMjQsMS45Mi0xNC4yOSw4Ljc3LTE0LjUxLDE2Ljc1WiIvPgo8L3N2Zz4=",
+			"imageNaturalSize": { "type": "Vec2", "_x": 162, "_y": 150 },
+			"compiledFragmentShaders": [
+				"#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uSourceImage;uniform vec2 uResolution;\nuniform vec2 uArtboardResolution;\nuniform vec2 uMousePos;\nuniform sampler2D uBgTexture;\nuniform float uOpacity;const float TAU = 6.28318530718;\nconst float PI = 3.1415926;out vec4 fragColor;vec2 rotate2D(vec2 p, float angle) {\nfloat s = sin(angle);\nfloat c = cos(angle);\nreturn vec2(p.x * c - p.y * s, p.x * s + p.y * c);\n}vec2 getAnchorOffsets() {\nreturn vec2(0.5, 0.5);\n}vec2 perspectiveUV(vec2 uv) {\nfloat aspectRatio = uResolution.x / uResolution.y;\nvec2 centeredUV = uv - 0.5;\ncenteredUV.x *= aspectRatio;\nfloat strength = 1.0 + (vVertexPosition.z * 1.0000);\nvec2 perspUV = centeredUV / strength;\nperspUV.x /= aspectRatio;\nperspUV += 0.5;\nreturn perspUV;\n}vec4 sampleImage(vec2 canvasUV, vec2 mouseOffset) {\nvec2 canvasPos = vec2(canvasUV.x * uArtboardResolution.x, (1.0 - canvasUV.y) * uArtboardResolution.y);\nvec2 imageUV;float absWidth = 450.0000;\nfloat absHeight = 415.3334;if (1 == 2) {\nabsWidth = absHeight * 1.0000;\n} else if (1 == 2) {\nabsHeight = absWidth / 1.0000;\n}vec2 elementSizePx = vec2(absWidth, absHeight);\nvec2 elementPosPx = vec2(0.5000, 0.4993) * uArtboardResolution - getAnchorOffsets() * elementSizePx;vec2 centerPos = elementPosPx + (elementSizePx * 0.5);\nvec2 relPos = canvasPos - centerPos + mouseOffset;\nvec2 unrotatedRelPos = rotate2D(relPos, 0.0000 * -TAU);\nvec2 elementPos = unrotatedRelPos + (elementSizePx * 0.5);\nimageUV = elementPos / elementSizePx;\nvec2 flippedUV = vec2(imageUV.x, 1.0 - imageUV.y);\nvec4 color = textureLod(uSourceImage, flippedUV, 0.0);\nif (imageUV.x >= 0.0 && imageUV.x <= 1.0 && imageUV.y >= 0.0 && imageUV.y <= 1.0) {\nreturn color;\n} else {\nreturn vec4(0.0);\n}\n}vec4 getNormalOutput(vec4 color, vec4 background) {\nreturn mix(background, color + background * (1.0 - color.a), uOpacity);\n}vec4 getOutputByMode(vec4 color, vec4 background) {\nreturn getNormalOutput(color, background);\n}vec4 applyImageAdjustments(vec4 color) {color.rgb = clamp(color.rgb, 0.0, 1.0);\ncolor.rgb *= color.a;\nreturn color;\n}vec4 getCompositeOutput(vec2 uv, vec2 mouseOffsetPx) {\nvec4 background = vec4(0);background = texture(uBgTexture, vTextureCoord);\nvec4 color = sampleImage(uv, mouseOffsetPx);\ncolor = applyImageAdjustments(color);\nreturn getOutputByMode(color, background);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 mouseOffsetUV = (uMousePos - 0.5) * 0.0100;\nvec2 mouseOffsetPx = mouseOffsetUV;\nuv = perspectiveUV(uv) - mouseOffsetUV;\nuv -= mouseOffsetUV;\nfragColor = getCompositeOutput(uv, mouseOffsetPx);\n}"
+			],
+			"compiledVertexShaders": [
+				"#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform vec2 uMousePos;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\nfloat angleX = uMousePos.y * 0.5 - 0.25;\nfloat angleY = (1.-uMousePos.x) * 0.5 - 0.25;mat4 rotateX = mat4(1.0, 0.0, 0.0, 0.0,\n0.0, cos(angleX), -sin(angleX), 0.0,\n0.0, sin(angleX), cos(angleX), 0.0,\n0.0, 0.0, 0.0, 1.0);\nmat4 rotateY = mat4(cos(angleY), 0.0, sin(angleY), 0.0,\n0.0, 1.0, 0.0, 0.0,\n-sin(angleY), 0.0, cos(angleY), 0.0,\n0.0, 0.0, 0.0, 1.0);mat4 rotationMatrix = rotateX * rotateY;\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvVertexPosition = (rotationMatrix * vec4(aVertexPosition, 1.0)).xyz;\nvTextureCoord = (vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"
+			],
+			"data": {
+				"uniforms": {
+					"artboardResolution": {
+						"name": "uArtboardResolution",
+						"type": "2f",
+						"value": { "type": "Vec2", "_x": 1440, "_y": 900 }
+					},
+					"aspectRatio": {
+						"name": "uAspectRatio",
+						"type": "1f",
+						"value": 1
+					}
+				}
+			},
+			"id": "image"
+		},
+		{
+			"breakpoints": [],
+			"visible": true,
+			"aspectRatio": 1,
+			"userDownsample": 1,
+			"layerType": "effect",
+			"type": "caustics",
+			"usesPingPong": false,
+			"speed": 0.25,
+			"trackMouse": 0,
+			"trackAxes": "xy",
+			"mouseMomentum": 0,
+			"texture": false,
+			"animating": true,
+			"isMask": 0,
+			"compiledFragmentShaders": [
+				"#version 300 es\nprecision highp float;\nin vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform float uTime;uniform vec2 uMousePos;\nuniform vec2 uResolution;vec4 permute(vec4 t) {\nreturn t * (t * 34.0 + 133.0);\n}vec3 grad(float hash) {\nvec3 cube = mod(floor(hash / vec3(1.0, 2.0, 4.0)), 2.0) * 2.0 - 1.0;\nvec3 cuboct = cube;float index0 = step(0.0, 1.0 - floor(hash / 16.0));\nfloat index1 = step(0.0, floor(hash / 16.0) - 1.0);cuboct.x *= 1.0 - index0;\ncuboct.y *= 1.0 - index1;\ncuboct.z *= 1.0 - (1.0 - index0 - index1);float type = mod(floor(hash / 8.0), 2.0);\nvec3 rhomb = (1.0 - type) * cube + type * (cuboct + cross(cube, cuboct));vec3 grad = cuboct * 1.22474487139 + rhomb;grad *= (1.0 - 0.042942436724648037 * type) * 3.5946317686139184;return grad;\n}\nvec4 bccNoiseDerivativesPart(vec3 X) {\nvec3 b = floor(X);\nvec4 i4 = vec4(X - b, 2.5);\nvec3 v1 = b + floor(dot(i4, vec4(.25)));\nvec3 v2 = b + vec3(1, 0, 0) + vec3(-1, 1, 1) * floor(dot(i4, vec4(-.25, .25, .25, .35)));\nvec3 v3 = b + vec3(0, 1, 0) + vec3(1, -1, 1) * floor(dot(i4, vec4(.25, -.25, .25, .35)));\nvec3 v4 = b + vec3(0, 0, 1) + vec3(1, 1, -1) * floor(dot(i4, vec4(.25, .25, -.25, .35)));\nvec4 hashes = permute(mod(vec4(v1.x, v2.x, v3.x, v4.x), 289.0));\nhashes = permute(mod(hashes + vec4(v1.y, v2.y, v3.y, v4.y), 289.0));\nhashes = mod(permute(mod(hashes + vec4(v1.z, v2.z, v3.z, v4.z), 289.0)), 48.0);\nvec3 d1 = X - v1; vec3 d2 = X - v2; vec3 d3 = X - v3; vec3 d4 = X - v4;\nvec4 a = max(0.75 - vec4(dot(d1, d1), dot(d2, d2), dot(d3, d3), dot(d4, d4)), 0.0);\nvec4 aa = a * a; vec4 aaaa = aa * aa;\nvec3 g1 = grad(hashes.x); vec3 g2 = grad(hashes.y);\nvec3 g3 = grad(hashes.z); vec3 g4 = grad(hashes.w);\nvec4 extrapolations = vec4(dot(d1, g1), dot(d2, g2), dot(d3, g3), dot(d4, g4));\nvec3 derivative = -8.0 * mat4x3(d1, d2, d3, d4) * (aa * a * extrapolations)\n+ mat4x3(g1, g2, g3, g4) * aaaa;\nreturn vec4(derivative, dot(aaaa, extrapolations));\n}\nvec4 bccNoiseDerivatives_XYBeforeZ(vec3 X) {\nmat3 orthonormalMap = mat3(\n0.788675134594813, -0.211324865405187, -0.577350269189626,\n-0.211324865405187, 0.788675134594813, -0.577350269189626,\n0.577350269189626, 0.577350269189626, 0.577350269189626);\nX = orthonormalMap * X;\nvec4 result = bccNoiseDerivativesPart(X) + bccNoiseDerivativesPart(X + 144.5);\nreturn vec4(result.xyz * orthonormalMap, result.w);\n}float ease (int easingFunc, float t) {\nreturn t;\n}vec3 blend (int blendMode, vec3 src, vec3 dst) {\nreturn 1. - (1. - src) * (1. - dst);\n}const float PI = 3.14159265359;vec4 normalizeNoise(vec4 noise, float amount) {\nreturn mix(noise, (noise + 0.5) * 0.5, amount);\n}mat2 rotate2d(float angle) {\nreturn mat2(cos(angle), -sin(angle), sin(angle), cos(angle));\n}vec4 getNoise(vec3 p) {\nvec4 noise = bccNoiseDerivatives_XYBeforeZ(p);\nreturn normalizeNoise(noise, 0.0000);\n}void getCaustics(vec2 uv, out vec4 outNoise, out vec3 outColor) {\nvec2 aspect = vec2(uResolution.x/uResolution.y, 1);vec2 mPos = vec2(0.14372822299651566, 0.03765243902439008) + mix(vec2(0), (uMousePos-0.5), 0.0000);\nvec2 drift = vec2(0, 0.0000 * uTime * 0.0125);\nvec2 pos = vec2(0.14372822299651566, 0.03765243902439008) + drift * rotate2d(-0.0189 * -2. * PI);\nfloat mDist = ease(0, max(0.,1. - distance(uv * aspect, mPos * aspect) * 4. * (1. - 0.8100)));if(0 == 1) {\nmDist = max(0., (0.5 - mDist));\n}uv -= pos;\nuv = uv * aspect * rotate2d(-0.0189 * 2. * PI) * vec2(1. - 0.0000, 1.) * 16.0 * 0.4460;float refraction = mix(0.25, 1.3, 0.9500);vec3 p = vec3(uv, uTime * 0.05);\nvec4 noise = getNoise(p);\nvec4 baseNoise = noise;\nvec4 balanceNoise = getNoise(p - vec3(baseNoise.xyz / 32.0) * refraction);\nnoise = getNoise(p - vec3(balanceNoise.xyz / 16.0) * refraction);float balancer = (0.5 + 0.5 * balanceNoise.w);\nfloat normalized = pow(0.5 + 0.5 * noise.w, 2.);\nfloat value = mix(0., normalized + 0.2 * (1.0 - normalized), balancer * mDist);\noutNoise = baseNoise * mDist;\noutColor = vec3(0.9137254901960784, 0.47058823529411764, 1) * value;\n}out vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 causticNoise;\nvec3 causticColor;\ngetCaustics(uv, causticNoise, causticColor);\nvec4 color = texture(uTexture, uv + causticNoise.xy * 0.01 * 0.2500);\nif(4 > 0) {\nvec3 blended = blend(4, color.rgb, causticColor);\ncolor.rgb = mix(color.rgb, blended, 0.7400);\n} else {\ncolor.rgb = causticColor * 0.7400;\n}\nfragColor = color;}"
+			],
+			"compiledVertexShaders": [
+				"#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"
+			],
+			"data": { "depth": false, "uniforms": {}, "isBackground": false },
+			"id": "effect1"
+		},
+		{
+			"breakpoints": [],
+			"visible": true,
+			"aspectRatio": 1,
+			"userDownsample": 1,
+			"layerType": "effect",
+			"type": "chromab",
+			"usesPingPong": false,
+			"speed": 0.25,
+			"trackMouse": 0,
+			"trackAxes": "xy",
+			"mouseMomentum": 0,
+			"texture": false,
+			"animating": true,
+			"isMask": 0,
+			"compiledFragmentShaders": [
+				"#version 300 es\nprecision highp float;in vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform float uTime;uniform vec2 uMousePos;\nuniform vec2 uResolution;float ease (int easingFunc, float t) {\nreturn t;\n}out vec4 fragColor;\nconst float PI = 3.1415926;vec3 getAbberatedColor(vec3 color, vec3 left, vec3 center, vec3 right) {\nreturn vec3(left.r, mix(color.g, center.g, float(1)), right.b);\n}void main() {\nvec2 uv = vTextureCoord;\nfloat aspectRatio = uResolution.x/uResolution.y;\nvec2 mPos = vec2(0.48519163763066203, 0.5111498257839722) + mix(vec2(0), (uMousePos-0.5), 0.0000);\nvec2 pos = vec2(0.48519163763066203, 0.5111498257839722);\nfloat angle = ((0.2457 + uTime * 0.05) * 360.0) * PI / 180.0;\nvec2 rotation = vec2(sin(angle), cos(angle));\nvec4 color = texture(uTexture, uv);float mDist = ease(0, max(0., 1. - distance(uv * vec2(aspectRatio, 1.), mPos * vec2(aspectRatio, 1.)) * 4. * (1. - 1.0000)));vec2 aberrated;vec2 dir = uv - pos;\nfloat dist = length(dir);\ndir = normalize(dir);\naberrated = 0.5900 * dir * 0.03 * mix(1.0, dist * (1.0 + 0.0000), 0.0000);\naberrated *= mDist;float amt = length(aberrated);if(amt < 0.001) {\nfragColor = color;return;\n}vec4 left = vec4(0);\nvec4 right = vec4(0);\nvec4 center = vec4(0);float steps = max(2., min(float(14), 24.));\nfloat invSteps = 1.0 / (steps + 1.0);for (float i = 0.0; i <= steps; i++) {\nvec2 offset = aberrated * (i * invSteps);\nleft += texture(uTexture, uv - offset) * invSteps;\nright += texture(uTexture, uv + offset) * invSteps;\n}\nfor (float i = 0.0; i <= steps; i++) {\nvec2 offset = aberrated * ((i / steps) - 0.5);\ncenter += texture(uTexture, uv + offset) * invSteps;\n}\ncolor.rgb = getAbberatedColor(color.rgb, left.rgb, center.rgb, right.rgb);color.a = max(max(left.a, center.a), right.a);\nfragColor = color;}"
+			],
+			"compiledVertexShaders": [
+				"#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"
+			],
+			"data": { "depth": false, "uniforms": {}, "isBackground": false },
+			"id": "effect2"
+		},
+		{
+			"breakpoints": [],
+			"visible": true,
+			"aspectRatio": 1,
+			"userDownsample": 1,
+			"layerType": "effect",
+			"type": "waterRipple",
+			"usesPingPong": true,
+			"speed": 0.75,
+			"mouseMomentum": 0,
+			"texture": false,
+			"animating": true,
+			"isMask": 0,
+			"compiledFragmentShaders": [
+				"#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uPingPongTexture;const float PI = 3.1415926;\nconst float ITERATIONS = 24.0;out vec4 fragColor;vec3 calculateNormal(sampler2D tex, vec2 uv) {\nfloat stengthScale = mix(3., 7., 1.0000);\nfloat stepScale = mix(1., 3., 1.0000);\nfloat strength = mix(1., stengthScale, 0.7700);\nfloat stepSize = mix(1., stepScale, 0.7700);\nfloat step = stepSize / 1080.;\nfloat left = texture(tex, uv + vec2(-step, 0.0)).r;\nfloat right = texture(tex, uv + vec2(step, 0.0)).r;\nfloat top = texture(tex, uv + vec2(0.0, -step)).r;\nfloat bottom = texture(tex, uv + vec2(0.0, step)).r;\nvec3 normal;\nnormal.x = (right - left) * strength;\nnormal.y = -(bottom - top) * strength;\nnormal.z = -1.0;\nreturn normalize(normal);\n}vec4 drawRipple(vec2 uv) {\nvec2 scaled = mix(uv, (uv - 0.5) * 0.5 + 0.5, 1.0000);\nvec3 normal = calculateNormal(uPingPongTexture, scaled);\nreturn vec4(normal, 1.);\n}const vec3 LIGHT_POS = vec3(2.0, 2.0, 3.0);\nconst vec3 VIEW_POS = vec3(0.0, 0.0, 2.0);\nconst float SPECULAR = 2.4;\nconst float SHININESS = 128.0;vec4 getColor(vec2 uv) {\nreturn drawRipple(uv);\n}void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getColor(uv);\nfragColor = color;\n}",
+				"#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uTexture;const float PI = 3.1415926;\nconst float ITERATIONS = 24.0;float getGaussianWeight(int index) {\nswitch(index) {\ncase 0: return 0.7978845608028654;\ncase 1: return 0.795118932516684;\ncase 2: return 0.7868794322038799;\ncase 3: return 0.7733362336056986;\ncase 4: return 0.7547664553859864;\ncase 5: return 0.7315447328280048;\ncase 6: return 0.704130653528599;\ncase 7: return 0.6730536454899063;\ncase 8: return 0.6388960110447045;\ncase 9: return 0.6022748643096089;\ncase 10: return 0.5638237508206051;\ncase 11: return 0.5241747061566029;\ncase 12: return 0.48394144903828673;\ncase 13: return 0.443704309411472;\ncase 14: return 0.40399737110811773;\ncase 15: return 0.36529817077804383;\ncase 16: return 0.3280201493519873;\ncase 17: return 0.29250790855907144;\ncase 18: return 0.2590351913317835;\ncase 19: return 0.2278053882403838;\ncase 20: return 0.19895427758549736;\ncase 21: return 0.17255463765302306;\ncase 22: return 0.1486223271179862;\ncase 23: return 0.12712341303392466;\ndefault: return 0.0;\n}\n}out vec4 fragColor;vec4 blur(vec2 uv, vec2 dir) {\nvec4 color = vec4(0.0);\nfloat total_weight = 0.0;\nvec4 center = texture(uTexture, uv);\nfloat center_weight = getGaussianWeight(0);\ncolor += center * center_weight;\ntotal_weight += center_weight;\nfor (int i = 1; i <= 11; i++) {\nfloat weight = getGaussianWeight(i);\nfloat offset = mix(0.005, 0.015, 0.6400) * float(i)/11.;\nvec4 sample1 = texture(uTexture, uv + offset * dir);\nvec4 sample2 = texture(uTexture, uv - offset * dir);\ncolor += (sample1 + sample2) * weight;\ntotal_weight += 2.0 * weight;\n}return color / total_weight;\n}const vec3 LIGHT_POS = vec3(2.0, 2.0, 3.0);\nconst vec3 VIEW_POS = vec3(0.0, 0.0, 2.0);\nconst float SPECULAR = 2.4;\nconst float SHININESS = 128.0;vec4 getColor(vec2 uv) {\nreturn blur(uv, vec2(1, 0));\n}void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getColor(uv);\nfragColor = color;\n}",
+				"#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uTexture;const float PI = 3.1415926;\nconst float ITERATIONS = 24.0;float getGaussianWeight(int index) {\nswitch(index) {\ncase 0: return 0.7978845608028654;\ncase 1: return 0.795118932516684;\ncase 2: return 0.7868794322038799;\ncase 3: return 0.7733362336056986;\ncase 4: return 0.7547664553859864;\ncase 5: return 0.7315447328280048;\ncase 6: return 0.704130653528599;\ncase 7: return 0.6730536454899063;\ncase 8: return 0.6388960110447045;\ncase 9: return 0.6022748643096089;\ncase 10: return 0.5638237508206051;\ncase 11: return 0.5241747061566029;\ncase 12: return 0.48394144903828673;\ncase 13: return 0.443704309411472;\ncase 14: return 0.40399737110811773;\ncase 15: return 0.36529817077804383;\ncase 16: return 0.3280201493519873;\ncase 17: return 0.29250790855907144;\ncase 18: return 0.2590351913317835;\ncase 19: return 0.2278053882403838;\ncase 20: return 0.19895427758549736;\ncase 21: return 0.17255463765302306;\ncase 22: return 0.1486223271179862;\ncase 23: return 0.12712341303392466;\ndefault: return 0.0;\n}\n}out vec4 fragColor;vec4 blur(vec2 uv, vec2 dir) {\nvec4 color = vec4(0.0);\nfloat total_weight = 0.0;\nvec4 center = texture(uTexture, uv);\nfloat center_weight = getGaussianWeight(0);\ncolor += center * center_weight;\ntotal_weight += center_weight;\nfor (int i = 1; i <= 11; i++) {\nfloat weight = getGaussianWeight(i);\nfloat offset = mix(0.005, 0.015, 0.6400) * float(i)/11.;\nvec4 sample1 = texture(uTexture, uv + offset * dir);\nvec4 sample2 = texture(uTexture, uv - offset * dir);\ncolor += (sample1 + sample2) * weight;\ntotal_weight += 2.0 * weight;\n}return color / total_weight;\n}const vec3 LIGHT_POS = vec3(2.0, 2.0, 3.0);\nconst vec3 VIEW_POS = vec3(0.0, 0.0, 2.0);\nconst float SPECULAR = 2.4;\nconst float SHININESS = 128.0;vec4 getColor(vec2 uv) {\nreturn blur(uv, vec2(0, 1));\n}void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getColor(uv);\nfragColor = color;\n}",
+				"#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;const float PI = 3.1415926;\nconst float ITERATIONS = 24.0;out vec4 fragColor;vec3 chromatic_aberration(vec3 color, vec2 uv) {\nvec2 offset = (uv - vTextureCoord) * (0.2500 * 0.2);\nvec4 left = texture(uBgTexture, uv - offset);\nvec4 right = texture(uBgTexture, uv + offset);color.r = left.r;\ncolor.b = right.b;return color;\n}vec2 calculateRefraction(vec3 normal, float ior) {\nvec3 I = vec3(0.0, 0.0, 1.0);\nfloat ratio = 1.0 / ior;\nvec3 refracted = refract(I, normal, ratio);\nfloat refractionScale = mix(0.2, 0.4, 1.0000);\nfloat refractionAmount = mix(0.01, refractionScale, 0.7700);\nreturn refracted.xy * refractionAmount;\n}const vec3 LIGHT_POS = vec3(2.0, 2.0, 3.0);\nconst vec3 VIEW_POS = vec3(0.0, 0.0, 2.0);\nconst float SPECULAR = 2.4;\nconst float SHININESS = 128.0;vec3 calculateLighting(vec3 normal, vec2 uv) {\nvec3 N = normal;\nvec3 worldPos = vec3(uv * 2.0 - 1.0, 0.0);\nvec3 lightDir = normalize(LIGHT_POS - worldPos);\nvec3 viewDir = normalize(VIEW_POS - worldPos);\nvec3 reflectDir = reflect(-lightDir, N);\nfloat diff = max(dot(N, lightDir), 0.0);\nvec3 diffuse = vec3(diff);\nfloat spec = pow(max(dot(viewDir, reflectDir), 0.0), SHININESS);\nvec3 specular = vec3(spec * SPECULAR);\nreturn diffuse + specular;\n}vec4 getRipple(vec2 uv) {\nvec3 normal = texture(uTexture, uv).rgb;\nvec2 refractionOffset = calculateRefraction(normal, 1.333);\nvec2 refractedUv = uv + refractionOffset;\nvec3 refractedNormal = texture(uTexture, refractedUv).rgb;vec4 refractedColor = texture(uBgTexture, refractedUv);\nrefractedColor.rgb = chromatic_aberration(refractedColor.rgb, refractedUv);vec3 caustics = calculateLighting(refractedNormal, refractedUv);\nfloat causticsShadow = dot(normal, normalize(vec3(2.0, -2.0, 3.0) - vec3(uv * 2.0 - 1.0, 0.0))) + 1.;\nfloat shadowFactor = causticsShadow;\nvec3 lightingFactor = caustics;shadowFactor = mix(1., shadowFactor, 0.2100);\nlightingFactor = mix(vec3(0), lightingFactor * vec3(0.6705882352941176, 0.8941176470588236, 1), 0.2100);\nvec4 finalColor = vec4(refractedColor.rgb - vec3(1.-shadowFactor) * vec3(0.6705882352941176, 0.8941176470588236, 1) + lightingFactor, refractedColor.a);\nreturn finalColor;\n}vec4 getColor(vec2 uv) {\nreturn getRipple(uv);\n}void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getColor(uv);\nfragColor = color;\n}",
+				"#version 300 es\nprecision highp float;in vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uPingPongTexture;\nuniform vec2 uPreviousMousePos;uniform vec2 uMousePos;\nuniform vec2 uResolution;const float PI = 3.1415926;\nconst float TWOPI = 6.2831852;out vec4 fragColor;void main() {\nvec2 aspect = vec2(uResolution.x/uResolution.y, 1);\nvec2 texelSize = (1.0 / (vec2(1080) * aspect)) * mix(1., 8., 0.7500);\nvec2 vUv = vTextureCoord;\nvec2 mPos = mix(uMousePos, (uMousePos - 0.5) * 0.5 + 0.5, 1.0000);\nvec2 pmPos = mix(uPreviousMousePos, (uPreviousMousePos - 0.5) * 0.5 + 0.5, 1.0000);float waveSpeed = 1.;\nfloat damping = mix(0.8, 0.999, 0.7500);\nfloat velocityDamping = damping;\nfloat heightDamping = damping;\nfloat time = 0.5;vec4 data = texture(uPingPongTexture, vUv);\nfloat height = data.r;\nfloat velocity = data.g;float laplacian = 0.0;\nfloat totalWeight = 0.0;\nfloat scaleDiff = 1.0000 * 0.25;\nvec2 clampRegionMin = vec2(1.0000 * 0.5 - scaleDiff);\nvec2 clampRegionMax = vec2(1.0 - 1.0000 * 0.5 + scaleDiff);\nvec2 offset = vec2(texelSize.x, 0.0);\nvec2 neighborUv = clamp(vUv + offset, clampRegionMin, clampRegionMax);\nfloat weight = 1.0 - length(offset) / (length(texelSize) * 2.0);\nlaplacian += texture(uPingPongTexture, neighborUv).r * weight;\ntotalWeight += weight;\noffset = vec2(-texelSize.x, 0.0);\nneighborUv = clamp(vUv + offset, clampRegionMin, clampRegionMax);\nweight = 1.0 - length(offset) / (length(texelSize) * 2.0);\nlaplacian += texture(uPingPongTexture, neighborUv).r * weight;\ntotalWeight += weight;\noffset = vec2(0.0, texelSize.y);\nneighborUv = clamp(vUv + offset, clampRegionMin, clampRegionMax);\nweight = 1.0 - length(offset) / (length(texelSize) * 2.0);\nlaplacian += texture(uPingPongTexture, neighborUv).r * weight;\ntotalWeight += weight;\noffset = vec2(0.0, -texelSize.y);\nneighborUv = clamp(vUv + offset, clampRegionMin, clampRegionMax);\nweight = 1.0 - length(offset) / (length(texelSize) * 2.0);\nlaplacian += texture(uPingPongTexture, neighborUv).r * weight;\ntotalWeight += weight;float avgNeighbors = laplacian / totalWeight;\nlaplacian = avgNeighbors - height;velocity += waveSpeed * waveSpeed * laplacian;\nvelocity *= velocityDamping;\nheight += velocity;\nheight *= heightDamping;float mouseSpeed = distance(mPos * aspect, pmPos * aspect);\nfloat dist = distance(vUv * aspect, mPos * aspect);\nfloat radius = 0.025;\nif (dist < radius && mouseSpeed > 0.0001) {\nfloat drop = cos(dist / radius * PI * time);\nfloat intensity = mouseSpeed * 20.;\nheight += drop * intensity;\n}fragColor = vec4(height, velocity, 0.0, 1.0);\n}"
+			],
+			"compiledVertexShaders": [
+				"#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = aTextureCoord;\n}",
+				"#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = aTextureCoord;\n}"
+			],
+			"data": {
+				"depth": false,
+				"uniforms": {},
+				"isBackground": false,
+				"passes": [
+					{ "prop": "pass", "value": 1, "downSample": 0.25 },
+					{ "prop": "pass", "value": 2, "downSample": 0.25 },
+					{ "prop": "pass", "value": 3, "includeBg": true }
+				]
+			},
+			"id": "effect3"
+		},
+		{
+			"breakpoints": [],
+			"aspectRatio": 900,
+			"userDownsample": 1,
+			"effects": [],
+			"anchorPoint": "bottomCenter",
+			"mask": 0,
+			"maskDepthLayer": 1,
+			"states": { "appear": [], "scroll": [], "hover": [] },
+			"layerType": "text",
+			"width": 1,
+			"widthMode": "relative",
+			"height": 14.4,
+			"heightMode": "relative",
+			"left": 0.5,
+			"top": 0.9011111111111111,
+			"fontSize": 0.01,
+			"lineHeight": 1,
+			"letterSpacing": 0.8,
+			"fontFamily": "Inter",
+			"fontStyle": "regular",
+			"fontWeight": "400",
+			"textAlign": "center",
+			"textContent": "WELCOME TO TACKL",
+			"fill": ["#FFFFFF"],
+			"fontSizeMode": "relative",
+			"noTextAsHtml": false,
+			"fontCSS": {
+				"family": "Inter",
+				"src": "https://assets.unicorn.studio/fonts/google_fonts/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf"
+			},
+			"compiledFragmentShaders": [
+				"#version 300 es\nprecision highp float;\nin vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform vec2 uMousePos;\nuniform sampler2D uBgTexture;\nuniform sampler2D uTexture;const float STEPS = 24.0;\nconst float PI = 3.1415926;vec4 displacement(vec2 st, vec4 bg, vec4 color) {\nvec2 displacedUV = st;vec2 normal = vec2(bg.r * 2.0 - 1.0, bg.g * 2.0 - 1.0) * 0.1;\ndisplacedUV = clamp(st + normal * 0.0500, 0.0, 1.0);\nreturn texture(uTexture, displacedUV);\n}out vec4 fragColor;vec4 getNormalOutput(vec4 color, vec4 background) {\nreturn mix(background, color + background * (1.0 - color.a), 1.0000);\n}vec4 getOutputByMode(vec4 color, vec4 background) {\nreturn getNormalOutput(color, background);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 pos = vec2(0);pos = mix(vec2(0), (uMousePos - 0.5), 0.0000);uv -= pos;vec4 background = vec4(0);background = texture(uBgTexture, vTextureCoord);\nvec4 color = texture(uTexture, uv);color = displacement(uv, background, color);vec4 col = getOutputByMode(color, background);fragColor = col;\n}"
+			],
+			"compiledVertexShaders": [
+				"#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;\nuniform vec2 uMousePos;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\nfloat angleX = uMousePos.y * 0.5 - 0.25;\nfloat angleY = (1.-uMousePos.x) * 0.5 - 0.25;mat4 rotateX = mat4(1.0, 0.0, 0.0, 0.0,\n0.0, cos(angleX), -sin(angleX), 0.0,\n0.0, sin(angleX), cos(angleX), 0.0,\n0.0, 0.0, 0.0, 1.0);\nmat4 rotateY = mat4(cos(angleY), 0.0, sin(angleY), 0.0,\n0.0, 1.0, 0.0, 0.0,\n-sin(angleY), 0.0, cos(angleY), 0.0,\n0.0, 0.0, 0.0, 1.0);mat4 rotationMatrix = rotateX * rotateY;\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvVertexPosition = (rotationMatrix * vec4(aVertexPosition, 1.0)).xyz;\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"
+			],
+			"data": { "uniforms": {} },
+			"id": "text",
+			"windowWidth": 1440
+		},
+		{
+			"breakpoints": [],
+			"visible": true,
+			"aspectRatio": 1,
+			"userDownsample": 1,
+			"layerType": "effect",
+			"type": "vignette",
+			"usesPingPong": false,
+			"radius": 0.5,
+			"trackMouse": 0,
+			"trackAxes": "xy",
+			"mouseMomentum": 0,
+			"texture": false,
+			"animating": false,
+			"isMask": 0,
+			"states": {
+				"appear": [
+					{
+						"local": {
+							"pendingChanges": {},
+							"changeDebouncer": null,
+							"dragSession": null
+						},
+						"type": "appear",
+						"id": "55726b4d-99cc-4dc0-b615-1b77696b56d4",
+						"prop": "radius",
+						"transition": {
+							"delay": 0,
+							"duration": 2000,
+							"ease": "easeOutSine"
+						},
+						"complete": false,
+						"progress": 0,
+						"value": 0,
+						"endValue": 0.82,
+						"initialized": false,
+						"breakpoints": [],
+						"loop": "none",
+						"loopDelay": 0,
+						"uniformData": { "type": "1f", "name": "uRadius" }
+					}
+				],
+				"scroll": [],
+				"hover": []
+			},
+			"compiledFragmentShaders": [
+				"#version 300 es\nprecision highp float;\nin vec3 vVertexPosition;\nin vec2 vTextureCoord;\nuniform sampler2D uTexture;\nuniform float uRadius;\nuniform vec2 uResolution;out vec4 fragColor;\nmat2 rot(float a) {\nreturn mat2(cos(a),-sin(a),sin(a),cos(a));\n}\nvoid main() {\nvec2 uv = vTextureCoord;\nvec4 bg = texture(uTexture, uv);\nfloat luma = dot(bg.rgb, vec3(0.299, 0.587, 0.114));\nfloat displacement = (luma - 0.5) * 0.0000 * 0.5;\nvec2 aspectRatio = vec2(uResolution.x/uResolution.y, 1.0);\nvec2 skew = vec2(0.5000, 1.0 - 0.5000);\nfloat halfRadius = uRadius * 0.5;\nfloat innerEdge = halfRadius - 1.0000 * halfRadius * 0.5;\nfloat outerEdge = halfRadius + 1.0000 * halfRadius * 0.5;\nvec2 pos = vec2(0.5, 0.5);\nconst float TWO_PI = 6.28318530718;\nvec2 scaledUV = uv * aspectRatio * rot(0.0000 * TWO_PI) * skew;\nvec2 scaledPos = pos * aspectRatio * rot(0.0000 * TWO_PI) * skew;\nfloat radius = distance(scaledUV, scaledPos);\nfloat falloff = smoothstep(innerEdge + displacement, outerEdge + displacement, radius);\nvec3 finalColor;finalColor = mix(bg.rgb, mix(bg.rgb, vec3(0, 0, 0), 1.0000), falloff);float alpha = max(bg.a, falloff * 1.0000);\nvec4 color = mix(bg * (1.-falloff), vec4(finalColor * alpha, alpha), 1.0000);\nfragColor = color;}"
+			],
+			"compiledVertexShaders": [
+				"#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"
+			],
+			"data": { "depth": false, "uniforms": {}, "isBackground": false },
+			"id": "effect4"
+		}
+	],
+	"options": {
+		"name": "Aquarium",
+		"fps": 120,
+		"dpi": 1.5,
+		"scale": 1,
+		"includeLogo": false,
+		"isProduction": false
+	},
+	"version": "2.0.1",
+	"id": "p3qwmwgkcE3DmuIEtPzz"
+}

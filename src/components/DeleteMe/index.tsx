@@ -30,7 +30,7 @@ const DeleteMe: React.FC<DeleteMeProps> = ({
 				}
 			>
 				<UnicornScene
-					projectId={projectId}
+					jsonFilePath='/scene.json'
 					width='100%'
 					height='100%'
 					scale={1}

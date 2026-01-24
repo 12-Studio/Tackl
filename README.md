@@ -1,8 +1,8 @@
-![Tackl 3 Banner](/src/images/readme-banner.png)
+![Tackl Banner](/src/images/readme-banner.png)
 
 ✨ A comprehensive starter kit designed to accelerate web development with best-in-class tooling, performance optimization, and developer experience. Built on Next.js, it provides everything needed to create fast, scalable, and maintainable web applications. ✨
 
-![Version Number](https://img.shields.io/badge/Version-3.2.2-8000FF)
+![Version Number](https://img.shields.io/badge/Version-3.2.3-8000FF)
 ![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
 
 `For detailed documentation and guides on how to use this starter kit, please refer to the 'docs' directory.`

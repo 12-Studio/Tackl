@@ -53,11 +53,13 @@ export const theme: Theme = {
 export const GlobalStyle = createGlobalStyle`
 	/* In the event we need to use our theme values in the CSS */
 	html {
+		--black: ${theme.colors.global.black[100]};
+		--white: ${theme.colors.global.white[100]};
 		--bezzy: ${theme.easing.bezzy};
 		--bezzy2: ${theme.easing.bezzy2};
 		--bezzy3: ${theme.easing.bezzy3};
 	}
 
-	body { background: var(--black) }
-	* { color: var(--white) }
+	body { background: var(--black); }
+	* { color: var(--white); }
 `;

@@ -3,40 +3,40 @@
 // Imports
 // ------------
 import Lenis from 'lenis';
-import { createContext, useRef, useState } from 'react';
+import { createContext, useMemo, useRef, useState } from 'react';
 import { PerformanceProvider } from './Performance';
+
+// Interface
+// ------------
+import * as I from './interface';
 
 // Context Definition
 // ------------
 export const GlobalContext = createContext({
 	lenis: { current: null } as React.RefObject<Lenis | null>,
-	headerSize: 0,
-	setHeaderSize: (value: number) => {},
+
 	menuOpen: false,
 	setMenuOpen: (value: boolean) => {},
 });
 
 // Component
 // ------------
-/**
- * Global context provider component that manages shared application state
- * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Child components to be wrapped by the context
- */
-const Contexts = ({ children }: { children: React.ReactNode }) => {
-	// Create a stable reference for the lenis smooth scroll instance
+const Contexts = ({ children }: I.ContextsProps) => {
+	// Refs
 	const lenis = useRef<Lenis | null>(null);
 
-	const [headerSize, setHeaderSize] = useState<number>(0);
+	// States
 	const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-	const contextValue = {
-		lenis,
-		headerSize, // Header size state
-		setHeaderSize, // Function to update header size
-		menuOpen,
-		setMenuOpen,
-	};
+	// Context Values
+	const contextValue = useMemo(
+		() => ({
+			lenis,
+			menuOpen,
+			setMenuOpen,
+		}),
+		[menuOpen]
+	);
 
 	return (
 		<GlobalContext.Provider value={contextValue}>

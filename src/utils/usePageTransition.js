@@ -24,52 +24,72 @@
  * // Usage
  * handleTransition('/some-path');
  * ```
+ *
+ * @remarks
+ * - RAF and setTimeout IDs are stored and cleared on unmount to prevent memory leaks
+ *   and DOM updates after the component unmounts during an in-flight transition.
  */
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 const PAGE_TRANSITION_DURATION = 1000; // Duration of the entire transition
 const TRANSITION_DURATION = PAGE_TRANSITION_DURATION / 2; // Duration in milliseconds
 const CLEANUP_DELAY = TRANSITION_DURATION / 2;
 
 const usePageTransition = router => {
-    // Cache body reference
-    const bodyRef = useRef(null);
+	const bodyRef = useRef(null);
+	const rafIdRef = useRef(null);
+	const timeoutIdRef = useRef(null);
 
-    return useCallback(
-        async to => {
-            // Initialize body ref if not already set
-            if (!bodyRef.current) {
-                bodyRef.current = document.querySelector('body');
-            }
+	useEffect(() => {
+		return () => {
+			if (rafIdRef.current != null) {
+				cancelAnimationFrame(rafIdRef.current);
+				rafIdRef.current = null;
+			}
+			if (timeoutIdRef.current != null) {
+				clearTimeout(timeoutIdRef.current);
+				timeoutIdRef.current = null;
+			}
+		};
+	}, []);
 
-            try {
-                // Start transition
-                bodyRef.current?.classList.add('page-transition');
+	return useCallback(
+		async to => {
+			if (!bodyRef.current) {
+				bodyRef.current = document.querySelector('body');
+			}
 
-                // Use requestAnimationFrame for smoother animation timing
-                await new Promise(resolve =>
-                    requestAnimationFrame(() => {
-                        setTimeout(resolve, TRANSITION_DURATION);
-                    })
-                );
+			try {
+				bodyRef.current?.classList.add('page-transition');
 
-                // Navigate
-                router.push(to);
+				await new Promise(resolve => {
+					rafIdRef.current = requestAnimationFrame(() => {
+						rafIdRef.current = null;
+						timeoutIdRef.current = setTimeout(() => {
+							timeoutIdRef.current = null;
+							resolve();
+						}, TRANSITION_DURATION);
+					});
+				});
 
-                // Wait for exit animation
-                await new Promise(resolve =>
-                    requestAnimationFrame(() => {
-                        setTimeout(resolve, CLEANUP_DELAY);
-                    })
-                );
-            } finally {
-                // Cleanup
-                bodyRef.current?.classList.remove('page-transition');
-            }
-        },
-        [router]
-    );
+				router.push(to);
+
+				await new Promise(resolve => {
+					rafIdRef.current = requestAnimationFrame(() => {
+						rafIdRef.current = null;
+						timeoutIdRef.current = setTimeout(() => {
+							timeoutIdRef.current = null;
+							resolve();
+						}, CLEANUP_DELAY);
+					});
+				});
+			} finally {
+				bodyRef.current?.classList.remove('page-transition');
+			}
+		},
+		[router]
+	);
 };
 
 export default usePageTransition;

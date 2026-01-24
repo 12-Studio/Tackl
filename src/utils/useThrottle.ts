@@ -18,8 +18,11 @@
  *   window.addEventListener('scroll', throttledScroll);
  *   return () => window.removeEventListener('scroll', throttledScroll);
  * }, [throttledScroll]);
+ *
+ * @remarks
+ * - The throttle's internal cooldown timer is cleared on unmount to prevent memory leaks.
  */
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 export function useThrottle<TArgs extends any[]>(
   fn: (...args: TArgs) => void,
@@ -27,6 +30,16 @@ export function useThrottle<TArgs extends any[]>(
 ): (...args: TArgs) => void {
   const inThrottleRef = useRef(false);
   const lastTimeRef = useRef(0);
+  const throttleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (throttleTimerRef.current) {
+        clearTimeout(throttleTimerRef.current);
+        throttleTimerRef.current = null;
+      }
+    };
+  }, []);
 
   return useCallback(
     (...args: TArgs) => {
@@ -37,8 +50,10 @@ export function useThrottle<TArgs extends any[]>(
         lastTimeRef.current = now;
         inThrottleRef.current = true;
 
-        setTimeout(() => {
+        if (throttleTimerRef.current) clearTimeout(throttleTimerRef.current);
+        throttleTimerRef.current = setTimeout(() => {
           inThrottleRef.current = false;
+          throttleTimerRef.current = null;
         }, limit);
       }
     },

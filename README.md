@@ -11,7 +11,7 @@
 
 - **Next.js 16** - Latest version with App Router and React Server Components
 - **TypeScript** - Full type safety and enhanced developer experience _Optional_
-- **ESLint & Prettier** - Code quality and formatting standards
+- **Biome** - Linting and formatting
 - **Storybook** - Component development and documentation
 - **Performance Context** - Built-in performance optimizations and user preference detection
 - **GSAP** - Smooth animations and transitions
@@ -31,21 +31,21 @@ This project is built with [Next.js](https://nextjs.org/), a powerful React fram
 First, run the development server:
 
 ```bash
-pnpm run dev
+bun run dev
 ```
 
 To create a production build
 
 ```bash
-pnpm run build
+bun run build
 ```
 
 To serve a production build
 
 ```bash
-pnpm run serve
+bun run serve
 # you may need to install serve globally:
-pnpm add -g serve
+bun add -g serve
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -81,13 +81,13 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
     ├── public
     ├── src
     ├── .env
-    ├── eslint.config.js
+    ├── biome.json
     ├── .gitignore
     ├── .npmrc
     ├── .deployment_guide.md
     ├── .jsconfig.json
     ├── next.config.js
-    ├── pnpm-lock.yaml
+    ├── bun.lock
     ├── package.json
     ├── docs
     └── README.md
@@ -106,17 +106,17 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
 
 7.  **`.gitignore`**: Version control configuration file that specifies which files and directories Git should ignore, such as node_modules, build outputs, and environment files.
 
-8.  **`.npmrc`**: Package manager configuration file that customizes pnpm behavior for this project. In Tackl, it's primarily used for configuring GSAP Club access and other package-specific settings.
+8.  **`.npmrc`**: Package manager configuration file. In Tackl, it's primarily used for configuring GSAP Club access and other package-specific settings.
 
 9.  **`deployment_guide`**: Comprehensive AWS deployment documentation providing step-by-step instructions for setting up and deploying your Tackl project to production.
 
 10. **`jsconfig.json`**: JavaScript project configuration file that enhances development experience by enabling TypeScript-like features, custom path aliases, and better IntelliSense support in modern IDEs.
 
-11. **`eslint.config.js`**: Modern ESLint flat configuration file that provides code quality rules, linting standards, and code formatting integration with Prettier for consistent code style across the project.
+11. **`biome.json`**: Biome configuration for linting and formatting, providing consistent code style across the project.
 
 12. **`next.config.js`**: Next.js framework configuration file where you can customize build settings, add environment variables, configure plugins, and modify webpack behavior. Essential for tailoring Next.js to your project's needs.
 
-13. **`pnpm-lock.yaml`**: Automatically generated dependency lock file that ensures consistent installations across different environments by recording the exact version of each installed package. Should be committed to version control but never manually edited.
+13. **`bun.lock`**: Dependency lock file for Bun that ensures consistent installations. Should be committed to version control but never manually edited.
 
 14. **`package.json`**: Project manifest file defining your application's dependencies, scripts, metadata, and other important configurations. This is the central configuration file for your Node.js/JavaScript project.
 

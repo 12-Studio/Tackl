@@ -2,23 +2,18 @@
 
 // Imports
 // ------------
-// @ts-ignore
 import UnicornScene from 'unicornstudio-react/next';
-
+// Interfaces
+// ------------
+import type { DeleteMeProps } from './interface';
 // Styles
 // ------------
 import { Background, Jacket } from './styles';
 
-// Interfaces
-// ------------
-import { DeleteMeProps } from './interface';
-
 // Component
 // ------------
 
-const DeleteMe: React.FC<DeleteMeProps> = ({
-	projectId = 'p3qwmwgkcE3DmuIEtPzz',
-}) => {
+const DeleteMe: React.FC<DeleteMeProps> = ({ projectId = 'p3qwmwgkcE3DmuIEtPzz' }) => {
 	return (
 		<Jacket>
 			<Background

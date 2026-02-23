@@ -3,23 +3,20 @@
 // Imports
 // ------------
 
-// Styles
+// Styles + Interfaces
 // ------------
-import { Jacket } from './styles';
-
-// Interfaces
-// ------------
-type HeaderProps = {};
+import type * as I from './interface';
+import * as S from './styles';
 
 // Component
 // ------------
-const Header = ({}: HeaderProps) => {
+const Header = ({ example }: I.HeaderProps) => {
 	return (
-		<Jacket>
+		<S.Jacket>
 			{/*  */}
 			{/*  */}
 			{/*  */}
-		</Jacket>
+		</S.Jacket>
 	);
 };
 

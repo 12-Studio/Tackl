@@ -34,7 +34,12 @@ function shouldPreserveDefault(e: React.MouseEvent<HTMLAnchorElement>): boolean 
 // This is a wrapper around next/link that explicitly uses the router APIs
 // to navigate, and trigger a view transition.
 
-export function Link(props: React.ComponentProps<typeof NextLink>) {
+type LinkProps = React.ComponentProps<typeof NextLink>;
+
+/** Props type NextLink accepts (narrow Key to avoid @types/react vs Next.js mismatch) */
+type NextLinkPropsSafe = Omit<LinkProps, 'key'> & { key?: string | number | null | undefined };
+
+export function Link(props: LinkProps) {
 	const router = useTransitionRouter();
 
 	const { href, replace, scroll } = props;
@@ -62,5 +67,6 @@ export function Link(props: React.ComponentProps<typeof NextLink>) {
 		[props.onClick, href, replace, scroll, router]
 	);
 
-	return <NextLink {...props} onClick={onClick} />;
+	// Cast key to string | number to avoid React.Key (unique symbol) mismatch with Next.js internals
+	return <NextLink {...(props as NextLinkPropsSafe)} onClick={onClick} />;
 }

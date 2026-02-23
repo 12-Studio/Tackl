@@ -3,20 +3,19 @@
 // Imports
 // ------------
 import UnicornScene from 'unicornstudio-react/next';
-// Interfaces
+
+// Styles + Interfaces
 // ------------
-import type { DeleteMeProps } from './interface';
-// Styles
-// ------------
-import { Background, Jacket } from './styles';
+import type * as I from './interface';
+import * as S from './styles';
 
 // Component
 // ------------
 
-const DeleteMe: React.FC<DeleteMeProps> = ({ projectId = 'p3qwmwgkcE3DmuIEtPzz' }) => {
+const DeleteMe: React.FC<I.DeleteMeProps> = ({ projectId }) => {
 	return (
-		<Jacket>
-			<Background
+		<S.Jacket>
+			<S.Background
 				style={
 					{
 						'--unicorn-width': '100%',
@@ -36,8 +35,8 @@ const DeleteMe: React.FC<DeleteMeProps> = ({ projectId = 'p3qwmwgkcE3DmuIEtPzz' 
 					lazyLoad={false}
 					production={true}
 				/>
-			</Background>
-		</Jacket>
+			</S.Background>
+		</S.Jacket>
 	);
 };
 

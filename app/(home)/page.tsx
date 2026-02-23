@@ -25,6 +25,7 @@ const Page = async () => {
 	return (
 		<>
 			<DeleteMe />
+			<div style={{ height: '1000px' }}></div>
 		</>
 	);
 };

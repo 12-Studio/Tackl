@@ -8,7 +8,7 @@ import { Footer } from '@/theme/tackl';
 // Exports
 // ------------
 export const Jacket = styled(Footer)(
-	props => css`
+	() => css`
 		/*  */
 	`
 );

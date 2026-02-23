@@ -1,10 +1,10 @@
 {
 	"name": "tackl",
-	"version": "3.2.3",
+	"version": "3.3.0",
 	"description": "The ultimate Next.js starter kit!",
 	"license": "MIT",
 	"engines": {
-		"node": ">=20.0.0"
+		"node": ">=24.0.0"
 	},
 	"author": "joebentaylor1995",
 	"repository": {
@@ -15,10 +15,10 @@
 		"dev": "next dev --turbopack",
 		"build": "next build",
 		"start": "next start",
-		"pretty": "prettier --check .",
-		"pretty:fix": "prettier --write .",
-		"format": "prettier --write .",
-		"format:check": "prettier --check .",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"format": "biome format --write .",
+		"format:check": "biome format .",
 		"type-check": "tsc --noEmit",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
@@ -26,7 +26,8 @@
 		"commit": "node .gitmessage.js",
 		"postinstall": "husky",
 		"test": "echo \"No tests specified\" && exit 0",
-		"lighthouse": "lhci autorun"
+		"lighthouse": "lhci autorun",
+		"outdated": "bunx npm-check-updates"
 	},
 	"dependencies": {
 		"@datocms/cda-client": "^0.2.10",
@@ -36,45 +37,35 @@
 		"graphql-tag": "^2.12.6",
 		"gsap": "^3.14.2",
 		"lenis": "^1.3.17",
-		"next": "^16.1.1",
+		"next": "^16.1.6",
 		"picocolors": "^1.1.1",
 		"prompts": "^2.4.2",
-		"react": "^19.2.3",
-		"react-datocms": "^7.2.4",
-		"react-dom": "^19.2.3",
-		"styled-components": "^6.3.5",
-		"tar": "^7.5.2",
+		"react": "^19.2.4",
+		"react-datocms": "^7.2.14",
+		"react-dom": "^19.2.4",
+		"styled-components": "^6.3.11",
+		"tar": "^7.5.9",
 		"unicornstudio-react": "^2.0.1"
 	},
 	"devDependencies": {
 		"@lhci/cli": "^0.15.1",
-		"@storybook/addon-docs": "^10.1.11",
-		"@storybook/addon-links": "^10.1.11",
-		"@storybook/addon-onboarding": "^10.1.11",
-		"@storybook/addon-themes": "^10.1.11",
-		"@storybook/nextjs": "^10.1.11",
-		"@types/node": "^25.0.6",
-		"@types/react": "^19.2.8",
-		"@typescript-eslint/eslint-plugin": "^8.52.0",
-		"@typescript-eslint/parser": "^8.52.0",
-		"ajv": "^8.17.1",
+		"@storybook/addon-docs": "^10.2.10",
+		"@storybook/addon-links": "^10.2.10",
+		"@storybook/addon-onboarding": "^10.2.10",
+		"@storybook/addon-themes": "^10.2.10",
+		"@storybook/nextjs": "^10.2.10",
+		"@types/node": "^25.3.0",
+		"@types/react": "^19.2.14",
+		"@biomejs/biome": "^2.4.4",
+		"ajv": "^8.18.0",
 		"ajv-keywords": "^5.1.0",
-		"eslint-config-next": "^16.1.1",
-		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-import": "^2.32.0",
-		"eslint-plugin-jsx-a11y": "^6.10.2",
-		"eslint-plugin-prettier": "^5.5.4",
-		"eslint-plugin-react": "^7.37.5",
-		"eslint-plugin-react-hooks": "^7.0.1",
-		"eslint-plugin-storybook": "^10.1.11",
 		"husky": "^9.1.7",
-		"prettier": "^3.7.4",
-		"storybook": "^10.1.11",
+		"storybook": "^10.2.10",
 		"typescript": "5.9.3"
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "pnpm run commit"
+			"pre-commit": "bun run commit"
 		}
 	}
 }

@@ -16,22 +16,22 @@
  * @returns {Promise<HTMLImageElement>} A promise that resolves to the loaded HTMLImageElement.
  */
 export const preloadImage = (src: string): Promise<HTMLImageElement> => {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
+	return new Promise((resolve, reject) => {
+		const img = new Image();
 
-        fetch(src)
-            .then(response => response.blob())
-            .then(blob => {
-                const objectUrl = URL.createObjectURL(blob);
-                img.src = objectUrl;
+		fetch(src)
+			.then(response => response.blob())
+			.then(blob => {
+				const objectUrl = URL.createObjectURL(blob);
+				img.src = objectUrl;
 
-                img.onload = () => {
-                    URL.revokeObjectURL(objectUrl);
-                    resolve(img);
-                };
-            })
-            .catch(reject);
-    });
+				img.onload = () => {
+					URL.revokeObjectURL(objectUrl);
+					resolve(img);
+				};
+			})
+			.catch(reject);
+	});
 };
 
 /**
@@ -53,7 +53,7 @@ export const preloadImage = (src: string): Promise<HTMLImageElement> => {
  * @returns {Promise<HTMLImageElement[]>} A promise that resolves to an array of loaded HTMLImageElements.
  */
 export const preloadImages = (urls: string[]): Promise<HTMLImageElement[]> => {
-    return Promise.all(urls.map(preloadImage));
+	return Promise.all(urls.map(preloadImage));
 };
 
 export default preloadImages;

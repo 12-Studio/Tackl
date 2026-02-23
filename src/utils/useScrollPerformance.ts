@@ -36,45 +36,45 @@
 import { useEffect } from 'react';
 
 export const useScrollPerformance = (): void => {
-    useEffect(() => {
-        const body = document.body;
-        const HOVER_DISABLE_CLASS = 'disable-hover';
-        const DEBOUNCE_MS = 50;
+	useEffect(() => {
+		const body = document.body;
+		const HOVER_DISABLE_CLASS = 'disable-hover';
+		const DEBOUNCE_MS = 50;
 
-        let rafId: number | undefined;
-        let debounceTimer: number | undefined;
+		let rafId: number | undefined;
+		let debounceTimer: number | undefined;
 
-        const handleScroll = (): void => {
-            if (rafId !== undefined) {
-                cancelAnimationFrame(rafId);
-            }
-            if (debounceTimer !== undefined) {
-                clearTimeout(debounceTimer);
-            }
+		const handleScroll = (): void => {
+			if (rafId !== undefined) {
+				cancelAnimationFrame(rafId);
+			}
+			if (debounceTimer !== undefined) {
+				clearTimeout(debounceTimer);
+			}
 
-            rafId = window.requestAnimationFrame(() => {
-                if (!body.classList.contains(HOVER_DISABLE_CLASS)) {
-                    body.classList.add(HOVER_DISABLE_CLASS);
-                }
-            });
+			rafId = window.requestAnimationFrame(() => {
+				if (!body.classList.contains(HOVER_DISABLE_CLASS)) {
+					body.classList.add(HOVER_DISABLE_CLASS);
+				}
+			});
 
-            debounceTimer = window.setTimeout(() => {
-                body.classList.remove(HOVER_DISABLE_CLASS);
-            }, DEBOUNCE_MS);
-        };
+			debounceTimer = window.setTimeout(() => {
+				body.classList.remove(HOVER_DISABLE_CLASS);
+			}, DEBOUNCE_MS);
+		};
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
+		window.addEventListener('scroll', handleScroll, { passive: true });
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            if (rafId !== undefined) {
-                cancelAnimationFrame(rafId);
-            }
-            if (debounceTimer !== undefined) {
-                clearTimeout(debounceTimer);
-            }
-        };
-    }, []);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+			if (rafId !== undefined) {
+				cancelAnimationFrame(rafId);
+			}
+			if (debounceTimer !== undefined) {
+				clearTimeout(debounceTimer);
+			}
+		};
+	}, []);
 
-    // This hook does not render or return anything
+	// This hook does not render or return anything
 };

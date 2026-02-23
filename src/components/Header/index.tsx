@@ -9,7 +9,7 @@ import { Jacket } from './styles';
 
 // Interfaces
 // ------------
-interface HeaderProps {}
+type HeaderProps = {};
 
 // Component
 // ------------

@@ -14,8 +14,8 @@
  * 4. On server-side, wraps children in StyleSheetManager to collect styles
  */
 
-import React, { useState } from 'react';
 import { useServerInsertedHTML } from 'next/navigation';
+import React, { useState } from 'react';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 export default function StyledComponentsRegistry({ children }) {
@@ -37,9 +37,5 @@ export default function StyledComponentsRegistry({ children }) {
 	}
 
 	// On server-side, wrap children to collect styles during rendering
-	return (
-		<StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
-			{children}
-		</StyleSheetManager>
-	);
+	return <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>{children}</StyleSheetManager>;
 }

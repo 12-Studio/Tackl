@@ -1,37 +1,31 @@
-import type { Dispatch, SetStateAction } from 'react'
-import { createContext, use, useEffect, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react';
+import { createContext, use, useEffect, useState } from 'react';
 
-import { useBrowserNativeTransitions } from './browser-native-events'
+import { useBrowserNativeTransitions } from './browser-native-events';
 
-const ViewTransitionsContext = createContext<
-  Dispatch<SetStateAction<(() => void) | null>>
->(() => () => {})
+const ViewTransitionsContext = createContext<Dispatch<SetStateAction<(() => void) | null>>>(() => () => {});
 
 export function ViewTransitions({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode
+	children: React.ReactNode;
 }>) {
-  const [finishViewTransition, setFinishViewTransition] = useState<
-    null | (() => void)
-  >(null)
+	const [finishViewTransition, setFinishViewTransition] = useState<null | (() => void)>(null);
 
-  useEffect(() => {
-    if (finishViewTransition) {
-      finishViewTransition()
-      setFinishViewTransition(null)
-    }
-  }, [finishViewTransition])
+	useEffect(() => {
+		if (finishViewTransition) {
+			finishViewTransition();
+			setFinishViewTransition(null);
+		}
+	}, [finishViewTransition]);
 
-  useBrowserNativeTransitions()
+	useBrowserNativeTransitions();
 
-  return (
-    <ViewTransitionsContext.Provider value={setFinishViewTransition}>
-      {children}
-    </ViewTransitionsContext.Provider>
-  )
+	return (
+		<ViewTransitionsContext.Provider value={setFinishViewTransition}>{children}</ViewTransitionsContext.Provider>
+	);
 }
 
 export function useSetFinishViewTransition() {
-  return use(ViewTransitionsContext)
+	return use(ViewTransitionsContext);
 }

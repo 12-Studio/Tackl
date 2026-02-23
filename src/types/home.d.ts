@@ -4,9 +4,9 @@
 // Exports
 // ------------
 export interface HomeProps {
-    data: {
-        page: any;
-    }
+	data: {
+		page: any;
+	};
 }
 
-export interface PageProps{};
+export type PageProps = {};

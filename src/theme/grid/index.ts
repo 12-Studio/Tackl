@@ -5,7 +5,7 @@
 
 // Imports
 // ------------
-import { Grid } from './interface';
+import type { Grid } from './interface';
 
 // Exports
 // ------------

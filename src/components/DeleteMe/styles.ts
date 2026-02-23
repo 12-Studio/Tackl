@@ -1,7 +1,8 @@
 // Imports
 // ------------
-import { Div, getGlobal } from '@/theme/tackl';
+
 import styled, { css } from 'styled-components';
+import { Div, getGlobal } from '@/theme/tackl';
 
 // Exports
 // ------------

@@ -20,6 +20,7 @@
  */
 
 import { theme } from '@theme';
+
 const { xxl, sm, m } = theme.grid.breakpoints;
 
 const desktop = Number(xxl?.replace('px', '') || '1920');

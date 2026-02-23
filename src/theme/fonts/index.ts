@@ -2,7 +2,7 @@
 // ------------
 import { Inter } from 'next/font/google';
 // import localFont from 'next/font/local';
-import { Fonts } from './interface';
+import type { Fonts } from './interface';
 
 // SECTION • Inter font configuration optimized with swap display for better loading performance
 export const inter = Inter({

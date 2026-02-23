@@ -7,7 +7,7 @@ import { Theme } from '@theme/interface';
 // NOTE — Props for responsive grid spans with $ prefix
 type ResponsiveProps = {
 	[K in keyof Breakpoints as `$${K}`]?: string;
-}
+};
 
 // SECTION • Waffl
 // NOTE — The main waffl object structure

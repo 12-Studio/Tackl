@@ -2,13 +2,12 @@
 
 // Imports
 // ------------
-import Lenis from 'lenis';
+import type Lenis from 'lenis';
 import { createContext, useMemo, useRef, useState } from 'react';
-import { PerformanceProvider } from './Performance';
-
 // Interface
 // ------------
-import * as I from './interface';
+import type * as I from './interface';
+import { PerformanceProvider } from './Performance';
 
 // Context Definition
 // ------------

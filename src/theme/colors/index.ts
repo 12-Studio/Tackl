@@ -8,7 +8,7 @@
 // Imports
 // ------------
 import { generateColorVariants } from './generateColorVariants';
-import { Colors } from './interface';
+import type { Colors } from './interface';
 
 // Exports
 // ------------

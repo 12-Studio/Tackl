@@ -1,14 +1,12 @@
 // Imports
 // ------
 import { memo } from 'react';
-
+// Interfaces
+// ------------
+import type { IconProps } from './interface';
 // Styles
 // ------
 import { Jacket } from './styles';
-
-// Interfaces
-// ------------
-import { IconProps } from './interface';
 
 /**
  * Icon Component
@@ -62,9 +60,7 @@ const Icon = memo(({ type, className, onClick }: IconProps) => {
 
 	// If icon type not found, log error and return null
 	if (!iconConfig) {
-		console.error(
-			`Icon type "${type}" not found. Please check the type prop passed to Icon component.`
-		);
+		console.error(`Icon type "${type}" not found. Please check the type prop passed to Icon component.`);
 		return null;
 	}
 

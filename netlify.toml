@@ -1,0 +1,19 @@
+# Netlify config for Next.js
+# The Next.js plugin runs after build and deploys the app via serverless/edge.
+# In Netlify UI: Build & deploy → Build settings → Publish directory must be EMPTY.
+
+[build]
+  command = "bun run build"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+  [plugins.inputs.settings]
+    preset = "desktop"
+

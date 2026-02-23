@@ -1,6 +1,7 @@
 // Imports
 // ------------
 import Header from '@parts/Header';
+
 // import { performRequest } from '@utils/datocms';
 // import { GET_GLOBAL } from '@queries/getGlobal';
 
@@ -20,15 +21,15 @@ import Header from '@parts/Header';
 // Component
 // ------------
 const Server = async ({ children }: { children: React.ReactNode }) => {
-    // const data = await getGlobalData();
+	// const data = await getGlobalData();
 
-    return (
-        <>
-            <Header />
-            {children}
-            {/* <Footer /> */}
-        </>
-    );
+	return (
+		<>
+			<Header />
+			{children}
+			{/* <Footer /> */}
+		</>
+	);
 };
 
 // Exports

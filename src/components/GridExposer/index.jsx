@@ -22,10 +22,10 @@
  * - TABLET_COLUMNS: Number of columns for tablet view (6)
  */
 
+import { useCallback, useEffect, useState } from 'react';
 // Imports
 // ------
 import { Grid } from '@/theme/tackl/waffl';
-import { useCallback, useEffect, useState } from 'react';
 
 // Styles
 // ------
@@ -74,7 +74,7 @@ const GridExposer = () => {
 	// No memoization: gridColumns is created on each render
 	const gridColumns = Array.from({ length: GRID_SIZE }, (_, i) => (
 		<Col
-			key={i}
+			key={`col-${Math.random()}`}
 			$isMobile={i < MOBILE_COLUMNS}
 			$isTablet={i < TABLET_COLUMNS}
 			$altColor={useAltColor}

@@ -7,7 +7,7 @@ This project uses [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci)
 To run Lighthouse against your local build, use the following command:
 
 ```
-pnpm run lighthouse
+bun run lighthouse
 ```
 
 ## Understanding Pass/Fail Criteria

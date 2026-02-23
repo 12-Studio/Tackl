@@ -7,7 +7,7 @@
 
 // Imports
 // ------------
-import { Gap } from './interface';
+import type { Gap } from './interface';
 
 // Exports
 // ------------

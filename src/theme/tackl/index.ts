@@ -1,11 +1,11 @@
 // Imports
 // -----------------
-import { Theme } from '@theme/interface';
+import type { Theme } from '@theme/interface';
 import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
 import styled from 'styled-components';
 import { breakpointDown, breakpointUp } from './breakpoints';
 import { gridSemantics, semantics } from './semantics';
-import { SemanticProps } from './semantics/interface';
+import type { SemanticProps } from './semantics/interface';
 
 // SECTION • Semantic Components Generator
 // ------------

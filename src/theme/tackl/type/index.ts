@@ -1,8 +1,9 @@
 // Imports
 // ------
-import { breakpointUp as bp } from '@/theme/tackl/breakpoints';
+
 import { theme } from '@theme';
-import { css, RuleSet } from 'styled-components';
+import { css, type RuleSet } from 'styled-components';
+import { breakpointUp as bp } from '@/theme/tackl/breakpoints';
 
 // REVIEW • Shared styles as constants to avoid recalculation
 const baseHeadingStyles: RuleSet = css`

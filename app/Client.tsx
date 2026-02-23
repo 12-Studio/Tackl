@@ -52,21 +52,13 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 								<GlobalStyle />
 
 								{/* GridExposer only rendered in development environment */}
-								{process.env.NODE_ENV === 'development' && (
-									<GridExposer />
-								)}
+								{process.env.NODE_ENV === 'development' && <GridExposer />}
 
 								{/* CookieBar only rendered in production environment */}
-								{process.env.NODE_ENV === 'production' && (
-									<CookieBar />
-								)}
+								{process.env.NODE_ENV === 'production' && <CookieBar />}
 
 								<Contexts>
-									<ReactLenis
-										root
-										options={{ autoRaf: false }}
-										ref={lenisRef}
-									/>
+									<ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
 									{children}
 								</Contexts>
 							</ThemeProvider>

@@ -1,10 +1,11 @@
 // @ts-nocheck
 // Imports
 // ------------
-import { bp, Waffl } from '@/theme/tackl';
+
 import { theme } from '@theme';
 import styled, { css } from 'styled-components';
-import { GridInterface } from './interface';
+import { bp, Waffl } from '@/theme/tackl';
+import type { GridInterface } from './interface';
 
 // Constants
 // ------------

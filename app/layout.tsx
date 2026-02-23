@@ -11,11 +11,11 @@ import '@css/global.css';
 // Component
 // ------------
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <Client>
-            <Server>{children}</Server>
-        </Client>
-    );
+	return (
+		<Client>
+			<Server>{children}</Server>
+		</Client>
+	);
 };
 
 // DisplayName added for better debugging in React DevTools

@@ -1,7 +1,8 @@
 // Imports
 // ------
-import { Aside, Div, bp, getEase, getFeedback } from '@/theme/tackl';
+
 import styled, { css } from 'styled-components';
+import { Aside, bp, Div, getEase, getFeedback } from '@/theme/tackl';
 
 // Interfaces
 // ------
@@ -24,10 +25,12 @@ export const Col = styled(Div)<ColProps>(
 		height: 100%;
 		display: none;
 
-		${props.$isMobile &&
-		css`
+		${
+			props.$isMobile &&
+			css`
 			display: block;
-		`}
+		`
+		}
 
 		${bp.m`
             ${
@@ -61,9 +64,7 @@ export const Col = styled(Div)<ColProps>(
 				width: var(--max);
 				height: var(--max);
 				transition: all 0.25s linear;
-				background-color: ${!props.$altColor
-					? getFeedback('negative')
-					: 'transparent'};
+				background-color: ${!props.$altColor ? getFeedback('negative') : 'transparent'};
 			}
 		}
 	`

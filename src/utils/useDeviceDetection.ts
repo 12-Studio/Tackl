@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * Device type string literal.
@@ -30,44 +30,44 @@ export type DeviceType = 'desktop' | 'ios' | 'android';
  * - Not 100% foolproof; use for UI hints, not security.
  */
 export function useDeviceDetection(): DeviceType {
-    const [deviceType, setDeviceType] = useState<DeviceType>('desktop');
+	const [deviceType, setDeviceType] = useState<DeviceType>('desktop');
 
-    useEffect(() => {
-        const detectDevice = () => {
-            const userAgent: string =
-                typeof navigator !== 'undefined'
-                    ? navigator.userAgent || (navigator as any).vendor || (window as any).opera
-                    : '';
+	useEffect(() => {
+		const detectDevice = () => {
+			const userAgent: string =
+				typeof navigator !== 'undefined'
+					? navigator.userAgent || (navigator as any).vendor || (window as any).opera
+					: '';
 
-            // Check if it's a mobile device by user agent
-            const isMobileDevice: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+			// Check if it's a mobile device by user agent
+			const isMobileDevice: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+				userAgent
+			);
 
-            // Check for touch capability
-            const hasTouchScreen: boolean =
-                typeof window !== 'undefined' &&
-                (('ontouchstart' in window) ||
-                    (typeof navigator !== 'undefined' && (navigator.maxTouchPoints ?? 0) > 0));
+			// Check for touch capability
+			const hasTouchScreen: boolean =
+				typeof window !== 'undefined' &&
+				('ontouchstart' in window || (typeof navigator !== 'undefined' && (navigator.maxTouchPoints ?? 0) > 0));
 
-            // Check for small screen
-            const isSmallScreen: boolean =
-                typeof window !== 'undefined' && window.innerWidth <= 768;
+			// Check for small screen
+			const isSmallScreen: boolean = typeof window !== 'undefined' && window.innerWidth <= 768;
 
-            // If it's a mobile device with touch screen and small screen, it's mobile
-            if (isMobileDevice && hasTouchScreen && isSmallScreen) {
-                if (/iPhone|iPad|iPod/i.test(userAgent)) {
-                    setDeviceType('ios');
-                } else if (/Android/i.test(userAgent)) {
-                    setDeviceType('android');
-                } else {
-                    setDeviceType('desktop'); // Default to desktop for unknown mobile
-                }
-            } else {
-                setDeviceType('desktop');
-            }
-        };
+			// If it's a mobile device with touch screen and small screen, it's mobile
+			if (isMobileDevice && hasTouchScreen && isSmallScreen) {
+				if (/iPhone|iPad|iPod/i.test(userAgent)) {
+					setDeviceType('ios');
+				} else if (/Android/i.test(userAgent)) {
+					setDeviceType('android');
+				} else {
+					setDeviceType('desktop'); // Default to desktop for unknown mobile
+				}
+			} else {
+				setDeviceType('desktop');
+			}
+		};
 
-        detectDevice();
-    }, []);
+		detectDevice();
+	}, []);
 
-    return deviceType;
+	return deviceType;
 }

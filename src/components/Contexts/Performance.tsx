@@ -14,11 +14,7 @@ export const PerformanceContext = createContext({
 
 // Component
 // ------------
-export const PerformanceProvider = ({
-	children,
-}: {
-	children: React.ReactNode;
-}) => {
+export const PerformanceProvider = ({ children }: { children: React.ReactNode }) => {
 	const [performanceState, setPerformanceState] = useState({
 		isReducedMotion: false,
 		isLowPowerMode: false,
@@ -42,13 +38,9 @@ export const PerformanceProvider = ({
 			if (!isMountedRef.current) return;
 
 			setPerformanceState({
-				isReducedMotion: window.matchMedia(
-					'(prefers-reduced-motion: reduce)'
-				).matches,
+				isReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
 				isLowPowerMode:
-					(typeof navigator !== 'undefined' &&
-						navigator?.userAgent?.includes('Low-Power')) ||
-					false,
+					(typeof navigator !== 'undefined' && navigator?.userAgent?.includes('Low-Power')) || false,
 				devicePixelRatio: window.devicePixelRatio || 1,
 			});
 		};
@@ -57,9 +49,7 @@ export const PerformanceProvider = ({
 		updatePerformanceState();
 
 		// Listen for changes to reduced motion preference
-		const mediaQuery = window.matchMedia(
-			'(prefers-reduced-motion: reduce)'
-		);
+		const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 		mediaQueryRef.current = mediaQuery;
 
 		// Modern browsers support addEventListener on MediaQueryList
@@ -82,10 +72,7 @@ export const PerformanceProvider = ({
 
 			if (mediaQueryRef.current) {
 				if (mediaQueryRef.current.removeEventListener) {
-					mediaQueryRef.current.removeEventListener(
-						'change',
-						handleChange
-					);
+					mediaQueryRef.current.removeEventListener('change', handleChange);
 				} else {
 					// Fallback for older browsers
 					mediaQueryRef.current.removeListener(handleChange);
@@ -97,11 +84,7 @@ export const PerformanceProvider = ({
 
 	const value = useMemo(() => performanceState, [performanceState]);
 
-	return (
-		<PerformanceContext.Provider value={value}>
-			{children}
-		</PerformanceContext.Provider>
-	);
+	return <PerformanceContext.Provider value={value}>{children}</PerformanceContext.Provider>;
 };
 
 // For documentation, see `docs/PerformanceContext.md`

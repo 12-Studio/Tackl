@@ -13,7 +13,7 @@ import { easing } from './easing';
 import { fonts } from './fonts';
 import { gap } from './gap';
 import { grid } from './grid';
-import { Theme } from './interface';
+import type { Theme } from './interface';
 import { space } from './space';
 
 // Theme Configuration

@@ -59,8 +59,8 @@ next-env.d.ts
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
-.eslintcache
+# Biome
+.biome
 
 # Optional stylelint cache
 .stylelintcache

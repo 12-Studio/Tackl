@@ -279,7 +279,7 @@ ThemeProvider → All Child Components
 - **Hot Reloading**: Fast development iteration
 - **Type Safety**: TypeScript compilation
 - **Linting**: Code quality enforcement
-- **Formatting**: Prettier integration
+- **Formatting**: Biome integration
 
 ## Common Patterns
 

@@ -94,5 +94,3 @@ lhr-*.json
 lh-output/
 # Ignore any temp files
 *.lhci-*
-# Ignore any screenshots
-*.png

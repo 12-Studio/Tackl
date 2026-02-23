@@ -13,7 +13,7 @@
 	},
 	"scripts": {
 		"dev": "next dev --turbopack",
-		"build": "next build",
+		"build": "next build --webpack",
 		"start": "next start",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",

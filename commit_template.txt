@@ -1,0 +1,17 @@
+# <type>: <description>
+# 
+# <body>
+# 
+# <footer>
+# 
+# Types: feat, fix, docs, style, refactor, test, chore, breaking
+# 
+# Examples:
+# feat: add new button component
+# fix: resolve SSR window is not defined error
+# docs: update README with installation instructions
+# style: format code according to style guide
+# refactor: simplify component logic
+# test: add unit tests for utility functions
+# chore: update dependencies
+# breaking: change component API

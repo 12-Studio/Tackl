@@ -1,0 +1,139 @@
+/* Base Reset
+   Simplified version of CSS reset that maintains essential resets while removing redundancy */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-webkit-font-smoothing: subpixel-antialiased; /* Enable subpixel antialiasing for better text rendering */
+	-moz-osx-font-smoothing: grayscale; /* Enable grayscale antialiasing for better text rendering */
+	text-rendering: geometricPrecision; /* Improve text rendering quality */
+}
+
+/* HTML5 Elements */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+/* Typography & Links */
+html {
+	font-size: 62.5%; /* 10px base font size for easier rem calculations */
+	interpolate-size: allow-keywords; /* Allow keywords in interpolate-size – Not well supported yet in all browsers */
+}
+
+body {
+	line-height: 1;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* Lists */
+ol,
+ul {
+	list-style: none;
+}
+
+/* Form Elements */
+input,
+select,
+textarea,
+button {
+	border: none;
+	border-radius: 0;
+	background: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+	outline: none;
+}
+
+/* Scrollbar & Performance */
+* {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+	display: none;
+}
+
+/* Optimize paint performance */
+.fast-scroll * {
+	will-change: transform;
+}
+
+/* Force GPU acceleration for smooth animations */
+.smooth-scroll {
+	transform: translateZ(0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
+.disable-hover,
+.disable-hover * {
+	pointer-events: none !important;
+}
+
+/* Lenis Smooth Scroll Configuration */
+.lenis {
+	height: auto;
+}
+
+.lenis.lenis-smooth {
+	scroll-behavior: auto;
+}
+
+.lenis.lenis-stopped {
+	overflow: hidden;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+	overscroll-behavior: contain;
+}
+
+.lenis-wrapper {
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	scrollbar-width: none;
+}
+
+/* Page Transitions using the new transitions API*/
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none !important;
+}
+
+::view-transition-group(root) {
+	z-index: auto !important;
+}
+
+::view-transition-image-pair(root) {
+	isolation: isolate;
+	/* NOTE • Change to whatever property you want to animate */
+	will-change: transform, opacity, clip-path;
+	z-index: 1;
+}
+
+::view-transition-new(root) {
+	z-index: 2;
+}
+
+::view-transition-old(root) {
+	z-index: 1;
+}

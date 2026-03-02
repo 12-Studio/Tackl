@@ -1,14 +1,10 @@
 // Imports
 // ------------
 
-import { x } from "tar";
-
 // Exports
 // ------------
 export interface HomeProps {
-    data: {
-        page: any;
-    }
+	data: {
+		page: unknown;
+	};
 }
-
-export interface PageProps{};

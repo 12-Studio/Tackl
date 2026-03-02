@@ -1,11 +1,15 @@
 // Imports
 // -----------------
-import { Theme } from '@theme/interface';
-import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
+import type { Theme } from '@theme/interface';
+import {
+	getVw as useVw,
+	getVwMobile as useVwMobile,
+	getVwTablet as useVwTablet,
+} from '@utils/getVw';
 import styled from 'styled-components';
 import { breakpointDown, breakpointUp } from './breakpoints';
 import { gridSemantics, semantics } from './semantics';
-import { SemanticProps } from './semantics/interface';
+import type { SemanticProps } from './semantics/interface';
 
 // SECTION • Semantic Components Generator
 // ------------
@@ -98,7 +102,6 @@ export const Audio = createSemanticComponent('audio');
 export const Video = createSemanticComponent('video');
 export const Source = createSemanticComponent('source');
 export const Track = createSemanticComponent('track');
-export const Map = createSemanticComponent('map');
 export const Area = createSemanticComponent('area');
 export const Picture = createSemanticComponent('picture');
 export const SummaryEl = createSemanticComponent('summary');
@@ -111,48 +114,51 @@ export const bpd = breakpointDown;
 
 // SECTION • Theme Getters
 // ------------
-export const getGlobal = (color: keyof Theme['colors']['global'], opacity?: number) => (props: { theme: Theme }) => {
-	const global = props.theme.colors.global;
-	return global?.[color]?.[opacity !== undefined ? opacity : 100];
-};
+export const getGlobal =
+	(color: keyof Theme['colors']['global'], opacity?: number) => (props: { theme: Theme }) => {
+		const global = props?.theme?.colors?.global;
+		return global?.[color]?.[opacity !== undefined ? opacity : 100];
+	};
 
-export const getBrand = (color: keyof Theme['colors']['brand'], opacity?: number) => (props: { theme: Theme }) => {
-	const brand = props.theme.colors?.brand;
-	return brand?.[color]?.[opacity !== undefined ? opacity : 'solid'];
-};
+export const getBrand =
+	(color: keyof Theme['colors']['brand'], opacity?: number) => (props: { theme: Theme }) => {
+		const brand = props?.theme?.colors?.brand;
+		return brand?.[color]?.[opacity !== undefined ? opacity : 'solid'];
+	};
 
 export const getFeedback =
 	(color: 'positive' | 'negative' | 'warning', opacity?: number) => (props: { theme: Theme }) => {
-		const feedback = props.theme.colors.feedback[color];
+		const feedback = props?.theme?.colors?.feedback?.[color];
 		return feedback?.[opacity !== undefined ? opacity : 'solid'];
 	};
 
 export const getGap = (gapSize: keyof Theme['gap']) => (props: { theme: Theme }) => {
-	return props.theme.gap[gapSize];
+	return props?.theme?.gap?.[gapSize];
 };
 
 export const getSpace = (spaceSize: keyof Theme['space']) => (props: { theme: Theme }) => {
-	return props.theme.space[spaceSize];
+	return props?.theme?.space?.[spaceSize];
 };
 
 export const getFont = (fontFamily: keyof Theme['font']['family']) => (props: { theme: Theme }) => {
-	return props.theme.font.family[fontFamily];
+	return props?.theme?.font?.family?.[fontFamily];
 };
 
-export const getFontWeight = (fontWeight: keyof Theme['font']['weight']) => (props: { theme: Theme }) => {
-	return props.theme.font.weight[fontWeight];
-};
+export const getFontWeight =
+	(fontWeight: keyof Theme['font']['weight']) => (props: { theme: Theme }) => {
+		return props?.theme?.font?.weight?.[fontWeight];
+	};
 
 export const getRadius = (radiusSize: keyof Theme['br']) => (props: { theme: Theme }) => {
-	return props.theme.br[radiusSize];
+	return props?.theme?.br?.[radiusSize];
 };
 
 export const getEase = (easeSize: keyof Theme['easing']) => (props: { theme: Theme }) => {
-	return props.theme.easing[easeSize];
+	return props?.theme?.easing?.[easeSize];
 };
 
 export const getUtil = (util: keyof Theme['utils']) => (props: { theme: Theme }) => {
-	return props.theme.utils[util];
+	return props?.theme?.utils?.[util];
 };
 
 // SECTION • Viewport Utilities

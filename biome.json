@@ -12,10 +12,14 @@
 		"enabled": true,
 		"indentStyle": "tab",
 		"indentWidth": 4,
-		"lineWidth": 120,
+		"lineWidth": 100,
 		"lineEnding": "lf"
 	},
 	"javascript": {
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": false
+		},
+		"experimentalEmbeddedSnippetsEnabled": true,
 		"formatter": {
 			"quoteStyle": "single",
 			"jsxQuoteStyle": "single",
@@ -50,7 +54,7 @@
 	"assist": {
 		"actions": {
 			"source": {
-				"organizeImports": "on"
+				"organizeImports": "off"
 			}
 		}
 	}

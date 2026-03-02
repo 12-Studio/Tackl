@@ -2,18 +2,18 @@
 
 // Imports
 // ------------
-import Lenis from 'lenis';
+import type { LenisRef } from 'lenis/react';
 import { createContext, useMemo, useRef, useState } from 'react';
 import { PerformanceProvider } from './Performance';
 
 // Interface
 // ------------
-import * as I from './interface';
+import type * as I from './interface';
 
 // Context Definition
 // ------------
 export const GlobalContext = createContext({
-	lenis: { current: null } as React.RefObject<Lenis | null>,
+	lenisRef: { current: null } as React.RefObject<LenisRef | null>,
 
 	menuOpen: false,
 	setMenuOpen: (value: boolean) => {},
@@ -23,7 +23,7 @@ export const GlobalContext = createContext({
 // ------------
 const Contexts = ({ children }: I.ContextsProps) => {
 	// Refs
-	const lenis = useRef<Lenis | null>(null);
+	const lenisRef = useRef<LenisRef | null>(null);
 
 	// States
 	const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -31,7 +31,7 @@ const Contexts = ({ children }: I.ContextsProps) => {
 	// Context Values
 	const contextValue = useMemo(
 		() => ({
-			lenis,
+			lenisRef,
 			menuOpen,
 			setMenuOpen,
 		}),

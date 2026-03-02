@@ -7,7 +7,7 @@
 
 // Imports
 // ------------
-import { Space } from './interface';
+import type { Space } from './interface';
 
 // Exports
 // ------------

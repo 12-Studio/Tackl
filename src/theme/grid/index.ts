@@ -5,7 +5,7 @@
 
 // Imports
 // ------------
-import { Grid } from './interface';
+import type { Grid } from './interface';
 
 // Exports
 // ------------
@@ -28,7 +28,12 @@ export const grid: Grid = {
 	gutter: {
 		s: '2.4rem',
 		m: '2.4rem',
-		l: '3.6rem',
+		l: '3.2rem',
+	},
+	margin: {
+		s: '2.4rem',
+		m: '2.4rem',
+		l: '6.4rem',
 	},
 	maxSize: '1440px',
 };

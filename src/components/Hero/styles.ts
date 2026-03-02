@@ -2,7 +2,7 @@
 // ------------
 
 import { bp, Div, getBrand, getEase, getGap, getGlobal, getRadius, Section } from '@tackl';
-import { displayS } from '@tackl/type';
+import { bodyL, displayS } from '@tackl/type';
 import styled, { css } from 'styled-components';
 
 // Interfaces
@@ -40,7 +40,7 @@ export const Jacket = styled(Section)<StylesInterface>(
         }
 
         p {
-
+            ${bodyL}
         }
 
     `

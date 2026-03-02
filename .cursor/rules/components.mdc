@@ -1,0 +1,66 @@
+// Component Authoring Guide
+
+// COMPONENT STRUCTURE
+// -------------------
+// - Each component lives in its own folder: components/ComponentName
+// - Structure all component files as follows:
+//   - index.tsx: main exported React component (named export, PascalCase)
+//   - styles.ts: for all styled-components and style utilities
+//   - interface.d.ts for all interface / type files
+//   - subcomponents/ (optional): colocated subcomponents, helpers, types
+
+// NAMING CONVENTIONS
+// -------------------
+// - Use PascalCase for all component, subcomponent, and file names.
+// - Styled components are named specifically (e.g., Jacket, Wrapper, Content).
+
+// FUNCTION COMPONENTS
+// -------------------
+// - Use functional components; do not use class components.
+// - Type all component props with TypeScript interfaces imported from ./interface.d.ts
+// - Favor named exports for all components and subcomponents.
+// - Structure: main export at the top, followed by statics, subcomponents, helpers, and types.
+// - Example:
+//   export function Example(props: ExampleProps) { ... }
+
+// STYLING
+// -------
+// - All component styling via styled-components, never inline or in index.tsx.
+// - Use a styles.ts file adjacent to the component for all styled elements.
+// - Use Tackl primitives, utilities, and naming (e.g., import from '@tackl/type', '@theme/tackl').
+// - Mobile-first, responsive styles: use bp.l`` and CSS custom props for theming.
+// - Example styled component import/use:
+//     import * as S from './styles';
+//     return <S.Jacket>...</S.Jacket>;
+
+// - Do not use CSS modules, inline styles, or legacy SASS/LESS.
+
+// JSX & LOGIC
+// -----------
+// - Use declarative JSX, concise control flow, and avoid unnecessary curly braces.
+// - For conditional logic, prefer ternary or short-circuit evaluation.
+// - If a component has loading or error states, name flag variables clearly (e.g., isLoading, hasError).
+// - Use Suspense and fallback for async client components.
+
+/* Example component structure:
+
+// components/Example/index.tsx
+import * as S from './styles';
+export interface ExampleProps { ... }
+export function Example(props: ExampleProps) {
+  return <S.Jacket>...</S.Jacket>;
+}
+
+// components/Example/styles.ts
+import styled from 'styled-components';
+import { Section } from '@theme/tackl';
+export const Jacket = styled(Section)`...`;
+*/
+
+// ROUTING, STATE, & PERFORMANCE
+// ----------------------------
+// - Use Next.js App Router best practices.
+// - Compose with useTransitionRouter for route transitions if needed.
+// - Use 'nuqs' for URL search parameter state.
+// - Dynamically load non-critical components; wrap client-side components in Suspense with fallback.
+// - Optimize images with WebP, specify width/height, lazy loading.

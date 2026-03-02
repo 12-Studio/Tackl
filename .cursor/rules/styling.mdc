@@ -1,0 +1,36 @@
+// Styling Components
+
+// We use styled-components for styling React components.
+// All styled components should be defined in a separate 'styles.ts' file
+// within each component's folder (e.g., components/button/styles.ts).
+// 
+// Guidelines:
+// - Do not include styled-components code directly in the main component file.
+// - Import styled components from './styles' or './styles.ts' in your component.
+// - Define all layout, visual, and theming styles via styled-components in 'styles.ts'.
+//   or global styles, not as primary component styling.
+// - Prefer descriptive, component-specific styled component names (e.g., Jacket, Wrapper, Coat, Content).
+// - Use CSS custom properties for dynamic styles when possible.
+// - For module-level constants or shared styling utilities, use the same 'styles.ts' file.
+// - use Tackl components for most semantic elements
+// - Use Tackl functions to get theming (e.g. getBrand, getGlobal, getRadius, getEase, getFont, getFontWeight)
+// - Use Tackl/Type for pulling through global text styles (e.g. headingL, bodyM, captionS)
+
+// Example:
+// components/example/styles.ts
+// import {} from '@tackl/type';
+// import styled, { css } from 'styled-components';
+// import { Section, getBrand } from '@theme/tackl';
+// export const Jacket = styled(Section)(`
+//   (props) => css`
+//     display: flex;
+//     padding: 1rem;
+//     background: ${getBrand('bc1')};
+//   `
+// );
+
+// components/example/index.tsx
+// import * as S from './styles';
+// export function Example() {
+//   return <S.Jacket>Content</S.Jacket>;
+// }

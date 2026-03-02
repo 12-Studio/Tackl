@@ -4,9 +4,9 @@
 // ------------
 import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
-import CookieBar from '@parts/CookieBar';
+// import CookieBar from '@parts/CookieBar';
 import { GlobalStyle, theme } from '@theme';
-import { inter } from '@theme/fonts';
+import { neueHaas, pp } from '@theme/fonts';
 import StyledComponentsRegistry from '@utils/registry';
 import { ViewTransitions } from '@utils/viewTransitions';
 import dynamic from 'next/dynamic';
@@ -22,7 +22,7 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 // ------------
 const Client = ({ children }: { children: React.ReactNode }) => {
 	// NOTE • Font Classes
-	const classes = `${inter.variable}`;
+	const classes = `${neueHaas.variable} ${pp.variable}`;
 
 	return (
 		<ViewTransitions>

@@ -13,7 +13,7 @@ import { easing } from './easing';
 import { fonts } from './fonts';
 import { gap } from './gap';
 import { grid } from './grid';
-import { Theme } from './interface';
+import type { Theme } from './interface';
 import { space } from './space';
 
 // Theme Configuration
@@ -60,6 +60,11 @@ export const GlobalStyle = createGlobalStyle`
 		--bezzy3: ${theme.easing.bezzy3};
 	}
 
-	body { background: var(--black); }
+	body {
+		background: var(--black);
+		font-family: ${theme.font.family.body};
+		font-weight: ${theme.font.weight.regular};
+	}
+	
 	* { color: var(--white); }
 `;

@@ -8,7 +8,7 @@
 // Imports
 // ------------
 import { generateColorVariants } from './generateColorVariants';
-import { Colors } from './interface';
+import type { Colors } from './interface';
 
 // Exports
 // ------------
@@ -16,14 +16,15 @@ import { Colors } from './interface';
 // NOTE • These colors serve as the base for all color variations
 export const colors: Colors = {
 	brand: {
-		bc1: generateColorVariants('#8000FF'),
-		bc2: generateColorVariants('#380377'),
-		bc3: generateColorVariants('#210048'),
-		bc4: generateColorVariants('#F7F7F7'),
-		bc5: generateColorVariants('#838383'),
+		bc1: generateColorVariants('#F4230D'),
+		bc2: generateColorVariants('#593C4B'),
+		bc3: generateColorVariants('#323C60'),
+		bc4: generateColorVariants('#8375A2'),
+		bc5: generateColorVariants('#DDE3F5'),
 	},
 
 	global: {
+		luxuryWhite: generateColorVariants('#FAFAFA'),
 		white: generateColorVariants('#ffffff'),
 		black: generateColorVariants('#000000'),
 	},

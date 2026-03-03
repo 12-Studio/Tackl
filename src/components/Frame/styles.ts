@@ -55,7 +55,6 @@ export const Plus = styled.span<StylesInterface>(
 
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     z-index: 1;
 
     width: var(--length);
@@ -65,7 +64,7 @@ export const Plus = styled.span<StylesInterface>(
 		$isEnd
 			? css`
         right: var(--distance);
-        transform: translate(50%, -50%);
+        transform: translate(40%, -50%);
     `
 			: css`
         left: var(--distance);

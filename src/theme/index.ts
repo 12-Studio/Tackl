@@ -58,6 +58,10 @@ export const GlobalStyle = createGlobalStyle`
 		--bezzy: ${theme.easing.bezzy};
 		--bezzy2: ${theme.easing.bezzy2};
 		--bezzy3: ${theme.easing.bezzy3};
+
+
+		--line-mobile-dist: 1.2rem;
+		--line-desktop-dist: 1.6rem;
 	}
 
 	body {

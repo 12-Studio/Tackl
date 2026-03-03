@@ -127,6 +127,7 @@ export const captionL: RuleSet = css`
 	font: normal ${theme.font.weight.regular} 1rem ${theme.font.family.mono};
 	line-height: 1.24;
 	letter-spacing: 0.05rem;
+	text-transform: uppercase;
 	text-box: trim-both cap alphabetic;
 
 	${bp.xl` font-size: 1.2rem; `}

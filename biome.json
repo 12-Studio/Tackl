@@ -19,7 +19,7 @@
 		"parser": {
 			"unsafeParameterDecoratorsEnabled": false
 		},
-		"experimentalEmbeddedSnippetsEnabled": true,
+		"experimentalEmbeddedSnippetsEnabled": false,
 		"formatter": {
 			"quoteStyle": "single",
 			"jsxQuoteStyle": "single",

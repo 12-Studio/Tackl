@@ -19,9 +19,10 @@ const Frame = ({
 	lastPlusRef,
 }: I.FrameProps) => {
 	return (
-		<S.Jacket $dir={dir} $isLight={isLight} className={`frame ${className}`} ref={lineRef}>
-			<S.Plus $isLight={isLight} $dir={dir} ref={firstPlusRef} />
-			<S.Plus $isEnd $isLight={isLight} $dir={dir} ref={lastPlusRef} />
+		<S.Jacket $dir={dir} $isLight={isLight} className={`frame ${className}`}>
+			<S.Line ref={lineRef} $isLight={isLight} />
+			<S.Plus $isLight={isLight} $dir={dir} ref={firstPlusRef} className='plus' />
+			<S.Plus $isEnd $isLight={isLight} $dir={dir} ref={lastPlusRef} className='plus' />
 		</S.Jacket>
 	);
 };

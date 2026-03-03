@@ -4,20 +4,21 @@
 // ------------
 import Logo from '@parts/Logo';
 import gsap from 'gsap';
+import Frame from '@parts/Frame';
 import { use, useEffect, useRef } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import { useAnimation } from '@utils/useAnimation';
+import { bezzy2, bezzy3, bezzy4 } from '@parts/AnimationPlugins/Curves';
 
 // Styles + Interfaces
 // ------------
-// import type * as I from './interface';
 import * as S from './styles';
 
 // Constants
 // ------------
 const PULSE_SETTINGS = {
 	STAGGER: 0.15,
-	EASE: 'sine.inOut',
+	EASE: bezzy4,
 	BEFORE: {
 		SCALE: 0.75,
 		OPACITY: 0,
@@ -30,6 +31,18 @@ const PULSE_SETTINGS = {
 	},
 };
 
+const LINE_SETTINGS = {
+	DURATION: 2,
+	DELAY: 1,
+	EASE: bezzy2,
+	BEFORE: {
+		SCALE: 0,
+	},
+	AFTER: {
+		SCALE: 1,
+	},
+};
+
 // Component
 // ------------
 const Loader = () => {
@@ -39,9 +52,17 @@ const Loader = () => {
 	// Refs
 	const jacketRef = useRef<HTMLElement>(null);
 	const logoRef = useRef<SVGSVGElement>(null);
-	const pulseTimelineRef = useRef<gsap.core.Timeline | null>(null);
+	const pulseRef = useRef<gsap.core.Timeline | null>(null);
+	const topLineRef = useRef<HTMLDivElement>(null);
+	const bottomLineRef = useRef<HTMLDivElement>(null);
+	const leftVerticalRef = useRef<HTMLDivElement>(null);
+	const rightVerticalRef = useRef<HTMLDivElement>(null);
+	const topFirstPlusRef = useRef<HTMLSpanElement>(null);
+	const topLastPlusRef = useRef<HTMLSpanElement>(null);
+	const bottomFirstPlusRef = useRef<HTMLSpanElement>(null);
+	const bottomLastPlusRef = useRef<HTMLSpanElement>(null);
 
-	// Intro Animation — create once
+	// Pulse Animation
 	useAnimation(
 		() => {
 			if (!logoRef.current) return;
@@ -76,16 +97,71 @@ const Loader = () => {
 				'>-0.5'
 			);
 
-			pulseTimelineRef.current = tl;
+			pulseRef.current = tl;
+		},
+		{ scope: jacketRef }
+	);
+
+	// Frame Animation
+	useAnimation(
+		() => {
+			const horizontalLines = [topLineRef.current, bottomLineRef.current];
+			const verticalLines = [leftVerticalRef.current, rightVerticalRef.current];
+			const pluses = [
+				topFirstPlusRef.current,
+				topLastPlusRef.current,
+				bottomFirstPlusRef.current,
+				bottomLastPlusRef.current,
+			];
+
+			if (
+				horizontalLines.some(el => !el) ||
+				verticalLines.some(el => !el) ||
+				pluses.some(el => !el)
+			)
+				return;
+
+			gsap.set(horizontalLines, { scaleX: LINE_SETTINGS.BEFORE.SCALE });
+			gsap.set(verticalLines, { scaleY: LINE_SETTINGS.BEFORE.SCALE });
+			gsap.set(pluses, { autoAlpha: 0 });
+
+			const tl = gsap.timeline({ delay: LINE_SETTINGS.DELAY });
+
+			tl.to(horizontalLines, {
+				scaleX: LINE_SETTINGS.AFTER.SCALE,
+				duration: LINE_SETTINGS.DURATION,
+				ease: LINE_SETTINGS.EASE,
+			});
+
+			tl.to(
+				verticalLines,
+				{
+					scaleY: LINE_SETTINGS.AFTER.SCALE,
+					duration: LINE_SETTINGS.DURATION,
+					ease: LINE_SETTINGS.EASE,
+				},
+				'<'
+			);
+
+			tl.fromTo(
+				pluses,
+				{ autoAlpha: 0 },
+				{
+					autoAlpha: 1,
+					duration: 0.5,
+					ease: LINE_SETTINGS.EASE,
+				},
+				'>-0.3'
+			);
 		},
 		{ scope: jacketRef }
 	);
 
 	// Stop pulse after minimum 3 iterations when page is loaded
 	useEffect(() => {
-		if (!pageLoaded || !pulseTimelineRef.current) return;
+		if (!pageLoaded || !pulseRef.current) return;
 
-		const tl = pulseTimelineRef.current;
+		const tl = pulseRef.current;
 		const currentIteration = tl.iteration();
 		const remaining = Math.max(3 - currentIteration, 0);
 
@@ -96,21 +172,40 @@ const Loader = () => {
 	// Outro Animation
 	useAnimation(
 		() => {
-			if (isLoaderFinished && logoRef.current) {
-				gsap.to(jacketRef.current, {
-					autoAlpha: 0,
-					duration: 0.5,
-					ease: 'power2.inOut',
-				});
-			}
+			if (!isLoaderFinished || !jacketRef.current) return;
+
+			gsap.to(jacketRef.current, {
+				autoAlpha: 0,
+				duration: 0.5,
+				ease: bezzy3,
+			});
 		},
 		{
 			scope: jacketRef,
 			dependencies: [isLoaderFinished],
 		}
 	);
+
 	return (
 		<S.Jacket ref={jacketRef}>
+			<S.Frame>
+				<Frame
+					isLight
+					className='top'
+					lineRef={topLineRef}
+					firstPlusRef={topFirstPlusRef}
+					lastPlusRef={topLastPlusRef}
+				/>
+				<Frame
+					isLight
+					className='bottom'
+					lineRef={bottomLineRef}
+					firstPlusRef={bottomFirstPlusRef}
+					lastPlusRef={bottomLastPlusRef}
+				/>
+				<S.Vertical $isLeft ref={leftVerticalRef} />
+				<S.Vertical ref={rightVerticalRef} />
+			</S.Frame>
 			<Logo ref={logoRef} />
 		</S.Jacket>
 	);

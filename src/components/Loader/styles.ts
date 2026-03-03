@@ -7,7 +7,7 @@ import {} from '@tackl/type';
 // Interfaces
 // ------------
 interface StylesInterface {
-	example?: boolean;
+	$isLeft?: boolean;
 }
 
 // Exports
@@ -27,4 +27,56 @@ export const Jacket = styled(Aside)<StylesInterface>(
         background: ${getGlobal('black')};
         
     `
+);
+
+export const Frame = styled(Div)(
+	() => css`
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+
+
+        .frame {
+            position: absolute;
+            left: 0;
+            --offset: var(--line-mobile-dist);
+
+            ${bp.l`
+                --offset: var(--line-desktop-dist);
+            `}
+
+            &.top {
+                top: var(--offset);
+            }
+
+            &.bottom {
+                bottom: var(--offset);
+            }
+        }
+	`
+);
+
+export const Vertical = styled(Div)<StylesInterface>(
+	({ $isLeft }) => css`
+		position: absolute;
+		z-index: 0;
+
+        width: 1px;
+        height: 100%;
+        background: ${getGlobal('luxuryWhite', 20)};
+
+        ${
+			$isLeft
+				? css`
+            left: var(--offset);
+        `
+				: css`
+            right: var(--offset);
+        `
+		}
+
+        ${bp.l`
+            --offset: var(--line-desktop-dist);
+        `}
+	`
 );

@@ -14,26 +14,42 @@ interface StylesInterface {
 
 // Exports
 // ------------
-export const Jacket = styled(Div)<StylesInterface>(({ $dir, $isLight }) => css`
+export const Jacket = styled(Div)<StylesInterface>(
+	({ $dir, $isLight }) => css`
     --thickness: 1px;
 
     position: relative;
     z-index: 0;
-    background: ${$isLight ? getGlobal('luxuryWhite', 20) : getBrand('bc5')};
 
-    ${$dir === 'v' && css`
+    ${
+		$dir === 'v' &&
+		css`
         width: var(--thickness);
         height: 100%;
-    `}
+    `
+	}
 
-    ${$dir === 'h' && css`
+    ${
+		$dir === 'h' &&
+		css`
         width: 100%;
         height: var(--thickness);
-    `}
-`);
+    `
+	}
+`
+);
 
+export const Line = styled(Div)<StylesInterface>(
+	({ $isLight }) => css`
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+        background: ${$isLight ? getGlobal('luxuryWhite', 20) : getBrand('bc5')};
+	`
+);
 
-export const Plus = styled.span<StylesInterface>(({ $isLight, $dir, $isEnd }) => css`
+export const Plus = styled.span<StylesInterface>(
+	({ $isLight, $dir, $isEnd }) => css`
     --length: 11px;
     --distance: var(--line-mobile-dist);
 
@@ -45,13 +61,17 @@ export const Plus = styled.span<StylesInterface>(({ $isLight, $dir, $isEnd }) =>
     width: var(--length);
     height: var(--length);
 
-    ${$isEnd ? css`
+    ${
+		$isEnd
+			? css`
         right: var(--distance);
         transform: translate(50%, -50%);
-    ` : css`
+    `
+			: css`
         left: var(--distance);
         transform: translate(-50%, -50%);
-    `}
+    `
+	}
 
     ${bp.l`
         --distance: var(--line-desktop-dist);
@@ -77,4 +97,5 @@ export const Plus = styled.span<StylesInterface>(({ $isLight, $dir, $isEnd }) =>
     &:after {
         transform: translate(-50%, -50%) rotate(90deg);
     }
-`);
+`
+);

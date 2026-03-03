@@ -1,7 +1,7 @@
 // Imports
 // ------------
 
-import { Aside, bp, Div, getBrand, getEase, getGap, getGlobal, getRadius, Section } from '@tackl';
+import { Aside, bp, Div, getEase, getGap, getGlobal, Section } from '@tackl';
 import { bodyM, displayS } from '@tackl/type';
 import styled, { css } from 'styled-components';
 
@@ -92,7 +92,7 @@ export const FullFrame = styled(Aside)(
         --offset: var(--line-mobile-dist);
 
         position: absolute;
-        z-index: 0;
+        z-index: 1;
         inset: 0;
         overflow: hidden;
         pointer-events: none;

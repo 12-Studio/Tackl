@@ -26,7 +26,7 @@ const LogoMarquee = ({ logos }: I.LogoMarqueeProps) => {
 		));
 	};
 	return (
-		<S.Jacket>
+		<S.Jacket $isLoaderFinished={isLoaderFinished}>
 			<S.Heading>
 				<h2>Seamless activation with leading platforms</h2>
 			</S.Heading>

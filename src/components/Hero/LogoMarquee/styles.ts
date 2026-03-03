@@ -15,7 +15,7 @@ interface StylesInterface {
 // Exports
 // ------------
 export const Jacket = styled(Section)<StylesInterface>(
-	() => css`
+	({ $isLoaderFinished }) => css`
 		width: 100%;
 		padding: ${getGap('l')};
 		background: linear-gradient(
@@ -23,6 +23,9 @@ export const Jacket = styled(Section)<StylesInterface>(
 			${getGlobal('black')},
 			${getGlobal('black', 0)}
 		);
+
+		transform: translateY(${$isLoaderFinished ? 0 : 100}%);
+		transition: transform 1s ${getEase('bezzy2')};
 	`
 );
 

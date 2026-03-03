@@ -125,6 +125,8 @@ const Loader = () => {
 			gsap.set(verticalLines, { scaleY: LINE_SETTINGS.BEFORE.SCALE });
 			gsap.set(pluses, { autoAlpha: 0 });
 
+			if (!pageLoaded) return;
+
 			const tl = gsap.timeline({ delay: LINE_SETTINGS.DELAY });
 
 			tl.to(horizontalLines, {
@@ -154,7 +156,7 @@ const Loader = () => {
 				'>-0.3'
 			);
 		},
-		{ scope: jacketRef }
+		{ scope: jacketRef, dependencies: [pageLoaded] }
 	);
 
 	// Stop pulse after minimum 3 iterations when page is loaded
@@ -163,7 +165,7 @@ const Loader = () => {
 
 		const tl = pulseRef.current;
 		const currentIteration = tl.iteration();
-		const remaining = Math.max(3 - currentIteration, 0);
+		const remaining = Math.max(2 - currentIteration, 0);
 
 		tl.repeat(remaining);
 		tl.eventCallback('onComplete', () => setIsLoaderFinished(true));

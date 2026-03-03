@@ -15,35 +15,38 @@ interface StylesInterface {
 export const Jacket = styled(Aside)<StylesInterface>(
 	() => css`
         position: fixed;
-        inset: 0;
+        inset: 0 auto auto 0;
         z-index: 999;
 
         display: grid;
         place-items: center;
 
-        height: 100lvh;
+        height: 100svh;
         width: 100%;
-        padding-bottom: env(safe-area-inset-bottom);
         background: ${getGlobal('black')};
-        
     `
 );
 
 export const Frame = styled(Div)(
 	() => css`
+        --offset: var(--line-mobile-dist);
+
 		position: absolute;
 		inset: 0;
 		z-index: 0;
 
+        ${bp.l`
+            --offset: var(--line-desktop-dist);
+        `}
+
 
         .frame {
+
             position: absolute;
             left: 0;
-            --offset: var(--line-mobile-dist);
+            
 
-            ${bp.l`
-                --offset: var(--line-desktop-dist);
-            `}
+            
 
             &.top {
                 top: var(--offset);

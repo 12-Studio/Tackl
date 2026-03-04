@@ -1,15 +1,12 @@
 // Imports
 // ------------
 
-import { Aside, bp, Div, getEase, getGap, getGlobal, Section } from '@tackl';
+import { Aside, bp, Div, getBrand, getEase, getGap, getGlobal, Section } from '@tackl';
 import { bodyM, displayS } from '@tackl/type';
 import styled, { css } from 'styled-components';
 
 // Interfaces
 // ------------
-interface StylesInterface {
-	$isLoaderFinished?: boolean;
-}
 
 // Exports
 // ------------
@@ -17,37 +14,24 @@ export const Jacket = styled(Section)(
 	() => css`
         position: relative;
         overflow: hidden;
-        width: 100%;
-        height: 100svh;
-    `
-);
-
-export const Scaler = styled(Div)<StylesInterface>(
-	({ $isLoaderFinished }) => css`
-		position: relative;
         z-index: 0;
 
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        overflow: hidden;
+        
 
-        height: 100%;
         width: 100%;
-        background: ${getGlobal('black')};
+        height: 100svh;
+        padding-bottom: ${getGap('m')};
+        background: linear-gradient(to top, ${getBrand('bc4', 20)}, ${getGlobal('black')});
 
-        .unicorn {
-            position: absolute !important;
-            z-index: -1;
-            inset: 0 auto auto 0;
-            transform: rotate(180deg);
-
-            ${bp.l`
-                transform: rotate(0deg);
-            `}
-        }
-	`
+        ${bp.l`
+            padding-bottom: 0;
+            background: ${getGlobal('black')};
+        `}
+    `
 );
 
 export const Content = styled(Section)(
@@ -60,11 +44,12 @@ export const Content = styled(Section)(
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-end;
         gap: ${getGap('l')};
-        padding: 0 ${getGap('m')} ${getGap('xxl')};
+        padding: 0 ${getGap('m')};
 
         ${bp.l`
+            justify-content: center;
             gap: ${getGap('xxl')};
             padding: 0 ${getGap('xxl')} ${getGap('xxl')};
         `}
@@ -72,9 +57,12 @@ export const Content = styled(Section)(
         h1 {
             ${displayS}
 
-            max-width: 90.6rem;
+            max-width: 40rem;
             text-align: center;
             color: ${getGlobal('luxuryWhite')};
+            
+
+            ${bp.l` max-width: 90.6rem; `}
         }
 
         p {
@@ -83,6 +71,9 @@ export const Content = styled(Section)(
             max-width: 55.2rem;
             text-align: center;
             color: ${getGlobal('luxuryWhite', 60)};
+            padding: 0 ${getGap('m')};
+
+            ${bp.l` padding: 0; `}
         }
     `
 );

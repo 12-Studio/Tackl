@@ -64,11 +64,11 @@ export const Plus = styled.span<StylesInterface>(
 		$isEnd
 			? css`
         right: var(--distance);
-        transform: translate(40%, -50%);
+        transform: translate(4.5px, -50%);
     `
 			: css`
         left: var(--distance);
-        transform: translate(-50%, -50%);
+        transform: translate(-5.5px, -50%);
     `
 	}
 

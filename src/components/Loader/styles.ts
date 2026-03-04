@@ -41,12 +41,8 @@ export const Frame = styled(Div)(
 
 
         .frame {
-
             position: absolute;
             left: 0;
-            
-
-            
 
             &.top {
                 top: var(--offset);

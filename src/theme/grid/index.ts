@@ -16,8 +16,9 @@ export const grid: Grid = {
 		l: 12,
 	},
 	breakpoints: {
-		s: '320px',
-		sm: '390px',
+		xs: '320px',
+		s: '400px',
+		sm: '420px',
 		m: '700px',
 		l: '1024px',
 		xl: '1200px',

@@ -27,11 +27,10 @@ export const displayS: RuleSet = css`
 	${baseHeadingStyles}
 
 	font-weight: ${theme.font.weight.thin};
-	font-size: 6.4rem;
+	font-size: 5.6rem;
 
-	${bp.xl`
-		font-size: 10.8rem;
-	`}
+	${bp.sm` font-size: 6.4rem; `}
+	${bp.l` font-size: 10.8rem; `}
 `;
 
 export const headlineL: RuleSet = css`

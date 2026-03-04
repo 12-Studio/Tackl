@@ -9,4 +9,5 @@ export interface HeroProps {
 	description: string;
 	logos: Logo[];
 	unicornId: string;
+	video: string;
 }

@@ -2,10 +2,9 @@
 
 // Imports
 // ------------
-import { use } from 'react';
-import { GlobalContext } from '@parts/Contexts';
-import UnicornScene from 'unicornstudio-react/next';
+import Background from './Background';
 import LogoMarquee from './LogoMarquee';
+import MobileNav from './MobileNav';
 import Frame from '@parts/Frame';
 
 // Styles + Interfaces
@@ -15,46 +14,24 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Hero = ({ title, description, logos, unicornId }: I.HeroProps) => {
-	// Contexts
-	const { setPageLoaded, isLoaderFinished } = use(GlobalContext);
-
-	const handleLoad = () => {
-		console.log('Scene loaded successfully!');
-		setPageLoaded(true);
-	};
-
-	const handleError = (error: Error) => {
-		console.error('Scene loading failed:', error);
-		setPageLoaded(false);
-	};
-
+const Hero = ({ title, description, logos, unicornId, video }: I.HeroProps) => {
 	return (
 		<S.Jacket>
-			<S.Scaler $isLoaderFinished={isLoaderFinished}>
-				<UnicornScene
-					className='unicorn'
-					projectId={unicornId}
-					width='100%'
-					height='100%'
-					onLoad={handleLoad}
-					onError={handleError}
-					production={true}
-					fps={120}
-				/>
+			<Background sceneId={unicornId} video={video} />
 
-				<S.FullFrame>
-					<Frame isLight className='top' />
-					<Frame isLight className='bottom' />
-				</S.FullFrame>
+			<S.FullFrame>
+				<Frame isLight className='top' />
+				<Frame isLight className='bottom' />
+			</S.FullFrame>
 
-				<S.Content>
-					<h1>{title}</h1>
-					<p>{description}</p>
-				</S.Content>
+			<S.Content>
+				<h1>{title}</h1>
+				<p>{description}</p>
+			</S.Content>
 
-				<LogoMarquee logos={logos} />
-			</S.Scaler>
+			<LogoMarquee logos={logos} />
+
+			<MobileNav />
 		</S.Jacket>
 	);
 };

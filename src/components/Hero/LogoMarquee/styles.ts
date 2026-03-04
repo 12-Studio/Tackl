@@ -10,22 +10,36 @@ import styled, { css } from 'styled-components';
 interface StylesInterface {
 	$isModalOpen?: boolean;
 	$isLoaderFinished?: boolean;
+	$speed?: number;
 }
 
 // Exports
 // ------------
 export const Jacket = styled(Section)<StylesInterface>(
 	({ $isLoaderFinished }) => css`
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: center;
+		justify-content: center;
+		gap: ${getGap('m')};
 		width: 100%;
-		padding: ${getGap('l')};
-		background: linear-gradient(
-			to top,
-			${getGlobal('black')},
-			${getGlobal('black', 0)}
-		);
+		padding: ${getGap('m')} ${getGap('sm')};
+		margin-bottom: ${getGap('s')};
+		
 
 		transform: translateY(${$isLoaderFinished ? 0 : 100}%);
 		transition: transform 1s ${getEase('bezzy2')};
+
+		${bp.l`
+			flex-direction: column;
+			padding: ${getGap('l')};
+			margin-bottom: 0;
+			background: linear-gradient(
+				to top,
+				${getGlobal('black')},
+				${getGlobal('black', 0)}
+			);
+		`}
 	`
 );
 
@@ -39,8 +53,11 @@ export const Heading = styled(Div)(
 
 		display: flex;
 		align-items: center;
-		gap: ${getGap('m')};
-		margin-bottom:  ${getGap('m')};
+		gap: ${getGap('sm')};
+
+		${bp.l`
+			gap: ${getGap('m')};
+		`}
 
 		&::before,
 		&::after {
@@ -66,7 +83,7 @@ export const Heading = styled(Div)(
 );
 
 export const Marquee = styled(Div)<StylesInterface>(
-	({ $isModalOpen, $isLoaderFinished }) => css`
+	({ $isModalOpen, $isLoaderFinished, $speed }) => css`
 		--gap: ${getGap('xxl')};
 		--max: 90.6rem;
 
@@ -95,7 +112,7 @@ export const Marquee = styled(Div)<StylesInterface>(
 			min-width: 100%;
 			gap: var(--gap);
 
-			animation: scroll 10s linear infinite paused;
+			animation: scroll ${($speed ?? 1) * 10}s linear infinite paused;
 
 			${
 				$isLoaderFinished &&
@@ -120,7 +137,8 @@ export const Marquee = styled(Div)<StylesInterface>(
 				min-height: var(--height);	
 				max-width: 12rem;
 				max-height: var(--height);
-				opacity: 0.4;
+
+				${bp.l` opacity: 0.4; `}
 
 				svg {
 					width: 100%;

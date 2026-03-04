@@ -31,7 +31,7 @@ const LogoMarquee = ({ logos }: I.LogoMarqueeProps) => {
 				<h2>Seamless activation with leading platforms</h2>
 			</S.Heading>
 
-			<S.Marquee $isModalOpen={isModalOpen} $isLoaderFinished={isLoaderFinished}>
+			<S.Marquee $isModalOpen={isModalOpen} $isLoaderFinished={isLoaderFinished} $speed={2}>
 				<ul>{renderLogos(logos)}</ul>
 				<ul aria-hidden='true'>{renderLogos(logos)}</ul>
 			</S.Marquee>

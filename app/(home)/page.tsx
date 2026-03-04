@@ -28,6 +28,7 @@ const Page = async () => {
 				description={home.desc}
 				logos={home.partnerLogos}
 				unicornId={home.unicornId}
+				video='/stone-desktop.mp4'
 			/>
 		</main>
 	);

@@ -5,10 +5,10 @@
 import Logo from '@parts/Logo';
 import gsap from 'gsap';
 import Frame from '@parts/Frame';
-import { use, useEffect, useRef } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import { useAnimation } from '@utils/useAnimation';
-import { bezzy2, bezzy3, bezzy4 } from '@parts/AnimationPlugins/Curves';
+import { bezzy2, bezzy3, bezzy4, slow } from '@parts/AnimationPlugins/Curves';
 
 // Styles + Interfaces
 // ------------
@@ -49,6 +49,9 @@ const Loader = () => {
 	// Contexts
 	const { isLoaderFinished, setIsLoaderFinished, pageLoaded } = use(GlobalContext);
 
+	// States
+	const [shouldRender, setShouldRender] = useState(true);
+
 	// Refs
 	const jacketRef = useRef<HTMLElement>(null);
 	const logoRef = useRef<SVGSVGElement>(null);
@@ -61,6 +64,7 @@ const Loader = () => {
 	const topLastPlusRef = useRef<HTMLSpanElement>(null);
 	const bottomFirstPlusRef = useRef<HTMLSpanElement>(null);
 	const bottomLastPlusRef = useRef<HTMLSpanElement>(null);
+	const frameRef = useRef<gsap.core.Timeline | null>(null);
 
 	// Pulse Animation
 	useAnimation(
@@ -155,6 +159,8 @@ const Loader = () => {
 				},
 				'>-0.3'
 			);
+
+			frameRef.current = tl;
 		},
 		{ scope: jacketRef, dependencies: [pageLoaded] }
 	);
@@ -176,17 +182,29 @@ const Loader = () => {
 		() => {
 			if (!isLoaderFinished || !jacketRef.current) return;
 
-			gsap.to(jacketRef.current, {
-				autoAlpha: 0,
-				duration: 0.5,
-				ease: bezzy3,
-			});
+			const handleOutro = () => {
+				gsap.to(jacketRef.current, {
+					autoAlpha: 0,
+					duration: 1,
+					ease: slow,
+					onComplete: () => setShouldRender(false),
+				});
+			};
+
+			const frameTl = frameRef.current;
+			if (frameTl?.isActive()) {
+				frameTl.then(handleOutro);
+			} else {
+				handleOutro();
+			}
 		},
 		{
 			scope: jacketRef,
 			dependencies: [isLoaderFinished],
 		}
 	);
+
+	if (!shouldRender) return null;
 
 	return (
 		<S.Jacket ref={jacketRef}>
@@ -208,6 +226,7 @@ const Loader = () => {
 				<S.Vertical $isLeft ref={leftVerticalRef} />
 				<S.Vertical ref={rightVerticalRef} />
 			</S.Frame>
+
 			<Logo ref={logoRef} />
 		</S.Jacket>
 	);

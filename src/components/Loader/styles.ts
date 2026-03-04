@@ -16,7 +16,7 @@ export const Jacket = styled(Aside)<StylesInterface>(
 	() => css`
         position: fixed;
         inset: 0 auto auto 0;
-        z-index: 999;
+        z-index: 1000;
 
         display: grid;
         place-items: center;

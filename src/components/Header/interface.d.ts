@@ -1,8 +1,9 @@
 // Imports
 // ------------
+import type { NavItem } from './Navigation/interface';
 
 // Exports
 // ------------
-export type HeaderProps = {
-	example?: string;
-};
+export interface HeaderProps {
+	menuItems: NavItem[];
+}

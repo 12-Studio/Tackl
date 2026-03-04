@@ -32,7 +32,7 @@ export const Jacket = styled(Section)<StylesInterface>(
 
 		${bp.l`
 			flex-direction: column;
-			padding: ${getGap('l')};
+			padding: 0 ${getGap('l')} ${getGap('l')} ${getGap('l')};
 			margin-bottom: 0;
 			background: linear-gradient(
 				to top,

@@ -51,7 +51,7 @@ export const Content = styled(Section)(
         ${bp.l`
             justify-content: center;
             gap: ${getGap('xxl')};
-            padding: 0 ${getGap('xxl')} ${getGap('xxl')};
+            padding: calc(${getGap('mega')} + ${getGap('s')}) ${getGap('l')};
         `}
 
         h1 {

@@ -14,8 +14,11 @@ interface StylesInterface {
 // ------------
 export const Jacket = styled.svg<StylesInterface>(
 	() => css`
+        --width: 8.4rem;
+    
         aspect-ratio: 84 / 14;
-        width: 8.4rem;
+        width: var(--width);
+        min-width: var(--width);
         height: auto;
         fill: ${getGlobal('luxuryWhite')};
     `

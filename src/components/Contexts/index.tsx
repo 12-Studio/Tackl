@@ -23,6 +23,9 @@ export const GlobalContext = createContext({
 
 	pageLoaded: false,
 	setPageLoaded: (value: boolean) => {},
+
+	modalActive: '',
+	setModalActive: (value: string) => {},
 });
 
 // Component
@@ -35,6 +38,7 @@ const Contexts = ({ children }: I.ContextsProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
 	const [pageLoaded, setPageLoaded] = useState<boolean>(false);
+	const [modalActive, setModalActive] = useState<string>('home');
 
 	// Context Values
 	const contextValue = useMemo(
@@ -46,8 +50,10 @@ const Contexts = ({ children }: I.ContextsProps) => {
 			setIsLoaderFinished,
 			pageLoaded,
 			setPageLoaded,
+			modalActive,
+			setModalActive,
 		}),
-		[isModalOpen, isLoaderFinished, pageLoaded]
+		[isModalOpen, isLoaderFinished, pageLoaded, modalActive]
 	);
 
 	return (

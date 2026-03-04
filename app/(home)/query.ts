@@ -1,4 +1,4 @@
-export const HOME = `
+export const EVERYTHING = `
     query {
         home {
             title
@@ -20,5 +20,6 @@ export const HOME = `
         about {
             title
         }
+        
     }
 `;

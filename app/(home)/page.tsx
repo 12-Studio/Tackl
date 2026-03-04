@@ -3,11 +3,11 @@
 
 import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
-import { HOME } from './query';
+import { EVERYTHING } from './query';
 
-async function getHomeData() {
+async function getAllData() {
 	try {
-		const data = await performRequest(HOME);
+		const data = await performRequest(EVERYTHING);
 		return data;
 	} catch (error) {
 		console.error('Failed to fetch data from DatoCMS:', error);
@@ -20,7 +20,7 @@ async function getHomeData() {
 // ------------
 const Page = async () => {
 	// Fetch data
-	const { home, activation, dataSupply, about } = await getHomeData();
+	const { home, activation, dataSupply, about } = await getAllData();
 
 	// Create menu items array
 	const menuItemsArray = [

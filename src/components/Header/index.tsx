@@ -2,24 +2,29 @@
 
 // Imports
 // ------------
+import { use } from 'react';
+import { GlobalContext } from '@parts/Contexts';
+import Home from './Home';
+import Contact from './Contact';
+import Navigation from './Navigation';
 
-// Styles
+// Styles + Interfaces
 // ------------
-import { Jacket } from './styles';
-
-// Interfaces
-// ------------
-interface HeaderProps {}
+import type * as I from './interface';
+import * as S from './styles';
 
 // Component
 // ------------
-const Header = ({}: HeaderProps) => {
+const Header = ({ menuItems }: I.HeaderProps) => {
+	// Contexts
+	const { isLoaderFinished, isModalOpen } = use(GlobalContext);
+
 	return (
-		<Jacket>
-			{/*  */}
-			{/*  */}
-			{/*  */}
-		</Jacket>
+		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
+			<Home />
+			<Navigation menuItems={menuItems} />
+			<Contact />
+		</S.Jacket>
 	);
 };
 

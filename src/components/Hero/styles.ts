@@ -58,11 +58,15 @@ export const Content = styled(Section)(
             ${displayS}
 
             max-width: 40rem;
+            width: 100%;
             text-align: center;
             color: ${getGlobal('luxuryWhite')};
-            
 
             ${bp.l` max-width: 90.6rem; `}
+
+            .line, .char {
+                color: inherit;
+            }
         }
 
         p {
@@ -74,6 +78,10 @@ export const Content = styled(Section)(
             padding: 0 ${getGap('m')};
 
             ${bp.l` padding: 0; `}
+
+            .line {
+                color: inherit;
+            }            
         }
     `
 );

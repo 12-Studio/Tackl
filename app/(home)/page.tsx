@@ -19,11 +19,20 @@ async function getHomeData() {
 // Component
 // ------------
 const Page = async () => {
-	const { home } = await getHomeData();
+	// Fetch data
+	const { home, activation, dataSupply, about } = await getHomeData();
+
+	// Create menu items array
+	const menuItemsArray = [
+		{ label: activation.title },
+		{ label: dataSupply.title },
+		{ label: about.title },
+	];
 
 	return (
 		<main>
 			<Hero
+				menuItems={menuItemsArray}
 				title={home.title}
 				description={home.desc}
 				logos={home.partnerLogos}

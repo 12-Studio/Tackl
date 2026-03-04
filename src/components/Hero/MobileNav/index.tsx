@@ -5,18 +5,15 @@
 import Icon from '@parts/Icon';
 // Styles + Interfaces
 // ------------
+import type * as I from './interface';
 import * as S from './styles';
-
-// Data
-// ------------
-const navItems = [{ label: 'Activation' }, { label: 'Data+Supply' }, { label: 'About' }];
 
 // Component
 // ------------
-const MobileNav = () => {
+const MobileNav = ({ menuItems }: I.MobileNavProps) => {
 	// Handle Click
 	const handleClick = (label: string) => {
-		console.log(label);
+		console.log('clicked', label);
 	};
 
 	// Handle camel case conversion
@@ -34,7 +31,7 @@ const MobileNav = () => {
 
 	return (
 		<S.Jacket>
-			{navItems.map(({ label }) => (
+			{menuItems.map(({ label }) => (
 				<li key={label}>
 					<button
 						onClick={() => handleClick(label)}

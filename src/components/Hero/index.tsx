@@ -20,7 +20,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Hero = ({ title, description, logos, unicornId, video }: I.HeroProps) => {
+const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.HeroProps) => {
 	// Contexts
 	const { isLoaderFinished } = use(GlobalContext);
 
@@ -109,7 +109,7 @@ const Hero = ({ title, description, logos, unicornId, video }: I.HeroProps) => {
 
 			<LogoMarquee logos={logos} />
 
-			<MobileNav />
+			<MobileNav menuItems={menuItems} />
 		</S.Jacket>
 	);
 };

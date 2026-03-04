@@ -10,5 +10,15 @@ export const HOME = `
                 alt
             }
         }
+
+        activation {
+            title
+        }
+        dataSupply {
+            title
+        }
+        about {
+            title
+        }
     }
 `;

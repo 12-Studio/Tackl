@@ -16,11 +16,12 @@ export const Jacket = styled(List)<StylesInterface>(
 	() => css`
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: ${getGap('s')};
+        gap: ${getGap('xs')};
 
         width: 100%;
         padding-inline: ${getGap('m')};
 
+        ${bp.s` gap: ${getGap('s')};`}
         ${bp.l` display: none; `}
 
 

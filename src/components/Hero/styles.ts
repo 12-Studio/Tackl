@@ -54,38 +54,33 @@ export const Content = styled(Section)(
             padding: calc(${getGap('mega')} + ${getGap('s')}) ${getGap('l')};
         `}
 
+
+        h1, p {
+            text-align: center;
+            width: 100%;
+
+            .line, .char, span {
+                color: inherit;
+            }
+        }
+
         h1 {
             ${displayS}
 
             max-width: 40rem;
-            width: 100%;
-            text-align: center;
             color: ${getGlobal('luxuryWhite')};
 
             ${bp.l` max-width: 90.6rem; `}
-
-            .line, .char {
-                color: inherit;
-            }
         }
 
         p {
             ${bodyM}
             
             max-width: 55.2rem;
-            text-align: center;
             color: ${getGlobal('luxuryWhite', 60)};
             padding: 0 ${getGap('m')};
 
-            ${bp.l` padding: 0; `}
-
-            span {
-                color: inherit;
-            }
-
-            .line {
-                color: inherit;
-            }            
+            ${bp.l` padding: 0; `}         
         }
     `
 );

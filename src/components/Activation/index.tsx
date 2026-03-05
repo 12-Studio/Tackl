@@ -19,7 +19,6 @@ const Activation = ({ title }: I.ActivationProps) => {
 
 	useEffect(() => {
 		console.log(modalActive);
-
 		// if (modalActive === 'activation') {
 		// 	console.log('activation');
 		// }

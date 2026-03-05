@@ -36,6 +36,7 @@ const Modal = ({ children, isOpen }: I.ModalProps) => {
 				$isOpen={isOpen}
 				aria-label='Close modal'
 				type='button'
+				data-hover
 				onClick={() => handleClose()}
 			>
 				<Icon type='close' />

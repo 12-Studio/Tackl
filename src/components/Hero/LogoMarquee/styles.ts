@@ -16,7 +16,7 @@ interface StylesInterface {
 // Exports
 // ------------
 export const Jacket = styled(Section)<StylesInterface>(
-	({ $isLoaderFinished }) => css`
+	({ $isLoaderFinished, $isModalOpen }) => css`
 		display: flex;
 		flex-direction: column-reverse;
 		align-items: center;
@@ -28,7 +28,15 @@ export const Jacket = styled(Section)<StylesInterface>(
 		
 
 		transform: translateY(${$isLoaderFinished ? 0 : 100}%);
-		transition: transform 1s ${getEase('bezzy2')};
+		transition: transform 1s ${getEase('bezzy2')}, opacity 0.5s ${getEase('bezzy3')};
+
+		${
+			$isModalOpen &&
+			css`
+			transform: translateY(100%);
+			opacity: 0;
+		`
+		}
 
 		${bp.l`
 			flex-direction: column;

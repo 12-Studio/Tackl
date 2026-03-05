@@ -143,7 +143,13 @@ export const CloseButton = styled(Button)<StylesInterface>(
         border-radius: ${getRadius('s')};
         cursor: pointer;
 
-        transition: transform 1.1s ${getEase('bezzy3')} ${$isOpen ? 0.1 : 0}s;
+        transition: transform 1.1s ${getEase('bezzy3')} ${$isOpen ? 0.1 : 0}s, background 0.5s ${getEase('bezzy3')};
+
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                background: ${getBrand('bc1', 20)};
+            }
+        }
 
         svg {
             fill: ${getGlobal('luxuryWhite')};

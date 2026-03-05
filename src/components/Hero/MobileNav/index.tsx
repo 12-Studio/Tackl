@@ -13,7 +13,7 @@ import * as S from './styles';
 const MobileNav = ({ menuItems }: I.MobileNavProps) => {
 	// Handle Click
 	const handleClick = (label: string) => {
-		console.log('clicked', label);
+		// console.log('clicked', label);
 	};
 
 	return (

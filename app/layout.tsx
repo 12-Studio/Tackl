@@ -1,6 +1,7 @@
 // Imports
 // ------------
 import '@/theme/tackl/waffl/WebComponent';
+import { draftMode } from 'next/headers';
 import Client from './Client';
 import Server from './Server';
 
@@ -10,9 +11,11 @@ import '@css/global.css';
 
 // Component
 // ------------
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+	const { isEnabled: isDraftModeEnabled } = await draftMode();
+
 	return (
-		<Client>
+		<Client isDraftModeEnabled={isDraftModeEnabled}>
 			<Server>{children}</Server>
 		</Client>
 	);

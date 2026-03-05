@@ -4,6 +4,7 @@
 // ------------
 import '@theme/tackl/waffl/WebComponent';
 import '@parts/AnimationPlugins';
+import ContentLink from '@parts/ContentLink';
 import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
 import SmoothScroll from '@parts/SmoothScroll';
@@ -22,7 +23,7 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 
 // Component
 // ------------
-const Client = ({ children }: { children: React.ReactNode }) => {
+const Client = ({ children, isDraftModeEnabled }: { children: React.ReactNode; isDraftModeEnabled: boolean }) => {
 	// NOTE • Font Classes
 	const classes = `${inter.variable}`;
 
@@ -40,6 +41,8 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 
 								{/* CookieBar only rendered in production environment */}
 								{process.env.NODE_ENV === 'production' && <CookieBar />}
+
+								{isDraftModeEnabled && <ContentLink />}
 
 								<Contexts>
 									<SmoothScroll>{children}</SmoothScroll>

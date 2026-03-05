@@ -42,6 +42,7 @@ const Client = ({ children, isDraftModeEnabled }: { children: React.ReactNode; i
 								{/* CookieBar only rendered in production environment */}
 								{process.env.NODE_ENV === 'production' && <CookieBar />}
 
+								{/* Content Link should only run for editors in draft previews */}
 								{isDraftModeEnabled && <ContentLink />}
 
 								<Contexts>

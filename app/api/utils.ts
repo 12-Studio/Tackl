@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server';
 import { serializeError } from 'serialize-error';
 
 export function withCORS(responseInit: ResponseInit = {}): ResponseInit {
+	// DatoCMS Web Previews calls our API from a different origin, so these
+	// headers are required for browser preflight + cross-origin requests.
 	const headers = new Headers(responseInit.headers);
 	headers.set('Access-Control-Allow-Origin', '*');
 	headers.set('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
@@ -22,6 +24,7 @@ export function handleUnexpectedError(error: unknown) {
 		console.error(caughtError);
 	}
 
+	// ApiError gives useful request/response metadata from DatoCMS APIs.
 	if (error instanceof ApiError) {
 		return NextResponse.json(
 			{
@@ -74,6 +77,7 @@ export async function makeDraftModeWorkWithinIframes() {
 		value: prerenderBypassCookie.value,
 		httpOnly: true,
 		path: '/',
+		// Required for third-party iframe cookie behavior (CHIPS).
 		secure: true,
 		sameSite: 'none',
 		partitioned: true,
@@ -82,10 +86,12 @@ export async function makeDraftModeWorkWithinIframes() {
 
 export function isRelativeUrl(path: string): boolean {
 	try {
+		// If this succeeds without a base, it is absolute and therefore rejected.
 		new URL(path);
 		return false;
 	} catch {
 		try {
+			// Valid relative URL if it can be parsed only when a base is provided.
 			new URL(path, 'http://example.com');
 			return true;
 		} catch {

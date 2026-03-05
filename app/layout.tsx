@@ -12,6 +12,8 @@ import '@css/global.css';
 // Component
 // ------------
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+	// Read draft mode on the server so we can conditionally mount preview-only
+	// tooling (eg. Content Link) in the client tree.
 	const { isEnabled: isDraftModeEnabled } = await draftMode();
 
 	return (

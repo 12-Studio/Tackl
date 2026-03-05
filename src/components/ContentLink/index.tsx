@@ -10,13 +10,17 @@ const ContentLink = () => {
 	const controllerRef = useRef<ReturnType<typeof createController> | null>(null);
 
 	useEffect(() => {
+		// Controller scans stega-encoded text in the DOM and wires click-to-edit
+		// overlays so editors can jump directly to DatoCMS fields.
 		const controller = createController({
 			stripStega: true,
 			onNavigateTo: path => {
+				// When Web Previews asks the iframe to navigate, sync with Next.js router.
 				router.push(path);
 			},
 		});
 
+		// Keep click-to-edit active while in draft mode.
 		controller.enableClickToEdit();
 		controllerRef.current = controller;
 
@@ -31,6 +35,7 @@ const ContentLink = () => {
 			return;
 		}
 
+		// Report current client-side path back to the plugin for route sync.
 		controllerRef.current?.setCurrentPath(pathname);
 	}, [pathname]);
 

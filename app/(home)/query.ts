@@ -21,5 +21,17 @@ export const EVERYTHING = `
             title
         }
         
+        seo {
+            meta: metadata {
+                image {
+                    url
+                }
+                desc: description
+                title
+                twitterCard
+                
+            }
+            
+        }
     }
 `;

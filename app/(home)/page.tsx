@@ -5,6 +5,8 @@ import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
 
+// Data fetching at build time
+// ------------
 async function getAllData() {
 	try {
 		const data = await performRequest(EVERYTHING);

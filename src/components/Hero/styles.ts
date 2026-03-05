@@ -79,6 +79,10 @@ export const Content = styled(Section)(
 
             ${bp.l` padding: 0; `}
 
+            span {
+                color: inherit;
+            }
+
             .line {
                 color: inherit;
             }            

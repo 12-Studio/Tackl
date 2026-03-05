@@ -16,29 +16,16 @@ const MobileNav = ({ menuItems }: I.MobileNavProps) => {
 		console.log('clicked', label);
 	};
 
-	// Handle camel case conversion
-	const camelCasePls = (label: string) => {
-		return label
-			.replace(/[ +]/g, ' ')
-			.split(' ')
-			.map((word, i) =>
-				i === 0
-					? word.toLowerCase()
-					: word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-			)
-			.join('');
-	};
-
 	return (
 		<S.Jacket>
-			{menuItems.map(({ label }) => (
+			{menuItems.map(({ label, icon }) => (
 				<li key={label}>
 					<button
 						onClick={() => handleClick(label)}
 						type='button'
 						aria-label={`Open ${label}`}
 					>
-						<Icon type={camelCasePls(label)} />
+						<Icon type={icon} />
 						<span>{label}</span>
 					</button>
 				</li>

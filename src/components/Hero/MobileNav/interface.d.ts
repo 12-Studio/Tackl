@@ -9,4 +9,5 @@ export interface MobileNavProps {
 
 export interface NavItem {
 	label: string;
+	icon: string;
 }

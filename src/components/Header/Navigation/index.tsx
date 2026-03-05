@@ -19,7 +19,7 @@ const Navigation = ({ menuItems }: I.NavigationProps) => {
 	// Handle Click
 	const handleClick = (label: string) => {
 		setIsModalOpen(true);
-		setModalActive(label);
+		setModalActive(label.toLowerCase());
 	};
 
 	return (

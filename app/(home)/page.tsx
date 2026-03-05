@@ -4,6 +4,7 @@
 import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
+import Activation from '@parts/Activation';
 
 // Data fetching at build time
 // ------------
@@ -26,9 +27,9 @@ const Page = async () => {
 
 	// Create menu items array
 	const menuItemsArray = [
-		{ label: activation.title },
-		{ label: dataSupply.title },
-		{ label: about.title },
+		{ label: activation.title, icon: 'activation' },
+		{ label: dataSupply.title, icon: 'dataSupply' },
+		{ label: about.title, icon: 'about' },
 	];
 
 	return (
@@ -41,6 +42,8 @@ const Page = async () => {
 				unicornId={home.unicornId}
 				video='/stone-desktop.mp4'
 			/>
+
+			<Activation title={activation.title} />
 		</main>
 	);
 };

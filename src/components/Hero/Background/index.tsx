@@ -20,13 +20,13 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 	const { isDesktop } = useResponsive();
 
 	// Contexts
-	const { setPageLoaded, isLoaderFinished } = use(GlobalContext);
+	const { setPageLoaded, isLoaderFinished, isModalOpen } = use(GlobalContext);
 
 	// Event Handlers
 	const handleLoad = () => setPageLoaded(true);
 
 	return (
-		<S.Jacket $isLoaderFinished={isLoaderFinished}>
+		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
 			{isDesktop ? (
 				<UnicornScene
 					className='unicorn'

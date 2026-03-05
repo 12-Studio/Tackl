@@ -11,7 +11,7 @@ export const Jacket = styled(Div)(
 		top: 0;
 		left: 50%;
 		transform: translate(-50%, -50%) rotate(90deg);
-		width: 240rem;
+		width: 200lvh;
 		aspect-ratio: 48/27;
 		overflow: visible;
 

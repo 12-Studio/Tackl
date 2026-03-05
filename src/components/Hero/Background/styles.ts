@@ -8,12 +8,17 @@ import { bp, Div, getEase } from '@tackl';
 interface StylesInterface {
 	$isLoaderFinished?: boolean;
 	$isPageLoaded?: boolean;
+	$isModalOpen?: boolean;
 }
 
 // Exports
 // ------------
 export const Jacket = styled(Div)<StylesInterface>(
-	({ $isLoaderFinished }) => css`
+	({ $isLoaderFinished, $isModalOpen }) => css`
+		--speed: 1s;
+		--ease: ${getEase('bezzy2')};
+		--scale: 2;
+
 		position: absolute;
 		inset: 0;
 		z-index: -1;
@@ -21,14 +26,38 @@ export const Jacket = styled(Div)<StylesInterface>(
 		scale: 1;
 
 		@keyframes scaleIn {
-			from { scale: 2 }
-			to { scale: 1 }
+			from {
+				scale: var(--scale);
+				opacity: 0;
+			}
+			to {
+				scale: 1;
+				opacity: 1;
+			}
+		}
+
+		@keyframes scaleOut {
+			from {
+				scale: 1;
+				opacity: 1;
+			}
+			to {
+				scale: var(--scale);
+				opacity: 0;
+			}
 		}
 
 		${
 			$isLoaderFinished &&
 			css`
-			animation: scaleIn 1s ${getEase('bezzy3')} forwards;	
+			animation: scaleIn var(--speed) var(--ease) forwards;	
+		`
+		}
+
+		${
+			$isModalOpen &&
+			css`
+			animation: scaleOut var(--speed) var(--ease) forwards;
 		`
 		}
 

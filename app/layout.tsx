@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 // Component
 // ------------
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 	return (
 		<Client>
 			<Server>{children}</Server>

@@ -56,6 +56,20 @@ const nextConfig = {
 		webVitalsAttribution: ['CLS', 'LCP'],
 	},
 
+	async headers() {
+		return [
+			{
+				source: '/(.*)',
+				headers: [
+					{
+						key: 'Content-Security-Policy',
+						value: "frame-ancestors 'self' https://plugins-cdn.datocms.com",
+					},
+				],
+			},
+		];
+	},
+
 	// Styled Components settings
 	compiler: {
 		// styledComponents: true,

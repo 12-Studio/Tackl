@@ -7,7 +7,7 @@ import LogoMarquee from './LogoMarquee';
 import MobileNav from './MobileNav';
 import Frame from '@parts/Frame';
 import { useAnimation } from '@utils/useAnimation';
-import { use, useRef } from 'react';
+import { use, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { GlobalContext } from '@parts/Contexts';
@@ -22,12 +22,13 @@ import * as S from './styles';
 // ------------
 const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.HeroProps) => {
 	// Contexts
-	const { isLoaderFinished } = use(GlobalContext);
+	const { isLoaderFinished, isModalOpen } = use(GlobalContext);
 
 	// Refs
 	const jacketRef = useRef<HTMLDivElement>(null);
 	const headingRef = useRef<HTMLHeadingElement>(null);
 	const descRef = useRef<HTMLParagraphElement>(null);
+	const textTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
 	// Animations
 	useAnimation(
@@ -56,8 +57,9 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 				return () => headingSplit.revert();
 			}
 
-			// Master timeline for heading + description
+			// Master timeline for heading + description (store for modal reverse/play)
 			const tl = gsap.timeline();
+			textTimelineRef.current = tl;
 
 			// Start with everything hidden / offset
 			gsap.set(headingChars, { autoAlpha: 0 });
@@ -86,12 +88,24 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 
 			// Clean up SplitText on unmount / dependency change
 			return () => {
+				textTimelineRef.current = null;
 				headingSplit.revert();
 				descSplit.revert();
 			};
 		},
 		{ scope: jacketRef, dependencies: [isLoaderFinished] }
 	);
+
+	// Reverse text timeline when modal opens, play forward when it closes
+	useEffect(() => {
+		const tl = textTimelineRef.current;
+		if (!tl) return;
+		if (isModalOpen) {
+			tl.reverse();
+		} else {
+			tl.play();
+		}
+	}, [isModalOpen]);
 
 	return (
 		<S.Jacket ref={jacketRef}>

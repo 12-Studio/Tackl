@@ -19,6 +19,7 @@ export interface Columns {
 
 export interface Breakpoints {
 	s?: string;
+	xs?: string;
 	sm?: string;
 	m?: string;
 	l?: string;

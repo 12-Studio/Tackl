@@ -1,5 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	headers: async () => [
+		{
+			source: '/:path*',
+			headers: [
+				{
+					key: 'Content-Security-Policy',
+					value: "frame-ancestors 'self' https://plugins-cdn.datocms.com",
+				},
+			],
+		},
+	],
 	// Image loader settings
 	images: {
 		formats: ['image/avif', 'image/webp'],

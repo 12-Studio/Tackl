@@ -23,8 +23,8 @@ export type BrandColorVariations = {
 	bc1: AlphaShades;
 	bc2: AlphaShades;
 	bc3: AlphaShades;
-	bc4?: AlphaShades;
-	bc5?: AlphaShades;
+	bc4: AlphaShades;
+	bc5: AlphaShades;
 	bc6?: AlphaShades;
 };
 

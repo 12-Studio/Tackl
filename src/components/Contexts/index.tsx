@@ -15,8 +15,17 @@ import type * as I from './interface';
 export const GlobalContext = createContext({
 	lenisRef: { current: null } as React.RefObject<LenisRef | null>,
 
-	menuOpen: false,
-	setMenuOpen: (value: boolean) => {},
+	isModalOpen: false,
+	setIsModalOpen: (value: boolean) => {},
+
+	isLoaderFinished: false,
+	setIsLoaderFinished: (value: boolean) => {},
+
+	pageLoaded: false,
+	setPageLoaded: (value: boolean) => {},
+
+	modalActive: '',
+	setModalActive: (value: string) => {},
 });
 
 // Component
@@ -26,16 +35,25 @@ const Contexts = ({ children }: I.ContextsProps) => {
 	const lenisRef = useRef<LenisRef | null>(null);
 
 	// States
-	const [menuOpen, setMenuOpen] = useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
+	const [pageLoaded, setPageLoaded] = useState<boolean>(false);
+	const [modalActive, setModalActive] = useState<string>('home');
 
 	// Context Values
 	const contextValue = useMemo(
 		() => ({
 			lenisRef,
-			menuOpen,
-			setMenuOpen,
+			isModalOpen,
+			setIsModalOpen,
+			isLoaderFinished,
+			setIsLoaderFinished,
+			pageLoaded,
+			setPageLoaded,
+			modalActive,
+			setModalActive,
 		}),
-		[menuOpen]
+		[isModalOpen, isLoaderFinished, pageLoaded, modalActive]
 	);
 
 	return (

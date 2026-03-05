@@ -53,11 +53,25 @@ export const theme: Theme = {
 export const GlobalStyle = createGlobalStyle`
 	/* In the event we need to use our theme values in the CSS */
 	html {
+		/* Globals */
 		--black: ${theme.colors.global.black[100]};
 		--white: ${theme.colors.global.white[100]};
+
+		/* Brand Colors */
+		--bc1: ${theme.colors.brand.bc1[100]};
+		--bc2: ${theme.colors.brand.bc2[100]};
+		--bc3: ${theme.colors.brand.bc3[100]};
+		--bc4: ${theme.colors.brand.bc4[100]};
+		--bc5: ${theme.colors.brand.bc5[100]};
+
+		/* Easing */
 		--bezzy: ${theme.easing.bezzy};
 		--bezzy2: ${theme.easing.bezzy2};
 		--bezzy3: ${theme.easing.bezzy3};
+		
+		/* Grid Lines*/
+		--line-mobile-dist: 1.2rem;
+		--line-desktop-dist: 1.6rem;
 	}
 
 	body {
@@ -67,4 +81,8 @@ export const GlobalStyle = createGlobalStyle`
 	}
 	
 	* { color: var(--white); }
+
+	::selection {
+		background: ${theme.colors.brand.bc3[100]};
+	}
 `;

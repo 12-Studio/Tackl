@@ -1,4 +1,4 @@
-export const HOME = `
+export const EVERYTHING = `
     query {
         home {
             title
@@ -9,6 +9,29 @@ export const HOME = `
                 url
                 alt
             }
+        }
+
+        activation {
+            title
+        }
+        dataSupply {
+            title
+        }
+        about {
+            title
+        }
+        
+        seo {
+            meta: metadata {
+                image {
+                    url
+                }
+                desc: description
+                title
+                twitterCard
+                
+            }
+            
         }
     }
 `;

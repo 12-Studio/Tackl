@@ -5,6 +5,7 @@
 import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
 // import CookieBar from '@parts/CookieBar';
+import Cursor from '@parts/Cursor';
 import { GlobalStyle, theme } from '@theme';
 import { neueHaas, pp } from '@theme/fonts';
 import StyledComponentsRegistry from '@utils/registry';
@@ -38,7 +39,10 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 							{/* CookieBar only rendered in production environment */}
 							{/* {process.env.NODE_ENV === 'production' && <CookieBar />} */}
 
-							<Contexts>{children}</Contexts>
+							<Contexts>
+								<Cursor />
+								{children}
+							</Contexts>
 						</ThemeProvider>
 					</StyledComponentsRegistry>
 				</body>

@@ -27,11 +27,10 @@ export const displayS: RuleSet = css`
 	${baseHeadingStyles}
 
 	font-weight: ${theme.font.weight.thin};
-	font-size: 6.4rem;
+	font-size: 5.6rem;
 
-	${bp.xl`
-		font-size: 10.8rem;
-	`}
+	${bp.sm` font-size: 6.4rem; `}
+	${bp.l` font-size: 10.8rem; `}
 `;
 
 export const headlineL: RuleSet = css`
@@ -127,6 +126,7 @@ export const captionL: RuleSet = css`
 	font: normal ${theme.font.weight.regular} 1rem ${theme.font.family.mono};
 	line-height: 1.24;
 	letter-spacing: 0.05rem;
+	text-transform: uppercase;
 	text-box: trim-both cap alphabetic;
 
 	${bp.xl` font-size: 1.2rem; `}

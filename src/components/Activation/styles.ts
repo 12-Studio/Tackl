@@ -14,6 +14,11 @@ interface StylesInterface {
 // ------------
 export const Jacket = styled(Section)<StylesInterface>(
 	() => css`
-      /*  */
+    
+      .example {
+        width: 100%;
+        height: 500dvh;
+        background: linear-gradient(to bottom, ${getGlobal('luxuryWhite')}, ${getBrand('bc4')});
+      }
     `
 );

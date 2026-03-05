@@ -2,6 +2,8 @@
 
 // Imports
 // ------------
+import { use } from 'react';
+import { GlobalContext } from '@parts/Contexts';
 import Icon from '@parts/Icon';
 // Styles + Interfaces
 // ------------
@@ -11,9 +13,13 @@ import * as S from './styles';
 // Component
 // ------------
 const MobileNav = ({ menuItems }: I.MobileNavProps) => {
+	// Contexts
+	const { setIsModalOpen, setModalActive } = use(GlobalContext);
+
 	// Handle Click
 	const handleClick = (label: string) => {
-		// console.log('clicked', label);
+		setIsModalOpen(true);
+		setModalActive(label.toLowerCase());
 	};
 
 	return (

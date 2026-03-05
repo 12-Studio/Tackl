@@ -28,6 +28,8 @@ const Activation = ({ title }: I.ActivationProps) => {
 		<Modal isOpen={modalActive === 'activation'}>
 			<S.Jacket>
 				<h2>{title}</h2>
+
+				<div className='example'></div>
 			</S.Jacket>
 		</Modal>
 	);

@@ -20,9 +20,6 @@ export const Jacket = styled(Button)<StylesInterface>(
 	({ $isModalOpen }) => css`
         position: relative;
         overflow: hidden;
-    
-        opacity: ${$isModalOpen ? 0 : 1};
-        pointer-events: ${$isModalOpen ? 'none' : 'auto'};
 
 		display: grid;
 		place-items: center;
@@ -33,6 +30,16 @@ export const Jacket = styled(Button)<StylesInterface>(
 		cursor: pointer;
 		transition: opacity 0.5s ${getEase('bezzy3')}, pointer-events 0.5s ${getEase('bezzy3')}, background 0.5s ${getEase('bezzy3')};
 		transition-delay: ${$isModalOpen ? 0 : 0.25}s;
+
+        ${bp.l`
+            ${
+				$isModalOpen &&
+				css`
+                    opacity: 0;
+                    pointer-events: none;
+                `
+			}
+        `}
 
 		@media (hover: hover) and (pointer: fine) {
 			&:hover {

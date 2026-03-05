@@ -28,7 +28,6 @@ export const Jacket = styled(Button)<StylesInterface>(
         display: grid;
         place-items: center;
         height: 100%;
-
         cursor: pointer;
 
 

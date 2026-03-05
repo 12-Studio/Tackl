@@ -5,6 +5,7 @@
 import { use } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import Icon from '@parts/Icon';
+import NestedLenis from '@parts/NestedLenis';
 
 // Styles + Interfaces
 // ------------
@@ -30,8 +31,6 @@ const Modal = ({ children, isOpen }: I.ModalProps) => {
 				<S.VerticalLinePlus $isEnd />
 			</S.VerticalLine>
 
-			<S.Content $isOpen={isOpen}>{children}</S.Content>
-
 			<S.CloseButton
 				$isOpen={isOpen}
 				aria-label='Close modal'
@@ -41,6 +40,10 @@ const Modal = ({ children, isOpen }: I.ModalProps) => {
 			>
 				<Icon type='close' />
 			</S.CloseButton>
+
+			<S.Content $isOpen={isOpen}>
+				<NestedLenis isOpen={isOpen}>{children}</NestedLenis>
+			</S.Content>
 		</S.Jacket>
 	);
 };

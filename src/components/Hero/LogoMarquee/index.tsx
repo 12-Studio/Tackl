@@ -25,6 +25,7 @@ const LogoMarquee = ({ logos }: I.LogoMarqueeProps) => {
 			</li>
 		));
 	};
+
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
 			<S.Heading>

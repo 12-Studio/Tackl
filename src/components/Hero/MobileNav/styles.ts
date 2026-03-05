@@ -55,6 +55,10 @@ export const Jacket = styled(List)<StylesInterface>(
                 span {
                     color: var(--color);
                 }
+
+                &:active {
+                    opacity: 0.2;
+                }
             }
         }
     `

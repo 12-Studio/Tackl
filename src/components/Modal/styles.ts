@@ -32,7 +32,7 @@ export const Jacket = styled(Aside)<StylesInterface>(
 	({ $isOpen }) => css`
         position: fixed;
         z-index: 997;
-        inset: 0 0 0 0;
+        inset: 0;
 
         display: flex;
         align-items: flex-start;
@@ -44,18 +44,29 @@ export const Jacket = styled(Aside)<StylesInterface>(
 
 export const Content = styled(Section)<StylesInterface>(
 	({ $isOpen }) => css`
-        position: relative;
-        width: 66%;
-        min-height: 100svh;
+        --size: 100%;
+        --clip: 100%;
 
-        clip-path: inset(${$isOpen ? '0% 0% 0% 0%' : '0% 0% 0% 100%'});
+        position: relative;
+        width: var(--size);
+        min-height: 100svh;
         background: ${getGlobal('luxuryWhite')};
+
+        clip-path: inset(${$isOpen ? '0% 0% 0% 0%' : 'var(--clip) 0% 0% 0%'});
         transition: clip-path 1.2s ${getEase('bezzy3')};
+
+        ${bp.l`
+            --size: 66%;
+
+            clip-path: inset(${$isOpen ? '0% 0% 0% 0%' : '0% 0% 0% var(--clip)'});
+        `}
     `
 );
 
 export const VerticalLine = styled(Div)<StylesInterface>(
 	({ $isOpen }) => css`
+        display: none;
+
         position: absolute;
         top: 0;
         right: calc(100% + ${getGap('sm')});
@@ -66,6 +77,8 @@ export const VerticalLine = styled(Div)<StylesInterface>(
 
         transform: translateX(${$isOpen ? 34 : 110}vw);
         transition: transform 1.2s ${getEase('bezzy3')};
+
+        ${bp.l` display: block; `}
     `
 );
 
@@ -123,27 +136,39 @@ export const VerticalLinePlus = styled.span<StylesInterface>(
 
 export const CloseButton = styled(Button)<StylesInterface>(
 	({ $isOpen }) => css`
-        --size: 5.6rem;
+        --size: 4rem;
+        --icon-size: 1.6rem;
         --distance: ${getGap('l')};
 
-        position: absolute;
-        z-index: -1;
-        top: ${getGap('l')};
-        right: calc(66vw + var(--distance));
-        transform: translateX(${$isOpen ? 0 : 'calc(66vw + var(--distance) + var(--size))'});
+        position: fixed;
+        z-index: 1;
+        top: ${getGap('m')};
+        right: ${getGap('m')};
+        transform: translateY(${$isOpen ? 0 : -200}%);
+        
 
         width: var(--size);
         height: var(--size);
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: grid;
+        place-items: center;
 
         background: ${getBrand('bc1')};
         border-radius: ${getRadius('s')};
         cursor: pointer;
+        transition:
+            transform 1.1s ${getEase('bezzy3')} ${$isOpen ? 0.1 : 0}s,
+            background 0.5s ${getEase('bezzy3')};
 
-        transition: transform 1.1s ${getEase('bezzy3')} ${$isOpen ? 0.1 : 0}s, background 0.5s ${getEase('bezzy3')};
+        ${bp.l`
+            --size: 5.6rem;
+            --icon-size: 2.4rem;
+
+            z-index: -1;
+            top: ${getGap('l')};
+            right: calc(66vw + var(--distance));
+            transform: translateX(${$isOpen ? 0 : 'calc(66vw + var(--distance) + var(--size))'});
+        `}
 
         @media (hover: hover) and (pointer: fine) {
             &:hover {
@@ -152,6 +177,9 @@ export const CloseButton = styled(Button)<StylesInterface>(
         }
 
         svg {
+            width: var(--icon-size);
+            height: var(--icon-size);
+
             fill: ${getGlobal('luxuryWhite')};
         }
     `

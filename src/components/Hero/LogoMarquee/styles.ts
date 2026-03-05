@@ -30,13 +30,7 @@ export const Jacket = styled(Section)<StylesInterface>(
 		transform: translateY(${$isLoaderFinished ? 0 : 100}%);
 		transition: transform 1s ${getEase('bezzy2')}, opacity 0.5s ${getEase('bezzy3')};
 
-		${
-			$isModalOpen &&
-			css`
-			transform: translateY(100%);
-			opacity: 0;
-		`
-		}
+		
 
 		${bp.l`
 			flex-direction: column;
@@ -47,6 +41,14 @@ export const Jacket = styled(Section)<StylesInterface>(
 				${getGlobal('black')},
 				${getGlobal('black', 0)}
 			);
+
+			${
+				$isModalOpen &&
+				css`
+				transform: translateY(100%);
+				opacity: 0;
+			`
+			}
 		`}
 	`
 );

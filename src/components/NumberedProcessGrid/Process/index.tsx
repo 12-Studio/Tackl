@@ -29,7 +29,7 @@ const Process = ({ heading, description, itemIndex }: I.ProcessProps) => {
 
 			gsap.set(numberRef.current, {
 				autoAlpha: 0,
-				scale: 0.5,
+				scale: isDesktop ? 0.5 : 1,
 				yPercent: 50,
 			});
 

@@ -19,10 +19,13 @@ export const Jacket = styled(Div)(
         position: relative;
         display: flex;
         flex-flow: column;
+        justify-content: space-between;
 
+        aspect-ratio: var(--aspect);
         padding-inline: 1.2rem;
 
         ${bp.l`
+            aspect-ratio: unset;
             flex-direction: row;
             padding-inline: ${getGap('sm')};
         `}

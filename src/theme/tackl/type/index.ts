@@ -14,11 +14,11 @@ export const displayL: RuleSet = css`
 	${baseHeadingStyles}
 
 	font-weight: ${theme.font.weight.thin};
-	font-size: 12rem;
+	font-size: 15rem;
 	letter-spacing: -0.5rem;
 
 	${bp.xl`
-		font-size: 24rem;
+		font-size:clamp(18rem, 16.666vw, 24rem);
 	`}
 `;
 

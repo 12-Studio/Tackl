@@ -47,6 +47,15 @@ export const EVERYTHING = `
 
                 ... on StatisticsGridRecord {
                     id
+                    heading
+                    statistics {
+                        id
+                        heading
+                        hasSymbolBefore
+                        symbolBeforeNumber
+                        symbolAfterNumber
+                        number
+                    }
                 }
 
                 ... on AlternatingMediaRowRecord {
@@ -62,7 +71,7 @@ export const EVERYTHING = `
         dataSupply {
             title
         }
-            
+
         about {
             title
         }

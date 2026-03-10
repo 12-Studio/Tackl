@@ -4,6 +4,7 @@
 // ------------
 import SplitFeatureGrid from '@parts/SplitFeatureGrid';
 import NumberedProcessGrid from '@parts/NumberedProcessGrid';
+import StatisticsGrid from '@parts/StatisticsGrid';
 
 // Styles + Interfaces
 // ------------
@@ -25,6 +26,13 @@ const PageBuilder = ({ pageBuilder }: I.PageBuilderProps) => {
 				<NumberedProcessGrid
 					heading={pageBuilder.heading}
 					processes={pageBuilder.processes ?? []}
+				/>
+			);
+		case 'StatisticsGridRecord':
+			return (
+				<StatisticsGrid
+					heading={pageBuilder.heading}
+					statistics={pageBuilder.statistics ?? []}
 				/>
 			);
 		default:

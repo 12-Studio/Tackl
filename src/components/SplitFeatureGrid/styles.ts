@@ -27,9 +27,6 @@ interface StylesInterface {
 // ------------
 export const Jacket = styled(Section)<StylesInterface>(
 	() => css`
-        --mobile-pad: 1.2rem;
-        --mobile-extra-pad: 2.4rem;
-
         position: relative;
         padding-bottom: var(--mobile-pad);
 

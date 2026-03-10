@@ -13,10 +13,56 @@ export const EVERYTHING = `
 
         activation {
             title
+            heading
+            desc: description  
+            logoMarquee {
+                id
+                url
+                alt
+            }
+            pageBuilder {
+                __typename
+                
+                ... on SplitFeatureGridRecord {
+                    id
+                    heading
+                    features {
+                        heading
+                        desc: description
+                        media: iconImage {
+                            url
+                            alt
+                        }
+                    }
+                }
+
+                ... on NumberedProcessGridRecord {
+                    id
+                    heading
+                    processes {
+                        heading
+                        description
+                    }
+                }
+
+                ... on StatisticsGridRecord {
+                    id
+                }
+
+                ... on AlternatingMediaRowRecord {
+                    id
+                }
+            }
+
+            ctaHeading
+            ctaButtonLabel
+            isCtaOverridden
         }
+
         dataSupply {
             title
         }
+            
         about {
             title
         }

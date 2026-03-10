@@ -43,7 +43,16 @@ const Page = async () => {
 				video='/stone-desktop.mp4'
 			/>
 
-			<Activation title={activation.title} />
+			<Activation
+				title={activation.title}
+				heading={activation.heading}
+				desc={activation.desc}
+				logoMarquee={activation.logoMarquee}
+				pageBuilder={activation.pageBuilder}
+				isCtaOverriden={activation?.isCtaOverriden}
+				ctaHeading={activation?.ctaHeading}
+				ctaButtonLabel={activation?.ctaButtonLabel}
+			/>
 		</main>
 	);
 };

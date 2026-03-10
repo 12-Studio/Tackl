@@ -5,32 +5,37 @@
 import { use, useEffect } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import Modal from '@parts/Modal';
+import Hero from './Hero';
+import PageBuilder from '@parts/PageBuilder';
 
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import * as S from './styles';
 
 // Component
 // ------------
-const Activation = ({ title }: I.ActivationProps) => {
+const Activation = ({
+	title,
+	heading,
+	desc,
+	logoMarquee,
+	pageBuilder,
+	isCtaOverriden,
+	ctaHeading,
+	ctaButtonLabel,
+}: I.ActivationProps) => {
 	// Context
 	const { modalActive } = use(GlobalContext);
 
-	useEffect(() => {
-		console.log(modalActive);
-		// if (modalActive === 'activation') {
-		// 	console.log('activation');
-		// }
-	}, [modalActive]);
-
 	return (
 		<Modal isOpen={modalActive === 'activation'}>
-			<S.Jacket>
-				<h2>{title}</h2>
+			<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
 
-				<div className='example'></div>
-			</S.Jacket>
+			{pageBuilder.map(block => (
+				<PageBuilder key={`${block.__typename}-${block.id}`} pageBuilder={block} />
+			))}
+
+			<div style={{ height: '100lvh', backgroundColor: 'red' }} />
 		</Modal>
 	);
 };

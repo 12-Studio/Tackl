@@ -36,10 +36,11 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 					onLoad={handleLoad}
 					lazyLoad={true}
 					production={true}
+					dpi={1.5}
 					fps={120}
 				/>
 			) : (
-				<MobileVideo src={video} onReady={handleLoad} />
+				<MobileVideo src={video} onReady={handleLoad} isModalOpen={isModalOpen} />
 			)}
 		</S.Jacket>
 	);

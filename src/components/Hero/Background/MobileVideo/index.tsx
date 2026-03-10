@@ -11,7 +11,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const MobileVideo = ({ src, onReady }: I.MobileVideoProps) => {
+const MobileVideo = ({ src, onReady, isModalOpen }: I.MobileVideoProps) => {
 	// Refs
 	const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -29,6 +29,23 @@ const MobileVideo = ({ src, onReady }: I.MobileVideoProps) => {
 			video.removeEventListener('loadeddata', onReady);
 		};
 	}, [onReady]);
+
+	// When modal opens, pause the video
+	useEffect(() => {
+		let timer: NodeJS.Timeout | null = null;
+
+		if (isModalOpen) {
+			timer = setTimeout(() => {
+				videoRef.current?.pause();
+			}, 1100);
+		} else {
+			videoRef.current?.play();
+		}
+
+		return () => {
+			if (timer) clearTimeout(timer);
+		};
+	}, [isModalOpen]);
 
 	return (
 		<S.Jacket>

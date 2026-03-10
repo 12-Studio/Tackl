@@ -12,13 +12,12 @@ interface StylesInterface {
 
 // Exports
 // ------------
-export const Jacket = styled(Section)<StylesInterface>(
+export const Jacket = styled(Div)<StylesInterface>(
 	() => css`
-    
-      .example {
-        width: 100%;
-        height: 500dvh;
-        background: linear-gradient(to bottom, ${getGlobal('luxuryWhite')}, ${getBrand('bc4')});
-      }
+        color: inherit;
+
+        * { 
+            color: inherit;
+        }
     `
 );

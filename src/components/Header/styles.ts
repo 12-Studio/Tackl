@@ -32,6 +32,7 @@ export const Jacket = styled(Header)<StylesInterface>(
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		
 
 		padding-inline: ${getGap('m')} 0;
 		width: var(--expanded);

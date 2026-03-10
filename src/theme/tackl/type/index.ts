@@ -7,7 +7,6 @@ import { css, type RuleSet } from 'styled-components';
 const baseHeadingStyles: RuleSet = css`
 	font-family: ${theme.font.family.heading};
 	line-height: 1.16;
-	text-box: trim-both cap alphabetic;
 `;
 
 // SECTION • Heading styles
@@ -25,12 +24,16 @@ export const displayL: RuleSet = css`
 
 export const displayS: RuleSet = css`
 	${baseHeadingStyles}
+	
 
 	font-weight: ${theme.font.weight.thin};
 	font-size: 5.6rem;
 
 	${bp.sm` font-size: 6.4rem; `}
-	${bp.l` font-size: 10.8rem; `}
+	${bp.l`
+		text-box: trim-both cap alphabetic;
+		font-size: 10.8rem;
+	`}
 `;
 
 export const headlineL: RuleSet = css`
@@ -42,12 +45,14 @@ export const headlineL: RuleSet = css`
 	letter-spacing: -0.5px;
 
 	${bp.xl`
+		text-box: trim-both cap alphabetic;
 		font-size: 8rem;
 	`}
 `;
 
 export const headlineS: RuleSet = css`
 	${baseHeadingStyles}
+	text-box: trim-both cap alphabetic;
 
 	font-weight: ${theme.font.weight.light};
 	font-size: 3.2rem;
@@ -60,11 +65,12 @@ export const headlineS: RuleSet = css`
 export const titleL: RuleSet = css`
 	${baseHeadingStyles}
 
-	font-weight: ${theme.font.weight.regular};
+	font-weight: ${theme.font.weight.light};
 	font-size: 2.4rem;
 	letter-spacing: 0.05rem;
 
 	${bp.xl`
+		text-box: trim-both cap alphabetic;
 		font-size: 4rem;
 	`}
 `;
@@ -77,6 +83,7 @@ export const titleS: RuleSet = css`
 	letter-spacing: 0.05rem;
 
 	${bp.xl`
+		text-box: trim-both cap alphabetic;
 		font-size: 3.2rem;
 	`}
 `;

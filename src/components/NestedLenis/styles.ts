@@ -1,7 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { Div } from '@tackl';
+import { bp, Div } from '@tackl';
 
 // Interfaces
 // ------------
@@ -13,7 +13,14 @@ export const Jacket = styled(Div)<StylesInterface>(
 	() => css`
 		position: relative;
 		height: 100dvh;
-		overflow: hidden;
+		overflow: scroll;
+		/* iOS Safari: allow vertical touch scroll and momentum */
+		touch-action: pan-y;
+		-webkit-overflow-scrolling: touch;
+
+		${bp.l`
+			overflow: hidden;
+		`}
 	`
 );
 

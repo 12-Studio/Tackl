@@ -84,5 +84,6 @@ export const GlobalStyle = createGlobalStyle`
 
 	::selection {
 		background: ${theme.colors.brand.bc3[100]};
+		color: ${theme.colors.global.white[100]};
 	}
 `;

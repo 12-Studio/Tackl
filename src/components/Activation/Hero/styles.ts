@@ -19,7 +19,7 @@ export const Jacket = styled(Section)<StylesInterface>(
         flex-direction: column;
         justify-content: space-between;
         width: 100%;
-        min-height: clamp(70rem, 100svh, 90rem);
+        min-height: clamp(70rem, 100svh, 1024rem);
         padding-bottom: ${getGap('sm')};
 
 

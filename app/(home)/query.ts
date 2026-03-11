@@ -60,6 +60,37 @@ export const EVERYTHING = `
 
                 ... on AlternatingMediaRowRecord {
                     id
+                    heading
+                    desc: description
+                    rows: row {
+                        heading
+                        desc: description
+                        companyNames {
+                            heading
+                        }
+                        showCompanyNames
+                        showDescription
+                        iconImage {
+                            url
+                            alt
+                        }
+                    }
+                }
+
+                ... on ComparisonTableRecord {
+                    id
+                    heading
+                    desc: description
+                    background: backgroundImage {
+                        url
+                        alt
+                    }
+                    table: comparisonRows {
+                        id
+                        onyx
+                        feature
+                        competitor
+                    }
                 }
             }
 

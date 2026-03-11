@@ -1,8 +1,10 @@
 // Imports
 // ------------
-import type { Feature } from '@parts/SplitFeatureGrid/interface';
-import type { Process } from '@parts/NumberedProcessGrid/interface';
-import type { Statistics } from '@parts/StatisticsGrid/interface';
+import type { SplitFeatureGridProps } from '@parts/SplitFeatureGrid/interface';
+import type { NumberedProcessGridProps } from '@parts/NumberedProcessGrid/interface';
+import type { StatisticsGridProps } from '@parts/StatisticsGrid/interface';
+import type { AlternatingMediaRowProps } from '@parts/AlternatingMediaRow/interface';
+import type { ComparisonTableProps } from '@parts/ComparisonTable/interface';
 
 // Exports
 // ------------
@@ -10,9 +12,13 @@ export type PageBuilderBlock = {
 	__typename: string;
 	id: string;
 	heading: string;
-	features?: Feature[];
-	processes?: Process[];
-	statistics?: Statistics[];
+	features?: SplitFeatureGridProps['features'];
+	processes?: NumberedProcessGridProps['processes'];
+	statistics?: StatisticsGridProps['statistics'];
+	desc?: string;
+	rows?: AlternatingMediaRowProps['rows'];
+	table?: ComparisonTableProps['table'];
+	background?: ComparisonTableProps['background'];
 };
 
 export type PageBuilderProps = {

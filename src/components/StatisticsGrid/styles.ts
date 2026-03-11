@@ -63,6 +63,7 @@ export const Statistics = styled(Section)(
 
         .frame {
             position: relative;
+            z-index: 2;
             width: calc(100% + var(--mobile-pad) * 2);
             left: calc(var(--mobile-pad) * -1);
 

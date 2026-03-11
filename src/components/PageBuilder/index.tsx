@@ -5,6 +5,8 @@
 import SplitFeatureGrid from '@parts/SplitFeatureGrid';
 import NumberedProcessGrid from '@parts/NumberedProcessGrid';
 import StatisticsGrid from '@parts/StatisticsGrid';
+import AlternatingMediaRow from '@parts/AlternatingMediaRow';
+import ComparisonTable from '@parts/ComparisonTable';
 
 // Styles + Interfaces
 // ------------
@@ -33,6 +35,23 @@ const PageBuilder = ({ pageBuilder }: I.PageBuilderProps) => {
 				<StatisticsGrid
 					heading={pageBuilder.heading}
 					statistics={pageBuilder.statistics ?? []}
+				/>
+			);
+		case 'AlternatingMediaRowRecord':
+			return (
+				<AlternatingMediaRow
+					heading={pageBuilder.heading}
+					desc={pageBuilder.desc ?? ''}
+					rows={pageBuilder.rows ?? []}
+				/>
+			);
+		case 'ComparisonTableRecord':
+			return (
+				<ComparisonTable
+					heading={pageBuilder.heading}
+					desc={pageBuilder.desc ?? ''}
+					background={pageBuilder.background}
+					table={pageBuilder.table ?? []}
 				/>
 			);
 		default:

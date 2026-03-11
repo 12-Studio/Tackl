@@ -85,7 +85,7 @@ export const VerticalLine = styled(Div)<StylesInterface>(
 export const VerticalLinePlus = styled.span<StylesInterface>(
 	({ $isEnd }) => css`
         --thickness: 1px;
-        --length: 11px;
+        --length: 1rem;
         --distance: var(--line-mobile-dist);
 
         position: absolute;
@@ -99,11 +99,11 @@ export const VerticalLinePlus = styled.span<StylesInterface>(
 			$isEnd
 				? css`
             top: var(--distance);
-            transform: translate(-50%, -5.5px);
+            transform: translate(-50%, -0.45rem);
             `
 				: css`
             bottom: var(--distance);
-            transform: translate(-50%, 4.5px);
+            transform: translate(-50%, 0.45rem);
             `
 		}
 

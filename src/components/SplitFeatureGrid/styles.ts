@@ -61,9 +61,11 @@ export const Heading = styled(H3)<StylesInterface>(
     color: ${getGlobal('black')};
     padding-block: ${getGap('l')};
     text-wrap: balance;
+    text-align: center;
 
     ${bp.l`
         padding-block: ${getGap('xxl')};
+        text-align: left;
     `}
 `
 );
@@ -73,6 +75,10 @@ export const Bottom = styled(Section)<StylesInterface>(
 		position: relative;
         display: flex;
         flex-direction: column;
+
+        .frame.bottom {
+            z-index: 2;
+        }
 	`
 );
 
@@ -80,11 +86,13 @@ export const Feature = styled(Div)<StylesInterface>(
 	({ $isEven }) => css`
         --aspect: 1/1;
 
-		position: relative;
+		position: sticky;
+        top: 0; left: 0;
         display: flex;
         flex-flow: column;
         
         padding-inline: 1.2rem;
+        background: ${getGlobal('luxuryWhite')};
 
         ${bp.l`
             flex-direction: ${$isEven ? 'row' : 'row-reverse'};
@@ -94,7 +102,7 @@ export const Feature = styled(Div)<StylesInterface>(
         .frame.bottom {
             position: absolute;
             inset: auto 0 0 0;
-            z-index: 2;
+            z-index: 3;;
         }
 
 	`
@@ -143,8 +151,8 @@ export const FeatureContent = styled(Div)<StylesInterface>(
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
-        gap: ${getGap('m')};
-        padding: ${getGap('sm')};
+        gap: ${getGap('sm')};
+        padding: ${getGap('sm')} var(--mobile-pad) ${getGap('l')};
         width: 100%;
 
         ${bp.l`
@@ -161,6 +169,13 @@ export const FeatureHeading = styled(H4)<StylesInterface>(
         ${titleL}
 		position: relative;
         color: ${getGlobal('black')};
+        
+        width: 100%;
+        text-align: center;
+
+        ${bp.l`
+            text-align: left;
+        `}
 	`
 );
 
@@ -169,5 +184,12 @@ export const FeatureDesc = styled(P)<StylesInterface>(
         ${bodyL}
 		position: relative;
         color: ${getGlobal('black', 50)};
+
+        text-align: center;
+        width: 100%;
+
+        ${bp.l`
+            text-align: left;
+        `}
 	`
 );

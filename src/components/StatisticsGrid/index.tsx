@@ -61,7 +61,6 @@ const StatisticsGrid = ({ heading, statistics }: I.StatisticsGridProps) => {
 						}
 					)}
 				</ul>
-				<Frame className='bottom' />
 			</S.Statistics>
 		</S.Jacket>
 	);

@@ -16,7 +16,6 @@ export const Jacket = styled(Div)(
 	() => css`
         --aspect: 1/1;
 
-        position: relative;
         display: flex;
         flex-flow: column;
         justify-content: space-between;
@@ -42,20 +41,21 @@ export const ProcessNumber = styled(Div)(
 	() => css`
 
         display: grid;
-        place-items: flex-start;
-        padding: ${getGap('sm')} var(--mobile-pad) 0;
+        place-items: center;
+        padding: 0 var(--mobile-pad) 0;
+        margin: auto 0;
 
 
         width: 100%;
-        
 		position: relative;
 
         ${bp.l`
-            place-items: center;
             aspect-ratio: var(--aspect);
             flex: 1 1 50%;
             padding: ${getGap('xxl')};
         `}
+
+        
 
         span {
             ${displayL}
@@ -70,6 +70,11 @@ export const ProcessNumber = styled(Div)(
             -webkit-text-fill-color: transparent;
             background-clip: text;
             color: transparent;
+            text-align: center;
+
+            ${bp.l`
+                text-align: left;
+            `}
         }
 
         .char {
@@ -104,16 +109,18 @@ export const ProcessContent = styled(Div)(
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
         gap: ${getGap('m')};
-        padding: ${getGap('sm')} var(--mobile-pad)  ${getGap('l')};
+        padding: 0 var(--mobile-pad) ${getGap('l')};
         width: 100%;
+        text-align: center;
 
         ${bp.l`
             flex: 1 1 50%;
             aspect-ratio: var(--aspect);
             gap: 0;
             padding: ${getGap('l')};
+            text-align: left;
         `}
 
         h4 {

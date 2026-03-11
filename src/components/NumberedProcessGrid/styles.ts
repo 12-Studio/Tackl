@@ -63,9 +63,11 @@ export const Heading = styled(H3)(
         color: ${getGlobal('luxuryWhite')};
         margin-block: ${getGap('xxl')};
         text-wrap: balance;
+        text-align: center;
 
         ${bp.l`
             margin-block: ${getGap('xxl')} ${getGap('huge')};
+            text-align: left;
         `}
     `
 );

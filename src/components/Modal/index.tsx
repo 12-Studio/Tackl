@@ -14,15 +14,18 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Modal = ({ children, isOpen }: I.ModalProps) => {
+const Modal = ({ children, title }: I.ModalProps) => {
 	// Contexts
-	const { setIsModalOpen, setModalActive } = use(GlobalContext);
+	const { setIsModalOpen, setModalActive, modalActive } = use(GlobalContext);
 
 	// Handle Close
 	const handleClose = () => {
 		setIsModalOpen(false);
 		setModalActive('home');
 	};
+
+	// Check if modal is open
+	const isOpen = modalActive === title;
 
 	return (
 		<S.Jacket $isOpen={isOpen}>

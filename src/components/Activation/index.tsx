@@ -1,12 +1,9 @@
-'use client';
-
 // Imports
 // ------------
-import { use, useEffect } from 'react';
-import { GlobalContext } from '@parts/Contexts';
 import Modal from '@parts/Modal';
 import Hero from './Hero';
 import PageBuilder from '@parts/PageBuilder';
+// import CallToAction from '@parts/CallToAction';
 
 // Styles + Interfaces
 // ------------
@@ -20,25 +17,24 @@ const Activation = ({
 	desc,
 	logoMarquee,
 	pageBuilder,
-	isCtaOverriden,
+	isCtaOveridden,
 	ctaHeading,
 	ctaButtonLabel,
-}: I.ActivationProps) => {
-	// Context
-	const { modalActive } = use(GlobalContext);
+	ctaOverrideHeading,
+	ctaOverrideButtonLabel,
+}: I.ActivationProps) => (
+	<Modal title={title}>
+		<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
 
-	return (
-		<Modal isOpen={modalActive === 'activation'}>
-			<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
+		{pageBuilder && <PageBuilder pageBuilder={pageBuilder} />}
 
-			{pageBuilder.map(block => (
-				<PageBuilder key={`${block.__typename}-${block.id}`} pageBuilder={block} />
-			))}
-
-			<div style={{ height: '100lvh', backgroundColor: 'red' }} />
-		</Modal>
-	);
-};
+		{/* TODO • CTA */}
+		{/* <CallToAction
+				heading={isCtaOveridden ? ctaOverrideHeading : ctaHeading}
+				buttonLabel={isCtaOveridden ? ctaOverrideButtonLabel : ctaButtonLabel}
+			/> */}
+	</Modal>
+);
 
 // Exports
 // ------------

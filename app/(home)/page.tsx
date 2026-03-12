@@ -1,10 +1,10 @@
 // Imports
 // ------------
-
 import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
 import Activation from '@parts/Activation';
+import DataSupply from '@parts/DataSupply';
 
 // Data fetching at build time
 // ------------
@@ -23,7 +23,7 @@ async function getAllData() {
 // ------------
 const Page = async () => {
 	// Fetch data
-	const { home, activation, dataSupply, about } = await getAllData();
+	const { home, activation, dataSupply, about, cta } = await getAllData();
 
 	// Create menu items array
 	const menuItemsArray = [
@@ -49,9 +49,19 @@ const Page = async () => {
 				desc={activation.desc}
 				logoMarquee={activation.logoMarquee}
 				pageBuilder={activation.pageBuilder}
-				isCtaOverriden={activation?.isCtaOverriden}
-				ctaHeading={activation?.ctaHeading}
-				ctaButtonLabel={activation?.ctaButtonLabel}
+				isCtaOveridden={activation?.isCtaOveridden}
+				ctaOverrideHeading={activation?.overrideHeading}
+				ctaOverrideButtonLabel={activation?.overrideButtonLabel}
+				ctaHeading={cta?.heading}
+				ctaButtonLabel={cta?.buttonLabel}
+			/>
+
+			<DataSupply
+				title={dataSupply.title}
+				heading={dataSupply.heading}
+				desc={dataSupply.desc}
+				usaCoverage={dataSupply.usaCoverage}
+				pageBuilder={dataSupply.pageBuilder}
 			/>
 		</main>
 	);

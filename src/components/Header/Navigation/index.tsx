@@ -13,13 +13,13 @@ import * as S from './styles';
 // Component
 // ------------
 const Navigation = ({ menuItems }: I.NavigationProps) => {
-	// COntexts
+	// Contexts
 	const { setIsModalOpen, isModalOpen, setModalActive } = use(GlobalContext);
 
 	// Handle Click
 	const handleClick = (label: string) => {
 		setIsModalOpen(true);
-		setModalActive(label.toLowerCase());
+		setModalActive(label);
 	};
 
 	return (

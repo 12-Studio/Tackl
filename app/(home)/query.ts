@@ -11,6 +11,11 @@ export const EVERYTHING = `
             }
         }
 
+        callToAction {
+            heading
+            buttonLabel
+        }
+
         activation {
             title
             heading
@@ -94,13 +99,47 @@ export const EVERYTHING = `
                 }
             }
 
-            ctaHeading
-            ctaButtonLabel
             isCtaOverridden
+            overrideHeading: ctaHeading
+            overrideButtonLabel: ctaButtonLabel
         }
 
         dataSupply {
             title
+            heading
+            desc: description
+            usaCoverage
+
+
+            pageBuilder {
+                __typename
+
+                ... on EditorialStoryCtaStatRecord {
+                    id
+                    heading
+                    animatedText
+
+                    inlineCallToAction {
+                        description
+                        buttonLabel
+                        heading
+                        overrideBackground
+                        backgroundImage {
+                            url
+                            alt
+                        }
+                    }
+                        
+                    statistics {
+                        symbolBeforeNumber
+                        symbolAfterNumber
+                        number
+                        hasSymbolBefore
+                        heading
+                        id
+                    }
+                }
+            }
         }
 
         about {
@@ -115,9 +154,7 @@ export const EVERYTHING = `
                 desc: description
                 title
                 twitterCard
-                
             }
-            
         }
     }
 `;

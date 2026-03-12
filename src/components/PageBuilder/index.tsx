@@ -1,12 +1,12 @@
-'use client';
-
 // Imports
 // ------------
+import { Fragment } from 'react';
 import SplitFeatureGrid from '@parts/SplitFeatureGrid';
 import NumberedProcessGrid from '@parts/NumberedProcessGrid';
 import StatisticsGrid from '@parts/StatisticsGrid';
 import AlternatingMediaRow from '@parts/AlternatingMediaRow';
 import ComparisonTable from '@parts/ComparisonTable';
+import EditorialStoryCtaStat from '@parts/EditorialStoryCtaStat';
 
 // Styles + Interfaces
 // ------------
@@ -14,50 +14,54 @@ import type * as I from './interface';
 
 // Component
 // ------------
-const PageBuilder = ({ pageBuilder }: I.PageBuilderProps) => {
-	switch (pageBuilder.__typename) {
+const renderBlock = (block: I.PageBuilderBlock) => {
+	switch (block.__typename) {
 		case 'SplitFeatureGridRecord':
-			return (
-				<SplitFeatureGrid
-					heading={pageBuilder.heading}
-					features={pageBuilder.features ?? []}
-				/>
-			);
+			return <SplitFeatureGrid heading={block.heading} features={block.features ?? []} />;
 		case 'NumberedProcessGridRecord':
 			return (
-				<NumberedProcessGrid
-					heading={pageBuilder.heading}
-					processes={pageBuilder.processes ?? []}
-				/>
+				<NumberedProcessGrid heading={block.heading} processes={block.processes ?? []} />
 			);
 		case 'StatisticsGridRecord':
-			return (
-				<StatisticsGrid
-					heading={pageBuilder.heading}
-					statistics={pageBuilder.statistics ?? []}
-				/>
-			);
+			return <StatisticsGrid heading={block.heading} statistics={block.statistics ?? []} />;
 		case 'AlternatingMediaRowRecord':
 			return (
 				<AlternatingMediaRow
-					heading={pageBuilder.heading}
-					desc={pageBuilder.desc ?? ''}
-					rows={pageBuilder.rows ?? []}
+					heading={block.heading}
+					desc={block.desc ?? ''}
+					rows={block.rows ?? []}
 				/>
 			);
 		case 'ComparisonTableRecord':
 			return (
 				<ComparisonTable
-					heading={pageBuilder.heading}
-					desc={pageBuilder.desc ?? ''}
-					background={pageBuilder.background}
-					table={pageBuilder.table ?? []}
+					heading={block.heading}
+					desc={block.desc ?? ''}
+					background={block.background}
+					table={block.table ?? []}
+				/>
+			);
+		case 'EditorialStoryCtaStatRecord':
+			return (
+				<EditorialStoryCtaStat
+					heading={block.heading}
+					animatedText={block.animatedText}
+					inlineCallToAction={block.inlineCallToAction}
+					statistics={block.statistics}
 				/>
 			);
 		default:
 			return null;
 	}
 };
+
+const PageBuilder = ({ pageBuilder }: I.PageBuilderProps) => (
+	<>
+		{(pageBuilder ?? []).map(block => (
+			<Fragment key={`${block.__typename}-${block.id}`}>{renderBlock(block)}</Fragment>
+		))}
+	</>
+);
 
 // Exports
 // ------------

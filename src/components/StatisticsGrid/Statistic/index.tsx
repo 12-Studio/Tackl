@@ -14,6 +14,11 @@ import { slow } from '@parts/AnimationPlugins/Curves';
 import type * as I from './interface';
 import * as S from './styles';
 
+// Helpers
+// ------------
+const formatDisplayValue = (value: number, useK: boolean): string =>
+	useK ? `${Math.round(value)}k` : Math.round(value).toString();
+
 // Component
 // ------------
 const Statistic = ({
@@ -38,18 +43,21 @@ const Statistic = ({
 			)
 				return;
 
+			const useK = targetNumber >= 1000;
+			const animationTarget = useK ? targetNumber / 1000 : targetNumber;
+
 			const obj = { value: 0 };
 
 			gsap.fromTo(
 				obj,
 				{ value: 0 },
 				{
-					value: targetNumber,
+					value: animationTarget,
 					duration: 1.2,
 					ease: slow,
 					onUpdate: () => {
 						if (!numberRef.current) return;
-						numberRef.current.textContent = Math.round(obj.value).toString();
+						numberRef.current.textContent = formatDisplayValue(obj.value, useK);
 					},
 					scrollTrigger: {
 						trigger: numberRef.current,
@@ -75,7 +83,12 @@ const Statistic = ({
 				data-symbol-before={hasSymbolBefore ? symbolBeforeNumber : null}
 				data-symbol-after={symbolAfterNumber ?? null}
 			>
-				{number}
+				{!Number.isNaN(targetNumber)
+				? formatDisplayValue(
+						targetNumber >= 1000 ? targetNumber / 1000 : targetNumber,
+						targetNumber >= 1000
+					)
+				: number}
 			</S.AnimatedNumber>
 		</S.Jacket>
 	);

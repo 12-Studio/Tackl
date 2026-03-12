@@ -5,6 +5,7 @@ import type { NumberedProcessGridProps } from '@parts/NumberedProcessGrid/interf
 import type { StatisticsGridProps } from '@parts/StatisticsGrid/interface';
 import type { AlternatingMediaRowProps } from '@parts/AlternatingMediaRow/interface';
 import type { ComparisonTableProps } from '@parts/ComparisonTable/interface';
+import type { EditorialStoryCtaStatProps } from '@parts/EditorialStoryCtaStat/interface';
 
 // Exports
 // ------------
@@ -19,8 +20,11 @@ export type PageBuilderBlock = {
 	rows?: AlternatingMediaRowProps['rows'];
 	table?: ComparisonTableProps['table'];
 	background?: ComparisonTableProps['background'];
+	editorialStoryCtaStat?: EditorialStoryCtaStatProps['statistics'];
+	animatedText?: EditorialStoryCtaStatProps['animatedText'];
+	inlineCallToAction?: EditorialStoryCtaStatProps['inlineCallToAction'];
 };
 
 export type PageBuilderProps = {
-	pageBuilder: PageBuilderBlock;
+	pageBuilder?: PageBuilderBlock[];
 };

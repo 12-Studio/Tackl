@@ -30,6 +30,7 @@ const Page = async () => {
 		{ label: activation.title, icon: 'activation' },
 		{ label: dataSupply.title, icon: 'dataSupply' },
 		{ label: about.title, icon: 'about' },
+		{ label: 'Get in Touch', icon: 'contact' },
 	];
 
 	return (

@@ -21,7 +21,7 @@ export const Jacket = styled.button<StylesInterface>(
         justify-content: center;
         
         padding-inline: ${getGap('m')};
-        height: 4.8rem;
+        height: 4rem;
 
 
         color: ${getGlobal('luxuryWhite')};
@@ -30,8 +30,11 @@ export const Jacket = styled.button<StylesInterface>(
         border-radius: ${getRadius('s')};
         border: none;
         cursor: pointer;
-
         transition: background 0.5s ${getEase('bezzy3')};
+
+        ${bp.l`
+            height: 4.8rem;
+        `}
 
         @media (hover: hover) and (pointer: fine) {
             &:hover {

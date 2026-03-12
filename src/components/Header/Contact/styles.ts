@@ -2,7 +2,7 @@
 // ------------
 import styled, { css } from 'styled-components';
 import { bp, Section, Div, getBrand, getGlobal, getEase, getGap, getRadius, Button } from '@tackl';
-import { bodyS } from '@tackl/type';
+import { bodyM, bodyS, captionL } from '@tackl/type';
 
 // Interfaces
 // ------------
@@ -21,7 +21,7 @@ export const Jacket = styled(Button)<StylesInterface>(
         position: relative;
         overflow: hidden;
 
-		display: grid;
+		display: none;
 		place-items: center;
 
 		width: 10.8rem;
@@ -32,6 +32,7 @@ export const Jacket = styled(Button)<StylesInterface>(
 		transition-delay: ${$isModalOpen ? 0 : 0.25}s;
 
         ${bp.l`
+			display:grid;
             ${
 				$isModalOpen &&
 				css`

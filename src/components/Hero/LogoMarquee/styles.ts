@@ -141,14 +141,18 @@ export const Marquee = styled(Div)<StylesInterface>(
 			
 
 			li {
-				--height: 3rem;
+				--height: 2.4rem;
 
 				min-width: 3.2rem; 
 				min-height: var(--height);	
 				max-width: 12rem;
 				max-height: var(--height);
 
-				${bp.l` opacity: 0.4; `}
+				${bp.l`
+					--height: 3rem;
+					
+					opacity: 0.4;
+				`}
 
 				svg {
 					width: 100%;

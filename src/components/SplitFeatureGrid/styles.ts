@@ -86,8 +86,7 @@ export const Feature = styled(Div)<StylesInterface>(
 	({ $isEven }) => css`
         --aspect: 1/1;
 
-		position: sticky;
-        top: 0; left: 0;
+		position: relative;
         display: flex;
         flex-flow: column;
         

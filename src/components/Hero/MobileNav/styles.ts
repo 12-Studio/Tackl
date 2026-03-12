@@ -15,7 +15,7 @@ interface StylesInterface {
 export const Jacket = styled(List)<StylesInterface>(
 	() => css`
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: ${getGap('xs')};
 
         width: 100%;

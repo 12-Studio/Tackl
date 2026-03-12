@@ -55,7 +55,7 @@ export const headlineS: RuleSet = css`
 	text-box: trim-both cap alphabetic;
 
 	font-weight: ${theme.font.weight.light};
-	font-size: 3.2rem;
+	font-size: 4.2rem;
 
 	${bp.xl`
 		font-size: 6.4rem;
@@ -66,7 +66,7 @@ export const titleL: RuleSet = css`
 	${baseHeadingStyles}
 
 	font-weight: ${theme.font.weight.light};
-	font-size: 2.4rem;
+	font-size: 3rem;
 	letter-spacing: 0.05rem;
 
 	${bp.xl`
@@ -79,7 +79,7 @@ export const titleS: RuleSet = css`
 	${baseHeadingStyles}
 
 	font-weight: ${theme.font.weight.regular};
-	font-size: 2rem;
+	font-size: 2.4rem;
 	letter-spacing: 0.05rem;
 
 	${bp.xl`

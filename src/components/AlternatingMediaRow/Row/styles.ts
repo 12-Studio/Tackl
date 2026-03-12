@@ -14,9 +14,7 @@ interface StylesInterface {
 // ------------
 export const Jacket = styled(Div)<StylesInterface>(
 	() => css`
-        position: sticky;
-        top: 0;
-        left: 0;
+        position: relative;
         background: ${getGlobal('luxuryWhite')};
     `
 );

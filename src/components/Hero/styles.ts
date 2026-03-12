@@ -45,7 +45,7 @@ export const Content = styled(Section)(
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
-        gap: ${getGap('l')};
+        gap: ${getGap('sm')};
         padding: 0 ${getGap('m')};
 
         ${bp.l`

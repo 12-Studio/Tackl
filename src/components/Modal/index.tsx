@@ -29,11 +29,6 @@ const Modal = ({ children, title }: I.ModalProps) => {
 
 	return (
 		<S.Jacket $isOpen={isOpen}>
-			<S.VerticalLine $isOpen={isOpen}>
-				<S.VerticalLinePlus />
-				<S.VerticalLinePlus $isEnd />
-			</S.VerticalLine>
-
 			<S.CloseButton
 				$isOpen={isOpen}
 				aria-label='Close modal'
@@ -44,8 +39,15 @@ const Modal = ({ children, title }: I.ModalProps) => {
 				<Icon type='close' />
 			</S.CloseButton>
 
-			<S.Content $isOpen={isOpen}>
-				<NestedLenis isOpen={isOpen}>{children}</NestedLenis>
+			<S.Content>
+				<S.VerticalLine $isOpen={isOpen}>
+					<S.VerticalLinePlus />
+					<S.VerticalLinePlus $isEnd />
+				</S.VerticalLine>
+
+				<S.Clip $isOpen={isOpen}>
+					<NestedLenis isOpen={isOpen}>{children}</NestedLenis>
+				</S.Clip>
 			</S.Content>
 		</S.Jacket>
 	);

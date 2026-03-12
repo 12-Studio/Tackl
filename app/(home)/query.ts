@@ -139,6 +139,25 @@ export const EVERYTHING = `
                         id
                     }
                 }
+
+                ... on HeadingDescriptionRecord {
+                    id
+                    heading
+                    desc: description
+                }
+
+                ... on ParallaxRecord {
+                    id
+                    parallaxSections {
+                        id
+                        heading
+                        desc: description
+                        backgroundImage {
+                            url
+                            alt
+                        }
+                    }
+                }
             }
         }
 

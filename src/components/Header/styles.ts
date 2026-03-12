@@ -21,7 +21,7 @@ export const Jacket = styled(Header)<StylesInterface>(
 	({ $isModalOpen, $isLoaderFinished }) => css`
 		--offset: ${getGap('xxl')};
 		--expanded: calc(100vw - var(--offset));
-		--collapsed: 13rem;
+		--collapsed: 13.5rem;
 		--ease: ${getEase('bezzy4')};
 
 		position: fixed;

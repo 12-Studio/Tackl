@@ -7,6 +7,7 @@ import StatisticsGrid from '@parts/StatisticsGrid';
 import AlternatingMediaRow from '@parts/AlternatingMediaRow';
 import ComparisonTable from '@parts/ComparisonTable';
 import EditorialStoryCtaStat from '@parts/EditorialStoryCtaStat';
+import HeadingDescription from '@parts/HeadingDescription';
 
 // Styles + Interfaces
 // ------------
@@ -50,6 +51,8 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 					statistics={block.statistics}
 				/>
 			);
+		case 'HeadingDescriptionRecord':
+			return <HeadingDescription heading={block.heading} desc={block.desc} />;
 		default:
 			return null;
 	}

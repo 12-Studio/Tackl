@@ -36,7 +36,7 @@ export const Jacket = styled(ListItem)<StylesInterface>(
         align-items: flex-start;
         justify-content: space-between;
         aspect-ratio: var(--aspect);
-        padding: ${getGap('sm')};
+        padding: ${getGap('sm')} ${getGap('sm')} 0 ${getGap('sm')};
         
         ${bp.l`
             padding: ${getGap('l')};

@@ -152,7 +152,7 @@ export const EVERYTHING = `
                         id
                         heading
                         desc: description
-                        backgroundImage {
+                        image: backgroundImage {
                             url
                             alt
                         }

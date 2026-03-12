@@ -159,7 +159,7 @@ export const CloseButton = styled(Button)<StylesInterface>(
         --distance: ${getGap('l')};
 
         position: fixed;
-        z-index: 1;
+        z-index: 2;
         top: ${getGap('m')};
         right: ${getGap('m')};
         transform: translateY(${$isOpen ? 0 : -200}%);

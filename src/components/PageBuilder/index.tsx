@@ -8,6 +8,7 @@ import AlternatingMediaRow from '@parts/AlternatingMediaRow';
 import ComparisonTable from '@parts/ComparisonTable';
 import EditorialStoryCtaStat from '@parts/EditorialStoryCtaStat';
 import HeadingDescription from '@parts/HeadingDescription';
+import Parallax from '@parts/Parallax';
 
 // Styles + Interfaces
 // ------------
@@ -53,6 +54,8 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 			);
 		case 'HeadingDescriptionRecord':
 			return <HeadingDescription heading={block.heading} desc={block.desc} />;
+		case 'ParallaxRecord':
+			return <Parallax parallaxSections={block.parallaxSections} />;
 		default:
 			return null;
 	}

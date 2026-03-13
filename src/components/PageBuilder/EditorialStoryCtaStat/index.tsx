@@ -13,7 +13,7 @@ import { SplitText } from 'gsap/SplitText';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import { GlobalContext } from '@parts/Contexts';
 import Button from '@parts/Button';
-import Statistic from '@parts/StatisticsGrid/Statistic';
+import Statistic from '@/components/PageBuilder/StatisticsGrid/Statistic';
 import Image from 'next/image';
 
 // Styles + Interfaces

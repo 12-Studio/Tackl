@@ -49,7 +49,13 @@ export const Top = styled(Section)<StylesInterface>(
             position: absolute;
             z-index: 2;
 
-            &.top { top: 0; }
+            &.top {
+                top: var(--mobile-pad);
+
+                ${bp.l`
+                    top: ${getGap('sm')};
+                `}
+            }
             &.bottom { bottom: 0; }
         }
 	`
@@ -59,13 +65,13 @@ export const Heading = styled(H3)<StylesInterface>(
 	() => css`
     ${headlineS}
     color: ${getGlobal('black')};
-    padding-block: ${getGap('l')};
     text-wrap: balance;
     text-align: center;
+    padding-block: ${getGap('xl')} ${getGap('l')};
 
     ${bp.l`
-        padding-block: ${getGap('xxl')};
         text-align: left;
+        padding-block: ${getGap('huge')} ${getGap('xxl')};
     `}
 `
 );

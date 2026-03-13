@@ -1,12 +1,13 @@
 // Imports
 // ------------
-import type { SplitFeatureGridProps } from '@parts/SplitFeatureGrid/interface';
-import type { NumberedProcessGridProps } from '@parts/NumberedProcessGrid/interface';
-import type { StatisticsGridProps } from '@parts/StatisticsGrid/interface';
-import type { AlternatingMediaRowProps } from '@parts/AlternatingMediaRow/interface';
-import type { ComparisonTableProps } from '@parts/ComparisonTable/interface';
-import type { EditorialStoryCtaStatProps } from '@parts/EditorialStoryCtaStat/interface';
-import type { ParallaxProps } from '@parts/Parallax/interface';
+import type { SplitFeatureGridProps } from './SplitFeatureGrid/interface';
+import type { NumberedProcessGridProps } from './NumberedProcessGrid/interface';
+import type { StatisticsGridProps } from './StatisticsGrid/interface';
+import type { AlternatingMediaRowProps } from './AlternatingMediaRow/interface';
+import type { ComparisonTableProps } from './ComparisonTable/interface';
+import type { EditorialStoryCtaStatProps } from './EditorialStoryCtaStat/interface';
+import type { ParallaxProps } from './Parallax/interface';
+import type { AnimatedStoryProps } from './AnimatedStory/interface';
 
 // Exports
 // ------------
@@ -25,6 +26,8 @@ export type PageBuilderBlock = {
 	animatedText?: EditorialStoryCtaStatProps['animatedText'];
 	inlineCallToAction?: EditorialStoryCtaStatProps['inlineCallToAction'];
 	parallaxSections?: ParallaxProps['sections'];
+	animatedStory?: AnimatedStoryProps['animatedStory'];
+	buttonLabel?: AnimatedStoryProps['buttonLabel'];
 };
 
 export type PageBuilderProps = {

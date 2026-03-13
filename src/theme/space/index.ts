@@ -13,7 +13,7 @@ import type { Space } from './interface';
 // ------------
 export const space: Space = {
 	s: '2.4rem',
-	m: '2.48rem',
+	m: '4.8rem',
 	l: '6.4rem',
 	xl: '6.4rem',
 	col: 'calc(8.333vw + 1.8rem)',

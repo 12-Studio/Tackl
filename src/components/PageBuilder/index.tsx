@@ -1,14 +1,15 @@
 // Imports
 // ------------
 import { Fragment } from 'react';
-import SplitFeatureGrid from '@parts/SplitFeatureGrid';
-import NumberedProcessGrid from '@parts/NumberedProcessGrid';
-import StatisticsGrid from '@parts/StatisticsGrid';
-import AlternatingMediaRow from '@parts/AlternatingMediaRow';
-import ComparisonTable from '@parts/ComparisonTable';
-import EditorialStoryCtaStat from '@parts/EditorialStoryCtaStat';
-import HeadingDescription from '@parts/HeadingDescription';
-import Parallax from '@parts/Parallax';
+import SplitFeatureGrid from './SplitFeatureGrid';
+import NumberedProcessGrid from './NumberedProcessGrid';
+import StatisticsGrid from './StatisticsGrid';
+import AlternatingMediaRow from './AlternatingMediaRow';
+import ComparisonTable from './ComparisonTable';
+import EditorialStoryCtaStat from './EditorialStoryCtaStat';
+import HeadingDescription from './HeadingDescription';
+import Parallax from './Parallax';
+import AnimatedStory from './AnimatedStory';
 
 // Styles + Interfaces
 // ------------
@@ -56,6 +57,20 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 			return <HeadingDescription heading={block.heading} desc={block.desc} />;
 		case 'ParallaxRecord':
 			return <Parallax parallaxSections={block.parallaxSections} />;
+		case 'AnimatedStoryRecord':
+			return (
+				<AnimatedStory
+					desc={block.desc}
+					animatedText={block.animatedText}
+					buttonLabel={block.buttonLabel}
+				/>
+			);
+		case 'MembersTeamRecord':
+			return null;
+		case 'FaqRecord':
+			return null;
+		case 'BigIconTextGridRecord':
+			return null;
 		default:
 			return null;
 	}

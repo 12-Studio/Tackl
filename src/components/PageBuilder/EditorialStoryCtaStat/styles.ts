@@ -24,7 +24,11 @@ export const Jacket = styled(Section)<StylesInterface>(
       .frame.top {
         position: absolute;
         z-index: 2;
-        top: 0;
+        top: var(--mobile-pad);
+
+        ${bp.l`
+            top: ${getGap('sm')};
+        `}
       }
     `
 );

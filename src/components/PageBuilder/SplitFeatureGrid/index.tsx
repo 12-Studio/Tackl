@@ -22,11 +22,12 @@ const SplitFeatureGrid = ({ heading, features }: I.SplitFeatureGridProps) => {
 
 			<S.Top>
 				<Frame className='top' />
-				<Frame className='bottom' />
 
 				<Grid>
 					<S.Heading $l='1/10'>{heading}</S.Heading>
 				</Grid>
+
+				<Frame className='bottom' />
 			</S.Top>
 
 			<S.Bottom>

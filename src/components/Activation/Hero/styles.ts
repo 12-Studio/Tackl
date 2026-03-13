@@ -1,7 +1,19 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, Div, getBrand, getGlobal, getEase, getGap, getRadius, H3, P } from '@tackl';
+import {
+	bp,
+	Section,
+	Div,
+	getBrand,
+	getGlobal,
+	getEase,
+	getGap,
+	getRadius,
+	H3,
+	P,
+	Header,
+} from '@tackl';
 import { bodyL, headlineL } from '@tackl/type';
 
 // Interfaces
@@ -12,7 +24,7 @@ interface StylesInterface {
 
 // Exports
 // ------------
-export const Jacket = styled(Section)<StylesInterface>(
+export const Jacket = styled(Header)<StylesInterface>(
 	() => css`
         position: relative;
         display: flex;

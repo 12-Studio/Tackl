@@ -5,6 +5,7 @@ import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
 import Activation from '@parts/Activation';
 import DataSupply from '@parts/DataSupply';
+import About from '@parts/About';
 
 // Data fetching at build time
 // ------------
@@ -63,6 +64,14 @@ const Page = async () => {
 				desc={dataSupply.desc}
 				usaCoverage={dataSupply.usaCoverage}
 				pageBuilder={dataSupply.pageBuilder}
+			/>
+
+			<About
+				title={about.title}
+				heading={about.heading}
+				desc={about.desc}
+				featuredImage={about.featuredImage}
+				pageBuilder={about.pageBuilder}
 			/>
 		</main>
 	);

@@ -162,7 +162,77 @@ export const EVERYTHING = `
         }
 
         about {
+            featuredImage {
+                url
+                alt
+            }
             title
+            heading
+            desc: description
+
+            pageBuilder {
+                __typename
+                
+                ... on AnimatedStoryRecord {
+                    id
+                    desc: description
+                    animatedText {
+                        value
+                    }
+                    buttonLabel
+                }
+                
+                ... on BigIconTextGridRecord {
+                    id
+                    heading
+                    desc: description
+                    iconTextGrid {
+                        id
+                        subHeading
+                        heading
+                        desc: description {
+                            value
+                        }
+                        icon {
+                            url
+                            alt
+                        }
+                    }
+                }
+
+                
+                ... on FaqRecord {
+                    id
+                    heading
+                    desc: description
+                    background: backgroundImage {
+                        url
+                        alt
+                    }
+                    faqs {
+                        id
+                        question
+                        answer
+                    }
+                }
+                
+                ... on MembersTeamRecord {
+                    id
+                    heading
+                    desc: description
+                    teamMembers {
+                        id
+                        name
+                        role
+                        linkedinUrl
+                        email
+                        image: profilePicture {
+                            url
+                            alt
+                        }
+                    }
+                }
+            }
         }
         
         seo {

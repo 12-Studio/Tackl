@@ -45,19 +45,23 @@ const AnimatedHeading = ({
 				return;
 			}
 
-			// Only run when both the upstream condition and the trigger are true
-			if (!isReady) return;
-
-			// Start with everything hidden / offset
-			gsap.set(chars, { autoAlpha: 0 });
-
-			// Heading: random character flicker in
-			gsap.to(chars, {
-				autoAlpha: 1,
-				duration: 0.75,
-				stagger: { each: 0.02, from: 'random' },
-				ease: bezzy4,
-			});
+			if (isReady) {
+				gsap.set(chars, { autoAlpha: 0 });
+				gsap.to(chars, {
+					autoAlpha: 1,
+					delay: 0.25,
+					duration: 0.75,
+					stagger: { each: 0.02, from: 'random' },
+					ease: bezzy4,
+				});
+			} else {
+				gsap.to(chars, {
+					autoAlpha: 0,
+					duration: 0.4,
+					stagger: { each: 0.02, from: 'end' },
+					ease: bezzy4,
+				});
+			}
 
 			// Cleanup on unmount / dependency change
 			return () => {

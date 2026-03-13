@@ -10,16 +10,17 @@ import {
 	getEase,
 	getGap,
 	getRadius,
-	H3,
-	P,
 	Header,
+	P,
+	H3,
+	Picture,
 } from '@tackl';
-import { headlineL, bodyL } from '@tackl/type';
+import { bodyL, headlineL } from '@tackl/type';
 
 // Interfaces
 // ------------
 interface StylesInterface {
-	example?: boolean;
+	$isModalOpen?: boolean;
 }
 
 // Exports
@@ -64,6 +65,24 @@ export const Top = styled(Section)<StylesInterface>(
 	`
 );
 
+export const Bottom = styled(Section)<StylesInterface>(
+	() => css`
+		position: relative;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+
+        waffl-grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-rows: 1fr;
+            align-content: stretch;
+        }
+	`
+);
+
 export const SectionTitlePosition = styled(Div)<StylesInterface>(
 	() => css`
 		position: relative;
@@ -96,30 +115,49 @@ export const Desc = styled(P)<StylesInterface>(
 	`
 );
 
-export const Bottom = styled(Section)<StylesInterface>(
-	() => css`
+export const FeaturedImage = styled(Picture)<StylesInterface>(
+	({ $isModalOpen }) => css`
 		position: relative;
         flex: 1;
+        min-height: 0;
         display: flex;
         flex-direction: column;
-        min-height: 0;
+        align-items: center;
+        justify-content: center;
 
-        waffl-grid {
-            flex: 1;
-            min-height: 0;
-            display: grid;
-            grid-template-rows: 1fr;
-            align-content: stretch;
+        // Animate each <path> in the Logo with a staggered, infinite opacity wave animation
+        svg {
+            --fade: 0.1;
+
+            width: 40%;
+            overflow: visible;
+                // Animate each of the 4 paths with an opacity in a mexican wave on hover, on repeat.
+                path {
+                    opacity: 1;
+                    transform-origin: center center;
+                    animation: mexicanWave 2s ease-in-out infinite;
+                    animation-play-state: ${$isModalOpen ? 'running' : 'paused'};
+                }
+                path:nth-child(1) { animation-delay: 0s; }
+                path:nth-child(2) { animation-delay: 0.2s; }
+                path:nth-child(3) { animation-delay: 0.4s; }
+                path:nth-child(4) { animation-delay: 0.6s; }
+
+                @keyframes mexicanWave {
+                    0%, 100% { opacity: 1; }
+                    50% {
+                        opacity: var(--fade);
+                        filter: blur(1px);
+                    }
+                }
+            }
+
+        img {
+            position: relative;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;  
         }
-	`
-);
-
-export const Graph = styled(Div)<StylesInterface>(
-	() => css`
-		position: relative;
-        min-height: 0;
-        align-self: stretch;
-        display: flex;
-        flex-direction: column;
 	`
 );

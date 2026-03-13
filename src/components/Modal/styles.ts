@@ -12,6 +12,7 @@ import {
 	getRadius,
 	Aside,
 	Button,
+	Figure,
 } from '@tackl';
 import {} from '@tackl/type';
 
@@ -72,7 +73,7 @@ export const Clip = styled(Div)<StylesInterface>(
     `
 );
 
-export const VerticalLine = styled(Div)<StylesInterface>(
+export const VerticalLine = styled(Figure)<StylesInterface>(
 	({ $isOpen }) => css`
         display: none;
 

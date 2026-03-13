@@ -2,14 +2,15 @@
 
 // Imports
 // ------------
+import Image from 'next/image';
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import SectionTitle from '@parts/SectionTitle';
 import AnimatedHeading from '@parts/AnimatedHeading';
-import AnimatedGraph from './AnimatedGraph';
 import { use } from 'react';
 import { GlobalContext } from '@parts/Contexts';
+import Logo from '@parts/Logo';
 
 // Styles + Interfaces
 // ------------
@@ -18,7 +19,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Hero = ({ title, heading, desc, usaCoverage }: I.HeroProps) => {
+const Hero = ({ title, heading, desc, featuredImage }: I.HeroProps) => {
 	// Context
 	const { isModalOpen, modalActive } = use(GlobalContext);
 
@@ -36,7 +37,7 @@ const Hero = ({ title, heading, desc, usaCoverage }: I.HeroProps) => {
 						<SectionTitle text={title} />
 					</S.SectionTitlePosition>
 
-					<S.Heading $l='1/12'>
+					<S.Heading>
 						<AnimatedHeading isReady={isReady}>{heading}</AnimatedHeading>
 					</S.Heading>
 
@@ -46,9 +47,16 @@ const Hero = ({ title, heading, desc, usaCoverage }: I.HeroProps) => {
 
 			<S.Bottom $padBottom>
 				<Grid>
-					<S.Graph>
-						<AnimatedGraph isReady={isReady} usaCoverage={usaCoverage} />
-					</S.Graph>
+					<S.FeaturedImage $isModalOpen={isModalOpen}>
+						<Image
+							src={featuredImage?.url ?? '/about-fallback.jpeg'}
+							alt={featuredImage?.alt ?? 'About Hero Image'}
+							fill
+							sizes='100vw, (min-width: 1024px) 66vw'
+						/>
+
+						<Logo />
+					</S.FeaturedImage>
 				</Grid>
 			</S.Bottom>
 

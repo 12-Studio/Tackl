@@ -15,6 +15,8 @@ const About = ({ title, heading, desc, featuredImage, pageBuilder }: I.AboutProp
 		<Hero title={title} heading={heading} desc={desc} featuredImage={featuredImage} />
 
 		{pageBuilder && <PageBuilder pageBuilder={pageBuilder} />}
+
+		<div style={{ height: '100svh', width: '100%', background: 'red' }}></div>
 	</Modal>
 );
 

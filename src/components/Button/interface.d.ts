@@ -8,4 +8,5 @@ export interface ButtonProps {
 	onClick?: () => void;
 	ariaLabel?: string;
 	className?: string;
+	onLight?: boolean;
 }

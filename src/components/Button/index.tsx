@@ -10,9 +10,15 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Button = ({ label, onClick, ariaLabel, className }: I.ButtonProps) => {
+const Button = ({ label, onClick, ariaLabel, className, onLight }: I.ButtonProps) => {
 	return (
-		<S.Jacket className={className} onClick={onClick} aria-label={ariaLabel} data-hover>
+		<S.Jacket
+			className={className}
+			onClick={onClick}
+			aria-label={ariaLabel}
+			$onLight={onLight}
+			data-hover
+		>
 			{label}
 		</S.Jacket>
 	);

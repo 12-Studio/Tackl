@@ -103,6 +103,7 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel }: I.AnimatedStoryProps
 						label={buttonLabel ?? 'Get in Touch'}
 						ariaLabel={buttonLabel ?? 'Get in Touch'}
 						onClick={handleContact}
+						onLight
 					/>
 				</S.Button>
 			</Grid>

@@ -8,6 +8,7 @@ import type { ComparisonTableProps } from './ComparisonTable/interface';
 import type { EditorialStoryCtaStatProps } from './EditorialStoryCtaStat/interface';
 import type { ParallaxProps } from './Parallax/interface';
 import type { AnimatedStoryProps } from './AnimatedStory/interface';
+import type { TeamMembersProps } from './TeamMembers/interface';
 
 // Exports
 // ------------
@@ -28,6 +29,7 @@ export type PageBuilderBlock = {
 	parallaxSections?: ParallaxProps['sections'];
 	animatedStory?: AnimatedStoryProps['animatedStory'];
 	buttonLabel?: AnimatedStoryProps['buttonLabel'];
+	teamMembers?: TeamMembersProps['teamMembers'];
 };
 
 export type PageBuilderProps = {

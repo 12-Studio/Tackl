@@ -10,6 +10,7 @@ import EditorialStoryCtaStat from './EditorialStoryCtaStat';
 import HeadingDescription from './HeadingDescription';
 import Parallax from './Parallax';
 import AnimatedStory from './AnimatedStory';
+import TeamMembers from './TeamMembers';
 
 // Styles + Interfaces
 // ------------
@@ -66,7 +67,13 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 				/>
 			);
 		case 'MembersTeamRecord':
-			return null;
+			return (
+				<TeamMembers
+					heading={block.heading}
+					desc={block.desc}
+					teamMembers={block.teamMembers ?? []}
+				/>
+			);
 		case 'FaqRecord':
 			return null;
 		case 'BigIconTextGridRecord':

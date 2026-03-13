@@ -1,8 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Aside, Div, getBrand, getGlobal, getEase, getGap, getRadius } from '@tackl';
-import {} from '@tackl/type';
+import { bp, Aside, Div, getGlobal } from '@tackl';
 
 // Interfaces
 // ------------

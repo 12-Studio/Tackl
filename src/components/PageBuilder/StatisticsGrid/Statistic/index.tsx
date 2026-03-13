@@ -84,11 +84,11 @@ const Statistic = ({
 				data-symbol-after={symbolAfterNumber ?? null}
 			>
 				{!Number.isNaN(targetNumber)
-				? formatDisplayValue(
-						targetNumber >= 1000 ? targetNumber / 1000 : targetNumber,
-						targetNumber >= 1000
-					)
-				: number}
+					? formatDisplayValue(
+							targetNumber >= 1000 ? targetNumber / 1000 : targetNumber,
+							targetNumber >= 1000
+						)
+					: number}
 			</S.AnimatedNumber>
 		</S.Jacket>
 	);

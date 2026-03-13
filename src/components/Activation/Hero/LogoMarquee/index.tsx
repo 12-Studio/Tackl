@@ -3,7 +3,6 @@
 // Imports
 // ------------
 import Image from 'next/image';
-import Frame from '@parts/Frame';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { use, useEffect, useRef, useState } from 'react';
 import { GlobalContext } from '@parts/Contexts';

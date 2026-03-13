@@ -14,7 +14,6 @@ import {
 	Button,
 	Figure,
 } from '@tackl';
-import {} from '@tackl/type';
 
 // Interfaces
 // ------------

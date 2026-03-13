@@ -1,20 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import {
-	bp,
-	Section,
-	Div,
-	getBrand,
-	getGlobal,
-	getEase,
-	getGap,
-	getRadius,
-	H3,
-	P,
-	Header,
-	Picture,
-} from '@tackl';
+import { bp, Section, getBrand, getGlobal, getGap, H3, P, Header, Picture } from '@tackl';
 import { bodyL, captionL, headlineS } from '@tackl/type';
 
 // Interfaces

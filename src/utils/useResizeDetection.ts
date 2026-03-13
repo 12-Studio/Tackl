@@ -81,13 +81,9 @@ export function useResizeDetection(
 			// On mobile, check if this is likely a scroll event (height change only)
 			if (ignoreMobileScroll && isMobileRef.current) {
 				const widthChanged =
-					Math.abs(
-						newDimensions.width - lastDimensionsRef.current.width
-					) > 5;
+					Math.abs(newDimensions.width - lastDimensionsRef.current.width) > 5;
 				const heightChanged =
-					Math.abs(
-						newDimensions.height - lastDimensionsRef.current.height
-					) > 5;
+					Math.abs(newDimensions.height - lastDimensionsRef.current.height) > 5;
 
 				// If only height changed significantly, it's likely a scroll event
 				if (!widthChanged && heightChanged) {
@@ -106,12 +102,8 @@ export function useResizeDetection(
 			// Debounce the resize event
 			timeoutRef.current = setTimeout(() => {
 				const hasSignificantChange =
-					Math.abs(
-						newDimensions.width - lastDimensionsRef.current.width
-					) > 10 ||
-					Math.abs(
-						newDimensions.height - lastDimensionsRef.current.height
-					) > 10;
+					Math.abs(newDimensions.width - lastDimensionsRef.current.width) > 10 ||
+					Math.abs(newDimensions.height - lastDimensionsRef.current.height) > 10;
 
 				if (hasSignificantChange) {
 					const prevDimensions = lastDimensionsRef.current;
@@ -158,9 +150,7 @@ export type OrientationChangeCallback = (
  *   Use a stable reference (e.g. useCallback) to avoid unnecessary effect churn.
  * @returns The current orientation ('portrait' or 'landscape').
  */
-export function useOrientationChange(
-	callback?: OrientationChangeCallback
-): Orientation {
+export function useOrientationChange(callback?: OrientationChangeCallback): Orientation {
 	const getOrientation = (): Orientation =>
 		typeof window !== 'undefined'
 			? window.innerWidth > window.innerHeight
@@ -197,7 +187,7 @@ export function useOrientationChange(
 			window.removeEventListener('resize', handleResize);
 			clearTimeout(timeout);
 		};
-	}, []);
+	}, [getOrientation]);
 
 	return orientation;
 }

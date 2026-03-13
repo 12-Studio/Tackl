@@ -1,7 +1,6 @@
 // Imports
 // ------------
-import { bp, Button, Header, getEase, getGap, getGlobal, getRadius, getBrand } from '@tackl';
-import { bodyS } from '@tackl/type';
+import { bp, Header, getEase, getGap, getGlobal, getRadius } from '@tackl';
 import styled, { css } from 'styled-components';
 
 // Interfaces

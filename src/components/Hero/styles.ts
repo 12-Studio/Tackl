@@ -1,7 +1,7 @@
 // Imports
 // ------------
 
-import { Aside, bp, Div, getBrand, getEase, getGap, getGlobal, Section } from '@tackl';
+import { Aside, bp, getBrand, getGap, getGlobal, Section } from '@tackl';
 import { bodyM, displayS } from '@tackl/type';
 import styled, { css } from 'styled-components';
 

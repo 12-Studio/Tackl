@@ -29,28 +29,28 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 export function useDebounce<T extends (...args: any[]) => any>(fn: T, delay: number) {
-    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    useEffect(() => {
-        return () => {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-                timerRef.current = null;
-            }
-        };
-    }, []);
+	useEffect(() => {
+		return () => {
+			if (timerRef.current) {
+				clearTimeout(timerRef.current);
+				timerRef.current = null;
+			}
+		};
+	}, []);
 
-    return useCallback(
-        (...args: Parameters<T>) => {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
+	return useCallback(
+		(...args: Parameters<T>) => {
+			if (timerRef.current) {
+				clearTimeout(timerRef.current);
+			}
 
-            timerRef.current = setTimeout(() => {
-                fn(...args);
-                timerRef.current = null;
-            }, delay);
-        },
-        [fn, delay]
-    );
+			timerRef.current = setTimeout(() => {
+				fn(...args);
+				timerRef.current = null;
+			}, delay);
+		},
+		[fn, delay]
+	);
 }

@@ -31,5 +31,5 @@
  * // => {}
  */
 export const getQueryParams = (url: string): Record<string, string> => {
-    return Object.fromEntries(new URLSearchParams(url).entries());
+	return Object.fromEntries(new URLSearchParams(url).entries());
 };

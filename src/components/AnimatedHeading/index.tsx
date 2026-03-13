@@ -2,11 +2,11 @@
 
 // Imports
 // ------------
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useAnimation } from '@utils/useAnimation';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import { bezzy3, bezzy4 } from '@parts/AnimationPlugins/Curves';
+import { bezzy4 } from '@parts/AnimationPlugins/Curves';
 
 // Interfaces
 // ------------

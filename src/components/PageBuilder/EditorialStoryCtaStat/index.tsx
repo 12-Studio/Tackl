@@ -6,7 +6,7 @@ import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import Subheading from '@parts/Subheading';
-import { useRef, use } from 'react';
+import { useRef, use, useEffect } from 'react';
 import { useAnimation } from '@utils/useAnimation';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
@@ -39,16 +39,29 @@ const EditorialStoryCtaStat = ({
 	const { scrollWrapper, lenisReady } = use(NestedLenisContext);
 	const { setIsModalOpen, setModalActive } = use(GlobalContext);
 
+	// Refs
+	const contactTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
 	// Handle Contact
 	const handleContact = () => {
 		setIsModalOpen(false);
 		setModalActive('home');
 
-		setTimeout(() => {
+		if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
+		contactTimeoutRef.current = setTimeout(() => {
 			setIsModalOpen(true);
 			setModalActive('Contact');
+			contactTimeoutRef.current = null;
 		}, 1100);
 	};
+
+	// Clear contact timeout on unmount to prevent state update on unmounted component
+	useEffect(
+		() => () => {
+			if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
+		},
+		[]
+	);
 
 	const aniCheck =
 		!animatedTextRef.current ||

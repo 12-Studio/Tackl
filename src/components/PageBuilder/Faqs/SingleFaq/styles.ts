@@ -44,6 +44,9 @@ export const Jacket = styled(ListItem)<StylesInterface>(
         border-radius: ${getRadius('xs')};
 
         ${bp.l`
+            position: relative;
+            top: auto;
+            left: auto;
             height: calc(100svh - var(--offset) * 4);
             max-width: 40rem;
             padding: ${getGap('l')};

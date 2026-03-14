@@ -9,6 +9,7 @@ import type { EditorialStoryCtaStatProps } from './EditorialStoryCtaStat/interfa
 import type { ParallaxProps } from './Parallax/interface';
 import type { AnimatedStoryProps } from './AnimatedStory/interface';
 import type { TeamMembersProps } from './TeamMembers/interface';
+import type { FaqsProps } from './Faqs/interface';
 
 // Exports
 // ------------
@@ -30,6 +31,8 @@ export type PageBuilderBlock = {
 	animatedStory?: AnimatedStoryProps['animatedStory'];
 	buttonLabel?: AnimatedStoryProps['buttonLabel'];
 	teamMembers?: TeamMembersProps['teamMembers'];
+	faqs?: FaqsProps['faqs'];
+	background?: FaqsProps['background'];
 };
 
 export type PageBuilderProps = {

@@ -11,6 +11,7 @@ import HeadingDescription from './HeadingDescription';
 import Parallax from './Parallax';
 import AnimatedStory from './AnimatedStory';
 import TeamMembers from './TeamMembers';
+import Faqs from './Faqs';
 
 // Styles + Interfaces
 // ------------
@@ -75,7 +76,14 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 				/>
 			);
 		case 'FaqRecord':
-			return null;
+			return (
+				<Faqs
+					heading={block.heading}
+					desc={block.desc ?? ''}
+					allFaqs={block.faqs ?? []}
+					background={block.background}
+				/>
+			);
 		case 'BigIconTextGridRecord':
 			return null;
 		default:

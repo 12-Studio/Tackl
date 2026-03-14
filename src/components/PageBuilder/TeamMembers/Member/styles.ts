@@ -22,7 +22,7 @@ position: relative;
         background: linear-gradient(to bottom, ${getBrand('bc3')} 0%, ${getBrand('bc4')} 100%);
 
         ${bp.l`
-        position: relative;
+            position: relative;
             flex: 0 0 85rem;
             width: 85rem;
             height: 100%;
@@ -42,7 +42,7 @@ position: relative;
             background: ${getGlobal('luxuryWhite', 20)};
 
             ${bp.l`
-                bottom: ${getGap('sm')};
+                display: none;
             `}
         }
     `

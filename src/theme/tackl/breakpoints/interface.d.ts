@@ -4,7 +4,6 @@ import { theme } from '@theme';
 import { css } from 'styled-components';
 import type { RuleSet } from 'styled-components/dist/types';
 
-
 // SECTION • Breakpoints
 // NOTE — The main breakpoints object structure
 export type Sizes = typeof theme.grid.breakpoints;

@@ -22,12 +22,13 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 // Component
 // ------------
 const Client = ({ children }: { children: React.ReactNode }) => {
-	// NOTE • Font Classes
-	const classes = `${neueHaas.variable} ${pp.variable}`;
-
 	return (
 		<ViewTransitions>
-			<html lang='en' className={classes} suppressHydrationWarning>
+			<html
+				lang='en'
+				className={`${neueHaas.variable} ${pp.variable}`}
+				suppressHydrationWarning
+			>
 				<body>
 					<StyledComponentsRegistry>
 						<ThemeProvider theme={theme} key='themeprovider'>

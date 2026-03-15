@@ -1,8 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, Div, getBrand, getGlobal, getEase, getGap, getRadius } from '@tackl';
-import {} from '@tackl/type';
+import { bp, Div, getBrand, getGlobal, Aside } from '@tackl';
 
 // Interfaces
 // ------------
@@ -14,20 +13,12 @@ interface StylesInterface {
 
 // Exports
 // ------------
-export const Jacket = styled(Div)<StylesInterface>(
+export const Jacket = styled(Aside)<StylesInterface>(
 	({ $dir, $isLight }) => css`
     --thickness: 1px;
 
     position: relative;
     z-index: 0;
-
-    ${
-		$dir === 'v' &&
-		css`
-        width: var(--thickness);
-        height: 100%;
-    `
-	}
 
     ${
 		$dir === 'h' &&
@@ -50,7 +41,7 @@ export const Line = styled(Div)<StylesInterface>(
 
 export const Plus = styled.span<StylesInterface>(
 	({ $isLight, $dir, $isEnd }) => css`
-    --length: 11px;
+    --length: 1rem;
     --distance: var(--line-mobile-dist);
 
     position: absolute;
@@ -64,11 +55,11 @@ export const Plus = styled.span<StylesInterface>(
 		$isEnd
 			? css`
         right: var(--distance);
-        transform: translate(4.5px, -50%);
+        transform: translateY(-50%) translateX(0.5rem);
     `
 			: css`
         left: var(--distance);
-        transform: translate(-5.5px, -50%);
+        transform: translateY(-50%) translateX(-0.5rem);
     `
 	}
 
@@ -83,7 +74,7 @@ export const Plus = styled.span<StylesInterface>(
         position: absolute;
         top: 50%;
         left: 50%;
-        background: ${$isLight ? getGlobal('luxuryWhite') : getBrand('bc3')};
+        background: ${$isLight ? getGlobal('luxuryWhite') : getBrand('bc4')};
 
         width: var(--length);
         height: var(--thickness);

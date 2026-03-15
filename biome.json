@@ -51,6 +51,18 @@
 			}
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["src/components/DataSupply/Hero/AnimatedGraph/**/*.tsx"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noArrayIndexKey": "off"
+					}
+				}
+			}
+		}
+	],
 	"assist": {
 		"actions": {
 			"source": {

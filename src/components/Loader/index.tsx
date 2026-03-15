@@ -8,7 +8,7 @@ import Frame from '@parts/Frame';
 import { use, useEffect, useRef, useState } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import { useAnimation } from '@utils/useAnimation';
-import { bezzy2, bezzy3, bezzy4, slow } from '@parts/AnimationPlugins/Curves';
+import { bezzy2, bezzy4, slow } from '@parts/AnimationPlugins/Curves';
 
 // Styles + Interfaces
 // ------------
@@ -163,6 +163,15 @@ const Loader = () => {
 			frameRef.current = tl;
 		},
 		{ scope: jacketRef, dependencies: [pageLoaded] }
+	);
+
+	// Kill GSAP timelines on unmount to prevent memory leaks
+	useEffect(
+		() => () => {
+			pulseRef.current?.kill();
+			frameRef.current?.kill();
+		},
+		[]
 	);
 
 	// Stop pulse after minimum 3 iterations when page is loaded

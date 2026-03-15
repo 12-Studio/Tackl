@@ -9,6 +9,7 @@ import { useRef, useLayoutEffect, useEffect, createContext, useState } from 'rea
 // Styles
 // ------------
 import type * as I from './interface';
+import 'lenis/dist/lenis.css';
 import * as S from './styles';
 
 // Scroll Context
@@ -41,10 +42,12 @@ const NestedLenis = ({ children, isOpen }: I.NestedLenisProps) => {
 		if (!wrapper || !content) return;
 
 		// 1) Create Lenis instance for the modal container
-		// Note: infinite: true conflicts with snap behavior, so it's disabled
+		// eventsTarget: wrapper so touch/wheel on the modal are captured here (not the main window) — critical for iOS
+		// syncTouch: true so Lenis handles touch scroll on mobile (required for iOS Safari)
 		const lenis = new Lenis({
-			wrapper: wrapper,
-			content: content,
+			wrapper,
+			content,
+			allowNestedScroll: true,
 		});
 
 		// Set the lenis instance in state for use in the context

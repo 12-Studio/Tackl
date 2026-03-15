@@ -25,38 +25,38 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 export function useThrottle<TArgs extends any[]>(
-  fn: (...args: TArgs) => void,
-  limit: number
+	fn: (...args: TArgs) => void,
+	limit: number
 ): (...args: TArgs) => void {
-  const inThrottleRef = useRef(false);
-  const lastTimeRef = useRef(0);
-  const throttleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const inThrottleRef = useRef(false);
+	const lastTimeRef = useRef(0);
+	const throttleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    return () => {
-      if (throttleTimerRef.current) {
-        clearTimeout(throttleTimerRef.current);
-        throttleTimerRef.current = null;
-      }
-    };
-  }, []);
+	useEffect(() => {
+		return () => {
+			if (throttleTimerRef.current) {
+				clearTimeout(throttleTimerRef.current);
+				throttleTimerRef.current = null;
+			}
+		};
+	}, []);
 
-  return useCallback(
-    (...args: TArgs) => {
-      const now = Date.now();
+	return useCallback(
+		(...args: TArgs) => {
+			const now = Date.now();
 
-      if (!inThrottleRef.current && now - lastTimeRef.current >= limit) {
-        fn(...args);
-        lastTimeRef.current = now;
-        inThrottleRef.current = true;
+			if (!inThrottleRef.current && now - lastTimeRef.current >= limit) {
+				fn(...args);
+				lastTimeRef.current = now;
+				inThrottleRef.current = true;
 
-        if (throttleTimerRef.current) clearTimeout(throttleTimerRef.current);
-        throttleTimerRef.current = setTimeout(() => {
-          inThrottleRef.current = false;
-          throttleTimerRef.current = null;
-        }, limit);
-      }
-    },
-    [fn, limit]
-  );
+				if (throttleTimerRef.current) clearTimeout(throttleTimerRef.current);
+				throttleTimerRef.current = setTimeout(() => {
+					inThrottleRef.current = false;
+					throttleTimerRef.current = null;
+				}, limit);
+			}
+		},
+		[fn, limit]
+	);
 }

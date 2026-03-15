@@ -1,7 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, Div, getBrand, getGlobal, getEase, getGap, getRadius, List } from '@tackl';
+import { bp, getGlobal, getGap, getRadius, List } from '@tackl';
 import { captionL } from '@tackl/type';
 
 // Interfaces
@@ -15,7 +15,7 @@ interface StylesInterface {
 export const Jacket = styled(List)<StylesInterface>(
 	() => css`
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: ${getGap('xs')};
 
         width: 100%;

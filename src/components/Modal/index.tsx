@@ -14,9 +14,9 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Modal = ({ children, isOpen }: I.ModalProps) => {
+const Modal = ({ children, title }: I.ModalProps) => {
 	// Contexts
-	const { setIsModalOpen, setModalActive } = use(GlobalContext);
+	const { setIsModalOpen, setModalActive, modalActive } = use(GlobalContext);
 
 	// Handle Close
 	const handleClose = () => {
@@ -24,13 +24,11 @@ const Modal = ({ children, isOpen }: I.ModalProps) => {
 		setModalActive('home');
 	};
 
+	// Check if modal is open
+	const isOpen = modalActive === title;
+
 	return (
 		<S.Jacket $isOpen={isOpen}>
-			<S.VerticalLine $isOpen={isOpen}>
-				<S.VerticalLinePlus />
-				<S.VerticalLinePlus $isEnd />
-			</S.VerticalLine>
-
 			<S.CloseButton
 				$isOpen={isOpen}
 				aria-label='Close modal'
@@ -41,8 +39,15 @@ const Modal = ({ children, isOpen }: I.ModalProps) => {
 				<Icon type='close' />
 			</S.CloseButton>
 
-			<S.Content $isOpen={isOpen}>
-				<NestedLenis isOpen={isOpen}>{children}</NestedLenis>
+			<S.Content>
+				<S.VerticalLine $isOpen={isOpen}>
+					<S.VerticalLinePlus />
+					<S.VerticalLinePlus $isEnd />
+				</S.VerticalLine>
+
+				<S.Clip $isOpen={isOpen}>
+					<NestedLenis isOpen={isOpen}>{children}</NestedLenis>
+				</S.Clip>
 			</S.Content>
 		</S.Jacket>
 	);

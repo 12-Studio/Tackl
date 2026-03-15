@@ -14,7 +14,7 @@
  * 4. On server-side, wraps children in StyleSheetManager to collect styles
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useServerInsertedHTML } from 'next/navigation';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 

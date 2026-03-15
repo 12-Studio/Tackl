@@ -3,6 +3,6 @@
 
 // Exports
 // ------------
-export interface DeleteMeProps {
-	projectId?: string;
+export interface SectionTitleProps {
+	text: string;
 }

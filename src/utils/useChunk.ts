@@ -29,9 +29,9 @@
  * - If size is less than 1, returns an empty array.
  */
 export const useChunk = <T>(array: T[], size: number): T[][] => {
-    if (!Array.isArray(array) || size < 1) return [];
-    return array.reduce<T[][]>((acc, _, i) => {
-        if (i % size === 0) acc.push(array.slice(i, i + size));
-        return acc;
-    }, []);
+	if (!Array.isArray(array) || size < 1) return [];
+	return array.reduce<T[][]>((acc, _, i) => {
+		if (i % size === 0) acc.push(array.slice(i, i + size));
+		return acc;
+	}, []);
 };

@@ -5,5 +5,4 @@
 // ------------
 export interface ContextsProps {
 	children: React.ReactNode;
-
 }

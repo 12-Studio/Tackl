@@ -1,10 +1,11 @@
 // Imports
 // ------------
-
 import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
 import Activation from '@parts/Activation';
+import DataSupply from '@parts/DataSupply';
+import About from '@parts/About';
 
 // Data fetching at build time
 // ------------
@@ -23,14 +24,24 @@ async function getAllData() {
 // ------------
 const Page = async () => {
 	// Fetch data
-	const { home, activation, dataSupply, about } = await getAllData();
+	const { home, activation, dataSupply, about, cta, contactDetails } = await getAllData();
 
 	// Create menu items array
 	const menuItemsArray = [
 		{ label: activation.title, icon: 'activation' },
 		{ label: dataSupply.title, icon: 'dataSupply' },
 		{ label: about.title, icon: 'about' },
+		{ label: 'Get in Touch', icon: 'contact' },
 	];
+
+	// Shared CTA props
+	const sharedCtaProps = {
+		ctaHeading: cta.heading,
+		ctaButtonLabel: cta.buttonLabel,
+		email: contactDetails?.email,
+		linkedin: contactDetails?.linkedin,
+		twitter: contactDetails?.twitter,
+	};
 
 	return (
 		<main>
@@ -43,7 +54,41 @@ const Page = async () => {
 				video='/stone-desktop.mp4'
 			/>
 
-			<Activation title={activation.title} />
+			<Activation
+				{...sharedCtaProps}
+				title={activation.title}
+				heading={activation.heading}
+				desc={activation.desc}
+				logoMarquee={activation.logoMarquee}
+				pageBuilder={activation.pageBuilder}
+				isCtaOverridden={activation.isCtaOverridden}
+				ctaOverrideHeading={activation.overrideHeading}
+				ctaOverrideButtonLabel={activation.overrideButtonLabel}
+			/>
+
+			<DataSupply
+				{...sharedCtaProps}
+				title={dataSupply.title}
+				heading={dataSupply.heading}
+				desc={dataSupply.desc}
+				usaCoverage={dataSupply.usaCoverage}
+				pageBuilder={dataSupply.pageBuilder}
+				isCtaOverridden={dataSupply.isCtaOverridden}
+				ctaOverrideHeading={dataSupply.overrideHeading}
+				ctaOverrideButtonLabel={dataSupply.overrideButtonLabel}
+			/>
+
+			<About
+				{...sharedCtaProps}
+				title={about.title}
+				heading={about.heading}
+				desc={about.desc}
+				featuredImage={about.featuredImage}
+				pageBuilder={about.pageBuilder}
+				isCtaOverridden={about.isCtaOverridden}
+				ctaOverrideHeading={about.overrideHeading}
+				ctaOverrideButtonLabel={about.overrideButtonLabel}
+			/>
 		</main>
 	);
 };

@@ -30,6 +30,14 @@ html {
 	interpolate-size: allow-keywords; /* Allow keywords in interpolate-size – Not well supported yet in all browsers */
 }
 
+html,
+body {
+	/* height: 100%;
+	overflow: hidden;
+	overscroll-behavior: none;
+	-webkit-overflow-scrolling: auto; */
+}
+
 body {
 	line-height: 1;
 }
@@ -86,7 +94,7 @@ button:focus {
 
 .disable-hover,
 .disable-hover * {
-	pointer-events: none !important;
+	pointer-events: none;
 }
 
 /* Lenis Smooth Scroll Configuration */
@@ -116,11 +124,11 @@ button:focus {
 /* Page Transitions using the new transitions API*/
 ::view-transition-old(root),
 ::view-transition-new(root) {
-	animation: none !important;
+	animation: none;
 }
 
 ::view-transition-group(root) {
-	z-index: auto !important;
+	z-index: auto;
 }
 
 ::view-transition-image-pair(root) {

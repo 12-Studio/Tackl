@@ -1,7 +1,7 @@
 // Imports
 // ------------
 
-import { Aside, bp, Div, getBrand, getEase, getGap, getGlobal, Section } from '@tackl';
+import { Aside, bp, getBrand, getGap, getGlobal, Section } from '@tackl';
 import { bodyM, displayS } from '@tackl/type';
 import styled, { css } from 'styled-components';
 
@@ -45,7 +45,7 @@ export const Content = styled(Section)(
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
-        gap: ${getGap('l')};
+        gap: ${getGap('sm')};
         padding: 0 ${getGap('m')};
 
         ${bp.l`

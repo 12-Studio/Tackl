@@ -12,8 +12,8 @@ import {
 	getRadius,
 	Aside,
 	Button,
+	Figure,
 } from '@tackl';
-import {} from '@tackl/type';
 
 // Interfaces
 // ------------
@@ -44,48 +44,66 @@ export const Jacket = styled(Aside)<StylesInterface>(
 
 export const Content = styled(Section)<StylesInterface>(
 	({ $isOpen }) => css`
-        --size: 100%;
-        --clip: 100%;
+        --size: 100%;   
 
         position: relative;
         width: var(--size);
         min-height: 100svh;
+        
+        ${bp.l`  --size: 80rem; `}
+        ${bp.xl` --size: 95rem; `}
+    `
+);
+
+export const Clip = styled(Div)<StylesInterface>(
+	({ $isOpen }) => css`
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
         background: ${getGlobal('luxuryWhite')};
 
-        clip-path: inset(${$isOpen ? '0% 0% 0% 0%' : 'var(--clip) 0% 0% 0%'});
+        clip-path: inset(${$isOpen ? '0% 0% 0% 0%' : '100% 0% 0% 0%'});
         transition: clip-path 1.2s ${getEase('bezzy3')};
 
         ${bp.l`
-            --size: 66%;
-
-            clip-path: inset(${$isOpen ? '0% 0% 0% 0%' : '0% 0% 0% var(--clip)'});
+            clip-path: inset(${$isOpen ? '0% 0% 0% 0%' : '0% 0% 0% 100%'});
         `}
     `
 );
 
-export const VerticalLine = styled(Div)<StylesInterface>(
+export const VerticalLine = styled(Figure)<StylesInterface>(
 	({ $isOpen }) => css`
         display: none;
 
         position: absolute;
+        z-index: -1;
         top: 0;
-        right: calc(100% + ${getGap('sm')});
+        right: 80rem;
         z-index: 0;
         width: 1px;
         height: 100%;
         background: ${getGlobal('luxuryWhite', 20)};
 
-        transform: translateX(${$isOpen ? 34 : 110}vw);
+        transform: translateX(${$isOpen ? -1.6 : 1.6}rem);
         transition: transform 1.2s ${getEase('bezzy3')};
 
-        ${bp.l` display: block; `}
+        ${bp.l`
+            display: block;
+            right: calc(100% + ${getGap('sm')});
+            transform: translateX(${$isOpen ? 0 : 83}rem);
+        `}
+
+        ${bp.xl`
+            transform: translateX(${$isOpen ? 0 : 98}rem);
+        `}
     `
 );
 
 export const VerticalLinePlus = styled.span<StylesInterface>(
 	({ $isEnd }) => css`
         --thickness: 1px;
-        --length: 11px;
+        --length: 1rem;
         --distance: var(--line-mobile-dist);
 
         position: absolute;
@@ -99,11 +117,11 @@ export const VerticalLinePlus = styled.span<StylesInterface>(
 			$isEnd
 				? css`
             top: var(--distance);
-            transform: translate(-50%, -5.5px);
+            transform: translate(-50%, -0.45rem);
             `
 				: css`
             bottom: var(--distance);
-            transform: translate(-50%, 4.5px);
+            transform: translate(-50%, 0.45rem);
             `
 		}
 
@@ -141,7 +159,7 @@ export const CloseButton = styled(Button)<StylesInterface>(
         --distance: ${getGap('l')};
 
         position: fixed;
-        z-index: 1;
+        z-index: 2;
         top: ${getGap('m')};
         right: ${getGap('m')};
         transform: translateY(${$isOpen ? 0 : -200}%);
@@ -166,8 +184,13 @@ export const CloseButton = styled(Button)<StylesInterface>(
 
             z-index: -1;
             top: ${getGap('l')};
-            right: calc(66vw + var(--distance));
-            transform: translateX(${$isOpen ? 0 : 'calc(66vw + var(--distance) + var(--size))'});
+            right: calc(80rem + var(--distance));
+            transform: translateX(${$isOpen ? 0 : 'calc(80rem + var(--distance) + var(--size))'});
+        `}
+
+        ${bp.xl`
+            right: calc(95rem + var(--distance));
+            transform: translateX(${$isOpen ? 0 : 'calc(95rem + var(--distance) + var(--size))'});
         `}
 
         @media (hover: hover) and (pointer: fine) {

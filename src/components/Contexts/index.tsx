@@ -16,16 +16,16 @@ export const GlobalContext = createContext({
 	lenisRef: { current: null } as React.RefObject<LenisRef | null>,
 
 	isModalOpen: false,
-	setIsModalOpen: (value: boolean) => {},
+	setIsModalOpen: (_value: boolean) => {},
 
 	isLoaderFinished: false,
-	setIsLoaderFinished: (value: boolean) => {},
+	setIsLoaderFinished: (_value: boolean) => {},
 
 	pageLoaded: false,
-	setPageLoaded: (value: boolean) => {},
+	setPageLoaded: (_value: boolean) => {},
 
 	modalActive: '',
-	setModalActive: (value: string) => {},
+	setModalActive: (_value: string) => {},
 });
 
 // Component

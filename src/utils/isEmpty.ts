@@ -12,4 +12,4 @@
  * isEmpty([]) // false
  */
 export const isEmpty = (obj: unknown): boolean =>
-  !!obj && Object.keys(obj as object).length === 0 && (obj as object).constructor === Object;
+	!!obj && Object.keys(obj as object).length === 0 && (obj as object).constructor === Object;

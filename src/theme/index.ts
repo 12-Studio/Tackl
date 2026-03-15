@@ -72,6 +72,10 @@ export const GlobalStyle = createGlobalStyle`
 		/* Grid Lines*/
 		--line-mobile-dist: 1.2rem;
 		--line-desktop-dist: 1.6rem;
+
+		/* Padding Mobile */
+		--mobile-pad: 1.2rem;
+        --mobile-extra-pad: 2.4rem;
 	}
 
 	body {
@@ -84,5 +88,6 @@ export const GlobalStyle = createGlobalStyle`
 
 	::selection {
 		background: ${theme.colors.brand.bc3[100]};
+		color: ${theme.colors.global.white[100]};
 	}
 `;

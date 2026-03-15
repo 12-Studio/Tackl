@@ -13,9 +13,9 @@ type MatchMediaConditions = Record<string, boolean>;
 type AnimationCallback = (conditions: MatchMediaConditions) => void;
 
 const DEFAULT_BREAKPOINTS: Breakpoints = {
-    isDesktop: '(min-width: 1024px)',
-    isMobile: '(max-width: 699px)',
-    isTablet: '(min-width: 700px) and (max-width: 1023px)',
+	isDesktop: '(min-width: 1024px)',
+	isMobile: '(max-width: 699px)',
+	isTablet: '(min-width: 700px) and (max-width: 1023px)',
 };
 
 /**
@@ -61,21 +61,21 @@ const DEFAULT_BREAKPOINTS: Breakpoints = {
  * ```
  */
 export function useAnimation(
-    animationCallback: AnimationCallback,
-    options: Record<string, any> = {},
-    breakpoints: Breakpoints = {}
+	animationCallback: AnimationCallback,
+	options: Record<string, any> = {},
+	breakpoints: Breakpoints = {}
 ): void {
-    const mergedBreakpoints: Breakpoints = { ...DEFAULT_BREAKPOINTS, ...breakpoints };
+	const mergedBreakpoints: Breakpoints = { ...DEFAULT_BREAKPOINTS, ...breakpoints };
 
-    useGSAP(() => {
-        const mm = gsap.matchMedia();
+	useGSAP(() => {
+		const mm = gsap.matchMedia();
 
-        mm.add(mergedBreakpoints, (context: { conditions?: MatchMediaConditions }) => {
-            // context.conditions is optional, so provide a fallback
-            animationCallback(context.conditions ?? {});
-        });
+		mm.add(mergedBreakpoints, (context: { conditions?: MatchMediaConditions }) => {
+			// context.conditions is optional, so provide a fallback
+			animationCallback(context.conditions ?? {});
+		});
 
-        // Clean up matchMedia on unmount
-        return () => mm.revert();
-    }, options);
+		// Clean up matchMedia on unmount
+		return () => mm.revert();
+	}, options);
 }

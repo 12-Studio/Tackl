@@ -19,7 +19,7 @@ const MobileNav = ({ menuItems }: I.MobileNavProps) => {
 	// Handle Click
 	const handleClick = (label: string) => {
 		setIsModalOpen(true);
-		setModalActive(label.toLowerCase());
+		setModalActive(label);
 	};
 
 	return (

@@ -5,5 +5,5 @@
 // ------------
 export interface ModalProps {
 	children: React.ReactNode;
-	isOpen: boolean;
+	title: string;
 }

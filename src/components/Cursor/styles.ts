@@ -2,7 +2,6 @@
 // ------------
 import styled, { css } from 'styled-components';
 import { bp, Div, getGlobal, getRadius } from '@tackl';
-import {} from '@tackl/type';
 
 // Interfaces
 // ------------

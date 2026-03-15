@@ -12,7 +12,7 @@ import {
 	getRadius,
 	ListItem,
 } from '@tackl';
-import { bodyM, headlineS, titleL } from '@tackl/type';
+import { bodyM, titleL } from '@tackl/type';
 
 // Interfaces
 // ------------

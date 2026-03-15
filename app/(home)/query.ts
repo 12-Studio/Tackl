@@ -1,4 +1,13 @@
+const IMAGE_FRAGMENT = `
+    fragment ImageUrlAltBlur on FileFieldInterface {
+        url
+        alt
+        blur: blurUpThumb
+    }
+`;
+
 export const EVERYTHING = `
+    ${IMAGE_FRAGMENT}
     query {
         home {
             title
@@ -6,8 +15,7 @@ export const EVERYTHING = `
             unicornId
             partnerLogos {
                 id
-                url
-                alt
+                ...ImageUrlAltBlur
             }
         }
 
@@ -22,8 +30,7 @@ export const EVERYTHING = `
             desc: description  
             logoMarquee {
                 id
-                url
-                alt
+                ...ImageUrlAltBlur
             }
             pageBuilder {
                 __typename
@@ -35,8 +42,7 @@ export const EVERYTHING = `
                         heading
                         desc: description
                         media: iconImage {
-                            url
-                            alt
+                            ...ImageUrlAltBlur
                         }
                     }
                 }
@@ -76,8 +82,7 @@ export const EVERYTHING = `
                         showCompanyNames
                         showDescription
                         iconImage {
-                            url
-                            alt
+                            ...ImageUrlAltBlur
                         }
                     }
                 }
@@ -87,8 +92,7 @@ export const EVERYTHING = `
                     heading
                     desc: description
                     background: backgroundImage {
-                        url
-                        alt
+                        ...ImageUrlAltBlur
                     }
                     table: comparisonRows {
                         id
@@ -125,8 +129,7 @@ export const EVERYTHING = `
                         heading
                         overrideBackground
                         backgroundImage {
-                            url
-                            alt
+                            ...ImageUrlAltBlur
                         }
                     }
                         
@@ -153,8 +156,7 @@ export const EVERYTHING = `
                         heading
                         desc: description
                         image: backgroundImage {
-                            url
-                            alt
+                            ...ImageUrlAltBlur
                         }
                     }
                 }
@@ -163,8 +165,7 @@ export const EVERYTHING = `
 
         about {
             featuredImage {
-                url
-                alt
+                ...ImageUrlAltBlur
             }
             title
             heading
@@ -194,8 +195,7 @@ export const EVERYTHING = `
                             value
                         }
                         icon {
-                            url
-                            alt
+                            ...ImageUrlAltBlur
                         }
                     }
                 }
@@ -206,8 +206,7 @@ export const EVERYTHING = `
                     heading
                     desc: description
                     background: backgroundImage {
-                        url
-                        alt
+                        ...ImageUrlAltBlur
                     }
                     faqs {
                         id
@@ -227,8 +226,7 @@ export const EVERYTHING = `
                         linkedinUrl
                         email
                         image: profilePicture {
-                            url
-                            alt
+                            ...ImageUrlAltBlur
                         }
                     }
                 }
@@ -238,7 +236,7 @@ export const EVERYTHING = `
         seo {
             meta: metadata {
                 image {
-                    url
+                    ...ImageUrlAltBlur
                 }
                 desc: description
                 title

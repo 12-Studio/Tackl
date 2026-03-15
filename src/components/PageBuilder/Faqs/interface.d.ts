@@ -11,5 +11,6 @@ export interface FaqsProps {
 	background?: {
 		url: string;
 		alt: string;
+		blur?: string;
 	};
 }

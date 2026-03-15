@@ -18,5 +18,6 @@ export interface TeamMember {
 	image: {
 		url: string;
 		alt: string;
+		blur?: string;
 	};
 }

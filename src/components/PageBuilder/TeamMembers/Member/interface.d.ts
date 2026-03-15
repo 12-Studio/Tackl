@@ -11,5 +11,6 @@ export interface MemberProps {
 	image: {
 		url: string;
 		alt: string;
+		blur?: string;
 	};
 }

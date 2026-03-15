@@ -16,4 +16,5 @@ export interface Feature {
 export interface Media {
 	url: string;
 	alt: string;
+	blur?: string;
 }

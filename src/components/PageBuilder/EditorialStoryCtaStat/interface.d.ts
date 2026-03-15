@@ -14,6 +14,7 @@ export interface EditorialStoryCtaStatProps {
 		backgroundImage?: {
 			url: string;
 			alt: string;
+			blur?: string;
 		};
 	};
 	statistics?: {

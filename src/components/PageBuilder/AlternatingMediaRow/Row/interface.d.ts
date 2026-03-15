@@ -21,4 +21,5 @@ export interface CompanyName {
 export interface IconImage {
 	url: string;
 	alt: string;
+	blur?: string;
 }

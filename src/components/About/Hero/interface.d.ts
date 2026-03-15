@@ -10,5 +10,6 @@ export interface HeroProps {
 	featuredImage?: {
 		url: string;
 		alt: string;
+		blur?: string;
 	};
 }

@@ -10,6 +10,7 @@ export interface ComparisonTableProps {
 	background?: {
 		url: string;
 		alt: string;
+		blur?: string;
 	};
 	table: TableRowProps[];
 }

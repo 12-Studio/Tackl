@@ -53,6 +53,8 @@ const Hero = ({ title, heading, desc, featuredImage }: I.HeroProps) => {
 							alt={featuredImage?.alt ?? 'About Hero Image'}
 							fill
 							sizes='100vw, (min-width: 1024px) 66vw'
+							placeholder='blur'
+							blurDataURL={featuredImage?.blur}
 						/>
 
 						<Logo />

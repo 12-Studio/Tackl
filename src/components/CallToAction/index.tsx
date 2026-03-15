@@ -57,7 +57,7 @@ const CallToAction = ({
 			<SideFrame />
 			<Frame className='top' />
 
-			<S.Top $pad>
+			<S.Top>
 				<Grid>
 					<S.Heading $l='1/12'>{sharedHeading}</S.Heading>
 					<S.Button>
@@ -108,9 +108,9 @@ const CallToAction = ({
 					<Frame className='top' />
 
 					<Grid>
-						<S.GridBlock>
+						<S.GridBlock $isLegal>
 							<S.GridBlockItem>
-								<p>All rights reserved.</p>
+								<p>All rights reserved</p>
 							</S.GridBlockItem>
 
 							<S.GridBlockItem $isLegal $isRight>

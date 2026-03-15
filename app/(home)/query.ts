@@ -187,7 +187,7 @@ export const EVERYTHING = `
                     id
                     heading
                     desc: description
-                    iconTextGrid {
+                    sections: iconTextGrid {
                         id
                         subHeading
                         heading

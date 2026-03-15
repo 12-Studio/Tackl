@@ -12,6 +12,7 @@ import Parallax from './Parallax';
 import AnimatedStory from './AnimatedStory';
 import TeamMembers from './TeamMembers';
 import Faqs from './Faqs';
+import BigIconTextGrid from './BigIconTextGrid';
 
 // Styles + Interfaces
 // ------------
@@ -85,7 +86,13 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 				/>
 			);
 		case 'BigIconTextGridRecord':
-			return null;
+			return (
+				<BigIconTextGrid
+					heading={block.heading}
+					desc={block.desc ?? ''}
+					sections={block.sections ?? []}
+				/>
+			);
 		default:
 			return null;
 	}

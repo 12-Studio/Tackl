@@ -10,6 +10,7 @@ import type { ParallaxProps } from './Parallax/interface';
 import type { AnimatedStoryProps } from './AnimatedStory/interface';
 import type { TeamMembersProps } from './TeamMembers/interface';
 import type { FaqsProps } from './Faqs/interface';
+import type { BigIconTextGridProps } from './BigIconTextGrid/interface';
 
 // Exports
 // ------------
@@ -33,6 +34,7 @@ export type PageBuilderBlock = {
 	teamMembers?: TeamMembersProps['teamMembers'];
 	faqs?: FaqsProps['faqs'];
 	background?: FaqsProps['background'];
+	sections?: BigIconTextGridProps['sections'];
 };
 
 export type PageBuilderProps = {

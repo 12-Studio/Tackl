@@ -1,5 +1,5 @@
 const IMAGE_FRAGMENT = `
-    fragment ImageUrlAltBlur on FileFieldInterface {
+    fragment ReusableImage on FileFieldInterface {
         url
         alt
         blur: blurUpThumb
@@ -15,7 +15,7 @@ export const EVERYTHING = `
             unicornId
             partnerLogos {
                 id
-                ...ImageUrlAltBlur
+                ...ReusableImage
             }
         }
 
@@ -30,7 +30,7 @@ export const EVERYTHING = `
             desc: description  
             logoMarquee {
                 id
-                ...ImageUrlAltBlur
+                ...ReusableImage
             }
             pageBuilder {
                 __typename
@@ -42,7 +42,7 @@ export const EVERYTHING = `
                         heading
                         desc: description
                         media: iconImage {
-                            ...ImageUrlAltBlur
+                            ...ReusableImage
                         }
                     }
                 }
@@ -82,7 +82,7 @@ export const EVERYTHING = `
                         showCompanyNames
                         showDescription
                         iconImage {
-                            ...ImageUrlAltBlur
+                            ...ReusableImage
                         }
                     }
                 }
@@ -92,7 +92,7 @@ export const EVERYTHING = `
                     heading
                     desc: description
                     background: backgroundImage {
-                        ...ImageUrlAltBlur
+                        ...ReusableImage
                     }
                     table: comparisonRows {
                         id
@@ -129,7 +129,7 @@ export const EVERYTHING = `
                         heading
                         overrideBackground
                         backgroundImage {
-                            ...ImageUrlAltBlur
+                            ...ReusableImage
                         }
                     }
                         
@@ -156,7 +156,7 @@ export const EVERYTHING = `
                         heading
                         desc: description
                         image: backgroundImage {
-                            ...ImageUrlAltBlur
+                            ...ReusableImage
                         }
                     }
                 }
@@ -165,7 +165,7 @@ export const EVERYTHING = `
 
         about {
             featuredImage {
-                ...ImageUrlAltBlur
+                ...ReusableImage
             }
             title
             heading
@@ -195,7 +195,7 @@ export const EVERYTHING = `
                             value
                         }
                         icon {
-                            ...ImageUrlAltBlur
+                            ...ReusableImage
                         }
                     }
                 }
@@ -206,7 +206,7 @@ export const EVERYTHING = `
                     heading
                     desc: description
                     background: backgroundImage {
-                        ...ImageUrlAltBlur
+                        ...ReusableImage
                     }
                     faqs {
                         id
@@ -226,7 +226,7 @@ export const EVERYTHING = `
                         linkedinUrl
                         email
                         image: profilePicture {
-                            ...ImageUrlAltBlur
+                            ...ReusableImage
                         }
                     }
                 }
@@ -236,7 +236,7 @@ export const EVERYTHING = `
         seo {
             meta: metadata {
                 image {
-                    ...ImageUrlAltBlur
+                    ...ReusableImage
                 }
                 desc: description
                 title

@@ -135,7 +135,7 @@ const Faqs = ({ heading, desc, allFaqs, background }: I.FaqsProps) => {
 				});
 
 				const barHeight = progressBarRef.current.offsetHeight;
-				const barYEnd = -(visibleHeight - barHeight - 2 * offsetTopPx);
+				const barYEnd = visibleHeight - barHeight - 2 * offsetTopPx;
 
 				gsap.to(progressBarRef.current, {
 					y: barYEnd,

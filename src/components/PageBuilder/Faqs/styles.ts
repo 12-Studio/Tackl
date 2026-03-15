@@ -174,7 +174,7 @@ export const ProgressBar = styled(Div)<StylesInterface>(
 		
     ${bp.l`
       position: absolute;
-      bottom: ${getGap('huge')};
+      top: ${getGap('huge')};
       left: ${getGap('huge')};
 
       display: flex;

@@ -1,7 +1,7 @@
 // Imports
 // ------------
 
-import type { StructuredText } from 'react-datocms';
+import type { StructuredText } from 'react-datocms/structured-text';
 
 // Exports
 // ------------

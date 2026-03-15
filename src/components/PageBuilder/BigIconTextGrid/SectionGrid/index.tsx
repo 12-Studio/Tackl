@@ -5,7 +5,7 @@
 import Grid from '@waffl';
 import Image from 'next/image';
 import Subheading from '@parts/Subheading';
-import { StructuredText } from 'react-datocms';
+import { StructuredText } from 'react-datocms/structured-text';
 import Frame from '@parts/Frame';
 
 // Styles + Interfaces

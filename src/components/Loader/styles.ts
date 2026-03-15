@@ -23,6 +23,13 @@ export const Jacket = styled(Aside)<StylesInterface>(
         height: 100svh;
         width: 100%;
         background: ${getGlobal('black')};
+
+
+        .logo {
+            path {
+                opacity: 0;
+            }
+        }
     `
 );
 

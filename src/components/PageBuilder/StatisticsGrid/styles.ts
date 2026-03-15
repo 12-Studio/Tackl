@@ -1,13 +1,14 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, getBrand, getGlobal, getGap, H3 } from '@tackl';
+import { bp, Section, getBrand, getGlobal, getGap, H3, ListItem } from '@tackl';
 import { headlineS } from '@tackl/type';
 
 // Interfaces
 // ------------
 interface StylesInterface {
-	example?: boolean;
+	$mobileOnly?: boolean;
+	$isAfterPair?: boolean;
 }
 
 // Exports
@@ -61,32 +62,6 @@ export const Statistics = styled(Section)(
             padding-inline: ${getGap('sm')};
         `}
 
-        .frame {
-            position: relative;
-            z-index: 2;
-            width: calc(100% + var(--mobile-pad) * 2);
-            left: calc(var(--mobile-pad) * -1);
-
-            ${bp.l`
-                width: calc(100% + ${getGap('sm')} * 2);
-                left: -${getGap('sm')};
-            `}
-
-            &.mobile-only {
-                ${bp.l`
-                    display: none;
-                `}
-            }
-
-            &.bottom {
-                display: none;
-
-                ${bp.l`
-                    display: flex;
-                `}
-            }
-        }
-
         ul {
             position: relative;
             display: grid;
@@ -96,6 +71,27 @@ export const Statistics = styled(Section)(
             ${bp.l`
                 grid-template-columns: repeat(2, 1fr);
             `}
+        }
+    `
+);
+
+export const FrameWrapper = styled(ListItem)<StylesInterface>(
+	({ $mobileOnly, $isAfterPair }) => css`
+        position: relative;
+        z-index: 2;
+        width: calc(100% + var(--mobile-pad) * 2);
+        left: calc(var(--mobile-pad) * -1);
+        display: ${$mobileOnly ? 'flex' : 'none'};
+
+        ${bp.l`
+            display: ${$mobileOnly ? 'none' : $isAfterPair ? 'flex' : 'none'};
+            width: calc(100% + ${getGap('sm')} * 2);
+            left: -${getGap('sm')};
+        `}
+
+        .frame {
+            position: relative;
+            z-index: 2;
         }
     `
 );

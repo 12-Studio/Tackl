@@ -6,10 +6,9 @@ import Lenis from 'lenis';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRef, useLayoutEffect, useEffect, createContext, useState } from 'react';
 
-// Styles
+// Styles (lenis rules inlined in global.css to reduce render-blocking requests)
 // ------------
 import type * as I from './interface';
-import 'lenis/dist/lenis.css';
 import * as S from './styles';
 
 // Scroll Context

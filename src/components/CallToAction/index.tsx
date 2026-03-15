@@ -6,7 +6,7 @@ import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import Grid from '@waffl';
 import { GlobalContext } from '@parts/Contexts';
-import { use, useRef } from 'react';
+import { use, useRef, useEffect } from 'react';
 import Button from '@parts/Button';
 
 // Styles + Interfaces
@@ -32,6 +32,14 @@ const CallToAction = ({
 
 	// Refs
 	const contactTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	// Clear contact timeout on unmount to prevent state update on unmounted component
+	useEffect(
+		() => () => {
+			if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
+		},
+		[]
+	);
 
 	// Handle Contact
 	const handleContact = () => {
@@ -77,7 +85,7 @@ const CallToAction = ({
 						<S.GridBlock>
 							<S.GridBlockItem>
 								<h3>Reach out</h3>
-								<Link href={`mailto:${email}`} data-hover>
+								<Link href={`mailto:${email}`} data-hover aria-label={`Email us at ${email}`}>
 									{email}
 								</Link>
 							</S.GridBlockItem>
@@ -89,12 +97,12 @@ const CallToAction = ({
 									<ul>
 										{linkedin && (
 											<li data-hover>
-												<Link href={linkedin}>LinkedIn</Link>
+												<Link href={linkedin} aria-label='Visit our LinkedIn profile'>LinkedIn</Link>
 											</li>
 										)}
 										{twitter && (
 											<li data-hover>
-												<Link href={twitter}>Twitter</Link>
+												<Link href={twitter} aria-label='Visit our Twitter profile'>Twitter</Link>
 											</li>
 										)}
 									</ul>
@@ -116,13 +124,13 @@ const CallToAction = ({
 							<S.GridBlockItem $isLegal $isRight>
 								<ul>
 									<li data-hover>
-										<Link href={'/privacy-policy'}>Inventory Guide</Link>
+										<Link href={'/privacy-policy'} aria-label='View Inventory Guide'>Inventory Guide</Link>
 									</li>
 									<li data-hover>
-										<Link href={'/terms-of-service'}>MBE Certificate</Link>
+										<Link href={'/terms-of-service'} aria-label='View MBE Certificate'>MBE Certificate</Link>
 									</li>
 									<li data-hover>
-										<Link href={'/terms-of-service'}>Legal</Link>
+										<Link href={'/terms-of-service'} aria-label='View Legal information'>Legal</Link>
 									</li>
 								</ul>
 							</S.GridBlockItem>

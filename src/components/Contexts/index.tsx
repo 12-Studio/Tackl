@@ -3,7 +3,7 @@
 // Imports
 // ------------
 import type { LenisRef } from 'lenis/react';
-import { createContext, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, useMemo, useRef, useState } from 'react';
 import { PerformanceProvider } from './Performance';
 
 // Interface
@@ -76,24 +76,6 @@ const Contexts = ({ children }: I.ContextsProps) => {
 		about: false,
 	});
 
-	// Debug: log loader-related state when it changes
-	useEffect(() => {
-		if (areModalsReady.activation) {
-			console.log('Activation Ready:', areModalsReady.activation);
-		}
-		if (areModalsReady.dataSupply) {
-			console.log('Data Supply Ready:', areModalsReady.dataSupply);
-		}
-		if (areModalsReady.about) {
-			console.log('About Ready:', areModalsReady.about);
-		}
-		if (isFontsLoaded) {
-			console.log('Fonts Loaded:', isFontsLoaded);
-		}
-		if (pageLoaded) {
-			console.log('Hero Loaded:', pageLoaded);
-		}
-	}, [pageLoaded, isFontsLoaded, areModalsReady]);
 
 	// Context Values
 	const contextValue = useMemo(

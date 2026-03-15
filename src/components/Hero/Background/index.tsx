@@ -4,7 +4,7 @@
 // ------------
 import UnicornScene from 'unicornstudio-react/next';
 import { useResponsive } from '@utils/useResponsive';
-import { use } from 'react';
+import { use, useCallback } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import MobileVideo from './MobileVideo';
 
@@ -22,8 +22,8 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 	// Contexts
 	const { setPageLoaded, isLoaderFinished, isModalOpen } = use(GlobalContext);
 
-	// Event Handlers
-	const handleLoad = () => setPageLoaded(true);
+	// Event Handlers (stable ref to avoid MobileVideo effect churn)
+	const handleLoad = useCallback(() => setPageLoaded(true), [setPageLoaded]);
 
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>

@@ -97,7 +97,12 @@ button:focus {
 	pointer-events: none;
 }
 
-/* Lenis Smooth Scroll Configuration */
+/* Lenis Smooth Scroll Configuration (includes rules from lenis/dist/lenis.css) */
+html.lenis,
+html.lenis body {
+	height: auto;
+}
+
 .lenis {
 	height: auto;
 }
@@ -106,12 +111,31 @@ button:focus {
 	scroll-behavior: auto;
 }
 
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+	overflow: clip;
+}
+
 .lenis.lenis-stopped {
 	overflow: hidden;
 }
 
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal],
 .lenis.lenis-smooth [data-lenis-prevent] {
 	overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+	pointer-events: none;
+}
+
+.lenis.lenis-autoToggle {
+	transition-property: overflow;
+	transition-duration: 1ms;
+	transition-behavior: allow-discrete;
 }
 
 .lenis-wrapper {

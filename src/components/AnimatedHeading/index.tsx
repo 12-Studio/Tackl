@@ -35,6 +35,7 @@ const AnimatedHeading = ({
 				type: 'lines,chars',
 				linesClass: 'line',
 				charsClass: 'char',
+				aria: 'none',
 			});
 
 			const chars = split.chars as HTMLElement[];

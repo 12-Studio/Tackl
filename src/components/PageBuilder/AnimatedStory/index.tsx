@@ -48,6 +48,7 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel }: I.AnimatedStoryProps
 				type: 'words,chars',
 				wordsClass: 'word',
 				charsClass: 'char',
+				aria: 'none',
 			});
 
 			const chars = split.chars as HTMLElement[];

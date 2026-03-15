@@ -10,4 +10,5 @@ export interface StatisticProps {
 	symbolBeforeNumber: string;
 	symbolAfterNumber: string;
 	number: string;
+	key?: React.Key;
 }

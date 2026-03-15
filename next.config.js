@@ -69,6 +69,8 @@ const nextConfig = {
 
 	experimental: {
 		webVitalsAttribution: ['CLS', 'LCP'],
+		// Inline CSS into HTML to eliminate render-blocking stylesheet requests (improves FCP/LCP)
+		inlineCss: true,
 	},
 
 	// Styled Components settings

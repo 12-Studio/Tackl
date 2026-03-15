@@ -19,7 +19,13 @@ export const EVERYTHING = `
             }
         }
 
-        callToAction {
+        contactDetails: detailsContact {
+            email
+            linkedin: linkedinUrl
+            twitter: twitterXUrl
+        }
+
+        cta: callToAction {
             heading
             buttonLabel
         }
@@ -114,6 +120,9 @@ export const EVERYTHING = `
             desc: description
             usaCoverage
 
+            isCtaOverridden
+            overrideHeading: ctaHeading
+            overrideButtonLabel: ctaButtonLabel
 
             pageBuilder {
                 __typename
@@ -170,6 +179,10 @@ export const EVERYTHING = `
             title
             heading
             desc: description
+
+            isCtaOverridden
+            overrideHeading: ctaHeading
+            overrideButtonLabel: ctaButtonLabel
 
             pageBuilder {
                 __typename

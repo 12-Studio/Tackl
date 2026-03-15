@@ -7,4 +7,12 @@ import type { HeroProps } from './Hero/interface';
 // ------------
 export interface AboutProps extends HeroProps {
 	pageBuilder: PageBuilderBlock[];
+	isCtaOverridden: boolean;
+	ctaOverrideHeading?: string;
+	ctaOverrideButtonLabel?: string;
+	ctaHeading: string;
+	ctaButtonLabel: string;
+	email: string;
+	linkedin?: string;
+	twitter?: string;
 }

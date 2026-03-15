@@ -11,9 +11,12 @@ export interface ActivationProps {
 	desc: string;
 	logoMarquee: Logo[];
 	pageBuilder: PageBuilderBlock[];
-	isCtaOveridden?: boolean;
+	isCtaOverridden: boolean;
 	ctaOverrideHeading?: string;
 	ctaOverrideButtonLabel?: string;
-	ctaHeading?: string;
-	ctaButtonLabel?: string;
+	ctaHeading: string;
+	ctaButtonLabel: string;
+	email: string;
+	linkedin?: string;
+	twitter?: string;
 }

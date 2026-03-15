@@ -10,4 +10,12 @@ export interface DataSupplyProps {
 	desc: string;
 	usaCoverage: number;
 	pageBuilder?: PageBuilderBlock[];
+	isCtaOverridden: boolean;
+	ctaOverrideHeading?: string;
+	ctaOverrideButtonLabel?: string;
+	ctaHeading: string;
+	ctaButtonLabel: string;
+	email: string;
+	linkedin?: string;
+	twitter?: string;
 }

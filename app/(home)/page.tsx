@@ -24,7 +24,7 @@ async function getAllData() {
 // ------------
 const Page = async () => {
 	// Fetch data
-	const { home, activation, dataSupply, about, cta } = await getAllData();
+	const { home, activation, dataSupply, about, cta, contactDetails } = await getAllData();
 
 	// Create menu items array
 	const menuItemsArray = [
@@ -33,6 +33,15 @@ const Page = async () => {
 		{ label: about.title, icon: 'about' },
 		{ label: 'Get in Touch', icon: 'contact' },
 	];
+
+	// Shared CTA props
+	const sharedCtaProps = {
+		ctaHeading: cta.heading,
+		ctaButtonLabel: cta.buttonLabel,
+		email: contactDetails?.email,
+		linkedin: contactDetails?.linkedin,
+		twitter: contactDetails?.twitter,
+	};
 
 	return (
 		<main>
@@ -46,32 +55,39 @@ const Page = async () => {
 			/>
 
 			<Activation
+				{...sharedCtaProps}
 				title={activation.title}
 				heading={activation.heading}
 				desc={activation.desc}
 				logoMarquee={activation.logoMarquee}
 				pageBuilder={activation.pageBuilder}
-				isCtaOveridden={activation?.isCtaOveridden}
-				ctaOverrideHeading={activation?.overrideHeading}
-				ctaOverrideButtonLabel={activation?.overrideButtonLabel}
-				ctaHeading={cta?.heading}
-				ctaButtonLabel={cta?.buttonLabel}
+				isCtaOverridden={activation.isCtaOverridden}
+				ctaOverrideHeading={activation.overrideHeading}
+				ctaOverrideButtonLabel={activation.overrideButtonLabel}
 			/>
 
 			<DataSupply
+				{...sharedCtaProps}
 				title={dataSupply.title}
 				heading={dataSupply.heading}
 				desc={dataSupply.desc}
 				usaCoverage={dataSupply.usaCoverage}
 				pageBuilder={dataSupply.pageBuilder}
+				isCtaOverridden={dataSupply.isCtaOverridden}
+				ctaOverrideHeading={dataSupply.overrideHeading}
+				ctaOverrideButtonLabel={dataSupply.overrideButtonLabel}
 			/>
 
 			<About
+				{...sharedCtaProps}
 				title={about.title}
 				heading={about.heading}
 				desc={about.desc}
 				featuredImage={about.featuredImage}
 				pageBuilder={about.pageBuilder}
+				isCtaOverridden={about.isCtaOverridden}
+				ctaOverrideHeading={about.overrideHeading}
+				ctaOverrideButtonLabel={about.overrideButtonLabel}
 			/>
 		</main>
 	);

@@ -3,7 +3,7 @@
 import Modal from '@parts/Modal';
 import Hero from './Hero';
 import PageBuilder from '@parts/PageBuilder';
-// import CallToAction from '@parts/CallToAction';
+import CallToAction from '@parts/CallToAction';
 
 // Styles + Interfaces
 // ------------
@@ -17,22 +17,30 @@ const Activation = ({
 	desc,
 	logoMarquee,
 	pageBuilder,
-	isCtaOveridden,
+	isCtaOverridden,
 	ctaHeading,
 	ctaButtonLabel,
 	ctaOverrideHeading,
 	ctaOverrideButtonLabel,
+	email,
+	linkedin,
+	twitter,
 }: I.ActivationProps) => (
 	<Modal title={title}>
 		<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
 
 		{pageBuilder && <PageBuilder pageBuilder={pageBuilder} />}
 
-		{/* TODO • CTA */}
-		{/* <CallToAction
-				heading={isCtaOveridden ? ctaOverrideHeading : ctaHeading}
-				buttonLabel={isCtaOveridden ? ctaOverrideButtonLabel : ctaButtonLabel}
-			/> */}
+		<CallToAction
+			heading={ctaHeading}
+			buttonLabel={ctaButtonLabel}
+			isCtaOverridden={isCtaOverridden}
+			overrideHeading={ctaOverrideHeading}
+			overrideButtonLabel={ctaOverrideButtonLabel}
+			email={email}
+			linkedin={linkedin}
+			twitter={twitter}
+		/>
 	</Modal>
 );
 

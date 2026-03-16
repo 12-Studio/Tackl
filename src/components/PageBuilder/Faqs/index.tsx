@@ -176,6 +176,8 @@ const Faqs = ({ heading, desc, allFaqs, background }: I.FaqsProps) => {
 								alt={background?.alt ?? `${heading} Background`}
 								fill
 								sizes='100vw, (min-width: 1024px) 66vw'
+								blurDataURL={background?.blur}
+								placeholder='blur'
 							/>
 						</picture>
 

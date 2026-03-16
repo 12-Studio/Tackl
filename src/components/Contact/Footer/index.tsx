@@ -15,6 +15,9 @@ import * as S from './styles';
 // Component
 // ------------
 const Footer = ({ email, linkedin, twitter }: I.FooterProps) => {
+	// Get the current year
+	const year = new Date().getFullYear();
+
 	return (
 		<S.Jacket>
 			<SideFrame />
@@ -72,7 +75,9 @@ const Footer = ({ email, linkedin, twitter }: I.FooterProps) => {
 				<Grid>
 					<S.GridBlock $isLegal>
 						<S.GridBlockItem>
-							<p>All rights reserved</p>
+							<p>
+								<span>ONYX &copy; {year} • </span> All rights reserved
+							</p>
 						</S.GridBlockItem>
 
 						<S.GridBlockItem $isLegal $isRight>

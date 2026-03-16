@@ -125,7 +125,7 @@ export const GridBlock = styled(Div)<StylesInterface>(
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: ${$isLegal ? getGap('s') : getGap('m')};
+        gap: ${$isLegal ? getGap('sm') : getGap('m')};
         width: 100%;
 
         ${bp.l`
@@ -189,6 +189,15 @@ export const GridBlockItem = styled(Div)<StylesInterface>(
             align-items: center;
 
             color: ${getGlobal('black', 40)};
+
+            span {
+                color: inherit;
+                display: inline-block;
+
+                ${bp.l`
+                    display: none;
+                `}
+            }
         }
 	`
 );

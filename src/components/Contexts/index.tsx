@@ -32,6 +32,7 @@ export const GlobalContext = createContext({
 		activation: false,
 		dataSupply: false,
 		about: false,
+		contact: false,
 	},
 	setAreModalsReady: ((
 		_value: React.SetStateAction<{
@@ -39,6 +40,7 @@ export const GlobalContext = createContext({
 			activation: boolean;
 			dataSupply: boolean;
 			about: boolean;
+			contact: boolean;
 		}>
 	) => {}) as React.Dispatch<
 		React.SetStateAction<{
@@ -46,6 +48,7 @@ export const GlobalContext = createContext({
 			activation: boolean;
 			dataSupply: boolean;
 			about: boolean;
+			contact: boolean;
 		}>
 	>,
 	isFontsLoaded: false,
@@ -69,13 +72,14 @@ const Contexts = ({ children }: I.ContextsProps) => {
 		activation: boolean;
 		dataSupply: boolean;
 		about: boolean;
+		contact: boolean;
 	}>({
 		home: false,
 		activation: false,
 		dataSupply: false,
 		about: false,
+		contact: false,
 	});
-
 
 	// Context Values
 	const contextValue = useMemo(

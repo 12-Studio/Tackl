@@ -25,6 +25,12 @@ export const EVERYTHING = `
             twitter: twitterXUrl
         }
 
+        contact {
+            heading
+            title
+            desc: description
+        }
+
         cta: callToAction {
             heading
             buttonLabel

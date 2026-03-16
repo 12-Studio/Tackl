@@ -35,8 +35,10 @@ export type PageBuilderBlock = {
 	faqs?: FaqsProps['faqs'];
 	background?: FaqsProps['background'];
 	sections?: BigIconTextGridProps['sections'];
+	contactTitle: string;
 };
 
 export type PageBuilderProps = {
 	pageBuilder?: PageBuilderBlock[];
+	contactTitle: string;
 };

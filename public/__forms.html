@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Forms</title>
+	</head>
+	<body>
+		<!-- Netlify Forms detection - field names must match Contact form component -->
+		<form name="contact" data-netlify="true" hidden>
+			<input type="hidden" name="form-name" value="contact" />
+			<input name="Name" type="text" />
+			<input name="Email" type="email" />
+			<textarea name="Message"></textarea>
+			<input type="radio" name="typical-radio" value="platform" />
+			<input type="radio" name="typical-radio" value="agency" />
+			<input type="radio" name="typical-radio" value="brand" />
+			<input type="radio" name="typical-radio" value="general-enquiry" />
+		</form>
+	</body>
+</html>

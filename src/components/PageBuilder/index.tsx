@@ -20,7 +20,7 @@ import type * as I from './interface';
 
 // Component
 // ------------
-const renderBlock = (block: I.PageBuilderBlock) => {
+const renderBlock = (block: I.PageBuilderBlock, contactTitle: string) => {
 	switch (block.__typename) {
 		case 'SplitFeatureGridRecord':
 			return <SplitFeatureGrid heading={block.heading} features={block.features ?? []} />;
@@ -54,6 +54,7 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 					animatedText={block.animatedText}
 					inlineCallToAction={block.inlineCallToAction}
 					statistics={block.statistics}
+					contactTitle={contactTitle}
 				/>
 			);
 		case 'HeadingDescriptionRecord':
@@ -66,6 +67,7 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 					desc={block.desc}
 					animatedText={block.animatedText}
 					buttonLabel={block.buttonLabel}
+					contactTitle={contactTitle}
 				/>
 			);
 		case 'MembersTeamRecord':
@@ -98,10 +100,12 @@ const renderBlock = (block: I.PageBuilderBlock) => {
 	}
 };
 
-const PageBuilder = ({ pageBuilder }: I.PageBuilderProps) => (
+const PageBuilder = ({ pageBuilder, contactTitle }: I.PageBuilderProps) => (
 	<>
 		{(pageBuilder ?? []).map(block => (
-			<Fragment key={`${block.__typename}-${block.id}`}>{renderBlock(block)}</Fragment>
+			<Fragment key={`${block.__typename}-${block.id}`}>
+				{renderBlock(block, contactTitle)}
+			</Fragment>
 		))}
 	</>
 );

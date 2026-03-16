@@ -21,7 +21,7 @@ async function getAllData() {
 // ------------
 const Server = async ({ children }: { children: React.ReactNode }) => {
 	// Fetch data
-	const { activation, dataSupply, about } = await getAllData();
+	const { activation, dataSupply, about, contact } = await getAllData();
 
 	// Create menu items array
 	const menuItemsArray = [
@@ -32,9 +32,8 @@ const Server = async ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<>
-			<Header menuItems={menuItemsArray} />
+			<Header menuItems={menuItemsArray} contactTitle={contact.title} />
 			{children}
-			{/* <Footer /> */}
 		</>
 	);
 };

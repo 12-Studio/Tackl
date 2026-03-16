@@ -6,6 +6,7 @@ import { EVERYTHING } from './query';
 import Activation from '@parts/Activation';
 import DataSupply from '@parts/DataSupply';
 import About from '@parts/About';
+import Contact from '@parts/Contact';
 
 // Lazy Load Modals
 
@@ -26,14 +27,15 @@ async function getAllData() {
 // ------------
 const Page = async () => {
 	// Fetch data
-	const { home, activation, dataSupply, about, cta, contactDetails } = await getAllData();
+	const { home, activation, dataSupply, about, cta, contactDetails, contact } =
+		await getAllData();
 
 	// Create menu items array
 	const menuItemsArray = [
 		{ label: activation.title, icon: 'activation' },
 		{ label: dataSupply.title, icon: 'dataSupply' },
 		{ label: about.title, icon: 'about' },
-		{ label: 'Get in Touch', icon: 'contact' },
+		{ label: contact.title, icon: 'contact' },
 	];
 
 	// Shared CTA props
@@ -66,6 +68,7 @@ const Page = async () => {
 				isCtaOverridden={activation.isCtaOverridden}
 				ctaOverrideHeading={activation.overrideHeading}
 				ctaOverrideButtonLabel={activation.overrideButtonLabel}
+				contactTitle={contact.title}
 			/>
 
 			<DataSupply
@@ -78,6 +81,7 @@ const Page = async () => {
 				isCtaOverridden={dataSupply.isCtaOverridden}
 				ctaOverrideHeading={dataSupply.overrideHeading}
 				ctaOverrideButtonLabel={dataSupply.overrideButtonLabel}
+				contactTitle={contact.title}
 			/>
 
 			<About
@@ -90,6 +94,14 @@ const Page = async () => {
 				isCtaOverridden={about.isCtaOverridden}
 				ctaOverrideHeading={about.overrideHeading}
 				ctaOverrideButtonLabel={about.overrideButtonLabel}
+				contactTitle={contact.title}
+			/>
+
+			<Contact
+				{...sharedCtaProps}
+				title={contact.title}
+				heading={contact.heading}
+				desc={contact.desc}
 			/>
 		</main>
 	);

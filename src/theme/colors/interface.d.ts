@@ -23,14 +23,15 @@ export type BrandColorVariations = {
 	bc1: AlphaShades;
 	bc2: AlphaShades;
 	bc3: AlphaShades;
-	bc4?: AlphaShades;
-	bc5?: AlphaShades;
+	bc4: AlphaShades;
+	bc5: AlphaShades;
 	bc6?: AlphaShades;
 };
 
 // SECTION • Global Colors
 // NOTE — White + Black, each with AlphaShades
 export type GlobalColors = {
+	luxuryWhite: AlphaShades;
 	white: AlphaShades;
 	black: AlphaShades;
 };

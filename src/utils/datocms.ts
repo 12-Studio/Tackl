@@ -28,7 +28,10 @@
  */
 import { executeQuery } from '@datocms/cda-client';
 
-export const performRequest = async <T = any>(query: string, options?: Record<string, any>): Promise<T | null> => {
+export const performRequest = async <T = any>(
+	query: string,
+	options?: Record<string, any>
+): Promise<T | null> => {
 	try {
 		// Check if API token is available
 		if (!process.env.NEXT_DATOCMS_API_TOKEN) {

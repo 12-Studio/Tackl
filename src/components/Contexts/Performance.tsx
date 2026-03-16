@@ -40,7 +40,9 @@ export const PerformanceProvider = ({ children }: { children: React.ReactNode })
 			setPerformanceState({
 				isReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
 				isLowPowerMode:
-					(typeof navigator !== 'undefined' && navigator?.userAgent?.includes('Low-Power')) || false,
+					(typeof navigator !== 'undefined' &&
+						navigator?.userAgent?.includes('Low-Power')) ||
+					false,
 				devicePixelRatio: window.devicePixelRatio || 1,
 			});
 		};

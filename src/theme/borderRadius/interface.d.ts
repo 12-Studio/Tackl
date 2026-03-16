@@ -8,5 +8,6 @@ export interface BorderRadius {
 	s: string;
 	m: string;
 	l: string;
+	xl: string;
 	round: string;
 }

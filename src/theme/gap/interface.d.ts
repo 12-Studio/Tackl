@@ -14,4 +14,14 @@ export interface Gap {
 	xxl?: string;
 	huge?: string;
 	uber?: string;
+	mega?: string;
+	giga?: string;
+	tera?: string;
+	peta?: string;
+	exa?: string;
+	zetta?: string;
+	yotta?: string;
+	ronna?: string;
+	quetta?: string;
+	ronna?: string;
 }

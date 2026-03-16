@@ -2,13 +2,13 @@
 
 // Imports
 // ------------
-import '@theme/tackl/waffl/WebComponent';
 import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
-import CookieBar from '@parts/CookieBar';
-import SmoothScroll from '@parts/SmoothScroll';
+// import CookieBar from '@parts/CookieBar';
+import Cursor from '@parts/Cursor';
+import Loader from '@parts/Loader';
 import { GlobalStyle, theme } from '@theme';
-import { inter } from '@theme/fonts';
+import { neueHaas, pp } from '@theme/fonts';
 import StyledComponentsRegistry from '@utils/registry';
 import { ViewTransitions } from '@utils/viewTransitions';
 import dynamic from 'next/dynamic';
@@ -23,30 +23,31 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 // Component
 // ------------
 const Client = ({ children }: { children: React.ReactNode }) => {
-	// NOTE • Font Classes
-	const classes = `${inter.variable}`;
-
 	return (
 		<ViewTransitions>
-			<html lang='en' className={classes} suppressHydrationWarning>
+			<html
+				lang='en'
+				className={`${neueHaas.variable} ${pp.variable}`}
+				suppressHydrationWarning
+			>
 				<body>
-					<main id='page' style={{ viewTransitionName: 'page' }}>
-						<StyledComponentsRegistry>
-							<ThemeProvider theme={theme} key='themeprovider'>
-								<GlobalStyle />
+					<StyledComponentsRegistry>
+						<ThemeProvider theme={theme} key='themeprovider'>
+							<GlobalStyle />
 
-								{/* GridExposer only rendered in development environment */}
-								{process.env.NODE_ENV === 'development' && <GridExposer />}
+							{/* GridExposer only rendered in development environment */}
+							{process.env.NODE_ENV === 'development' && <GridExposer />}
 
-								{/* CookieBar only rendered in production environment */}
-								{process.env.NODE_ENV === 'production' && <CookieBar />}
+							{/* CookieBar only rendered in production environment */}
+							{/* {process.env.NODE_ENV === 'production' && <CookieBar />} */}
 
-								<Contexts>
-									<SmoothScroll>{children}</SmoothScroll>
-								</Contexts>
-							</ThemeProvider>
-						</StyledComponentsRegistry>
-					</main>
+							<Contexts>
+								<Loader />
+								<Cursor />
+								{children}
+							</Contexts>
+						</ThemeProvider>
+					</StyledComponentsRegistry>
 				</body>
 			</html>
 		</ViewTransitions>

@@ -1,5 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	headers: async () => [
+		{
+			source: '/:path*',
+			headers: [
+				{
+					key: 'Content-Security-Policy',
+					value: "frame-ancestors 'self' https://plugins-cdn.datocms.com",
+				},
+			],
+		},
+	],
 	// Image loader settings
 	images: {
 		formats: ['image/avif', 'image/webp'],
@@ -14,6 +25,10 @@ const nextConfig = {
 		// sizes, enabling optimal image loading and performance across mobile, tablet, and desktop devices.
 		deviceSizes: [390, 640, 750, 828, 1080, 1200, 1400, 1920, 2048, 3840],
 		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'www.datocms-assets.com',
+			},
 			{
 				protocol: 'https',
 				hostname: 'picsum.photos',
@@ -54,6 +69,8 @@ const nextConfig = {
 
 	experimental: {
 		webVitalsAttribution: ['CLS', 'LCP'],
+		// Inline CSS into HTML to eliminate render-blocking stylesheet requests (improves FCP/LCP)
+		inlineCss: true,
 	},
 
 	// Styled Components settings

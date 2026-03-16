@@ -7,6 +7,7 @@ export interface Grid {
 	columns: Columns;
 	breakpoints: Breakpoints;
 	gutter: Gutter;
+	margin: Margin;
 	maxSize: string;
 }
 
@@ -18,6 +19,7 @@ export interface Columns {
 
 export interface Breakpoints {
 	s?: string;
+	xs?: string;
 	sm?: string;
 	m?: string;
 	l?: string;
@@ -28,6 +30,12 @@ export interface Breakpoints {
 }
 
 export interface Gutter {
+	s?: string;
+	m?: string;
+	l?: string;
+}
+
+export interface Margin {
 	s?: string;
 	m?: string;
 	l?: string;

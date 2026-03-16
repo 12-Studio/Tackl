@@ -12,9 +12,10 @@ import type { BorderRadius } from './interface';
 // Exports
 // ------------
 export const borderRadius: BorderRadius = {
-	xs: '0.3rem',
-	s: '0.6rem',
-	m: '1.2rem',
-	l: '1.8rem',
-	round: '999rem',
+	xs: '0.2rem',
+	s: '0.4rem',
+	m: '0.8rem',
+	l: '1.6rem',
+	xl: '2.4rem',
+	round: '9999rem',
 };

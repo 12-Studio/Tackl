@@ -3,7 +3,9 @@ import { createContext, use, useEffect, useState } from 'react';
 
 import { useBrowserNativeTransitions } from './browser-native-events';
 
-const ViewTransitionsContext = createContext<Dispatch<SetStateAction<(() => void) | null>>>(() => () => {});
+const ViewTransitionsContext = createContext<Dispatch<SetStateAction<(() => void) | null>>>(
+	() => () => {}
+);
 
 export function ViewTransitions({
 	children,
@@ -22,7 +24,9 @@ export function ViewTransitions({
 	useBrowserNativeTransitions();
 
 	return (
-		<ViewTransitionsContext.Provider value={setFinishViewTransition}>{children}</ViewTransitionsContext.Provider>
+		<ViewTransitionsContext.Provider value={setFinishViewTransition}>
+			{children}
+		</ViewTransitionsContext.Provider>
 	);
 }
 

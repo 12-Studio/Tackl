@@ -1,14 +1,12 @@
 // Imports
 // ------------
-
-import {} from '@tackl/type';
-import styled, { css } from 'styled-components';
 import { Footer } from '@/theme/tackl';
+import styled, { css } from 'styled-components';
 
 // Exports
 // ------------
 export const Jacket = styled(Footer)(
-	() => css`
+	_props => css`
 		/*  */
 	`
 );

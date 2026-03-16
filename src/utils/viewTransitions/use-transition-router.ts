@@ -1,7 +1,10 @@
-import type { AppRouterInstance, NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter as useNextRouter } from 'next/navigation';
 import { startTransition, useCallback, useMemo } from 'react';
 import { useSetFinishViewTransition } from './transition-context';
+import type {
+	AppRouterInstance,
+	NavigateOptions,
+} from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export type TransitionOptions = {
 	onTransitionReady?: () => void;
@@ -20,9 +23,9 @@ export function useTransitionRouter() {
 
 	const triggerTransition = useCallback(
 		(cb: () => void, { onTransitionReady }: TransitionOptions = {}) => {
-			const startViewTransition = document.startViewTransition;
-			if (startViewTransition) {
-				const transition = startViewTransition(
+			if ('startViewTransition' in document) {
+				// @ts-expect-error
+				const transition = document.startViewTransition(
 					() =>
 						new Promise<void>(resolve => {
 							startTransition(() => {
@@ -36,7 +39,7 @@ export function useTransitionRouter() {
 					transition.ready.then(onTransitionReady);
 				}
 			} else {
-				cb();
+				return cb();
 			}
 		},
 		[finishViewTransition]

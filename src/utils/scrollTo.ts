@@ -35,6 +35,7 @@
  * }
  */
 export const scrollTo = (idOrRef: string | React.RefObject<HTMLElement>) => {
-	const element = typeof idOrRef === 'string' ? document.getElementById(idOrRef) : idOrRef && idOrRef.current;
+	const element =
+		typeof idOrRef === 'string' ? document.getElementById(idOrRef) : idOrRef?.current;
 	if (element) element.scrollIntoView({ behavior: 'smooth' });
 };

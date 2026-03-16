@@ -2,7 +2,7 @@
 // ------
 import { theme } from '@theme';
 import { css } from 'styled-components';
-import type { BreakpointKey, BreakpointMap, MediaQueries, Sizes } from './interface';
+import type { Sizes, BreakpointKey, MediaQueries, BreakpointMap } from './interface';
 
 // Exports
 // ------

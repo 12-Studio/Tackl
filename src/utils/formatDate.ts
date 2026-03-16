@@ -27,7 +27,7 @@
  */
 export function formatDate(date: string | number | Date, locale: string = 'en-US'): string {
 	const d = new Date(date);
-	if (isNaN(d.getTime())) return 'Invalid Date';
+	if (Number.isNaN(d.getTime())) return 'Invalid Date';
 	return d.toLocaleDateString(locale, {
 		year: 'numeric',
 		month: 'long',

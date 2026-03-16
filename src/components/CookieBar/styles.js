@@ -1,8 +1,7 @@
 // Imports
 // ------------
-
-import styled, { css } from 'styled-components';
 import { Aside } from '@/theme/tackl';
+import styled, { css } from 'styled-components';
 
 // Exports
 // ------------

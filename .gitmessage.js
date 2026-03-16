@@ -1,4 +1,6 @@
-const prompts = require('prompts');
+const path = require('path');
+const promptsPath = path.resolve(__dirname, 'node_modules', 'prompts');
+const prompts = require(promptsPath);
 const { execSync } = require('child_process');
 const fs = require('fs');
 
@@ -17,7 +19,9 @@ const fs = require('fs');
 					type: 'text',
 					name: 'description',
 					message: 'Enter a description of your changes:',
-					validate: value => value.length >= 10 || 'Description must be at least 10 characters',
+					validate: value =>
+						value.length >= 10 ||
+						'Description must be at least 10 characters',
 				},
 				{
 					type: 'select',
@@ -42,7 +46,8 @@ const fs = require('fs');
 				{
 					type: 'confirm',
 					name: 'buildCheck',
-					message: 'Would you like to verify the build before committing?',
+					message:
+						'Would you like to verify the build before committing?',
 					initial: true,
 				},
 				{
@@ -69,7 +74,9 @@ const fs = require('fs');
 				execSync('npm run build', { stdio: 'inherit' });
 				console.log('✅ Build successful!');
 			} catch (error) {
-				console.error('\n❌ Build failed. Please fix errors before committing.');
+				console.error(
+					'\n❌ Build failed. Please fix errors before committing.'
+				);
 				process.exit(1);
 			}
 		}

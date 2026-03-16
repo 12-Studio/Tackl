@@ -16,8 +16,9 @@ export const grid: Grid = {
 		l: 12,
 	},
 	breakpoints: {
-		s: '320px',
-		sm: '390px',
+		xs: '320px',
+		s: '400px',
+		sm: '420px',
 		m: '700px',
 		l: '1024px',
 		xl: '1200px',
@@ -28,7 +29,12 @@ export const grid: Grid = {
 	gutter: {
 		s: '2.4rem',
 		m: '2.4rem',
-		l: '3.6rem',
+		l: '3.2rem',
+	},
+	margin: {
+		s: '2.4rem',
+		m: '2.4rem',
+		l: '6.4rem',
 	},
 	maxSize: '1440px',
 };

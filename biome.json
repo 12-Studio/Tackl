@@ -1,28 +1,25 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
 	"vcs": {
-		"enabled": true,
+		"enabled": false,
 		"clientKind": "git",
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": [
-			"**/*.ts",
-			"**/*.tsx",
-			"**/*.js",
-			"**/*.jsx",
-			"**/*.json",
-			"**/*.css"
-		]
+		"includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.css"]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
 		"indentWidth": 4,
-		"lineWidth": 120,
+		"lineWidth": 100,
 		"lineEnding": "lf"
 	},
 	"javascript": {
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": false
+		},
+		"experimentalEmbeddedSnippetsEnabled": false,
 		"formatter": {
 			"quoteStyle": "single",
 			"jsxQuoteStyle": "single",
@@ -42,8 +39,7 @@
 				"noUnusedVariables": "error"
 			},
 			"suspicious": {
-				"noExplicitAny": "warn",
-				"noTsIgnore": "off"
+				"noExplicitAny": "warn"
 			},
 			"style": {
 				"noNonNullAssertion": "warn"
@@ -55,10 +51,22 @@
 			}
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["src/components/DataSupply/Hero/AnimatedGraph/**/*.tsx"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noArrayIndexKey": "off"
+					}
+				}
+			}
+		}
+	],
 	"assist": {
 		"actions": {
 			"source": {
-				"organizeImports": "on"
+				"organizeImports": "off"
 			}
 		}
 	}

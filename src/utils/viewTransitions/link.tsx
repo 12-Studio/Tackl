@@ -1,6 +1,6 @@
 import NextLink from 'next/link';
-import { useCallback } from 'react';
 import { useTransitionRouter } from './use-transition-router';
+import { useCallback } from 'react';
 
 // copied from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L180-L191
 function isModifiedEvent(event: React.MouseEvent): boolean {
@@ -34,15 +34,10 @@ function shouldPreserveDefault(e: React.MouseEvent<HTMLAnchorElement>): boolean 
 // This is a wrapper around next/link that explicitly uses the router APIs
 // to navigate, and trigger a view transition.
 
-type LinkProps = React.ComponentProps<typeof NextLink>;
-
-/** Props type NextLink accepts (narrow Key to avoid @types/react vs Next.js mismatch) */
-type NextLinkPropsSafe = Omit<LinkProps, 'key'> & { key?: string | number | null | undefined };
-
-export function Link(props: LinkProps) {
+export function Link(props: React.ComponentProps<typeof NextLink>) {
 	const router = useTransitionRouter();
 
-	const { href, replace, scroll } = props;
+	const { href, as, replace, scroll } = props;
 	const onClick = useCallback(
 		(e: React.MouseEvent<HTMLAnchorElement>) => {
 			if (props.onClick) {
@@ -58,15 +53,16 @@ export function Link(props: LinkProps) {
 
 				// Convert href to string (handle both string and UrlObject)
 				const hrefString =
-					typeof href === 'string' ? href : href.pathname + (href.search || '') + (href.hash || '');
+					typeof href === 'string'
+						? href
+						: href.pathname + (href.search || '') + (href.hash || '');
 
 				const navigate = replace ? router.replace : router.push;
 				navigate(hrefString, { scroll: scroll ?? true });
 			}
 		},
-		[props.onClick, href, replace, scroll, router]
+		[props.onClick, href, replace, scroll, router.push, router.replace]
 	);
 
-	// Cast key to string | number to avoid React.Key (unique symbol) mismatch with Next.js internals
-	return <NextLink {...(props as NextLinkPropsSafe)} onClick={onClick} />;
+	return <NextLink {...props} onClick={onClick} />;
 }

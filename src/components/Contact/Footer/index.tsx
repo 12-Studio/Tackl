@@ -6,6 +6,8 @@ import Grid from '@waffl';
 import Link from 'next/link';
 import Frame from '@parts/Frame';
 import SideFrame from '@parts/SideFrame';
+import { use } from 'react';
+import { GlobalContext } from '@parts/Contexts';
 
 // Styles + Interfaces
 // ------------
@@ -14,9 +16,17 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Footer = ({ email, linkedin, twitter }: I.FooterProps) => {
+const Footer = ({ email, linkedin, twitter, legalTitle }: I.FooterProps) => {
 	// Get the current year
 	const year = new Date().getFullYear();
+
+	// Contexts
+	const { setModalActive } = use(GlobalContext);
+
+	// Handle Legal
+	const handleLegal = () => {
+		setModalActive(legalTitle);
+	};
 
 	return (
 		<S.Jacket>
@@ -47,6 +57,8 @@ const Footer = ({ email, linkedin, twitter }: I.FooterProps) => {
 											<Link
 												href={linkedin}
 												aria-label='Visit our LinkedIn profile'
+												target='_blank'
+												rel='noopener noreferrer'
 											>
 												LinkedIn
 											</Link>
@@ -57,6 +69,8 @@ const Footer = ({ email, linkedin, twitter }: I.FooterProps) => {
 											<Link
 												href={twitter}
 												aria-label='Visit our Twitter profile'
+												target='_blank'
+												rel='noopener noreferrer'
 											>
 												Twitter
 											</Link>
@@ -83,28 +97,13 @@ const Footer = ({ email, linkedin, twitter }: I.FooterProps) => {
 						<S.GridBlockItem $isLegal $isRight>
 							<ul>
 								<li data-hover>
-									<Link
-										href={'/privacy-policy'}
-										aria-label='View Inventory Guide'
+									<button
+										type='button'
+										onClick={handleLegal}
+										aria-label={`View ${legalTitle}`}
 									>
-										Inventory Guide
-									</Link>
-								</li>
-								<li data-hover>
-									<Link
-										href={'/terms-of-service'}
-										aria-label='View MBE Certificate'
-									>
-										MBE Certificate
-									</Link>
-								</li>
-								<li data-hover>
-									<Link
-										href={'/terms-of-service'}
-										aria-label='View Legal information'
-									>
-										Legal
-									</Link>
+										{legalTitle}
+									</button>
 								</li>
 							</ul>
 						</S.GridBlockItem>

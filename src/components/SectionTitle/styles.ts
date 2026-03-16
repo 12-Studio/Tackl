@@ -1,28 +1,28 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { getBrand, getGap, getRadius, H2 } from '@tackl';
+import { getBrand, getGap, getGlobal, getRadius, H2 } from '@tackl';
 import { captionL } from '@tackl/type';
 
 // Interfaces
 // ------------
 interface StylesInterface {
-	example?: boolean;
+	$isLight?: boolean;
 }
 
 // Exports
 // ------------
 export const Jacket = styled(H2)<StylesInterface>(
-	() => css`
+	({ $isLight }) => css`
         ${captionL}
 
         position: relative;
         width: fit-content;
 
         padding: ${getGap('sm')};
-        background: ${getBrand('bc4', 10)};
+        background: ${$isLight ? getGlobal('luxuryWhite', 5) : getBrand('bc4', 10)};
         border-radius: ${getRadius('s')};
-        color: ${getBrand('bc3')};
+        color: ${$isLight ? getGlobal('luxuryWhite') : getBrand('bc3')};
 
         user-select: none;
         pointer-events: none;

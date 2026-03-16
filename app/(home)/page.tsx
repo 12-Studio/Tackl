@@ -7,8 +7,7 @@ import Activation from '@parts/Activation';
 import DataSupply from '@parts/DataSupply';
 import About from '@parts/About';
 import Contact from '@parts/Contact';
-
-// Lazy Load Modals
+import Legal from '@parts/Legal';
 
 // Data fetching at build time
 // ------------
@@ -27,7 +26,7 @@ async function getAllData() {
 // ------------
 const Page = async () => {
 	// Fetch data
-	const { home, activation, dataSupply, about, cta, contactDetails, contact } =
+	const { home, activation, dataSupply, about, cta, contactDetails, contact, legal } =
 		await getAllData();
 
 	// Create menu items array
@@ -45,6 +44,8 @@ const Page = async () => {
 		email: contactDetails?.email,
 		linkedin: contactDetails?.linkedin,
 		twitter: contactDetails?.twitter,
+		contactTitle: contact.title,
+		legalTitle: legal.title,
 	};
 
 	return (
@@ -68,7 +69,6 @@ const Page = async () => {
 				isCtaOverridden={activation.isCtaOverridden}
 				ctaOverrideHeading={activation.overrideHeading}
 				ctaOverrideButtonLabel={activation.overrideButtonLabel}
-				contactTitle={contact.title}
 			/>
 
 			<DataSupply
@@ -81,7 +81,6 @@ const Page = async () => {
 				isCtaOverridden={dataSupply.isCtaOverridden}
 				ctaOverrideHeading={dataSupply.overrideHeading}
 				ctaOverrideButtonLabel={dataSupply.overrideButtonLabel}
-				contactTitle={contact.title}
 			/>
 
 			<About
@@ -94,7 +93,6 @@ const Page = async () => {
 				isCtaOverridden={about.isCtaOverridden}
 				ctaOverrideHeading={about.overrideHeading}
 				ctaOverrideButtonLabel={about.overrideButtonLabel}
-				contactTitle={contact.title}
 			/>
 
 			<Contact
@@ -102,6 +100,15 @@ const Page = async () => {
 				title={contact.title}
 				heading={contact.heading}
 				desc={contact.desc}
+			/>
+
+			<Legal
+				title={legal.title}
+				heading={legal.heading}
+				desc={legal.desc}
+				lastUpdated={legal.lastUpdated}
+				pageBuilder={legal.pageBuilder}
+				legalTitle={legal.title}
 			/>
 		</main>
 	);

@@ -20,4 +20,5 @@ export interface ActivationProps {
 	linkedin?: string;
 	twitter?: string;
 	contactTitle: string;
+	legalTitle: string;
 }

@@ -14,7 +14,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Modal = ({ children, title }: I.ModalProps) => {
+const Modal = ({ children, title, isDark }: I.ModalProps) => {
 	// Contexts
 	const { setIsModalOpen, setModalActive, modalActive } = use(GlobalContext);
 
@@ -26,6 +26,9 @@ const Modal = ({ children, title }: I.ModalProps) => {
 
 	// Check if modal is open
 	const isOpen = modalActive === title;
+
+	// Get the current year
+	const year = new Date().getFullYear();
 
 	return (
 		<S.Jacket $isOpen={isOpen}>
@@ -39,13 +42,15 @@ const Modal = ({ children, title }: I.ModalProps) => {
 				<Icon type='close' />
 			</S.CloseButton>
 
+			<S.Copyright $isOpen={isOpen}>ONYX &copy; {year}</S.Copyright>
+
 			<S.Content>
 				<S.VerticalLine $isOpen={isOpen}>
 					<S.VerticalLinePlus />
 					<S.VerticalLinePlus $isEnd />
 				</S.VerticalLine>
 
-				<S.Clip $isOpen={isOpen}>
+				<S.Clip $isOpen={isOpen} $isDark={isDark}>
 					<NestedLenis isOpen={isOpen}>{children}</NestedLenis>
 				</S.Clip>
 			</S.Content>

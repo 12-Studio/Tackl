@@ -10,8 +10,8 @@ import * as S from './styles';
 
 // Component
 // ------------
-const SectionTitle = ({ text }: I.SectionTitleProps) => {
-	return <S.Jacket>{text}</S.Jacket>;
+const SectionTitle = ({ text, isLight }: I.SectionTitleProps) => {
+	return <S.Jacket $isLight={isLight}>{text}</S.Jacket>;
 };
 
 // Exports

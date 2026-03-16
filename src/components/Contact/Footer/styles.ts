@@ -50,8 +50,9 @@ export const GridBlock = styled(Div)<StylesInterface>(
 	({ $isLegal }) => css`
 		position: relative;
         display: flex;
-        flex-direction: column;
-        
+        flex-direction: ${$isLegal ? 'row' : 'column'};
+        align-items: ${$isLegal ? 'center' : 'stretch'};
+
         justify-content: space-between;
         gap: ${$isLegal ? getGap('sm') : getGap('m')};
         width: 100%;
@@ -71,6 +72,7 @@ export const GridBlockItem = styled(Div)<StylesInterface>(
 
         display: flex;
         flex-direction: column;
+        align-items: ${$isLegal ? 'center' : 'stretch'};
         gap: ${getGap('s')};
         height: 100%;
 
@@ -84,7 +86,7 @@ export const GridBlockItem = styled(Div)<StylesInterface>(
             color: ${getBrand('bc3', 60)};
         }
 
-        a {
+        a, button {
             ${$isLegal ? captionL : bodyL}
 
             display: inline-block;
@@ -92,6 +94,7 @@ export const GridBlockItem = styled(Div)<StylesInterface>(
             width: max-content;
             color: ${$isLegal ? getBrand('bc1') : getGlobal('black')};
             transition: color 0.5s ${getEase('bezzy3')};
+            cursor: pointer;
             
             @media (hover: hover) and (pointer: fine) {
                 &:hover {
@@ -104,10 +107,30 @@ export const GridBlockItem = styled(Div)<StylesInterface>(
             display: flex;
             gap: ${getGap('m')};
 
+            ${
+				$isLegal &&
+				css`
+                height: 100%;
+                align-items: center;
+            `
+			}
+
             ${bp.l`
                 height: 100%;
                 align-items: center;
             `}
+
+            li {
+                ${
+					$isLegal &&
+					css`
+                        display: flex;
+                        width: 100%;
+                        height: 100%;
+                        align-items: center;
+                    `
+				}
+            }
         }
 
         p {

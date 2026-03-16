@@ -11,6 +11,7 @@ import type { AnimatedStoryProps } from './AnimatedStory/interface';
 import type { TeamMembersProps } from './TeamMembers/interface';
 import type { FaqsProps } from './Faqs/interface';
 import type { BigIconTextGridProps } from './BigIconTextGrid/interface';
+import type { StructuredText } from 'react-datocms/structured-text';
 
 // Exports
 // ------------
@@ -35,10 +36,11 @@ export type PageBuilderBlock = {
 	faqs?: FaqsProps['faqs'];
 	background?: FaqsProps['background'];
 	sections?: BigIconTextGridProps['sections'];
-	contactTitle: string;
+	contactTitle?: string;
+	text?: StructuredText;
 };
 
 export type PageBuilderProps = {
 	pageBuilder?: PageBuilderBlock[];
-	contactTitle: string;
+	contactTitle?: string;
 };

@@ -19,4 +19,5 @@ export interface DataSupplyProps {
 	linkedin?: string;
 	twitter?: string;
 	contactTitle: string;
+	legalTitle: string;
 }

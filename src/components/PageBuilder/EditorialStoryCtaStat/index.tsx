@@ -42,7 +42,7 @@ const EditorialStoryCtaStat = ({
 
 	// Handle Contact
 	const handleContact = () => {
-		setModalActive(contactTitle);
+		setModalActive(contactTitle ?? 'Contact');
 	};
 
 	const aniCheck =

@@ -13,7 +13,10 @@ import {
 	Aside,
 	Button,
 	Figure,
+	Em,
+	Span,
 } from '@tackl';
+import { captionL } from '@/theme/tackl/type';
 
 // Interfaces
 // ------------
@@ -24,6 +27,7 @@ interface StylesInterface {
 	ariaLabel?: string;
 	children?: React.ReactNode;
 	onClick?: () => void;
+	$isDark?: boolean;
 }
 
 // Exports
@@ -56,7 +60,7 @@ export const Content = styled(Section)<StylesInterface>(
 );
 
 export const Clip = styled(Div)<StylesInterface>(
-	({ $isOpen }) => css`
+	({ $isOpen, $isDark }) => css`
         position: relative;
         z-index: 1;
         width: 100%;
@@ -69,6 +73,13 @@ export const Clip = styled(Div)<StylesInterface>(
         ${bp.l`
             clip-path: inset(${$isOpen ? '0% 0% 0% 0%' : '0% 0% 0% 100%'});
         `}
+
+        &:before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: ${$isDark ? getGlobal('black', 90) : getGlobal('luxuryWhite')};
+        }
     `
 );
 
@@ -206,4 +217,26 @@ export const CloseButton = styled(Button)<StylesInterface>(
             fill: ${getGlobal('luxuryWhite')};
         }
     `
+);
+
+export const Copyright = styled(Span)<StylesInterface>(
+	({ $isOpen }) => css`
+        --offset: ${getGap('xl')};
+        display: none;
+
+        ${bp.l`
+            ${captionL}
+
+            display: inline-block;
+            color: ${getGlobal('luxuryWhite', 60)};
+
+            position: fixed;
+            z-index: 2;
+            bottom: var(--offset);
+            left: var(--offset);
+
+            transform: translateX(${$isOpen ? 0 : -200}%);
+            transition: transform 1.1s ${getEase('bezzy3')} ${$isOpen ? 0.1 : 0}s;
+        `}
+	`
 );

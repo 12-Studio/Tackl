@@ -14,7 +14,15 @@ import type * as I from './interface';
 
 // Component
 // ------------
-const Contact = ({ title, heading, desc, email, linkedin, twitter }: I.ContactProps) => {
+const Contact = ({
+	title,
+	heading,
+	desc,
+	email,
+	linkedin,
+	twitter,
+	legalTitle,
+}: I.ContactProps) => {
 	// Contexts
 	const { setAreModalsReady } = use(GlobalContext);
 
@@ -26,7 +34,7 @@ const Contact = ({ title, heading, desc, email, linkedin, twitter }: I.ContactPr
 	return (
 		<Modal title={title}>
 			<Hero title={title} heading={heading} desc={desc} />
-			<Footer email={email} linkedin={linkedin} twitter={twitter} />
+			<Footer email={email} linkedin={linkedin} twitter={twitter} legalTitle={legalTitle} />
 		</Modal>
 	);
 };

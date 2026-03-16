@@ -31,6 +31,27 @@ export const EVERYTHING = `
             desc: description
         }
 
+        legal {
+            lastUpdated: _updatedAt
+            title
+            heading
+            desc: description {
+                value
+            }
+
+            pageBuilder {
+                __typename
+
+                ... on StandardContentRecord {
+                    id
+                    heading
+                    text {
+                        value
+                    }
+                }
+            }
+        }
+
         cta: callToAction {
             heading
             buttonLabel

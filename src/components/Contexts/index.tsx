@@ -41,6 +41,7 @@ export const GlobalContext = createContext({
 			dataSupply: boolean;
 			about: boolean;
 			contact: boolean;
+			legal: boolean;
 		}>
 	) => {}) as React.Dispatch<
 		React.SetStateAction<{
@@ -49,6 +50,7 @@ export const GlobalContext = createContext({
 			dataSupply: boolean;
 			about: boolean;
 			contact: boolean;
+			legal: boolean;
 		}>
 	>,
 	isFontsLoaded: false,
@@ -73,12 +75,14 @@ const Contexts = ({ children }: I.ContextsProps) => {
 		dataSupply: boolean;
 		about: boolean;
 		contact: boolean;
+		legal: boolean;
 	}>({
 		home: false,
 		activation: false,
 		dataSupply: false,
 		about: false,
 		contact: false,
+		legal: false,
 	});
 
 	// Context Values

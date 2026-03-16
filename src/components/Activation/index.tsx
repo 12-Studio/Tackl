@@ -30,6 +30,7 @@ const Activation = ({
 	linkedin,
 	twitter,
 	contactTitle,
+	legalTitle,
 }: I.ActivationProps) => {
 	// Contexts
 	const { setAreModalsReady } = use(GlobalContext);
@@ -55,6 +56,7 @@ const Activation = ({
 				linkedin={linkedin}
 				twitter={twitter}
 				contactTitle={contactTitle}
+				legalTitle={legalTitle}
 			/>
 		</Modal>
 	);

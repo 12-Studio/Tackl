@@ -1,19 +1,19 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { Div, getBrand, getGap } from '@tackl';
+import { Div, getBrand, getGap, getGlobal } from '@tackl';
 import { captionL } from '@tackl/type';
 
 // Interfaces
 // ------------
 interface StylesInterface {
-	example?: boolean;
+	$isLight?: boolean;
 }
 
 // Exports
 // ------------
 export const Jacket = styled(Div)<StylesInterface>(
-	() => css`
+	({ $isLight }) => css`
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -22,17 +22,17 @@ export const Jacket = styled(Div)<StylesInterface>(
 
         h2, h3, h4, h5, p, span, em {
             ${captionL}
-            color: ${getBrand('bc3')};
+            color: ${$isLight ? getGlobal('luxuryWhite') : getBrand('bc3')};
         }
     `
 );
 
 export const Flasher = styled.span<StylesInterface>(
-	() => css`
+	({ $isLight }) => css`
         display: inline-block;
         width: 0.4rem;
         height: 0.8rem;
-        background: ${getBrand('bc3')};
+        background: ${$isLight ? getGlobal('luxuryWhite') : getBrand('bc3')};
         animation: flash 0.75s ease-in-out infinite;
 
 

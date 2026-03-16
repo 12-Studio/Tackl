@@ -27,6 +27,7 @@ const CallToAction = ({
 	email,
 	linkedin,
 	twitter,
+	legalTitle,
 }: I.CallToActionProps) => {
 	// Contexts
 	const { setModalActive } = use(GlobalContext);
@@ -41,6 +42,11 @@ const CallToAction = ({
 
 	// Get CTA Heading
 	const sharedHeading = isCtaOverridden ? (overrideHeading ?? heading) : heading;
+
+	// Handle Legal
+	const handleLegal = () => {
+		setModalActive(legalTitle);
+	};
 
 	return (
 		<S.Jacket>
@@ -86,6 +92,8 @@ const CallToAction = ({
 												<Link
 													href={linkedin}
 													aria-label='Visit our LinkedIn profile'
+													target='_blank'
+													rel='noopener noreferrer'
 												>
 													LinkedIn
 												</Link>
@@ -96,6 +104,8 @@ const CallToAction = ({
 												<Link
 													href={twitter}
 													aria-label='Visit our Twitter profile'
+													target='_blank'
+													rel='noopener noreferrer'
 												>
 													Twitter
 												</Link>
@@ -120,28 +130,13 @@ const CallToAction = ({
 							<S.GridBlockItem $isLegal $isRight>
 								<ul>
 									<li data-hover>
-										<Link
-											href={'/privacy-policy'}
-											aria-label='View Inventory Guide'
+										<button
+											type='button'
+											onClick={handleLegal}
+											aria-label={`View ${legalTitle}`}
 										>
-											Inventory Guide
-										</Link>
-									</li>
-									<li data-hover>
-										<Link
-											href={'/terms-of-service'}
-											aria-label='View MBE Certificate'
-										>
-											MBE Certificate
-										</Link>
-									</li>
-									<li data-hover>
-										<Link
-											href={'/terms-of-service'}
-											aria-label='View Legal information'
-										>
-											Legal
-										</Link>
+											{legalTitle}
+										</button>
 									</li>
 								</ul>
 							</S.GridBlockItem>

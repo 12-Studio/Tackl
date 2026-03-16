@@ -33,10 +33,11 @@ export const Jacket = styled(Header)<StylesInterface>(
 
         padding-block: ${getGap('l')};
         width: 100%;
-        min-height: clamp(70rem, 100svh, 1024rem);
+        min-height: clamp(50rem, 100svh, 1024rem);
 
         ${bp.l`
             padding-block: ${getGap('uber')};
+            min-height: clamp(70rem, 100svh, 1024rem);
         `}
 
         > .frame {
@@ -66,19 +67,26 @@ export const Top = styled(Section)(
 	() => css`
         display: flex;
         flex-direction: column;
-        gap: ${getGap('l')};
+        gap: ${getGap('m')};
 
 		position: relative;
-        padding-bottom: ${getGap('l')};
+        padding-bottom: ${getGap('m')};
 
         ${bp.l`
-            padding-bottom: ${getGap('uber')};
+            padding-bottom: ${getGap('xxl')};
+            gap: ${getGap('l')};
         `}
 
         .frame.bottom {
             position: absolute;
             z-index: 2;
             bottom: 0;
+        }
+
+        > * {
+            &:nth-child(2) {
+                row-gap: ${getGap('sm')};
+            }
         }
 	`
 );
@@ -97,6 +105,12 @@ export const Heading = styled(H2)(
 		z-index: 1;
 
         color: ${getGlobal('black')};
+        margin-bottom: ${getGap('s')};
+        
+
+        ${bp.l`
+            margin-bottom: 0;
+        `}
 	`
 );
 

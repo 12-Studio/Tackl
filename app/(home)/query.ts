@@ -13,6 +13,16 @@ export const EVERYTHING = `
             title
             desc
             unicornId
+            video {
+                video {
+                    muxPlaybackId
+                    width
+                    height
+                    blurUpThumb
+                    streamingUrl
+                    mp4High: mp4Url(res: high)
+                }
+            }
             partnerLogos {
                 id
                 ...ReusableImage

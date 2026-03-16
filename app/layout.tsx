@@ -8,6 +8,7 @@ import Server from './Server';
 // Styles
 // ------------
 import '@css/global.css';
+import '@mux/mux-player/themes/minimal';
 
 // Metadata
 // ------------

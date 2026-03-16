@@ -97,7 +97,11 @@ const baseBodyStyles: RuleSet = css`
 	font-family: ${theme.font.family.body};
 	line-height: 1.32;
 	letter-spacing: 0.05rem;
-	text-box: trim-both cap alphabetic;
+	
+
+	${bp.l`
+		text-box: trim-both cap alphabetic;
+	`}
 `;
 
 export const bodyL: RuleSet = css`

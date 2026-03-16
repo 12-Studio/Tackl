@@ -5,5 +5,15 @@
 // ------------
 export type BackgroundProps = {
 	sceneId: string;
-	video: string;
+	video?:
+		| {
+				muxPlaybackId?: string;
+				streamingUrl?: string;
+				mp4High?: string;
+				mp4Med?: string;
+				mp4Low?: string;
+				width?: number;
+				height?: number;
+		  }
+		| null;
 };

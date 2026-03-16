@@ -49,7 +49,17 @@ const MobileVideo = ({ src, onReady, isModalOpen }: I.MobileVideoProps) => {
 
 	return (
 		<S.Jacket>
-			<video ref={videoRef} src={src} autoPlay loop muted playsInline />
+			<video
+				ref={videoRef}
+				src={src}
+				autoPlay
+				loop
+				muted
+				playsInline
+				aria-label='Background video'
+			>
+				<track kind='captions' src='/captions-empty.vtt' srcLang='en' label='English' />
+			</video>
 		</S.Jacket>
 	);
 };

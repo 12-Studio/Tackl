@@ -54,8 +54,15 @@ const StatisticsGrid = ({ heading, statistics }: I.StatisticsGridProps) => {
 										symbolAfterNumber={symbolAfterNumber}
 										number={number}
 									/>
-									<Frame className='mobile-only' />
-									{isAfterPair && <Frame className='bottom' />}
+									<S.FrameWrapper $mobileOnly>
+										<Frame />
+									</S.FrameWrapper>
+
+									{isAfterPair && (
+										<S.FrameWrapper $isAfterPair>
+											<Frame className='bottom' />
+										</S.FrameWrapper>
+									)}
 								</Fragment>
 							);
 						}

@@ -77,6 +77,7 @@ const EditorialStoryCtaStat = ({
 			if (aniCheck) return;
 
 			const split = SplitText.create(animatedTextRef.current, {
+				aria: 'none',
 				type: 'words,chars',
 				wordsClass: 'word',
 				charsClass: 'char',

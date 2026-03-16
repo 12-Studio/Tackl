@@ -23,6 +23,13 @@ export const Jacket = styled(Aside)<StylesInterface>(
         height: 100svh;
         width: 100%;
         background: ${getGlobal('black')};
+
+
+        .logo {
+            path {
+                opacity: 0;
+            }
+        }
     `
 );
 
@@ -50,6 +57,15 @@ export const Frame = styled(Div)(
             &.bottom {
                 bottom: var(--offset);
             }
+
+
+            .line {
+                transform: scaleX(0);
+            }
+
+            .plus {
+                opacity: 0;
+            }
         }
 	`
 );
@@ -62,6 +78,7 @@ export const Vertical = styled(Div)<StylesInterface>(
         width: 1px;
         height: 100%;
         background: ${getGlobal('luxuryWhite', 20)};
+        transform: scaleY(0);
 
         ${
 			$isLeft

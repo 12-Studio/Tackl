@@ -117,6 +117,8 @@ export const ProcessContent = styled(Div)(
 
         ${bp.l`
             flex: 1 1 50%;
+            align-items: flex-start;
+            justify-content: space-between;
             aspect-ratio: var(--aspect);
             gap: 0;
             padding: ${getGap('l')};

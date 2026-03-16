@@ -1,9 +1,13 @@
+'use client';
+
 // Imports
 // ------------
 import Modal from '@parts/Modal';
 import Hero from './Hero';
 import PageBuilder from '@parts/PageBuilder';
 import CallToAction from '@parts/CallToAction';
+import { use, useEffect } from 'react';
+import { GlobalContext } from '@parts/Contexts';
 
 // Styles + Interfaces
 // ------------
@@ -25,24 +29,34 @@ const Activation = ({
 	email,
 	linkedin,
 	twitter,
-}: I.ActivationProps) => (
-	<Modal title={title}>
-		<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
+}: I.ActivationProps) => {
+	// Contexts
+	const { setAreModalsReady } = use(GlobalContext);
 
-		{pageBuilder && <PageBuilder pageBuilder={pageBuilder} />}
+	// Set Modal ready on mount
+	useEffect(() => {
+		setAreModalsReady(prev => ({ ...prev, activation: true }));
+	}, [setAreModalsReady]);
 
-		<CallToAction
-			heading={ctaHeading}
-			buttonLabel={ctaButtonLabel}
-			isCtaOverridden={isCtaOverridden}
-			overrideHeading={ctaOverrideHeading}
-			overrideButtonLabel={ctaOverrideButtonLabel}
-			email={email}
-			linkedin={linkedin}
-			twitter={twitter}
-		/>
-	</Modal>
-);
+	return (
+		<Modal title={title}>
+			<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
+
+			{pageBuilder && <PageBuilder pageBuilder={pageBuilder} />}
+
+			<CallToAction
+				heading={ctaHeading}
+				buttonLabel={ctaButtonLabel}
+				isCtaOverridden={isCtaOverridden}
+				overrideHeading={ctaOverrideHeading}
+				overrideButtonLabel={ctaOverrideButtonLabel}
+				email={email}
+				linkedin={linkedin}
+				twitter={twitter}
+			/>
+		</Modal>
+	);
+};
 
 // Exports
 // ------------

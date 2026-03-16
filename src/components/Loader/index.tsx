@@ -47,7 +47,11 @@ const LINE_SETTINGS = {
 // ------------
 const Loader = () => {
 	// Contexts
-	const { isLoaderFinished, setIsLoaderFinished, pageLoaded } = use(GlobalContext);
+	const { isLoaderFinished, setIsLoaderFinished, pageLoaded, areModalsReady, isFontsLoaded } =
+		use(GlobalContext);
+
+	const allModalsReady =
+		areModalsReady.activation && areModalsReady.dataSupply && areModalsReady.about;
 
 	// States
 	const [shouldRender, setShouldRender] = useState(true);
@@ -129,7 +133,7 @@ const Loader = () => {
 			gsap.set(verticalLines, { scaleY: LINE_SETTINGS.BEFORE.SCALE });
 			gsap.set(pluses, { autoAlpha: 0 });
 
-			if (!pageLoaded) return;
+			if (!pageLoaded || !isFontsLoaded || !allModalsReady) return;
 
 			const tl = gsap.timeline({ delay: LINE_SETTINGS.DELAY });
 
@@ -162,7 +166,7 @@ const Loader = () => {
 
 			frameRef.current = tl;
 		},
-		{ scope: jacketRef, dependencies: [pageLoaded] }
+		{ scope: jacketRef, dependencies: [pageLoaded, isFontsLoaded, allModalsReady] }
 	);
 
 	// Kill GSAP timelines on unmount to prevent memory leaks
@@ -174,9 +178,9 @@ const Loader = () => {
 		[]
 	);
 
-	// Stop pulse after minimum 3 iterations when page is loaded
+	// Stop pulse after minimum 3 iterations when page, fonts, and modals are ready
 	useEffect(() => {
-		if (!pageLoaded || !pulseRef.current) return;
+		if (!pageLoaded || !isFontsLoaded || !allModalsReady || !pulseRef.current) return;
 
 		const tl = pulseRef.current;
 		const currentIteration = tl.iteration();
@@ -184,7 +188,7 @@ const Loader = () => {
 
 		tl.repeat(remaining);
 		tl.eventCallback('onComplete', () => setIsLoaderFinished(true));
-	}, [pageLoaded, setIsLoaderFinished]);
+	}, [pageLoaded, isFontsLoaded, allModalsReady, setIsLoaderFinished]);
 
 	// Outro Animation
 	useAnimation(

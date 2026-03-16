@@ -26,6 +26,30 @@ export const GlobalContext = createContext({
 
 	modalActive: '',
 	setModalActive: (_value: string) => {},
+
+	areModalsReady: {
+		home: false,
+		activation: false,
+		dataSupply: false,
+		about: false,
+	},
+	setAreModalsReady: ((
+		_value: React.SetStateAction<{
+			home: boolean;
+			activation: boolean;
+			dataSupply: boolean;
+			about: boolean;
+		}>
+	) => {}) as React.Dispatch<
+		React.SetStateAction<{
+			home: boolean;
+			activation: boolean;
+			dataSupply: boolean;
+			about: boolean;
+		}>
+	>,
+	isFontsLoaded: false,
+	setIsFontsLoaded: (_value: boolean) => {},
 });
 
 // Component
@@ -39,6 +63,19 @@ const Contexts = ({ children }: I.ContextsProps) => {
 	const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
 	const [pageLoaded, setPageLoaded] = useState<boolean>(false);
 	const [modalActive, setModalActive] = useState<string>('home');
+	const [isFontsLoaded, setIsFontsLoaded] = useState<boolean>(false);
+	const [areModalsReady, setAreModalsReady] = useState<{
+		home: boolean;
+		activation: boolean;
+		dataSupply: boolean;
+		about: boolean;
+	}>({
+		home: false,
+		activation: false,
+		dataSupply: false,
+		about: false,
+	});
+
 
 	// Context Values
 	const contextValue = useMemo(
@@ -52,8 +89,12 @@ const Contexts = ({ children }: I.ContextsProps) => {
 			setPageLoaded,
 			modalActive,
 			setModalActive,
+			areModalsReady,
+			setAreModalsReady,
+			isFontsLoaded,
+			setIsFontsLoaded,
 		}),
-		[isModalOpen, isLoaderFinished, pageLoaded, modalActive]
+		[isModalOpen, isLoaderFinished, pageLoaded, modalActive, areModalsReady, isFontsLoaded]
 	);
 
 	return (

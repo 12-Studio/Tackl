@@ -42,10 +42,12 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 				type: 'lines,chars',
 				linesClass: 'line',
 				charsClass: 'char',
+				aria: 'none',
 			});
 			const descSplit = SplitText.create(descRef.current, {
 				type: 'lines',
 				linesClass: 'line',
+				aria: 'none',
 			});
 
 			const headingChars = headingSplit.chars as HTMLElement[];

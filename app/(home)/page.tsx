@@ -7,6 +7,8 @@ import Activation from '@parts/Activation';
 import DataSupply from '@parts/DataSupply';
 import About from '@parts/About';
 
+// Lazy Load Modals
+
 // Data fetching at build time
 // ------------
 async function getAllData() {

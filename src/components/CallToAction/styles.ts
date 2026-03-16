@@ -64,7 +64,12 @@ export const Top = styled(Section)<StylesInterface>(
 	() => css`
 		position: relative;
         flex: 1;
+        padding-right: ${getGap('uber')};
+        padding: ${getGap('l')} ${getGap('uber')} ${getGap('l')} 0;
 
+        ${bp.l`
+            padding: ${getGap('uber')} 0 ${getGap('uber')};
+        `}
 
         waffl-grid {
             row-gap: ${getGap('m')};
@@ -99,7 +104,7 @@ export const Bottom = styled(Section)<StylesInterface>(
 
         display: flex;
         flex-direction: column;
-        gap: ${getGap('m')};
+        gap: ${getGap('sm')};
         width: 100%;
 
         ${bp.l`
@@ -115,12 +120,18 @@ export const ContactDetails = styled(Div)<StylesInterface>(
 );
 
 export const GridBlock = styled(Div)<StylesInterface>(
-	() => css`
+	({ $isLegal }) => css`
 		position: relative;
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
-        gap: ${getGap('m')};
+        gap: ${$isLegal ? getGap('s') : getGap('m')};
         width: 100%;
+
+        ${bp.l`
+            flex-direction: row;
+            gap: ${getGap('m')};
+        `}
 	`
 );
 
@@ -131,8 +142,12 @@ export const GridBlockItem = styled(Div)<StylesInterface>(
 
         display: flex;
         flex-direction: column;
-        gap: ${getGap('m')};
+        gap: ${getGap('s')};
         height: 100%;
+
+        ${bp.l`
+            gap: ${getGap('m')};
+        `}
 
         h3 {
             ${bodyL}
@@ -142,6 +157,8 @@ export const GridBlockItem = styled(Div)<StylesInterface>(
 
         a {
             ${$isLegal ? captionL : bodyL}
+
+            display: inline-block;
 
             color: ${$isLegal ? getBrand('bc1') : getGlobal('black')};
             transition: color 0.5s ${getEase('bezzy3')};
@@ -172,7 +189,7 @@ export const GridBlockItem = styled(Div)<StylesInterface>(
 export const Legals = styled(Div)<StylesInterface>(
 	() => css`
 		position: relative;
-        padding-block: var(--mobile-pad) var(--mobile-pad-extra);
+        padding-block: var(--mobile-pad) var(--mobile-extra-pad);
 
         ${bp.l`
             padding-block: ${getGap('m')} ${getGap('xl')};

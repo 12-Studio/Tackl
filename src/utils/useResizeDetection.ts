@@ -164,7 +164,12 @@ export function useOrientationChange(callback?: OrientationChangeCallback): Orie
 
 	useEffect(() => {
 		const handleOrientationChange = () => {
-			const newOrientation = getOrientation();
+			const newOrientation =
+				typeof window !== 'undefined'
+					? window.innerWidth > window.innerHeight
+						? 'landscape'
+						: 'portrait'
+					: 'portrait';
 
 			setOrientation(prev => {
 				if (newOrientation !== prev) {
@@ -187,7 +192,7 @@ export function useOrientationChange(callback?: OrientationChangeCallback): Orie
 			window.removeEventListener('resize', handleResize);
 			clearTimeout(timeout);
 		};
-	}, [getOrientation]);
+	}, []);
 
 	return orientation;
 }

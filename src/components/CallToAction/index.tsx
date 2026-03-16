@@ -6,7 +6,7 @@ import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import Grid from '@waffl';
 import { GlobalContext } from '@parts/Contexts';
-import { use, useRef, useEffect } from 'react';
+import { use } from 'react';
 import Button from '@parts/Button';
 
 // Styles + Interfaces

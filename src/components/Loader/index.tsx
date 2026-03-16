@@ -204,26 +204,17 @@ const Loader = () => {
 		tl.eventCallback('onComplete', () => setIsLoaderFinished(true));
 	}, [pageLoaded, isFontsLoaded, allModalsReady, setIsLoaderFinished]);
 
-	// Outro Animation
+	// Outro Animation — run immediately when loader is ready (don't wait for frame)
 	useAnimation(
 		() => {
 			if (!isLoaderFinished || !jacketRef.current) return;
 
-			const handleOutro = () => {
-				gsap.to(jacketRef.current, {
-					autoAlpha: 0,
-					duration: 1,
-					ease: slow,
-					onComplete: () => setShouldRender(false),
-				});
-			};
-
-			const frameTl = frameRef.current;
-			if (frameTl?.isActive()) {
-				frameTl.then(handleOutro);
-			} else {
-				handleOutro();
-			}
+			gsap.to(jacketRef.current, {
+				autoAlpha: 0,
+				duration: 1,
+				ease: 'sine.inOut',
+				onComplete: () => setShouldRender(false),
+			});
 		},
 		{
 			scope: jacketRef,

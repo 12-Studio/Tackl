@@ -54,8 +54,7 @@ export const Content = styled(Section)<StylesInterface>(
         width: var(--size);
         min-height: 100svh;
         
-        ${bp.l`  --size: 80rem; `}
-        ${bp.xl` --size: 95rem; `}
+        ${bp.l` --size: 95rem; `}
     `
 );
 
@@ -102,10 +101,6 @@ export const VerticalLine = styled(Figure)<StylesInterface>(
         ${bp.l`
             display: block;
             right: calc(100% + ${getGap('sm')});
-            transform: translateX(${$isOpen ? 0 : 83}rem);
-        `}
-
-        ${bp.xl`
             transform: translateX(${$isOpen ? 0 : 98}rem);
         `}
     `
@@ -195,11 +190,6 @@ export const CloseButton = styled(Button)<StylesInterface>(
 
             z-index: -1;
             top: ${getGap('l')};
-            right: calc(80rem + var(--distance));
-            transform: translateX(${$isOpen ? 0 : 'calc(80rem + var(--distance) + var(--size))'});
-        `}
-
-        ${bp.xl`
             right: calc(95rem + var(--distance));
             transform: translateX(${$isOpen ? 0 : 'calc(95rem + var(--distance) + var(--size))'});
         `}

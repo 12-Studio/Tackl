@@ -3,10 +3,7 @@
 
 // Exports
 // ------------
-export interface ContactProps {
-	title: string;
-	heading: string;
-	desc: string;
+export interface FooterProps {
 	email: string;
 	linkedin?: string;
 	twitter?: string;

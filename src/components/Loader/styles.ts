@@ -28,6 +28,7 @@ export const Jacket = styled(Aside)<StylesInterface>(
         .logo {
             path {
                 opacity: 0;
+                visibility: hidden;
             }
         }
     `

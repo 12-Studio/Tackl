@@ -2,11 +2,14 @@
 
 // Imports
 // ------------
-import UnicornScene from 'unicornstudio-react/next';
+import dynamic from 'next/dynamic';
 import { useResponsive } from '@utils/useResponsive';
 import { use, useCallback } from 'react';
 import { GlobalContext } from '@parts/Contexts';
-import MobileVideo from './MobileVideo';
+
+// Lazy load: only the rendered component's bundle is fetched
+const UnicornScene = dynamic(() => import('unicornstudio-react/next'), { ssr: false });
+const MobileVideo = dynamic(() => import('./MobileVideo'), { ssr: false });
 
 // Styles + Interfaces
 // ------------
@@ -17,7 +20,7 @@ import * as S from './styles';
 // ------------
 const Background = ({ sceneId, video }: I.BackgroundProps) => {
 	// Responsive Hook
-	const { isDesktop } = useResponsive();
+	const { isDesktop, isMobile } = useResponsive();
 
 	// Contexts
 	const { setPageLoaded, isLoaderFinished, isModalOpen } = use(GlobalContext);
@@ -25,9 +28,12 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 	// Event Handlers (stable ref to avoid MobileVideo effect churn)
 	const handleLoad = useCallback(() => setPageLoaded(true), [setPageLoaded]);
 
+	// Don't load either until we know the device (avoids loading both bundles)
+	const isReady = isDesktop || isMobile;
+
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
-			{isDesktop ? (
+			{!isReady ? null : isDesktop ? (
 				<UnicornScene
 					className='unicorn'
 					projectId={sceneId}
@@ -40,7 +46,18 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 					fps={120}
 				/>
 			) : (
-				<MobileVideo src={video} onReady={handleLoad} isModalOpen={isModalOpen} />
+				<MobileVideo
+					data={video}
+					src={
+						video?.streamingUrl ??
+						video?.mp4High ??
+						video?.mp4Med ??
+						video?.mp4Low ??
+						'/stone-desktop.mp4'
+					}
+					onReady={handleLoad}
+					isModalOpen={isModalOpen}
+				/>
 			)}
 		</S.Jacket>
 	);

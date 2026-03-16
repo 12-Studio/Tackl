@@ -34,6 +34,7 @@
 	"dependencies": {
 		"@datocms/cda-client": "^0.2.10",
 		"@gsap/react": "^2.1.2",
+		"@mux/mux-player-react": "^3.11.5",
 		"color": "^5.0.3",
 		"graphql": "^16.13.1",
 		"graphql-tag": "^2.12.6",

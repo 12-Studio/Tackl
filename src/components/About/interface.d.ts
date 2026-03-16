@@ -16,4 +16,5 @@ export interface AboutProps extends HeroProps {
 	linkedin?: string;
 	twitter?: string;
 	contactTitle: string;
+	legalTitle: string;
 }

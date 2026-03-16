@@ -10,5 +10,13 @@ export interface HeroProps extends MobileNavProps {
 	description: string;
 	logos: Logo[];
 	unicornId: string;
-	video: string;
+	video?: {
+		muxPlaybackId?: string;
+		streamingUrl?: string;
+		mp4High?: string;
+		mp4Med?: string;
+		mp4Low?: string;
+		width?: number;
+		height?: number;
+	} | null;
 }

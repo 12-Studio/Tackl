@@ -10,10 +10,10 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Subheading = ({ children, className }: I.SubheadingProps) => {
+const Subheading = ({ children, className, isLight }: I.SubheadingProps) => {
 	return (
-		<S.Jacket className={className}>
-			<S.Flasher />
+		<S.Jacket className={className} $isLight={isLight}>
+			<S.Flasher $isLight={isLight} />
 			{children}
 		</S.Jacket>
 	);

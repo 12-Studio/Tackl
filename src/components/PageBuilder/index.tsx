@@ -1,18 +1,25 @@
+'use client';
+
 // Imports
 // ------------
 import { Fragment } from 'react';
-import SplitFeatureGrid from './SplitFeatureGrid';
-import NumberedProcessGrid from './NumberedProcessGrid';
-import StatisticsGrid from './StatisticsGrid';
-import AlternatingMediaRow from './AlternatingMediaRow';
-import ComparisonTable from './ComparisonTable';
-import EditorialStoryCtaStat from './EditorialStoryCtaStat';
-import HeadingDescription from './HeadingDescription';
-import Parallax from './Parallax';
-import AnimatedStory from './AnimatedStory';
-import TeamMembers from './TeamMembers';
-import Faqs from './Faqs';
-import BigIconTextGrid from './BigIconTextGrid';
+import dynamic from 'next/dynamic';
+
+// Lazy Load Components
+// ------------
+const SplitFeatureGrid = dynamic(() => import('./SplitFeatureGrid'), { ssr: true });
+const NumberedProcessGrid = dynamic(() => import('./NumberedProcessGrid'), { ssr: true });
+const StatisticsGrid = dynamic(() => import('./StatisticsGrid'), { ssr: true });
+const AlternatingMediaRow = dynamic(() => import('./AlternatingMediaRow'), { ssr: true });
+const ComparisonTable = dynamic(() => import('./ComparisonTable'), { ssr: true });
+const EditorialStoryCtaStat = dynamic(() => import('./EditorialStoryCtaStat'), { ssr: true });
+const HeadingDescription = dynamic(() => import('./HeadingDescription'), { ssr: true });
+const Parallax = dynamic(() => import('./Parallax'), { ssr: true });
+const AnimatedStory = dynamic(() => import('./AnimatedStory'), { ssr: true });
+const TeamMembers = dynamic(() => import('./TeamMembers'), { ssr: true });
+const Faqs = dynamic(() => import('./Faqs'), { ssr: true });
+const BigIconTextGrid = dynamic(() => import('./BigIconTextGrid'), { ssr: true });
+const StandardContent = dynamic(() => import('./StandardContent'), { ssr: true });
 
 // Styles + Interfaces
 // ------------
@@ -20,7 +27,7 @@ import type * as I from './interface';
 
 // Component
 // ------------
-const renderBlock = (block: I.PageBuilderBlock, contactTitle: string) => {
+const renderBlock = (block: I.PageBuilderBlock, contactTitle?: string | null) => {
 	switch (block.__typename) {
 		case 'SplitFeatureGridRecord':
 			return <SplitFeatureGrid heading={block.heading} features={block.features ?? []} />;
@@ -54,7 +61,7 @@ const renderBlock = (block: I.PageBuilderBlock, contactTitle: string) => {
 					animatedText={block.animatedText}
 					inlineCallToAction={block.inlineCallToAction}
 					statistics={block.statistics}
-					contactTitle={contactTitle}
+					contactTitle={contactTitle ?? null}
 				/>
 			);
 		case 'HeadingDescriptionRecord':
@@ -67,7 +74,7 @@ const renderBlock = (block: I.PageBuilderBlock, contactTitle: string) => {
 					desc={block.desc}
 					animatedText={block.animatedText}
 					buttonLabel={block.buttonLabel}
-					contactTitle={contactTitle}
+					contactTitle={contactTitle ?? null}
 				/>
 			);
 		case 'MembersTeamRecord':
@@ -95,6 +102,8 @@ const renderBlock = (block: I.PageBuilderBlock, contactTitle: string) => {
 					sections={block.sections ?? []}
 				/>
 			);
+		case 'StandardContentRecord':
+			return <StandardContent heading={block.heading} text={block.text} />;
 		default:
 			return null;
 	}
@@ -104,7 +113,7 @@ const PageBuilder = ({ pageBuilder, contactTitle }: I.PageBuilderProps) => (
 	<>
 		{(pageBuilder ?? []).map(block => (
 			<Fragment key={`${block.__typename}-${block.id}`}>
-				{renderBlock(block, contactTitle)}
+				{renderBlock(block, contactTitle ?? null)}
 			</Fragment>
 		))}
 	</>

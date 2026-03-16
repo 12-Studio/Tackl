@@ -17,7 +17,7 @@ export const displayL: RuleSet = css`
 	font-size: 15rem;
 	letter-spacing: -0.5rem;
 
-	${bp.xl`
+	${bp.l`
 		font-size:clamp(18rem, 16.666vw, 24rem);
 	`}
 `;
@@ -44,8 +44,12 @@ export const headlineL: RuleSet = css`
 	line-height: 1.1;
 	letter-spacing: -0.5px;
 
-	${bp.xl`
+	${bp.l`
 		text-box: trim-both cap alphabetic;
+		font-size: 7rem;
+	`}
+
+	${bp.xl`
 		font-size: 8rem;
 	`}
 `;
@@ -57,7 +61,7 @@ export const headlineS: RuleSet = css`
 	font-weight: ${theme.font.weight.light};
 	font-size: 4.2rem;
 
-	${bp.xl`
+	${bp.l`
 		font-size: 6.4rem;
 	`}
 `;
@@ -69,7 +73,7 @@ export const titleL: RuleSet = css`
 	font-size: 3rem;
 	letter-spacing: 0.05rem;
 
-	${bp.xl`
+	${bp.l`
 		text-box: trim-both cap alphabetic;
 		font-size: 4rem;
 	`}
@@ -93,7 +97,11 @@ const baseBodyStyles: RuleSet = css`
 	font-family: ${theme.font.family.body};
 	line-height: 1.32;
 	letter-spacing: 0.05rem;
-	text-box: trim-both cap alphabetic;
+	
+
+	${bp.l`
+		text-box: trim-both cap alphabetic;
+	`}
 `;
 
 export const bodyL: RuleSet = css`
@@ -102,7 +110,7 @@ export const bodyL: RuleSet = css`
 	font-weight: ${theme.font.weight.light};
 	font-size: 1.8rem;
 
-	${bp.xl`
+	${bp.l`
 		font-size: 2.4rem;
 	`}
 `;
@@ -113,7 +121,7 @@ export const bodyM: RuleSet = css`
 	font-weight: ${theme.font.weight.regular};
 	font-size: 1.4rem;
 
-	${bp.xl`
+	${bp.l`
 		font-size: 1.8rem;
 	`}
 `;
@@ -124,7 +132,7 @@ export const bodyS: RuleSet = css`
 	font-weight: ${theme.font.weight.regular};
 	font-size: 1.2rem;
 
-	${bp.xl`
+	${bp.l`
 		font-size: 1.4rem;
 	`}
 `;
@@ -136,5 +144,5 @@ export const captionL: RuleSet = css`
 	text-transform: uppercase;
 	text-box: trim-both cap alphabetic;
 
-	${bp.xl` font-size: 1.2rem; `}
+	${bp.l` font-size: 1.2rem; `}
 `;

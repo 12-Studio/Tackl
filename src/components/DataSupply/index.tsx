@@ -30,6 +30,7 @@ const DataSupply = ({
 	linkedin,
 	twitter,
 	contactTitle,
+	legalTitle,
 }: I.DataSupplyProps) => {
 	// Contexts
 	const { setAreModalsReady } = use(GlobalContext);
@@ -55,6 +56,7 @@ const DataSupply = ({
 				linkedin={linkedin}
 				twitter={twitter}
 				contactTitle={contactTitle}
+				legalTitle={legalTitle}
 			/>
 		</Modal>
 	);

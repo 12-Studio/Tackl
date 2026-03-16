@@ -140,6 +140,7 @@ export const Panel = styled(Aside)<StylesInterface>(
 		overflow: clip;
 		border-radius: ${getRadius('s')};
 		pointer-events: none;
+    background: ${getGlobal('black')};
 
     ${bp.l`
       --offset: ${getGap('huge')};
@@ -150,7 +151,7 @@ export const Panel = styled(Aside)<StylesInterface>(
     picture {
       position: absolute;
       inset: 0;
-      z-index: -1;
+      z-index: 0;
       background: ${getGlobal('black')};
 
       img {
@@ -159,6 +160,7 @@ export const Panel = styled(Aside)<StylesInterface>(
         height: 100%;
         object-fit: cover;
         filter: blur(1rem);
+        background: ${getGlobal('black')};
 
         ${bp.l`
           filter: blur(0);

@@ -3,12 +3,11 @@
 
 // Exports
 // ------------
-export interface ContactProps {
+export type LegalProps = {
 	title: string;
 	heading: string;
 	desc: string;
-	email: string;
-	linkedin?: string;
-	twitter?: string;
 	legalTitle: string;
-}
+	lastUpdated: string;
+	pageBuilder: PageBuilderProps;
+};

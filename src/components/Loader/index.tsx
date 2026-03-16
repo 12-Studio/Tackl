@@ -5,7 +5,7 @@
 import Logo from '@parts/Logo';
 import gsap from 'gsap';
 import Frame from '@parts/Frame';
-import { use, useEffect, useRef, useState } from 'react';
+import { use, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import { useAnimation } from '@utils/useAnimation';
 import { bezzy2, bezzy4, slow } from '@parts/AnimationPlugins/Curves';
@@ -72,6 +72,17 @@ const Loader = () => {
 	const bottomFirstPlusRef = useRef<HTMLSpanElement>(null);
 	const bottomLastPlusRef = useRef<HTMLSpanElement>(null);
 	const frameRef = useRef<gsap.core.Timeline | null>(null);
+
+	// Set logo initial state before paint to prevent flash/pop (useAnimation runs after paint)
+	useLayoutEffect(() => {
+		if (!logoRef.current) return;
+		const paths = logoRef.current.querySelectorAll('path');
+		gsap.set(paths, {
+			autoAlpha: PULSE_SETTINGS.BEFORE.OPACITY,
+			scale: PULSE_SETTINGS.BEFORE.SCALE,
+			transformOrigin: 'center center',
+		});
+	}, []);
 
 	// Pulse Animation
 	useAnimation(
@@ -193,26 +204,17 @@ const Loader = () => {
 		tl.eventCallback('onComplete', () => setIsLoaderFinished(true));
 	}, [pageLoaded, isFontsLoaded, allModalsReady, setIsLoaderFinished]);
 
-	// Outro Animation
+	// Outro Animation — run immediately when loader is ready (don't wait for frame)
 	useAnimation(
 		() => {
 			if (!isLoaderFinished || !jacketRef.current) return;
 
-			const handleOutro = () => {
-				gsap.to(jacketRef.current, {
-					autoAlpha: 0,
-					duration: 1,
-					ease: slow,
-					onComplete: () => setShouldRender(false),
-				});
-			};
-
-			const frameTl = frameRef.current;
-			if (frameTl?.isActive()) {
-				frameTl.then(handleOutro);
-			} else {
-				handleOutro();
-			}
+			gsap.to(jacketRef.current, {
+				autoAlpha: 0,
+				duration: 1,
+				ease: 'sine.inOut',
+				onComplete: () => setShouldRender(false),
+			});
 		},
 		{
 			scope: jacketRef,

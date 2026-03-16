@@ -12,9 +12,9 @@ import {
 	getRadius,
 	Header,
 	H2,
-	P,
+	H3,
 } from '@tackl';
-import { bodyL, headlineS } from '@tackl/type';
+import { bodyL, headlineL } from '@tackl/type';
 
 // Interfaces
 // ------------
@@ -33,11 +33,10 @@ export const Jacket = styled(Header)<StylesInterface>(
 
         padding-block: ${getGap('l')};
         width: 100%;
-        min-height: clamp(50rem, 100svh, 1024rem);
+        min-height: clamp(70rem, 100svh, 1024rem);
 
         ${bp.l`
             padding-block: ${getGap('uber')};
-            min-height: clamp(70rem, 100svh, 1024rem);
         `}
 
         > .frame {
@@ -60,35 +59,15 @@ export const Jacket = styled(Header)<StylesInterface>(
                 `}
             }
         }
+
+        waffl-grid {
+            row-gap: ${getGap('sm')};
+
+            ${bp.l`
+                row-gap: ${getGap('l')};
+            `}
+        }
     `
-);
-
-export const Top = styled(Section)(
-	() => css`
-        display: flex;
-        flex-direction: column;
-        gap: ${getGap('m')};
-
-		position: relative;
-        padding-bottom: ${getGap('m')};
-
-        ${bp.l`
-            padding-bottom: ${getGap('xxl')};
-            gap: ${getGap('l')};
-        `}
-
-        .frame.bottom {
-            position: absolute;
-            z-index: 2;
-            bottom: 0;
-        }
-
-        > * {
-            &:nth-child(2) {
-                row-gap: ${getGap('sm')};
-            }
-        }
-	`
 );
 
 export const TitlePosition = styled(Div)(
@@ -97,30 +76,31 @@ export const TitlePosition = styled(Div)(
 	`
 );
 
-export const Heading = styled(H2)(
+export const LastUpdated = styled(H2)(
 	() => css`
-        ${headlineS}
-
-		position: relative;
-		z-index: 1;
-
-        color: ${getGlobal('black')};
-        margin-bottom: ${getGap('s')};
         
-
-        ${bp.l`
-            margin-bottom: 0;
-        `}
 	`
 );
 
-export const Desc = styled(P)(
+export const Heading = styled(H3)(
+	() => css`
+        ${headlineL}
+
+        color: ${getGlobal('luxuryWhite')};
+	`
+);
+
+export const Text = styled(Div)(
 	() => css`
         ${bodyL}
-		position: relative;
-		z-index: 1;
 
-        color: ${getGlobal('black', 60)};
-        text-wrap: balance;
+        display: flex;
+        flex-direction: column;
+        gap: ${getGap('m')};
+
+        * {
+            color: ${getGlobal('luxuryWhite', 40)};
+            text-wrap: balance;
+        }
 	`
 );

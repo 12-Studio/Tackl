@@ -4,7 +4,7 @@
 // Exports
 // ------------
 export interface EditorialStoryCtaStatProps {
-	contactTitle: string;
+	contactTitle?: string | null;
 	heading: string;
 	animatedText?: string;
 	inlineCallToAction?: {

@@ -1,104 +1,19 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import {
-	bp,
-	Section,
-	Div,
-	getBrand,
-	getGlobal,
-	getEase,
-	getGap,
-	getRadius,
-	Footer,
-	H2,
-} from '@tackl';
-import { bodyL, captionL, headlineL } from '@tackl/type';
+import { bp, Section, Div, getBrand, getGlobal, getEase, getGap, getRadius, Footer } from '@tackl';
+import { bodyL, captionL } from '@tackl/type';
 
 // Interfaces
 // ------------
 interface StylesInterface {
-	$isRight?: boolean;
 	$isLegal?: boolean;
+	$isRight?: boolean;
 }
 
 // Exports
 // ------------
 export const Jacket = styled(Footer)<StylesInterface>(
-	() => css`
-        position: relative;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-start;
-
-        width: 100%;
-        height: 100svh;
-        background: ${getGlobal('luxuryWhite')};
-
-        > .frame {
-            position: absolute;
-            z-index: 2;
-
-            &.top {
-                top: var(--mobile-pad);
-
-                ${bp.l`
-                    top: ${getGap('sm')};
-                `}
-            }
-
-            &.bottom {
-                bottom: var(--mobile-pad);
-
-                ${bp.l`
-                    bottom: ${getGap('sm')};
-                `}
-            }
-        }
-    `
-);
-
-export const Top = styled(Section)<StylesInterface>(
-	() => css`
-		position: relative;
-        flex: 1;
-        padding-right: ${getGap('uber')};
-        padding: ${getGap('l')} ${getGap('uber')} ${getGap('l')} 0;
-
-        ${bp.l`
-            padding: ${getGap('uber')} 0 ${getGap('uber')};
-        `}
-
-        waffl-grid {
-            row-gap: ${getGap('m')};
-
-            ${bp.l`
-                row-gap: ${getGap('xxl')};
-            `}
-        }
-	`
-);
-
-export const Heading = styled(H2)<StylesInterface>(
-	() => css`
-        ${headlineL}
-        
-		position: relative;
-
-        color: ${getGlobal('black')};
-        text-wrap: balance;
-	`
-);
-
-export const Button = styled(Div)<StylesInterface>(
-	() => css`
-		position: relative;
-	`
-);
-
-export const Bottom = styled(Section)<StylesInterface>(
 	() => css`
 		position: relative;
 
@@ -106,10 +21,22 @@ export const Bottom = styled(Section)<StylesInterface>(
         flex-direction: column;
         gap: ${getGap('sm')};
         width: 100%;
+        padding-top: ${getGap('s')};
 
         ${bp.l`
             gap: ${getGap('xxl')};
+            padding-top: ${getGap('l')};
         `}
+
+        .frame.bottom {
+            position: absolute;
+            bottom: var(--mobile-pad);
+            left: 0;
+
+            ${bp.l`
+                bottom: ${getGap('m')};
+            `}
+        }
 	`
 );
 
@@ -123,9 +50,9 @@ export const GridBlock = styled(Div)<StylesInterface>(
 	({ $isLegal }) => css`
 		position: relative;
         display: flex;
-        flex-direction: column;
         flex-direction: ${$isLegal ? 'row' : 'column'};
         align-items: ${$isLegal ? 'center' : 'stretch'};
+
         justify-content: space-between;
         gap: ${$isLegal ? getGap('sm') : getGap('m')};
         width: 100%;
@@ -232,7 +159,7 @@ export const Legals = styled(Div)<StylesInterface>(
         padding-block: var(--mobile-pad) var(--mobile-extra-pad);
 
         ${bp.l`
-            padding-block: ${getGap('m')} ${getGap('xl')};
+            padding-block: ${getGap('m')} ${getGap('xxl')};
         `}
 
         .frame.top {

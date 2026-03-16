@@ -30,6 +30,7 @@ const About = ({
 	linkedin,
 	twitter,
 	contactTitle,
+	legalTitle,
 }: I.AboutProps) => {
 	// Contexts
 	const { setAreModalsReady } = use(GlobalContext);
@@ -55,6 +56,7 @@ const About = ({
 				linkedin={linkedin}
 				twitter={twitter}
 				contactTitle={contactTitle}
+				legalTitle={legalTitle}
 			/>
 		</Modal>
 	);

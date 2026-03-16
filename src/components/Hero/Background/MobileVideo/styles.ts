@@ -15,13 +15,13 @@ export const Jacket = styled(Div)(
 		aspect-ratio: 48/27;
 		overflow: visible;
 
-		video {	
+		video,
+		mux-player {
 			position: absolute;
 			inset: 0;
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
-			
 		}
 	`
 );

@@ -18,10 +18,11 @@ export const Jacket = styled.form<StylesInterface>(
         flex: 1;
         display: flex;
         flex-direction: column;
-        gap: ${getGap('l')};
+        gap: ${getGap('sm')};
         padding: ${getGap('l')} var(--mobile-extra-pad) 0;
 
         ${bp.l`
+            gap: ${getGap('l')};
             padding: ${getGap('xxl')} ${getGap('uber')} 0;
         `}
     `
@@ -39,7 +40,7 @@ export const Radios = styled(Div)(
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
-		gap: ${getGap('m')};
+		gap: ${getGap('sm')};
 
         /* Reset */
         outline: none;
@@ -187,8 +188,12 @@ export const Inputs = styled(Div)(
         "name email"
         "message message";
         grid-template-rows: auto 1fr;
-        gap: ${getGap('l')};
+        gap: ${getGap('sm')};
         width: 100%;
+
+        ${bp.l`
+            gap: ${getGap('l')};
+        `}
 	`
 );
 
@@ -202,9 +207,14 @@ export const Input = styled.input<StylesInterface>(
 		display: block;
 
 		width: 100%;
-        height: 5.6rem;
-        padding-inline: ${getGap('m')};
+        height: 4rem;
+        padding-inline: ${getGap('sm')};
         border-radius: ${getRadius('s')};
+
+        ${bp.l`
+            height: 5.6rem;
+            padding-inline: ${getGap('m')};
+        `}
 
         &::placeholder {
             ${bodyM}
@@ -225,10 +235,20 @@ export const TextArea = styled.textarea<StylesInterface>(
 
 		display: block;
 		width: 100%;
-        padding: ${getGap('sm')} ${getGap('m')};
+        padding: ${getGap('sm')};
 
         border-radius: ${getRadius('s')};
         resize: none;
+
+        ${bp.l`
+            padding: ${getGap('m')};
+        `}
+
+        &::placeholder {
+            ${bodyM}
+            color: ${getGlobal('black', 50)};
+            opacity: 1;
+        }
 	`
 );
 

@@ -77,7 +77,7 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel, contactTitle }: I.Anim
 
 	// Handle Contact
 	const handleContact = () => {
-		setModalActive(contactTitle);
+		setModalActive(contactTitle ?? 'Contact');
 	};
 
 	return (

@@ -3,12 +3,14 @@
 import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
-import Activation from '@parts/Activation';
-import DataSupply from '@parts/DataSupply';
-import About from '@parts/About';
-import Contact from '@parts/Contact';
+import dynamic from 'next/dynamic';
 
-// Lazy Load Modals
+// Lazy Sections
+const Activation = dynamic(() => import('@parts/Activation'), { ssr: true });
+const DataSupply = dynamic(() => import('@parts/DataSupply'), { ssr: true });
+const About = dynamic(() => import('@parts/About'), { ssr: true });
+const Contact = dynamic(() => import('@parts/Contact'), { ssr: true });
+const Legal = dynamic(() => import('@parts/Legal'), { ssr: true });
 
 // Data fetching at build time
 // ------------
@@ -27,7 +29,7 @@ async function getAllData() {
 // ------------
 const Page = async () => {
 	// Fetch data
-	const { home, activation, dataSupply, about, cta, contactDetails, contact } =
+	const { home, activation, dataSupply, about, cta, contactDetails, contact, legal } =
 		await getAllData();
 
 	// Create menu items array
@@ -45,6 +47,8 @@ const Page = async () => {
 		email: contactDetails?.email,
 		linkedin: contactDetails?.linkedin,
 		twitter: contactDetails?.twitter,
+		contactTitle: contact.title,
+		legalTitle: legal.title,
 	};
 
 	return (
@@ -55,7 +59,7 @@ const Page = async () => {
 				description={home.desc}
 				logos={home.partnerLogos}
 				unicornId={home.unicornId}
-				video='/stone-desktop.mp4'
+				video={home.video?.video}
 			/>
 
 			<Activation
@@ -68,7 +72,6 @@ const Page = async () => {
 				isCtaOverridden={activation.isCtaOverridden}
 				ctaOverrideHeading={activation.overrideHeading}
 				ctaOverrideButtonLabel={activation.overrideButtonLabel}
-				contactTitle={contact.title}
 			/>
 
 			<DataSupply
@@ -81,7 +84,6 @@ const Page = async () => {
 				isCtaOverridden={dataSupply.isCtaOverridden}
 				ctaOverrideHeading={dataSupply.overrideHeading}
 				ctaOverrideButtonLabel={dataSupply.overrideButtonLabel}
-				contactTitle={contact.title}
 			/>
 
 			<About
@@ -94,7 +96,6 @@ const Page = async () => {
 				isCtaOverridden={about.isCtaOverridden}
 				ctaOverrideHeading={about.overrideHeading}
 				ctaOverrideButtonLabel={about.overrideButtonLabel}
-				contactTitle={contact.title}
 			/>
 
 			<Contact
@@ -102,6 +103,15 @@ const Page = async () => {
 				title={contact.title}
 				heading={contact.heading}
 				desc={contact.desc}
+			/>
+
+			<Legal
+				title={legal.title}
+				heading={legal.heading}
+				desc={legal.desc}
+				lastUpdated={legal.lastUpdated}
+				pageBuilder={legal.pageBuilder}
+				legalTitle={legal.title}
 			/>
 		</main>
 	);

@@ -61,6 +61,8 @@ const Member = ({ name, role, linkedinUrl, email, image }: I.MemberProps) => {
 					alt={image.alt}
 					fill
 					sizes='100vw, (min-width: 1024px) 66vw'
+					blurDataURL={image.blur}
+					placeholder='blur'
 				/>
 			</S.Picture>
 

@@ -1,4 +1,6 @@
-const prompts = require('prompts');
+const path = require('path');
+const promptsPath = path.resolve(__dirname, 'node_modules', 'prompts');
+const prompts = require(promptsPath);
 const { execSync } = require('child_process');
 const fs = require('fs');
 

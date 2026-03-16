@@ -8,11 +8,12 @@ import { GlobalContext } from '@parts/Contexts';
 
 // Styles + Interfaces
 // ------------
+import type * as I from './interface';
 import * as S from './styles';
 
 // Component
 // ------------
-const Contact = () => {
+const Contact = ({ contactTitle }: I.ContactProps) => {
 	// Contexts
 	const { isModalOpen, setIsModalOpen, setModalActive } = use(GlobalContext);
 
@@ -26,12 +27,12 @@ const Contact = () => {
 		<S.Jacket
 			data-hover
 			type='button'
-			aria-label='Contact us'
+			aria-label={`Open ${contactTitle}`}
 			$isModalOpen={isModalOpen}
-			onClick={() => handleClick('contact')}
+			onClick={() => handleClick(contactTitle)}
 		>
 			<Icon type='mail' />
-			<span>Contact</span>
+			<span>{contactTitle}</span>
 		</S.Jacket>
 	);
 };

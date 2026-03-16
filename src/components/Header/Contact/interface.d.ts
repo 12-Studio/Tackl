@@ -3,4 +3,6 @@
 
 // Exports
 // ------------
-export type ContactProps = {};
+export type ContactProps = {
+	contactTitle: string;
+};

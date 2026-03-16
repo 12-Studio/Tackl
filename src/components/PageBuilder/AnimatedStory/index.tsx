@@ -6,7 +6,7 @@ import { StructuredText } from 'react-datocms/structured-text';
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
-import { use, useRef, useEffect } from 'react';
+import { use, useRef } from 'react';
 import { useAnimation } from '@utils/useAnimation';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import { GlobalContext } from '@parts/Contexts';
@@ -21,28 +21,23 @@ import * as S from './styles';
 
 // Component
 // ------------
-const AnimatedStory = ({ desc, animatedText, buttonLabel }: I.AnimatedStoryProps) => {
+const AnimatedStory = ({ desc, animatedText, buttonLabel, contactTitle }: I.AnimatedStoryProps) => {
 	// Refs
 	const jacketRef = useRef<HTMLDivElement>(null);
 	const animatedTextRef = useRef<HTMLDivElement>(null);
 
 	// Contexts
 	const { scrollWrapper, lenisReady } = use(NestedLenisContext);
-	const { setIsModalOpen, setModalActive } = use(GlobalContext);
+	const { setModalActive } = use(GlobalContext);
 
-	// Refs
-	const contactTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	// ANimation Check
+	const aniCheck =
+		!animatedTextRef.current || !scrollWrapper.current || !lenisReady || !jacketRef.current;
 
 	// Animations
 	useAnimation(
 		() => {
-			if (
-				!animatedTextRef.current ||
-				!scrollWrapper.current ||
-				!lenisReady ||
-				!jacketRef.current
-			)
-				return;
+			if (aniCheck) return;
 
 			const split = SplitText.create(animatedTextRef.current, {
 				type: 'words,chars',
@@ -82,24 +77,8 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel }: I.AnimatedStoryProps
 
 	// Handle Contact
 	const handleContact = () => {
-		setIsModalOpen(false);
-		setModalActive('home');
-
-		if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
-		contactTimeoutRef.current = setTimeout(() => {
-			setIsModalOpen(true);
-			setModalActive('Contact');
-			contactTimeoutRef.current = null;
-		}, 1100);
+		setModalActive(contactTitle);
 	};
-
-	// Clear contact timeout on unmount to prevent state update on unmounted component
-	useEffect(
-		() => () => {
-			if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
-		},
-		[]
-	);
 
 	return (
 		<S.Jacket ref={jacketRef}>

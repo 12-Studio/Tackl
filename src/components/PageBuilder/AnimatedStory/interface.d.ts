@@ -8,4 +8,5 @@ export interface AnimatedStoryProps {
 	desc?: string;
 	animatedText: StructuredText;
 	buttonLabel?: string;
+	contactTitle: string;
 }

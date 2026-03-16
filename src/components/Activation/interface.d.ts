@@ -19,4 +19,5 @@ export interface ActivationProps {
 	email: string;
 	linkedin?: string;
 	twitter?: string;
+	contactTitle: string;
 }

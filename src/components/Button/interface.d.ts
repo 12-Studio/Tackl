@@ -9,4 +9,6 @@ export interface ButtonProps {
 	ariaLabel?: string;
 	className?: string;
 	onLight?: boolean;
+	type?: 'button' | 'submit' | 'reset';
+	disabled?: boolean;
 }

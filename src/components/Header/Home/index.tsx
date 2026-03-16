@@ -27,7 +27,7 @@ const Home = () => {
 			$isModalOpen={isModalOpen}
 			onClick={() => handleClick('home')}
 			type='button'
-			aria-label='Go Home'
+			aria-label='Return to home'
 		>
 			<Logo />
 		</S.Jacket>

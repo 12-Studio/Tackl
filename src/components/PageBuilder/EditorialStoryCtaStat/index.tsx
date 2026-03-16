@@ -6,7 +6,7 @@ import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import Subheading from '@parts/Subheading';
-import { useRef, use, useEffect } from 'react';
+import { useRef, use } from 'react';
 import { useAnimation } from '@utils/useAnimation';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
@@ -24,6 +24,7 @@ import * as S from './styles';
 // Component
 // ------------
 const EditorialStoryCtaStat = ({
+	contactTitle,
 	heading,
 	animatedText,
 	inlineCallToAction,
@@ -37,31 +38,12 @@ const EditorialStoryCtaStat = ({
 
 	// Contexts
 	const { scrollWrapper, lenisReady } = use(NestedLenisContext);
-	const { setIsModalOpen, setModalActive } = use(GlobalContext);
-
-	// Refs
-	const contactTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const { setModalActive } = use(GlobalContext);
 
 	// Handle Contact
 	const handleContact = () => {
-		setIsModalOpen(false);
-		setModalActive('home');
-
-		if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
-		contactTimeoutRef.current = setTimeout(() => {
-			setIsModalOpen(true);
-			setModalActive('Contact');
-			contactTimeoutRef.current = null;
-		}, 1100);
+		setModalActive(contactTitle);
 	};
-
-	// Clear contact timeout on unmount to prevent state update on unmounted component
-	useEffect(
-		() => () => {
-			if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
-		},
-		[]
-	);
 
 	const aniCheck =
 		!animatedTextRef.current ||

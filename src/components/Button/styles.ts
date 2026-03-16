@@ -43,7 +43,7 @@ export const Jacket = styled.button<StylesInterface>(
         }
 
         &:active {
-            background: ${getBrand('bc1', 10)};
+            background: ${$onLight ? getGlobal('black', 90) : getBrand('bc1', 10)};
             transition: background 0s linear;
         }
     `

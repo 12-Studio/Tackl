@@ -29,6 +29,7 @@ const Activation = ({
 	email,
 	linkedin,
 	twitter,
+	contactTitle,
 }: I.ActivationProps) => {
 	// Contexts
 	const { setAreModalsReady } = use(GlobalContext);
@@ -42,7 +43,7 @@ const Activation = ({
 		<Modal title={title}>
 			<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
 
-			{pageBuilder && <PageBuilder pageBuilder={pageBuilder} />}
+			{pageBuilder && <PageBuilder pageBuilder={pageBuilder} contactTitle={contactTitle} />}
 
 			<CallToAction
 				heading={ctaHeading}
@@ -53,6 +54,7 @@ const Activation = ({
 				email={email}
 				linkedin={linkedin}
 				twitter={twitter}
+				contactTitle={contactTitle}
 			/>
 		</Modal>
 	);

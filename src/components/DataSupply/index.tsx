@@ -29,6 +29,7 @@ const DataSupply = ({
 	email,
 	linkedin,
 	twitter,
+	contactTitle,
 }: I.DataSupplyProps) => {
 	// Contexts
 	const { setAreModalsReady } = use(GlobalContext);
@@ -42,7 +43,7 @@ const DataSupply = ({
 		<Modal title={title}>
 			<Hero title={title} heading={heading} desc={desc} usaCoverage={usaCoverage} />
 
-			{pageBuilder && <PageBuilder pageBuilder={pageBuilder} />}
+			{pageBuilder && <PageBuilder pageBuilder={pageBuilder} contactTitle={contactTitle} />}
 
 			<CallToAction
 				heading={ctaHeading}
@@ -53,6 +54,7 @@ const DataSupply = ({
 				email={email}
 				linkedin={linkedin}
 				twitter={twitter}
+				contactTitle={contactTitle}
 			/>
 		</Modal>
 	);

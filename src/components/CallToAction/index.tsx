@@ -18,6 +18,7 @@ import Link from 'next/link';
 // Component
 // ------------
 const CallToAction = ({
+	contactTitle,
 	isCtaOverridden,
 	overrideHeading,
 	overrideButtonLabel,
@@ -28,30 +29,11 @@ const CallToAction = ({
 	twitter,
 }: I.CallToActionProps) => {
 	// Contexts
-	const { setIsModalOpen, setModalActive } = use(GlobalContext);
-
-	// Refs
-	const contactTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-	// Clear contact timeout on unmount to prevent state update on unmounted component
-	useEffect(
-		() => () => {
-			if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
-		},
-		[]
-	);
+	const { setModalActive } = use(GlobalContext);
 
 	// Handle Contact
 	const handleContact = () => {
-		setIsModalOpen(false);
-		setModalActive('home');
-
-		if (contactTimeoutRef.current) clearTimeout(contactTimeoutRef.current);
-		contactTimeoutRef.current = setTimeout(() => {
-			setIsModalOpen(true);
-			setModalActive('Contact');
-			contactTimeoutRef.current = null;
-		}, 1100);
+		setModalActive(contactTitle);
 	};
 
 	// Get CTA Label
@@ -85,7 +67,11 @@ const CallToAction = ({
 						<S.GridBlock>
 							<S.GridBlockItem>
 								<h3>Reach out</h3>
-								<Link href={`mailto:${email}`} data-hover aria-label={`Email us at ${email}`}>
+								<Link
+									href={`mailto:${email}`}
+									data-hover
+									aria-label={`Email us at ${email}`}
+								>
 									{email}
 								</Link>
 							</S.GridBlockItem>
@@ -97,12 +83,22 @@ const CallToAction = ({
 									<ul>
 										{linkedin && (
 											<li data-hover>
-												<Link href={linkedin} aria-label='Visit our LinkedIn profile'>LinkedIn</Link>
+												<Link
+													href={linkedin}
+													aria-label='Visit our LinkedIn profile'
+												>
+													LinkedIn
+												</Link>
 											</li>
 										)}
 										{twitter && (
 											<li data-hover>
-												<Link href={twitter} aria-label='Visit our Twitter profile'>Twitter</Link>
+												<Link
+													href={twitter}
+													aria-label='Visit our Twitter profile'
+												>
+													Twitter
+												</Link>
 											</li>
 										)}
 									</ul>
@@ -124,13 +120,28 @@ const CallToAction = ({
 							<S.GridBlockItem $isLegal $isRight>
 								<ul>
 									<li data-hover>
-										<Link href={'/privacy-policy'} aria-label='View Inventory Guide'>Inventory Guide</Link>
+										<Link
+											href={'/privacy-policy'}
+											aria-label='View Inventory Guide'
+										>
+											Inventory Guide
+										</Link>
 									</li>
 									<li data-hover>
-										<Link href={'/terms-of-service'} aria-label='View MBE Certificate'>MBE Certificate</Link>
+										<Link
+											href={'/terms-of-service'}
+											aria-label='View MBE Certificate'
+										>
+											MBE Certificate
+										</Link>
 									</li>
 									<li data-hover>
-										<Link href={'/terms-of-service'} aria-label='View Legal information'>Legal</Link>
+										<Link
+											href={'/terms-of-service'}
+											aria-label='View Legal information'
+										>
+											Legal
+										</Link>
 									</li>
 								</ul>
 							</S.GridBlockItem>

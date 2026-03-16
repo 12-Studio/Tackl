@@ -15,7 +15,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Header = ({ menuItems }: I.HeaderProps) => {
+const Header = ({ menuItems, contactTitle }: I.HeaderProps) => {
 	// Contexts
 	const { isLoaderFinished, isModalOpen } = use(GlobalContext);
 
@@ -23,7 +23,7 @@ const Header = ({ menuItems }: I.HeaderProps) => {
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
 			<Home />
 			<Navigation menuItems={menuItems} />
-			<Contact />
+			<Contact contactTitle={contactTitle} />
 		</S.Jacket>
 	);
 };

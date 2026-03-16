@@ -4,6 +4,7 @@
 // Exports
 // ------------
 export interface CallToActionProps {
+	contactTitle: string;
 	isCtaOverridden: boolean;
 	overrideHeading?: string;
 	overrideButtonLabel?: string;

@@ -51,7 +51,10 @@ const Loader = () => {
 		use(GlobalContext);
 
 	const allModalsReady =
-		areModalsReady.activation && areModalsReady.dataSupply && areModalsReady.about;
+		areModalsReady.activation &&
+		areModalsReady.dataSupply &&
+		areModalsReady.about &&
+		areModalsReady.contact;
 
 	// States
 	const [shouldRender, setShouldRender] = useState(true);

@@ -3,11 +3,14 @@
 import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
-import Activation from '@parts/Activation';
-import DataSupply from '@parts/DataSupply';
-import About from '@parts/About';
-import Contact from '@parts/Contact';
-import Legal from '@parts/Legal';
+import dynamic from 'next/dynamic';
+
+// Lazy Sections
+const Activation = dynamic(() => import('@parts/Activation'), { ssr: true });
+const DataSupply = dynamic(() => import('@parts/DataSupply'), { ssr: true });
+const About = dynamic(() => import('@parts/About'), { ssr: true });
+const Contact = dynamic(() => import('@parts/Contact'), { ssr: true });
+const Legal = dynamic(() => import('@parts/Legal'), { ssr: true });
 
 // Data fetching at build time
 // ------------

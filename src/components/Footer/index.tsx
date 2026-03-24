@@ -3,23 +3,20 @@
 // Imports
 // ------------
 
-// Styles
+// Styles + Interfaces
 // ------------
-import { Jacket } from './styles';
-
-// Interfaces
-// ------------
-type FooterProps = {};
+import type * as I from './interface';
+import * as S from './styles';
 
 // Component
 // ------------
-const Footer = ({}: FooterProps) => {
+const Footer = ({ example }: I.FooterProps) => {
 	return (
-		<Jacket>
+		<S.Jacket>
 			{/*  */}
 			{/*  */}
 			{/*  */}
-		</Jacket>
+		</S.Jacket>
 	);
 };
 

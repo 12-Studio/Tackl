@@ -12,15 +12,14 @@ import type { Gap } from './interface';
 // Exports
 // ------------
 export const gap: Gap = {
-	xxs: '0.2rem',
+	xxs: '0.3rem',
 	xs: '0.4rem',
 	s: '0.8rem',
-	sm: '1.6rem',
-	m: '2.4rem',
-	l: '3.2rem',
-	xl: '4rem',
-	xxl: '4.8rem',
-	huge: '5.6rem',
+	sm: '1.2rem',
+	m: '1.6rem',
+	l: '2.4rem',
+	xl: '3.2rem',
+	xxl: '4rem',
+	huge: '4.8rem',
 	uber: '6.4rem',
-	mega: '8rem',
 };

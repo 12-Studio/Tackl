@@ -9,13 +9,13 @@ import type { GridInterface } from './interface';
 
 // Constants
 // ------------
-const { columns, gutter, margin, maxSize } = theme.grid;
+const { columns, gutter, maxSize } = theme.grid;
 
 // Base styles to reduce recalculation
 const baseGridStyles = css`
 	--grid-columns: repeat(${columns?.s}, 1fr);
 	--grid-gutter: ${gutter.s};
-	--grid-margin: ${margin.s};
+	--grid-margin: ${gutter.s};
 
 	display: grid;
 	contain: layout;
@@ -29,13 +29,13 @@ const baseGridStyles = css`
 	${bp.m`
 		--grid-columns: repeat(${columns?.m}, 1fr);
 		--grid-gutter: ${gutter.m};
-		--grid-margin: ${margin.m};
+		--grid-margin: calc(var(--grid-gutter) / 2);
 	`}
 
 	${bp.l`
 		--grid-columns: repeat(${columns?.l}, 1fr);
 		--grid-gutter: ${gutter.l};
-		--grid-margin: ${margin.l};
+		--grid-margin: calc(var(--grid-gutter) / 2);
 	`}
 `;
 

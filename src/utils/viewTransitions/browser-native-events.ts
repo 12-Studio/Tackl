@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState, use } from 'react';
 import { usePathname } from 'next/navigation';
-import { useHash } from './use-hash';
+import { use, useEffect, useRef, useState } from 'react';
 
 // TODO: This implementation might not be complete when there are nested
 // Suspense boundaries during a route transition. But it should work fine for
@@ -26,22 +25,27 @@ export function useBrowserNativeTransitions() {
 			return () => {};
 		}
 
+		const startViewTransition = document.startViewTransition;
+
 		const onPopState = () => {
-			let pendingViewTransitionResolve: () => void;
+			let pendingViewTransitionResolve: () => void = () => {};
 
 			const pendingViewTransition = new Promise<void>(resolve => {
 				pendingViewTransitionResolve = resolve;
 			});
 
 			const pendingStartViewTransition = new Promise<void>(resolve => {
-				// @ts-expect-error
-				document.startViewTransition(() => {
+				if (startViewTransition) {
+					startViewTransition(() => {
+						resolve();
+						return pendingViewTransition;
+					});
+				} else {
 					resolve();
-					return pendingViewTransition;
-				});
+				}
 			});
 
-			setCurrentViewTransition([pendingStartViewTransition, pendingViewTransitionResolve!]);
+			setCurrentViewTransition([pendingStartViewTransition, pendingViewTransitionResolve]);
 		};
 		window.addEventListener('popstate', onPopState);
 
@@ -61,8 +65,6 @@ export function useBrowserNativeTransitions() {
 	useEffect(() => {
 		transitionRef.current = currentViewTransition;
 	}, [currentViewTransition]);
-
-	const _hash = useHash();
 
 	useEffect(() => {
 		// When the new route component is actually mounted, we finish the view

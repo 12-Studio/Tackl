@@ -29,10 +29,7 @@ export interface UseResizeDetectionOptions {
  * @param newDimensions The new window dimensions.
  * @param prevDimensions The previous window dimensions.
  */
-export type ResizeCallback = (
-	newDimensions: WindowDimensions,
-	prevDimensions: WindowDimensions
-) => void;
+export type ResizeCallback = (newDimensions: WindowDimensions, prevDimensions: WindowDimensions) => void;
 
 /**
  * Custom hook to detect browser resizes while ignoring mobile scroll events
@@ -80,10 +77,8 @@ export function useResizeDetection(
 
 			// On mobile, check if this is likely a scroll event (height change only)
 			if (ignoreMobileScroll && isMobileRef.current) {
-				const widthChanged =
-					Math.abs(newDimensions.width - lastDimensionsRef.current.width) > 5;
-				const heightChanged =
-					Math.abs(newDimensions.height - lastDimensionsRef.current.height) > 5;
+				const widthChanged = Math.abs(newDimensions.width - lastDimensionsRef.current.width) > 5;
+				const heightChanged = Math.abs(newDimensions.height - lastDimensionsRef.current.height) > 5;
 
 				// If only height changed significantly, it's likely a scroll event
 				if (!widthChanged && heightChanged) {
@@ -138,10 +133,7 @@ export type Orientation = 'portrait' | 'landscape';
  * @param newOrientation The new orientation.
  * @param prevOrientation The previous orientation.
  */
-export type OrientationChangeCallback = (
-	newOrientation: Orientation,
-	prevOrientation: Orientation
-) => void;
+export type OrientationChangeCallback = (newOrientation: Orientation, prevOrientation: Orientation) => void;
 
 /**
  * Hook to detect orientation changes specifically.
@@ -164,12 +156,7 @@ export function useOrientationChange(callback?: OrientationChangeCallback): Orie
 
 	useEffect(() => {
 		const handleOrientationChange = () => {
-			const newOrientation =
-				typeof window !== 'undefined'
-					? window.innerWidth > window.innerHeight
-						? 'landscape'
-						: 'portrait'
-					: 'portrait';
+			const newOrientation = getOrientation();
 
 			setOrientation(prev => {
 				if (newOrientation !== prev) {

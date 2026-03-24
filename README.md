@@ -2,7 +2,7 @@
 
 ✨ A comprehensive starter kit designed to accelerate web development with best-in-class tooling, performance optimization, and developer experience. Built on Next.js, it provides everything needed to create fast, scalable, and maintainable web applications. ✨
 
-![Version Number](https://img.shields.io/badge/Version-3.2.3-8000FF)
+![Version Number](https://img.shields.io/badge/Version-3.3.0-8000FF)
 ![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
 
 `For detailed documentation and guides on how to use this starter kit, please refer to the 'docs' directory.`
@@ -11,7 +11,7 @@
 
 - **Next.js 16** - Latest version with App Router and React Server Components
 - **TypeScript** - Full type safety and enhanced developer experience _Optional_
-- **Biome** - Linting and formatting
+- **Biome** - Linting, formatting, and import organization
 - **Storybook** - Component development and documentation
 - **Performance Context** - Built-in performance optimizations and user preference detection
 - **GSAP** - Smooth animations and transitions
@@ -106,17 +106,17 @@ A quick look at the top-level files and directories you'll see in a Tackl projec
 
 7.  **`.gitignore`**: Version control configuration file that specifies which files and directories Git should ignore, such as node_modules, build outputs, and environment files.
 
-8.  **`.npmrc`**: Package manager configuration file. In Tackl, it's primarily used for configuring GSAP Club access and other package-specific settings.
+8.  **`.npmrc`**: Package manager configuration file that customizes Bun/npm registry behavior for this project. In Tackl, it's primarily used for configuring GSAP Club access and other package-specific settings.
 
 9.  **`deployment_guide`**: Comprehensive AWS deployment documentation providing step-by-step instructions for setting up and deploying your Tackl project to production.
 
 10. **`jsconfig.json`**: JavaScript project configuration file that enhances development experience by enabling TypeScript-like features, custom path aliases, and better IntelliSense support in modern IDEs.
 
-11. **`biome.json`**: Biome configuration for linting and formatting, providing consistent code style across the project.
+11. **`biome.json`**: Biome configuration for linting, formatting, and import organization with consistent code style across the project.
 
 12. **`next.config.js`**: Next.js framework configuration file where you can customize build settings, add environment variables, configure plugins, and modify webpack behavior. Essential for tailoring Next.js to your project's needs.
 
-13. **`bun.lock`**: Dependency lock file for Bun that ensures consistent installations. Should be committed to version control but never manually edited.
+13. **`bun.lock`**: Automatically generated dependency lock file that ensures consistent installations across different environments by recording the exact version of each installed package. Should be committed to version control but never manually edited.
 
 14. **`package.json`**: Project manifest file defining your application's dependencies, scripts, metadata, and other important configurations. This is the central configuration file for your Node.js/JavaScript project.
 

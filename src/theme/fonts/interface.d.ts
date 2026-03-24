@@ -20,7 +20,6 @@ export interface Family {
 // SECTION • Weight
 // NOTE — The main weight object structure
 export interface Weight {
-	thin: number;
 	light: number;
 	regular: number;
 	medium: number;

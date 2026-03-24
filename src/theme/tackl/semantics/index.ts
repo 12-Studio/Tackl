@@ -1,8 +1,9 @@
 // Imports
 // ------
+
+import { theme } from '@theme';
 import { css } from 'styled-components';
 import { breakpointUp } from '../breakpoints';
-import { theme } from '@theme';
 import type { SemanticProps } from './interface';
 
 // Exports
@@ -94,9 +95,7 @@ export const semantics = (props: SemanticProps) => css`
 // --------------
 // 4. Grid Semantics
 // --------------
-const breakpointKeys = Object.keys(
-	theme.grid.breakpoints
-) as (keyof typeof theme.grid.breakpoints)[];
+const breakpointKeys = Object.keys(theme.grid.breakpoints) as (keyof typeof theme.grid.breakpoints)[];
 
 export const gridSemantics = (props: SemanticProps) => css`
     grid-column: 1/-1;

@@ -1,56 +1,52 @@
 // Imports
 // ------------
-import localFont from 'next/font/local';
+import { Inter } from 'next/font/google';
+// import localFont from 'next/font/local';
 import type { Fonts } from './interface';
 
-// SECTION • Local font configuration
-export const neueHaas = localFont({
-	src: [
-		{
-			path: './neueHaas/thin.woff2',
-			weight: '200',
-			style: 'normal',
-		},
-		{
-			path: './neueHaas/light.woff2',
-			weight: '300',
-			style: 'normal',
-		},
-		{
-			path: './neueHaas/roman.woff2',
-			weight: '400',
-			style: 'normal',
-		},
-	],
-	display: 'swap',
-	variable: '--neue-haas',
+// SECTION • Inter font configuration optimized with swap display for better loading performance
+export const inter = Inter({
+	subsets: ['latin'],
+	display: 'swap', // Uses fallback font until Inter loads
+	weight: ['400', '500', '700'],
+	variable: '--inter',
 	preload: true,
 });
 
-export const pp = localFont({
-	src: [
-		{
-			path: './pp/regular.woff2',
-			weight: '400',
-			style: 'normal',
-		},
-	],
-	display: 'swap',
-	variable: '--pp',
-	preload: true,
-});
+// SECTION • Local font configuration
+// export const heebo = localFont({
+// 	src: [
+// 		{
+// 			path: './heebo/Heebo-Light.woff2',
+// 			weight: '300',
+// 			style: 'normal',
+// 		},
+// 		{
+// 			path: './heebo/Heebo-Regular.woff2',
+// 			weight: '400',
+// 			style: 'normal',
+// 		},
+// 		{
+// 			path: './heebo/Heebo-Medium.woff2',
+// 			weight: '500',
+// 			style: 'normal',
+// 		},
+// 	],
+// 	display: 'swap',
+// 	variable: '--heebo',
+// 	preload: true,
+// });
 
 // Exports
 // ------------
 export const fonts: Fonts = {
 	family: {
-		heading: `var(--neue-haas), Arial, sans-serif`,
-		body: `var(--neue-haas), Arial, sans-serif`,
-		mono: `var(--pp), Arial, sans-serif`,
-		script: `var(--unused), Arial, sans-serif`,
+		heading: `var(--inter), Arial, sans-serif`,
+		body: `var(--inter), Arial, sans-serif`,
+		mono: `var(--inter), Arial, sans-serif`,
+		script: `var(--inter), Arial, sans-serif`,
 	},
 	weight: {
-		thin: 200,
 		light: 300,
 		regular: 400,
 		medium: 500,

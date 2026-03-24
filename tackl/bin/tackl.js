@@ -63,9 +63,9 @@ ${pc.bold('Options:')}
   -h, --help         Show this help message
 
 ${pc.bold('Examples:')}
-  tackl my-app                    # Creates project with pnpm install + git init
+  tackl my-app                    # Creates project with bun install + git init
   tackl my-app --no-install       # Creates project with git init only
-  tackl my-app --no-git           # Creates project with pnpm install only
+  tackl my-app --no-git           # Creates project with bun install only
   tackl my-app --no-install --no-git  # Creates project only
 
 ${pc.bold('Repository:')} https://github.com/12-studio/tackl
@@ -89,10 +89,7 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 			name: 'name',
 			message: 'Project directory',
 			initial: 'my-tackl-app',
-			validate: v =>
-				/^[a-z0-9\-._]+$/.test(v)
-					? true
-					: 'Use lowercase letters, numbers, - . _',
+			validate: v => (/^[a-z0-9\-._]+$/.test(v) ? true : 'Use lowercase letters, numbers, - . _'),
 		},
 	].filter(q => q.type !== null);
 
@@ -120,9 +117,7 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 
 	const targetDir = path.resolve(process.cwd(), projectName);
 	if (fs.existsSync(targetDir) && fs.readdirSync(targetDir).length > 0) {
-		log.error(
-			`Directory "${projectName}" already exists and is not empty.`
-		);
+		log.error(`Directory "${projectName}" already exists and is not empty.`);
 		process.exit(1);
 	}
 	fs.mkdirSync(targetDir, { recursive: true });
@@ -140,8 +135,7 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 	try {
 		log.step('📥 Downloading template...');
 		const res = await fetch(tarUrl);
-		if (!res.ok)
-			throw new Error(`Download failed: ${res.status} ${res.statusText}`);
+		if (!res.ok) throw new Error(`Download failed: ${res.status} ${res.statusText}`);
 
 		// Convert response to buffer and write to file
 		const arrayBuffer = await res.arrayBuffer();
@@ -172,17 +166,18 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 	// Remove template .git if present
 	try {
 		const gitPath = path.join(targetDir, '.git');
-		if (fs.existsSync(gitPath))
-			fs.rmSync(gitPath, { recursive: true, force: true });
+		if (fs.existsSync(gitPath)) fs.rmSync(gitPath, { recursive: true, force: true });
 	} catch {}
 
-	// Remove any existing lock files to ensure pnpm is used
+	// Remove any existing lock files to ensure bun is used
 	try {
 		const yarnLock = path.join(targetDir, 'yarn.lock');
 		const npmLock = path.join(targetDir, 'package-lock.json');
+		const pnpmLock = path.join(targetDir, 'pnpm-lock.yaml');
 		if (fs.existsSync(yarnLock)) fs.unlinkSync(yarnLock);
 		if (fs.existsSync(npmLock)) fs.unlinkSync(npmLock);
-		log.step('🧹 Cleaned up lock files to ensure pnpm usage');
+		if (fs.existsSync(pnpmLock)) fs.unlinkSync(pnpmLock);
+		log.step('🧹 Cleaned up lock files to ensure bun usage');
 	} catch {}
 
 	// Patch package name
@@ -199,7 +194,7 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 		}
 	}
 
-	// Note: pnpm doesn't require .npmrc for basic usage
+	// Note: bun doesn't require .npmrc for basic usage
 
 	if (doGit) {
 		try {
@@ -222,28 +217,26 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 
 	if (doInstall) {
 		try {
-			log.step('📦 Installing dependencies with pnpm...');
+			log.step('📦 Installing dependencies with bun...');
 
 			// Disable Husky during installation to prevent Git issues
 			const originalEnv = { ...process.env };
 			process.env.HUSKY = '0';
 
-			execSync('pnpm install', { cwd: targetDir, stdio: 'inherit' });
+			execSync('bun install', { cwd: targetDir, stdio: 'inherit' });
 
 			// Restore environment
 			process.env = originalEnv;
 
-			// Check for security vulnerabilities
+			// Check for security vulnerabilities (bun has no built-in audit; use npm)
 			try {
 				log.step('🔍 Checking for security vulnerabilities...');
-				execSync('pnpm audit', { cwd: targetDir, stdio: 'inherit' });
+				execSync('bunx npm audit', { cwd: targetDir, stdio: 'inherit' });
 				log.ok('Security check completed!');
 			} catch (e) {
-				log.warn(
-					'Some security vulnerabilities were found.'
-				);
+				log.warn('Some security vulnerabilities were found.');
 				log.info(
-					'Review vulnerabilities with "pnpm audit" and update packages as needed.'
+					'Review vulnerabilities with "bun run outdated" or "bunx npm audit" and update packages as needed.'
 				);
 			}
 
@@ -256,13 +249,11 @@ ${pc.bold('Repository:')} https://github.com/12-studio/tackl
 	}
 
 	const rel = path.relative(process.cwd(), targetDir) || '.';
-	console.log(
-		'\n' + pc.bold(pc.green('Success!')) + ' Project scaffolded.\n'
-	);
+	console.log('\n' + pc.bold(pc.green('Success!')) + ' Project scaffolded.\n');
 	console.log(`  Next steps:`);
 	console.log(`  1) cd ${rel}`);
-	if (!doInstall) console.log(`  2) pnpm install`);
-	console.log(`  ${doInstall ? '2' : '3'}) pnpm run dev`);
+	if (!doInstall) console.log(`  2) bun install`);
+	console.log(`  ${doInstall ? '2' : '3'}) bun run dev`);
 }
 
 main().catch(e => {

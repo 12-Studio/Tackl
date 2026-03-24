@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * Device type string literal.
@@ -40,18 +40,17 @@ export function useDeviceDetection(): DeviceType {
 					: '';
 
 			// Check if it's a mobile device by user agent
-			const isMobileDevice: boolean =
-				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+			const isMobileDevice: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+				userAgent
+			);
 
 			// Check for touch capability
 			const hasTouchScreen: boolean =
 				typeof window !== 'undefined' &&
-				('ontouchstart' in window ||
-					(typeof navigator !== 'undefined' && (navigator.maxTouchPoints ?? 0) > 0));
+				('ontouchstart' in window || (typeof navigator !== 'undefined' && (navigator.maxTouchPoints ?? 0) > 0));
 
 			// Check for small screen
-			const isSmallScreen: boolean =
-				typeof window !== 'undefined' && window.innerWidth <= 768;
+			const isSmallScreen: boolean = typeof window !== 'undefined' && window.innerWidth <= 768;
 
 			// If it's a mobile device with touch screen and small screen, it's mobile
 			if (isMobileDevice && hasTouchScreen && isSmallScreen) {

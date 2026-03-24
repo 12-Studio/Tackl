@@ -74,9 +74,9 @@ export const Jacket = styled(Aside)<JacketProps>(
 	props => css`
 		position: fixed;
 		top: 0;
-		left: 34%;
+		left: 0;
 		z-index: 9999;
-		width: 66%;
+		width: 100%;
 		height: ${props.$showGrid ? `100%` : `0%`};
 		pointer-events: none;
 		transition: all 1s ${getEase('bezzy')};

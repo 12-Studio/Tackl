@@ -7,6 +7,5 @@ export interface Easing {
 	bezzy: string;
 	bezzy2: string;
 	bezzy3: string;
-	bezzy4: string;
 	ease: string;
 }

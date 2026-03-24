@@ -11,11 +11,7 @@
  * // Now it is safe to measure text or perform layout that depends on web fonts.
  */
 export function waitForFonts(): Promise<void> {
-	if (
-		typeof document !== 'undefined' &&
-		document.fonts &&
-		typeof document.fonts.ready?.then === 'function'
-	) {
+	if (typeof document !== 'undefined' && document.fonts && typeof document.fonts.ready?.then === 'function') {
 		// Wait for fonts.ready, but resolve with void
 		return document.fonts.ready.then(() => {});
 	}

@@ -5,6 +5,8 @@
 // ------------
 export interface HomeProps {
 	data: {
-		page: unknown;
+		page: any;
 	};
 }
+
+export type PageProps = {};

@@ -5,7 +5,7 @@ The ultimate Next.js starter kit with Waffl Grid system.
 ## Installation
 
 ```bash
-pnpm add -g tackl
+bun add -g tackl
 ```
 
 ## Usage
@@ -43,7 +43,7 @@ tackl my-app --no-install --no-git
 - 📱 **Responsive Design** - Mobile-first approach
 - 🔧 **TypeScript** - Full type safety
 - 🎯 **Performance** - Optimized for speed
-- 📦 **Modern Tooling** - ESLint, Prettier, Husky
+- 📦 **Modern Tooling** - Biome, Husky
 
 ## Features
 

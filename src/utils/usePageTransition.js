@@ -40,12 +40,9 @@ const usePageTransition = router => {
 	const bodyRef = useRef(null);
 	const rafIdRef = useRef(null);
 	const timeoutIdRef = useRef(null);
-	const isMountedRef = useRef(true);
 
 	useEffect(() => {
-		isMountedRef.current = true;
 		return () => {
-			isMountedRef.current = false;
 			if (rafIdRef.current != null) {
 				cancelAnimationFrame(rafIdRef.current);
 				rafIdRef.current = null;
@@ -64,16 +61,11 @@ const usePageTransition = router => {
 			}
 
 			try {
-				if (!isMountedRef.current) return;
 				bodyRef.current?.classList.add('page-transition');
 
 				await new Promise(resolve => {
 					rafIdRef.current = requestAnimationFrame(() => {
 						rafIdRef.current = null;
-						if (!isMountedRef.current) {
-							resolve();
-							return;
-						}
 						timeoutIdRef.current = setTimeout(() => {
 							timeoutIdRef.current = null;
 							resolve();
@@ -81,16 +73,11 @@ const usePageTransition = router => {
 					});
 				});
 
-				if (!isMountedRef.current) return;
 				router.push(to);
 
 				await new Promise(resolve => {
 					rafIdRef.current = requestAnimationFrame(() => {
 						rafIdRef.current = null;
-						if (!isMountedRef.current) {
-							resolve();
-							return;
-						}
 						timeoutIdRef.current = setTimeout(() => {
 							timeoutIdRef.current = null;
 							resolve();

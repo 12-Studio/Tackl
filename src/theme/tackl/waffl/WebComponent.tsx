@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren, type HTMLAttributes } from 'react';
+import React, { type HTMLAttributes, type PropsWithChildren } from 'react';
 
 // Register the custom element only on the client
 if (typeof window !== 'undefined' && !customElements.get('waffl-grid')) {

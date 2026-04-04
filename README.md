@@ -52,6 +52,92 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.jsx`. The page auto-updates as you edit the file.
 
+## 🧩 DatoCMS Preview Setup
+
+This boilerplate now includes a complete DatoCMS preview workflow for draft content, real-time updates, Web Previews, and Content Link visual editing.
+
+### Included capabilities
+
+- **Draft mode endpoints** for enabling/disabling draft previews:
+	- `GET /api/draft-mode/enable?token=...&redirect=/...`
+	- `GET /api/draft-mode/disable?redirect=/...`
+- **Realtime updates in draft mode** using `react-datocms` subscriptions
+- **Web Previews endpoint** for DatoCMS plugin integration:
+	- `POST /api/preview-links?token=...`
+- **Content Link visual editing** in draft mode, including click-to-edit overlays
+- **CSP iframe support** for DatoCMS Visual Editing:
+	- `frame-ancestors 'self' https://plugins-cdn.datocms.com`
+
+### DatoCMS-related packages
+
+- `@datocms/cda-client`
+- `@datocms/cma-client`
+- `react-datocms`
+- `@datocms/rest-client-utils`
+- `@datocms/content-link`
+- `serialize-error`
+
+### Key environment variables
+
+Set the following values in `.env` / `.env.example`:
+
+```bash
+DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN=
+DATOCMS_DRAFT_CONTENT_CDA_TOKEN=
+DATOCMS_API_TOKEN=
+SECRET_API_TOKEN=
+DRAFT_MODE_SECRET=
+DATOCMS_BASE_EDITING_URL=
+```
+
+### Core integration files
+
+- Draft mode + API utilities:
+	- `app/api/draft-mode/enable/route.ts`
+	- `app/api/draft-mode/disable/route.ts`
+	- `app/api/utils.ts`
+- Web Previews:
+	- `app/api/preview-links/route.ts`
+	- `src/lib/datocms/recordInfo.ts`
+- Content + realtime query flow:
+	- `src/utils/datocms.ts`
+	- `src/lib/datocms/realtime/generatePageComponent.tsx`
+	- `src/lib/datocms/realtime/generateRealtimeComponent.tsx`
+- Content Link mounting:
+	- `src/components/ContentLink/index.tsx`
+	- `app/layout.tsx`
+	- `app/Client.tsx`
+
+### DatoCMS plugin configuration
+
+Configure the Web Previews plugin directly in the DatoCMS dashboard:
+
+1. Go to **Settings → Plugins**.
+2. Install **Web Previews** from the marketplace (if it is not already installed).
+3. Open the plugin and click **Add frontend**.
+4. Fill the required fields:
+	- **Preview webhook URL**
+		- `https://your-site.com/api/preview-links?token=YOUR_SECRET_API_TOKEN`
+	- **Draft mode URL**
+		- `https://your-site.com/api/draft-mode/enable?token=YOUR_SECRET_API_TOKEN`
+	- **Initial path** (optional but recommended)
+		- `/`
+5. Save the frontend configuration.
+6. Configure your model URL mappings in:
+	- `src/lib/datocms/recordInfo.ts`
+7. Open any record in DatoCMS and verify:
+	- the sidebar shows **Draft version** and/or **Published version** links
+	- opening **Visual Editing** loads your site in the iframe
+	- in draft mode, click-to-edit overlays are available (hold `Alt` / `Option`)
+
+Optional dashboard settings you may also configure:
+
+1. **Viewport presets** for editors (desktop/tablet/mobile sizes).
+2. **Custom headers** if your preview environment requires additional auth.
+3. **Iframe allow attributes** if your preview needs specific browser capabilities.
+
+> Note: `recordInfo.ts` ships with TODO placeholders so each project can define its own model-to-route mapping before preview links can resolve to real pages.
+
 ## Committing code
 
 This project uses Husky and a custom commit message script to ensure consistent and informative commit messages. When you're ready to commit your changes:

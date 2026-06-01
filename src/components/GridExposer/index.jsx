@@ -25,9 +25,11 @@
 import { useCallback, useEffect, useState } from 'react';
 // Imports
 // ------
+import { Grid } from '@/theme/tackl/waffl';
+
 // Styles
 // ------
-import { Col, ExposerGrid, Jacket } from './styles';
+import { Col, Jacket } from './styles';
 
 // Constants
 // ------
@@ -84,7 +86,7 @@ const GridExposer = () => {
 
 	return (
 		<Jacket $showGrid={isGridVisible} $altColor={useAltColor}>
-			<ExposerGrid>{gridColumns}</ExposerGrid>
+			<Grid>{gridColumns}</Grid>
 		</Jacket>
 	);
 };

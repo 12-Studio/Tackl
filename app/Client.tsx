@@ -6,19 +6,13 @@ import '@theme/tackl/waffl/WebComponent';
 import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
+import GridExposer from '@parts/GridExposer';
 import SmoothScroll from '@parts/SmoothScroll';
 import { GlobalStyle, theme } from '@theme';
 import { inter } from '@theme/fonts';
 import StyledComponentsRegistry from '@utils/registry';
 import { ViewTransitions } from '@utils/viewTransitions';
-import dynamic from 'next/dynamic';
 import { ThemeProvider } from 'styled-components';
-
-// Lazy load GridExposer since it's only used in development
-// Disabled SSR as it's not critical for server rendering
-const GridExposer = dynamic(() => import('@parts/GridExposer'), {
-	ssr: false,
-});
 
 // Component
 // ------------

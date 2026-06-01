@@ -29,7 +29,8 @@
 		"test": "echo \"No tests specified\" && exit 0",
 		"lighthouse": "lhci autorun",
 		"outdated": "bunx npm-check-updates",
-		"sanity:cors": "sanity cors add http://localhost:3000 --credentials"
+		"sanity:cors": "sanity cors add http://localhost:3000 --credentials",
+		"sanity:cors:production": "sanity cors add https://sanity--tackl.netlify.app --credentials"
 	},
 	"dependencies": {
 		"@datocms/cda-client": "^0.2.10",

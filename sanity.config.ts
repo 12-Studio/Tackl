@@ -9,7 +9,7 @@ import { defineConfig } from 'sanity';
 import { presentationTool } from 'sanity/presentation';
 import { structureTool } from 'sanity/structure';
 import { structure } from './sanity/deskStructure';
-import { apiVersion, dataset, projectId } from './sanity/env';
+import { apiVersion, dataset, previewOrigin, projectId } from './sanity/env';
 import { StudioLogo } from './sanity/Logo';
 import { resolve } from './sanity/presentation/resolve';
 import { schema } from './sanity/schemaTypes';
@@ -44,13 +44,10 @@ export default defineConfig({
 			title: 'Presentation',
 			name: 'presentation',
 			resolve,
-			allowOrigins: [
-				process.env.NEXT_PUBLIC_SANITY_PREVIEW_ORIGIN || 'http://localhost:3000',
-			],
+			allowOrigins: [previewOrigin, 'http://localhost:3000'],
 			previewUrl: {
 				initial: '/',
-				origin:
-					process.env.NEXT_PUBLIC_SANITY_PREVIEW_ORIGIN || 'http://localhost:3000',
+				origin: previewOrigin,
 				previewMode: {
 					enable: '/api/draft-mode/enable/',
 				},

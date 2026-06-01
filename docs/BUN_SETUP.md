@@ -171,8 +171,13 @@ So CI and Netlify use the same install and build as locally:
 
 Also set in **Netlify UI** → Site settings → Environment variables:
 
-- `SANITY_API_READ_TOKEN` — Sanity viewer token (draft preview and live content)
-- `NEXT_PUBLIC_SANITY_PREVIEW_ORIGIN` — your deployed site URL (e.g. `https://your-site.netlify.app`)
+- `SANITY_API_READ_TOKEN` — Sanity viewer token (draft preview and live content; without this, `/api/draft-mode/enable/` returns 500)
+
+After deploying, add your site to Sanity CORS:
+
+```bash
+bun run sanity:cors:production
+```
 
 Set `NODE_VERSION` to match the Node version you support (e.g. `20` or `24`). Leave **Publish directory** empty if you use the Next.js plugin.
 

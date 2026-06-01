@@ -1,11 +1,10 @@
 import { draftMode } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+
+import { previewOrigin } from '@sanity/env';
 
 export const GET = async (request: NextRequest) => {
 	(await draftMode()).disable();
 
-	const origin =
-		process.env.NEXT_PUBLIC_SANITY_PREVIEW_ORIGIN || request.nextUrl.origin;
-
-	return NextResponse.redirect(new URL('/', origin));
+	return NextResponse.redirect(new URL('/', previewOrigin));
 };

@@ -54,13 +54,7 @@ export const homeType = defineType({
 			title: 'Images',
 			type: 'array',
 			group: 'introduction',
-			of: [
-				defineField({
-					name: 'image',
-					type: 'image',
-					options: { hotspot: true },
-				}),
-			],
+			of: [{ type: 'image', options: { hotspot: true } }],
 			options: { layout: 'grid' },
 		}),
 		// Approach
@@ -74,7 +68,6 @@ export const homeType = defineType({
 			name: 'approachDescription',
 			title: 'Description',
 			type: 'text',
-			rows: 4,
 			group: 'approach',
 		}),
 		defineField({
@@ -96,7 +89,6 @@ export const homeType = defineType({
 			name: 'servicesDescription',
 			title: 'Description',
 			type: 'text',
-			rows: 4,
 			group: 'services',
 		}),
 		defineField({

@@ -165,7 +165,14 @@ So CI and Netlify use the same install and build as locally:
 
 [build.environment]
   NODE_VERSION = "24"
+  NEXT_PUBLIC_SANITY_PROJECT_ID = "your-project-id"
+  NEXT_PUBLIC_SANITY_DATASET = "production"
 ```
+
+Also set in **Netlify UI** → Site settings → Environment variables:
+
+- `SANITY_API_READ_TOKEN` — Sanity viewer token (draft preview and live content)
+- `NEXT_PUBLIC_SANITY_PREVIEW_ORIGIN` — your deployed site URL (e.g. `https://your-site.netlify.app`)
 
 Set `NODE_VERSION` to match the Node version you support (e.g. `20` or `24`). Leave **Publish directory** empty if you use the Next.js plugin.
 

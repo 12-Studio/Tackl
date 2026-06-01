@@ -7,6 +7,11 @@
 
 [build.environment]
   NODE_VERSION = "24"
+  NEXT_PUBLIC_SANITY_PROJECT_ID = "ed72g2cx"
+  NEXT_PUBLIC_SANITY_DATASET = "production"
+  # Set in Netlify UI (Site settings → Environment variables):
+  # SANITY_API_READ_TOKEN — required for draft preview and live content
+  # NEXT_PUBLIC_SANITY_PREVIEW_ORIGIN — your Netlify site URL (e.g. https://your-site.netlify.app)
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

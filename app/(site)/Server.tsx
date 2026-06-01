@@ -25,7 +25,7 @@ const Server = async ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<>
-			<Header />
+			{/* <Header /> */}
 			{children}
 			{/* <Footer /> */}
 		</>

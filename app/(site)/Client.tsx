@@ -16,7 +16,13 @@ import { ThemeProvider } from 'styled-components';
 
 // Component
 // ------------
-const Client = ({ children }: { children: React.ReactNode }) => {
+const Client = ({
+	children,
+	sanityLive,
+}: {
+	children: React.ReactNode;
+	sanityLive?: React.ReactNode;
+}) => {
 	// NOTE • Font Classes
 	const classes = `${inter.variable}`;
 
@@ -41,6 +47,7 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 							</ThemeProvider>
 						</StyledComponentsRegistry>
 					</main>
+					{sanityLive}
 				</body>
 			</html>
 		</ViewTransitions>

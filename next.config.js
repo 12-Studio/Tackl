@@ -22,9 +22,13 @@ const nextConfig = {
 				protocol: 'https',
 				hostname: 'placehold.it',
 			},
+			{
+				protocol: 'https',
+				hostname: 'cdn.sanity.io',
+			},
 		],
 	},
-	transpilePackages: ['next-image-export-optimizer'],
+	transpilePackages: ['next-image-export-optimizer', 'next-sanity'],
 
 	// Image export optimizer settings
 	env: {

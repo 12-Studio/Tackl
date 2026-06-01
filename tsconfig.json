@@ -32,7 +32,8 @@
 			"@types": ["src/types"],
 			"@theme/*": ["src/theme/*"],
 			"@utils/*": ["src/utils/*"],
-			"@public/*": ["public/*"]
+			"@public/*": ["public/*"],
+			"@sanity/*": ["sanity/*"]
 		},
 		"plugins": [
 			{
@@ -40,6 +41,12 @@
 			}
 		]
 	},
-	"include": ["src/**/*", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
+	"include": [
+		"app/**/*",
+		"sanity/**/*",
+		"src/**/*",
+		".next/types/**/*.ts",
+		".next/dev/types/**/*.ts"
+	],
 	"exclude": ["node_modules"]
 }

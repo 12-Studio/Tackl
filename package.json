@@ -52,6 +52,7 @@
 		"react-datocms": "^7.2.14",
 		"react-dom": "^19.2.4",
 		"sanity": "^5.28.0",
+		"sanity-plugin-media": "^4.3.0",
 		"server-only": "^0.0.1",
 		"styled-components": "6",
 		"tar": "^7.5.9",

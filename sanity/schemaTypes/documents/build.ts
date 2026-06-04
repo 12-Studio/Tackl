@@ -1,9 +1,12 @@
 import { defineField, defineType } from 'sanity';
 
+import { CarIcon } from '../../icons/CarIcon';
+
 export const buildType = defineType({
 	name: 'build',
 	title: 'Build',
 	type: 'document',
+	icon: CarIcon,
 	groups: [
 		{ name: 'content', title: 'Content', default: true },
 		{ name: 'seo', title: 'SEO' },

@@ -1,9 +1,11 @@
+import { HomeIcon } from '@sanity/icons';
 import { defineField, defineType } from 'sanity';
 
 export const homeType = defineType({
 	name: 'homePage',
 	title: 'Home',
 	type: 'document',
+	icon: HomeIcon,
 	__experimental_formPreviewTitle: false,
 	groups: [
 		{ name: 'hero', title: 'Hero', default: true },
@@ -51,8 +53,8 @@ export const homeType = defineType({
 		}),
 		defineField({
 			name: 'introductionImages',
+			type: 'array' as const,
 			title: 'Images',
-			type: 'array',
 			group: 'introduction',
 			of: [{ type: 'image', options: { hotspot: true } }],
 			options: { layout: 'grid' },
@@ -72,8 +74,8 @@ export const homeType = defineType({
 		}),
 		defineField({
 			name: 'usps',
+			type: 'array' as const,
 			title: 'USPs',
-			type: 'array',
 			group: 'approach',
 			of: [{ type: 'homeUsp' }],
 			validation: rule => rule.max(3),
@@ -93,8 +95,8 @@ export const homeType = defineType({
 		}),
 		defineField({
 			name: 'serviceList',
+			type: 'array' as const,
 			title: 'Service list',
-			type: 'array',
 			group: 'services',
 			of: [{ type: 'homeServiceItem' }],
 		}),
@@ -109,14 +111,13 @@ export const homeType = defineType({
 			name: 'buildsDescription',
 			title: 'Description',
 			type: 'text',
-			rows: 4,
 			group: 'builds',
 		}),
 		defineField({
 			name: 'featuredBuilds',
+			type: 'array' as const,
 			title: 'Featured builds',
 			description: 'Pick up to 4 builds — title, excerpt, image, and link come from each build.',
-			type: 'array',
 			group: 'builds',
 			of: [{ type: 'reference', to: [{ type: 'build' }] }],
 			validation: rule => rule.max(4),

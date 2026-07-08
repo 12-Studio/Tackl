@@ -1,5 +1,5 @@
 ---
-name: performance
+name: tackl-performance
 description: Optimizes Tackl apps for Web Vitals, reduced motion, low-power mode, and scroll performance. Use when the user mentions performance, LCP, CLS, prefers-reduced-motion, lazy loading, scroll jank, or PerformanceContext.
 ---
 

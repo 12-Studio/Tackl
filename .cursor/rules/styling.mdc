@@ -1,3 +1,9 @@
+---
+description: Styling Components
+globs: **/*.{ts,tsx}
+alwaysApply: true
+---
+
 // Styling Components
 
 // We use styled-components for styling React components.

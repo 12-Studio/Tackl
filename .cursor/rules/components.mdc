@@ -1,3 +1,9 @@
+---
+description: How to write Components in Tackl
+globs: src/components/**/*.tsx
+alwaysApply: false
+---
+
 // Component Authoring Guide
 
 // COMPONENT STRUCTURE

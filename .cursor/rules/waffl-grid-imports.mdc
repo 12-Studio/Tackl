@@ -1,7 +1,7 @@
 ---
 description: Use default import from @waffl for Grid, never deep or named imports
-globs: **/*.{ts,tsx}
-alwaysApply: true
+globs: src/components/**/*.tsx
+alwaysApply: false
 ---
 
 # Waffl Grid Imports

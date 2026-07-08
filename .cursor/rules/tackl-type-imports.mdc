@@ -1,7 +1,7 @@
 ---
 description: Use @tackl/type for typography imports, never @/theme/tackl/type
-globs: **/*.{ts,tsx}
-alwaysApply: true
+globs: src/components/**/*.ts
+alwaysApply: false
 ---
 
 # Tackl Type Imports

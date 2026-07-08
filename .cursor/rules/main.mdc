@@ -1,3 +1,9 @@
+---
+description: Main coding settings for .tsx and.ts files
+globs: ["src/components/**/*.tsx", "src/components/**/*.tsx"]
+alwaysApply: false
+---
+
 
   You are an expert in front-end, TypeScript, Node.js, Next.js App Router, React, WebGL.
   

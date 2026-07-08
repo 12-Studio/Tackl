@@ -1,10 +1,6 @@
 ---
 name: lenis-react
 description: Integrate Lenis smooth scroll into React and Next.js projects. Use when the user wants smooth scrolling, scroll-linked animations, parallax effects, GSAP ScrollTrigger sync, Framer Motion sync, programmatic scroll-to navigation, or scroll event listening in a React app. Covers ReactLenis provider setup, useLenis hook, custom scroll containers, SSR/Next.js considerations, and accessibility.
-compatibility: React 16.8+, Next.js 13+ (App Router and Pages Router), Vite, CRA. Node.js 16+.
-metadata:
-  author: claude
-  version: "1.0"
 ---
 
 # Lenis Smooth Scroll — React Integration Skill

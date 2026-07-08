@@ -1,7 +1,7 @@
 ---
 description: Styling Components
-globs: **/*.{ts,tsx}
-alwaysApply: true
+globs: src/components/**/*.ts
+alwaysApply: false
 ---
 
 // Styling Components

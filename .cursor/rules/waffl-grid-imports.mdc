@@ -1,0 +1,22 @@
+---
+description: Use default import from @waffl for Grid, never deep or named imports
+globs: **/*.{ts,tsx}
+alwaysApply: true
+---
+
+# Waffl Grid Imports
+
+Always import `Grid` as a default import from `@waffl`. Never use deep paths or named imports.
+
+```typescript
+// ❌ BAD
+import { Grid } from '@waffl';
+import Grid from '@/theme/tackl/waffl';
+import Grid from '@theme/tackl/waffl';
+import { Grid } from '@/theme/tackl/waffl';
+
+// ✅ GOOD
+import Grid from '@waffl';
+```
+
+When editing existing files, replace any other `Grid` import with `import Grid from '@waffl';`.

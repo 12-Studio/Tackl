@@ -1,0 +1,21 @@
+---
+description: Use @tackl/type for typography imports, never @/theme/tackl/type
+globs: **/*.{ts,tsx}
+alwaysApply: true
+---
+
+# Tackl Type Imports
+
+Always import typography styles from `@tackl/type`. Never use `@/theme/tackl/type`.
+
+```typescript
+// ❌ BAD
+import { headlineL, bodyM } from '@/theme/tackl/type';
+
+// ✅ GOOD
+import { headlineL, bodyM } from '@tackl/type';
+```
+
+When editing existing files, replace any `@/theme/tackl/type` imports with `@tackl/type`.
+
+Note: `@theme/tackl` and `@/theme/tackl` remain valid for Tackl primitives and utilities (e.g. `Section`, `getBrand`, `bp`). This rule applies only to typography from the `type` module.

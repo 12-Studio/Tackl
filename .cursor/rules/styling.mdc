@@ -22,7 +22,7 @@
 // import styled, { css } from 'styled-components';
 // import { Section, getBrand } from '@theme/tackl';
 // export const Jacket = styled(Section)(`
-//   (props) => css`
+//   () => css`
 //     display: flex;
 //     padding: 1rem;
 //     background: ${getBrand('bc1')};

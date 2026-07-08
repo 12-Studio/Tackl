@@ -1,0 +1,92 @@
+---
+description: Comment and section layout for React component .tsx files
+globs: src/components/**/*.tsx
+alwaysApply: false
+---
+
+# Component File Layout & Comments
+
+Follow this structure in every component `.tsx` file. Use `Header/index.tsx` as the reference.
+
+## File-level sections
+
+Use titled blocks with a 12-dash underline. Order:
+
+1. `'use client';` when needed
+2. `// Imports` — external and internal imports
+3. `// Component` — component definition
+4. `// Exports` — `displayName` and default export
+
+Optional file-level sections (when needed), placed before `// Component`:
+
+- `// Styles + Interfaces` — `./interface` and `./styles` imports
+- `// Constants` or `// Helpers` — module-level values or pure functions
+
+```tsx
+// Imports
+// ------------
+import Logo from '@parts/Logo';
+import { use, useRef } from 'react';
+
+
+// Interfaces _ Styles
+// ------------
+import type { HeaderProps } from './interface';
+import * as S from './styles';
+
+// Component
+// ------------
+const Header = ({ socials = [] }: HeaderProps) => {
+	// ...
+};
+
+// Exports
+// ------------
+Header.displayName = 'Header';
+export default Header;
+```
+
+## In-component section comments
+
+Inside the component body, add a single-line `// Label` comment **before** each logical group. Only include sections that exist — do not add empty placeholders.
+
+Common labels (use what applies):
+
+| Label | Use for |
+|-------|---------|
+| `// Context` | `use(Context)` hooks |
+| `// Refs` | `useRef` declarations |
+| `// State` | `useState`, `useReducer` |
+| `// Derived` | `useMemo`, computed values |
+| `// Handlers` | `useCallback`, event handlers |
+| `// Effects` | `useEffect` |
+| `// Animations` | `useAnimation`, GSAP setup |
+| `// Render` | `return (...)` |
+
+```tsx
+const Header = ({ socials = [] }: HeaderProps) => {
+	// Context
+	const { loaderEnabled } = use(GlobalContext);
+
+	// Refs
+	const jacketRef = useRef<HTMLElement>(null);
+	const logoRef = useRef<SVGSVGElement>(null);
+
+	// Animations
+	useAnimation(() => { /* ... */ }, { scope: jacketRef, dependencies: [loaderEnabled] });
+
+	// Render
+	return (
+		<S.Jacket ref={jacketRef}>
+			{/* ... */}
+		</S.Jacket>
+	);
+};
+```
+
+## Rules
+
+- Keep section underlines (`// ------------`) at file level only — not inside the component body.
+- Group related hooks and logic under the correct label; do not scatter them without comments.
+- When adding new logic to an existing component, match the labels and order already used in that file.
+- Subcomponents in the same folder (e.g. `HeroTitle.tsx`) follow the same layout.

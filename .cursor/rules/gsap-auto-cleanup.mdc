@@ -1,0 +1,47 @@
+---
+description: Do not manually clean up GSAP tweens/ScrollTriggers inside useGSAP or useAnimation
+globs: **/*.{ts,tsx}
+alwaysApply: false
+---
+
+# GSAP Auto Cleanup
+
+`useGSAP` (and the project's `useAnimation`, which wraps it with `gsap.matchMedia`) runs inside a `gsap.context()`. Every tween and ScrollTrigger created in the callback is automatically reverted on unmount or when a matchMedia condition stops matching.
+
+Do **not** collect tweens to kill them, and do **not** return a cleanup function just to revert GSAP animations.
+
+```tsx
+// ❌ BAD — redundant manual cleanup
+useAnimation(({ isDesktop }) => {
+	const tweens = items.map(el => gsap.fromTo(el, { opacity: 0 }, { opacity: 1, scrollTrigger: { trigger: el } }));
+
+	return () => {
+		tweens.forEach(t => {
+			t.scrollTrigger?.kill();
+			t.kill();
+		});
+	};
+}, { scope: ref });
+
+// ✅ GOOD — let the context revert everything
+useAnimation(({ isDesktop }) => {
+	items.forEach(el => {
+        gsap.set(el, {
+            autoAlpha: 0
+        })
+		gsap.fromTo(el, {
+            autoAlpha: 1,
+            scrollTrigger: {
+                trigger: el,
+                scroller,
+                start: "top 100%",
+                end: "bottom 0%",
+                scrub: true,
+                markers: false
+            }
+        });
+	});
+}, { scope: ref });
+```
+
+Only return a cleanup for non-GSAP resources (e.g. Lenis `Snap`, event listeners, `matchMedia` listeners) or for interaction-driven animations created outside the context.

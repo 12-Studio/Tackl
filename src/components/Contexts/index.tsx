@@ -15,7 +15,7 @@ export const GlobalContext = createContext({
 	lenisRef: { current: null } as React.RefObject<LenisRef | null>,
 
 	menuOpen: false,
-	setMenuOpen: (value: boolean) => {},
+	setMenuOpen: (_value: boolean) => {},
 });
 
 // Component

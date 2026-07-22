@@ -1,11 +1,11 @@
 // Imports
 // ------------
-import type { Metadata, Viewport } from 'next';
-import { siteUrl } from '@/config';
 import Header from '@parts/Header';
 import SmoothScroll from '@parts/SmoothScroll';
 import { inter } from '@theme/fonts';
 import { ViewTransitions } from '@utils/viewTransitions';
+import type { Metadata, Viewport } from 'next';
+import { siteUrl } from '@/config';
 import Providers from './Providers';
 
 // Styles

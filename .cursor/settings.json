@@ -1,7 +1,7 @@
 {
-  "plugins": {
-    "figma": {
-      "enabled": true
-    }
-  }
+	"plugins": {
+		"figma": {
+			"enabled": true
+		}
+	}
 }

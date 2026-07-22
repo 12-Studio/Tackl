@@ -8,8 +8,8 @@
 
 // Imports
 // ------------
-import { defineEnableDraftMode } from 'next-sanity/draft-mode';
 import { client } from '@cms/sanity/client';
+import { defineEnableDraftMode } from 'next-sanity/draft-mode';
 
 // Exports
 // ------------

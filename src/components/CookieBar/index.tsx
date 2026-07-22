@@ -71,6 +71,7 @@ const CookieBar = ({
 		if (isDocument()) {
 			document.cookie.split(';').forEach(cookie => {
 				const [name] = cookie.split('=');
+				// biome-ignore lint/suspicious/noDocumentCookie: expiring a cookie is done by writing document.cookie directly
 				document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
 			});
 		}

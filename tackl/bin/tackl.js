@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import { execSync } from 'child_process';
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import pc from 'picocolors';
 import prompts from 'prompts';
 import * as tar from 'tar';
@@ -104,7 +104,7 @@ const stripDeps = (root, deps) => {
 		delete json.dependencies?.[d];
 		delete json.devDependencies?.[d];
 	}
-	fs.writeFileSync(p, JSON.stringify(json, null, '\t') + '\n');
+	fs.writeFileSync(p, `${JSON.stringify(json, null, '\t')}\n`);
 };
 
 // NOTE • Everything that exists solely for the embedded Sanity Studio
@@ -188,7 +188,9 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 	const targetDir = process.cwd();
 
 	if (!dirIsScaffoldable(targetDir)) {
-		log.error('This directory is not empty. Run tackl inside an empty directory (a .git folder, .gitignore, README.md and LICENSE are fine).');
+		log.error(
+			'This directory is not empty. Run tackl inside an empty directory (a .git folder, .gitignore, README.md and LICENSE are fine).'
+		);
 		process.exit(1);
 	}
 
@@ -225,10 +227,11 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 
 	const cms = cmsFlag || answers.cms;
 	const rawName = flagValue('--name') || path.basename(targetDir);
-	const projectName = rawName
-		.toLowerCase()
-		.replace(/[^a-z0-9\-._]/g, '-')
-		.replace(/^[-.]+|[-.]+$/g, '') || 'tackl-app';
+	const projectName =
+		rawName
+			.toLowerCase()
+			.replace(/[^a-z0-9\-._]/g, '-')
+			.replace(/^[-.]+|[-.]+$/g, '') || 'tackl-app';
 	const doInstall = !args.includes('--no-install');
 	const doGit = !args.includes('--no-git');
 	const hadGit = fs.existsSync(path.join(targetDir, '.git'));
@@ -300,7 +303,7 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 			json.version = '0.1.0';
 			delete json.repository;
 			delete json.author;
-			fs.writeFileSync(pkgPath, JSON.stringify(json, null, '\t') + '\n');
+			fs.writeFileSync(pkgPath, `${JSON.stringify(json, null, '\t')}\n`);
 			log.ok('package.json updated.');
 		} catch (e) {
 			log.warn(`Could not update package.json: ${e.message}`);
@@ -358,7 +361,7 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 		}
 	}
 
-	console.log('\n' + pc.bold(pc.green('Success!')) + ' Project scaffolded.\n');
+	console.log(`\n${pc.bold(pc.green('Success!'))} Project scaffolded.\n`);
 	console.log('  Next steps:');
 	let step = 1;
 	if (cms === 'sanity' && !sanityLinked) {

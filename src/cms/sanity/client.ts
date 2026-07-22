@@ -36,7 +36,7 @@ export const client = createClient({
 
 // Exports
 // ------------
-export const fetchContent = async <T = any>(query: string, params?: Record<string, any>): Promise<T | null> => {
+export const fetchContent = async <T = unknown>(query: string, params?: Record<string, unknown>): Promise<T | null> => {
 	try {
 		// NOTE • Fail loudly (but non-fatally) when the project isn't configured
 		const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -48,7 +48,7 @@ export const fetchContent = async <T = any>(query: string, params?: Record<strin
 		}
 
 		return await client.fetch<T>(query, params ?? {});
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error('Sanity request failed:', error);
 
 		// Return null instead of throwing to prevent app crash

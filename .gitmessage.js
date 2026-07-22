@@ -1,6 +1,6 @@
 const prompts = require('prompts');
-const { execSync } = require('child_process');
-const fs = require('fs');
+const { execSync } = require('node:child_process');
+const fs = require('node:fs');
 
 (async () => {
 	try {
@@ -68,7 +68,7 @@ const fs = require('fs');
 			try {
 				execSync('npm run build', { stdio: 'inherit' });
 				console.log('✅ Build successful!');
-			} catch (error) {
+			} catch {
 				console.error('\n❌ Build failed. Please fix errors before committing.');
 				process.exit(1);
 			}

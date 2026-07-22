@@ -117,10 +117,12 @@ waffl-grid > :where(*) {
 /* Page Transitions using the new transitions API*/
 ::view-transition-old(root),
 ::view-transition-new(root) {
+	/* biome-ignore lint/complexity/noImportantStyles: must override the UA's default view-transition animation */
 	animation: none !important;
 }
 
 ::view-transition-group(root) {
+	/* biome-ignore lint/complexity/noImportantStyles: must override the UA's default view-transition stacking */
 	z-index: auto !important;
 }
 

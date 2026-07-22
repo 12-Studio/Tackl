@@ -25,14 +25,24 @@ export const Div = styled.div<SemanticProps>`
 export const bp = breakpointUp;
 export const bpd = breakpointDown;
 
+// SECTION • Color Utilities
+// ------------
+// NOTE • Mixes any color with transparency via color-mix. Accepts a CSS
+// variable name ('--brand-bc1'), a theme token (already a var() reference),
+// or any color value. The browser resolves it, so runtime theme overrides
+// still apply to the translucent result.
+// Usage: background: ${alpha('--brand-bc1', 20)};
+//        border-color: ${props => alpha(props.theme.colors.global.white, 15)};
+export const alpha = (color: string, opacity: number): string => {
+	const value = color.startsWith('--') ? `var(${color})` : color;
+	return opacity >= 100 ? value : `color-mix(in srgb, ${value} ${opacity}%, transparent)`;
+};
+
 // SECTION • Theme Getters
 // ------------
-// NOTE • Optional opacity (0–100) wraps the token in color-mix — the browser
-// resolves it, so runtime theme overrides apply to translucent uses too
+// NOTE • Optional opacity (0–100) applies alpha() to the token
 const withOpacity = (color?: string, opacity?: number) =>
-	color === undefined || opacity === undefined || opacity >= 100
-		? color
-		: `color-mix(in srgb, ${color} ${opacity}%, transparent)`;
+	color === undefined || opacity === undefined ? color : alpha(color, opacity);
 
 export const getGlobal = (color: keyof Theme['colors']['global'], opacity?: number) => (props: { theme: Theme }) => {
 	return withOpacity(props.theme.colors.global[color], opacity);

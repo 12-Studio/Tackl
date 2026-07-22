@@ -70,11 +70,27 @@ const Badge = () => <span style={{ color: 'var(--feedback-positive)' }}>Live</sp
 
 ### Opacity
 
-Color tokens are plain `var()` references — there is no per-shade object. Opacity is applied at the point of use:
+Color tokens are plain `var()` references — there is no per-shade object. Opacity is applied at the point of use, either through a getter or the `alpha()` helper:
 
 ```
-getBrand('bc1')      →  var(--brand-bc1)
-getBrand('bc1', 50)  →  color-mix(in srgb, var(--brand-bc1) 50%, transparent)
+getBrand('bc1')          →  var(--brand-bc1)
+getBrand('bc1', 50)      →  color-mix(in srgb, var(--brand-bc1) 50%, transparent)
+
+alpha('--brand-bc1', 50) →  color-mix(in srgb, var(--brand-bc1) 50%, transparent)
+alpha('#8000FF', 50)     →  color-mix(in srgb, #8000FF 50%, transparent)
+```
+
+`alpha(color, opacity)` (from `@tackl`) takes a CSS variable name, a theme token, or any color value:
+
+```tsx
+import { alpha } from '@tackl';
+
+export const Card = styled(Div)(
+	props => css`
+		background: ${alpha('--brand-bc3', 40)};
+		border-color: ${alpha(props.theme.colors.global.white, 15)};
+	`
+);
 ```
 
 The browser does the mixing, so translucent uses follow runtime theme overrides too. In hand-written CSS, use `color-mix()` directly for the same effect.

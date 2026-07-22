@@ -1,20 +1,61 @@
 // Imports
 // ------------
-import '@/theme/tackl/waffl/WebComponent';
-import Client from './Client';
-import Server from './Server';
+import type { Metadata, Viewport } from 'next';
+import Header from '@parts/Header';
+import SmoothScroll from '@parts/SmoothScroll';
+import { inter } from '@theme/fonts';
+import { ViewTransitions } from '@utils/viewTransitions';
+import Providers from './Providers';
 
 // Styles
 // ------------
 import '@css/global.css';
 
+// SEO
+// ------------
+// NOTE • Site-wide defaults — override per route with `metadata` or `generateMetadata`
+export const metadata: Metadata = {
+	metadataBase: new URL('https://changeme.com'),
+	title: {
+		default: 'Tackl',
+		template: '%s — Tackl',
+	},
+	description: 'The ultimate Next.js starter kit',
+	robots: {
+		index: true,
+		follow: true,
+	},
+	openGraph: {
+		type: 'website',
+		siteName: 'Tackl',
+	},
+};
+
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	themeColor: '#000000',
+};
+
 // Component
 // ------------
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<Client>
-			<Server>{children}</Server>
-		</Client>
+		<ViewTransitions>
+			<html lang='en' className={inter.variable} suppressHydrationWarning>
+				<body>
+					<Providers>
+						<Header />
+
+						<main id='page'>
+							<SmoothScroll>{children}</SmoothScroll>
+						</main>
+
+						{/* NOTE • A non-fixed Footer belongs inside the scrolled content — render it at the end of your page, inside SmoothScroll */}
+					</Providers>
+				</body>
+			</html>
+		</ViewTransitions>
 	);
 };
 

@@ -43,6 +43,7 @@ body {
 #page {
 	height: 100%;
 	overflow: hidden;
+	view-transition-name: page;
 }
 
 a {

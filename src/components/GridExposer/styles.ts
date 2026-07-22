@@ -11,6 +11,7 @@ interface ColProps {
 	$isMobile?: boolean;
 	$isTablet?: boolean;
 	$isDesktop?: boolean;
+	$col?: number;
 }
 
 interface JacketProps {
@@ -22,6 +23,7 @@ interface JacketProps {
 // ------
 export const Col = styled(Div)<ColProps>(
 	props => css`
+		grid-column: ${props.$col};
 		height: 100%;
 		display: none;
 

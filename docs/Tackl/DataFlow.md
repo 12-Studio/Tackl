@@ -12,14 +12,14 @@ This document explains how data flows through the Tackl application architecture
 ├─────────────────────────────────────────────────────────────┤
 │  Server-Side Data Flow                                      │
 │  ┌─────────────────────────────────────────────────────────┐ │
-│  │  Build Time → Server Component → Page Component        │ │
+│  │  Build Time → Root Layout → Page Component             │ │
 │  │       ↓              ↓                ↓               │ │
 │  │  Data Fetching → Static Content → Page Content        │ │
 │  └─────────────────────────────────────────────────────────┘ │
 ├─────────────────────────────────────────────────────────────┤
 │  Client-Side Data Flow                                      │
 │  ┌─────────────────────────────────────────────────────────┐ │
-│  │  User Interaction → Content Component → Client Component│ │
+│  │  User Interaction → Content Component → Providers       │ │
 │  │       ↓                    ↓                ↓          │ │
 │  │  State Update → Re-render → Theme Update              │ │
 │  └─────────────────────────────────────────────────────────┘ │
@@ -35,7 +35,7 @@ This document explains how data flows through the Tackl application architecture
 **Benefits**: Better performance, SEO, and user experience
 
 ```typescript
-// Server Component (app/Server.tsx)
+// Root Layout (app/layout.tsx) — a server component, so it can fetch directly
 async function getGlobalData() {
     try {
         const data = await performRequest(GET_GLOBAL);
@@ -46,7 +46,7 @@ async function getGlobalData() {
     }
 }
 
-const Server = async ({ children }: { children: React.ReactNode }) => {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
     const data = await getGlobalData();
 
     return (
@@ -140,44 +140,32 @@ const Content = ({ data }: HomeProps) => {
 **Benefits**: Avoid prop drilling and centralize state
 
 ```typescript
-// Client Component (app/Client.tsx)
+// Providers (app/Providers.tsx)
 <ThemeProvider theme={theme}>
     <Contexts>
-        <Server>
-            <Page>
-                <Content /> {/* Has access to theme context */}
-            </Page>
-        </Server>
+        <Page>
+            <Content /> {/* Has access to theme context */}
+        </Page>
     </Contexts>
 </ThemeProvider>
 ```
 
 ### 3. Animation Data Flow
 
-**Location**: Client Component
+**Location**: SmoothScroll (rendered inside `main#page` in `app/layout.tsx`)
 **Purpose**: Handle animation state and updates
 **Benefits**: Smooth animations and performance
 
 ```typescript
-// Client Component (app/Client.tsx)
-const Client = ({ children }: { children: React.ReactNode }) => {
-    const lenisRef = useRef<LenisRef>(null);
-
-    useEffect(() => {
-        function update(time: number) {
-            lenisRef.current?.lenis?.raf(time * 1000);
-        }
-
-        gsap.ticker.add(update);
-        return () => gsap.ticker.remove(update);
-    }, []);
+// SmoothScroll (src/components/SmoothScroll/index.tsx)
+const SmoothScroll = ({ children }: I.SmoothScrollProps) => {
+    const { lenisRef } = use(GlobalContext);
 
     return (
-        <Contexts>
-            <ReactLenis ref={lenisRef} />
-            <AnimationPlugins />
+        <ReactLenis ref={lenisRef} options={{ autoRaf: false }}>
             {children}
-        </Contexts>
+            <LenisGsapBridge /> {/* Wires Lenis + GSAP ticker/ScrollTrigger */}
+        </ReactLenis>
     );
 };
 ```
@@ -187,18 +175,18 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 ### 1. Server-to-Client Data Flow
 
 ```
-Server Component → Page Component → Content Component
-       ↓                ↓                ↓
+Root Layout → Page Component → Content Component
+       ↓             ↓                ↓
    Data Fetching → Data Passing → Data Consumption
 ```
 
 **Implementation**:
 
 ```typescript
-// 1. Server Component fetches data
-const Server = async () => {
+// 1. Root Layout (app/layout.tsx) fetches data — any server component can
+const RootLayout = async ({ children }) => {
     const data = await getGlobalData();
-    return <Page data={data} />;
+    return <Header data={data} />;
 };
 
 // 2. Page Component receives and passes data
@@ -215,8 +203,8 @@ const Content = ({ data }) => {
 ### 2. Client-to-Server Data Flow
 
 ```
-Content Component → Client Component → Server Component
-       ↓                ↓                ↓
+Content Component → Providers → Root Layout
+       ↓                ↓            ↓
    State Update → Context Update → Data Refresh
 ```
 
@@ -237,13 +225,13 @@ const Content = ({ data }) => {
     return <button onClick={updateData}>Update</button>;
 };
 
-// 2. Client Component provides context
+// 2. Providers (app/Providers.tsx) provides context
 <ThemeProvider theme={theme}>
     <Content />
 </ThemeProvider>
 
-// 3. Server Component receives updated data
-const Server = ({ data }) => {
+// 3. Server component receives updated data
+const Page = ({ data }) => {
     // Data is updated through props
     return <Content data={data} />;
 };
@@ -260,13 +248,13 @@ ThemeProvider → All Child Components
 **Implementation**:
 
 ```typescript
-// 1. ThemeProvider provides theme context
+// 1. ThemeProvider (in app/Providers.tsx) provides theme context
 <ThemeProvider theme={theme}>
-    <Server>
+    <Contexts>
         <Page>
             <Content /> {/* Has access to theme */}
         </Page>
-    </Server>
+    </Contexts>
 </ThemeProvider>
 
 // 2. Any component can access theme

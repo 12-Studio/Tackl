@@ -1,6 +1,7 @@
 // Imports
 // ------------
 import type { Metadata, Viewport } from 'next';
+import { siteUrl } from '@/config';
 import Header from '@parts/Header';
 import SmoothScroll from '@parts/SmoothScroll';
 import { inter } from '@theme/fonts';
@@ -15,7 +16,7 @@ import '@css/global.css';
 // ------------
 // NOTE • Site-wide defaults — override per route with `metadata` or `generateMetadata`
 export const metadata: Metadata = {
-	metadataBase: new URL('https://changeme.com'),
+	metadataBase: new URL(siteUrl),
 	title: {
 		default: 'Tackl',
 		template: '%s — Tackl',

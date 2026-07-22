@@ -36,14 +36,11 @@ This document explains how data flows through the Tackl application architecture
 
 ```typescript
 // Root Layout (app/layout.tsx) — a server component, so it can fetch directly
+import { fetchContent, GET_GLOBAL } from '@cms';
+
 async function getGlobalData() {
-    try {
-        const data = await performRequest(GET_GLOBAL);
-        return data;
-    } catch (error) {
-        console.error('Failed to fetch data from DatoCMS:', error);
-        return null;
-    }
+    // fetchContent returns null on failure — it never throws
+    return await fetchContent(GET_GLOBAL);
 }
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -66,14 +63,10 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 
 ```typescript
 // Page Component (app/(home)/page.tsx)
+import { fetchContent, GET_HOME } from '@cms';
+
 async function getHomeData() {
-    try {
-        const data = await performRequest(GET_HOME);
-        return data;
-    } catch (error) {
-        console.error('Failed to fetch home data:', error);
-        return null;
-    }
+    return await fetchContent(GET_HOME);
 }
 
 const Page = async () => {

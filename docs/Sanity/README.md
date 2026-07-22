@@ -1,5 +1,7 @@
 # Sanity + Next.js Integration Guide
 
+> **Tackl note:** the kit ships a minimal Sanity adapter at `src/cms/sanity/` (selected by the CLI, imported as `import { fetchContent } from '@cms'`) that covers plain GROQ fetching. This guide is the **full** setup — embedded Studio, live updates, visual draft preview. When following it, keep the `@cms` seam: grow the adapter in `src/cms/sanity/` (e.g. re-export `fetchSanity` there) instead of importing Sanity libraries from app code directly. See [docs/CMS.md](../CMS.md).
+
 Use this document as a **replication spec** for embedding Sanity CMS into a Next.js App Router project. It describes the architecture implemented on the `sanity` branch of Tackl: one repo, one build, site + Studio + draft preview deployed together.
 
 ---

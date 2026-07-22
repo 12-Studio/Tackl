@@ -151,7 +151,8 @@ export default Card;
 | `@theme` | `theme`, `GlobalStyle` | Rarely needed directly — the getters wrap it |
 | `@parts/*` | `src/components/*` | Other components |
 | `@utils/*` | `src/utils/*` | Hooks and helpers |
-| `@css/*`, `@public/*`, `@queries/*` | Global CSS, static assets, CMS queries | |
+| `@cms` | `fetchContent`, query strings | Data fetching (adapter-agnostic — see docs/CMS.md) |
+| `@css/*`, `@public/*` | Global CSS, static assets | |
 
 Per-tag components (`Section`, `H1`, `P`…) **do not exist** — there is one `Div`, and the tag is chosen with `as`.
 

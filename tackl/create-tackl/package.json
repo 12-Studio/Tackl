@@ -1,0 +1,23 @@
+{
+	"name": "create-tackl",
+	"version": "2.0.0",
+	"description": "Scaffold a Tackl project — alias for the tackl CLI (enables `bun create tackl` / `npm create tackl`)",
+	"type": "module",
+	"bin": {
+		"create-tackl": "./bin/create-tackl.js"
+	},
+	"keywords": ["nextjs", "react", "starter", "template", "create", "styled-components", "typescript"],
+	"author": "joebentaylor1995",
+	"license": "MIT",
+	"engines": {
+		"node": ">=20.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/12-studio/tackl"
+	},
+	"files": ["bin/"],
+	"dependencies": {
+		"tackl": "^2.0.0"
+	}
+}

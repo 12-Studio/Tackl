@@ -16,7 +16,7 @@ const config = {
 			...config.resolve.alias,
 			'@parts': path.resolve(__dirname, '../src/components'),
 			'@css': path.resolve(__dirname, '../src/css'),
-			'@queries': path.resolve(__dirname, '../app/queries'),
+			'@cms': path.resolve(__dirname, '../src/cms'),
 			'@tackl': path.resolve(__dirname, '../src/theme/tackl'),
 			'@waffl': path.resolve(__dirname, '../src/theme/tackl/waffl'),
 			'@theme': path.resolve(__dirname, '../src/theme'),

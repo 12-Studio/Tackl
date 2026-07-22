@@ -1,20 +1,14 @@
 // Imports
 // ------------
-// import { performRequest } from '@utils/datocms';
-// import { GET_HOME } from '../queries/getHome';
+// import { fetchContent, GET_HOME } from '@cms';
 import DeleteMe from '@parts/DeleteMe';
 
 // Data fetching at build time
 // ------------
+// NOTE • fetchContent returns null (never throws) when the CMS is missing
+// or unconfigured, so wiring this up can't crash the route
 // async function getHomeData() {
-// 	try {
-// 		const data = await performRequest(GET_HOME);
-// 		return data;
-// 	} catch (error) {
-// 		console.error('Failed to fetch data from DatoCMS:', error);
-// 		// Return fallback data or null to prevent app crash
-// 		return null;
-// 	}
+// 	return await fetchContent(GET_HOME);
 // }
 
 // Component

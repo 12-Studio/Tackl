@@ -4,16 +4,21 @@ Tackl's tokens are defined once in TypeScript and emitted once as CSS custom pro
 
 ## How it works
 
+```mermaid
+flowchart TD
+    V["Raw values — the single source of truth\nsrc/theme/{colors,space,gap,borderRadius,easing,time,fonts}\nspaceValues = { m: '6rem' } · baseColors = { brand: { bc1: '#8000FF' } }"]
+    V -->|toVarDeclarations| R[":root via GlobalStyle\n--space-m: 6rem;\n--brand-bc1: #8000FF;"]
+    V -->|toVarRefs| T["theme object\ntheme.space.m = 'var(--space-m)'\ntheme.colors.brand.bc1 = 'var(--brand-bc1)'"]
+    V -->|keyof typeof| TY["TypeScript types\ninterface.d.ts derives — cannot drift"]
+    T --> SC["styled-components\n${getSpace('m')} · ${getBrand('bc1')}"]
+    R --> B["Browser resolves at paint\n(runtime overrides apply here)"]
+    SC --> B
+    P["Plain CSS / Server Components\nvar(--space-m)"] --> B
 ```
-src/theme/{colors,space,gap,borderRadius,easing,fonts}/index.ts
-    │  raw values (single source of truth)
-    │
-    ├──► GlobalStyle (@theme) emits them on :root
-    │        --brand-bc1: #8000FF;  --space-m: 6rem;  ...
-    │
-    └──► theme object exposes var() references
-             theme.space.m === 'var(--space-m)'
-             theme.colors.brand.bc1 === 'var(--brand-bc1)'
+
+```
+theme.space.m         === 'var(--space-m)'
+theme.colors.brand.bc1 === 'var(--brand-bc1)'
 ```
 
 Because every theme value is a `var()` reference, the browser resolves tokens at paint time. Styles that import `theme` statically (the semantic `Div` component, type styles, waffl grid) and styles that read `props.theme` produce identical CSS — there is one source of truth, and overriding a variable at runtime restyles both.

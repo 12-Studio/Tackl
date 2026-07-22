@@ -1,5 +1,7 @@
 # Sanity + Next.js Integration Guide
 
+> **Tackl note:** the kit ships a minimal Sanity adapter at `src/cms/sanity/` (selected by the CLI, imported as `import { fetchContent } from '@cms'`) that covers plain GROQ fetching. This guide is the **full** setup — embedded Studio, live updates, visual draft preview. When following it, keep the `@cms` seam: grow the adapter in `src/cms/sanity/` (e.g. re-export `fetchSanity` there) instead of importing Sanity libraries from app code directly. See [docs/CMS.md](../CMS.md).
+
 Use this document as a **replication spec** for embedding Sanity CMS into a Next.js App Router project. It describes the architecture implemented on the `sanity` branch of Tackl: one repo, one build, site + Studio + draft preview deployed together.
 
 ---
@@ -62,9 +64,8 @@ Create this layout (paths are relative to project root):
 ```
 app/
   (site)/
-    layout.tsx              # Site root: SanityLive, VisualEditing, theme
-    Client.tsx              # Client shell; accepts sanityLive slot
-    Server.tsx              # Server shell (header, etc.)
+    layout.tsx              # Site root: shell (html/body, header), SanityLive, VisualEditing
+    Providers.tsx           # Client-side providers (theme, contexts)
     (home)/
       layout.tsx            # generateMetadata from Sanity
       page.tsx              # Homepage — fetchSanity(homePageQuery)
@@ -270,34 +271,36 @@ import { draftMode } from 'next/headers'
 import { VisualEditing } from 'next-sanity/visual-editing'
 import { SanityLive } from '@sanity/lib/live.server'
 import DisableDraftMode from '@parts/DisableDraftMode'
-import Client from './Client'
+import Header from '@parts/Header'
+import Providers from './Providers'
 
 export default async function SiteLayout({ children }) {
   const { isEnabled: isDraftMode } = await draftMode()
 
   return (
-    <Client
-      sanityLive={
-        <>
-          <SanityLive />
-          {isDraftMode ? (
-            <>
-              <VisualEditing />
-              <DisableDraftMode />
-            </>
-          ) : null}
-        </>
-      }
-    >
-      {children}
-    </Client>
+    <html lang="en">
+      <body>
+        <Providers>
+          <Header />
+          <main id="page">{children}</main>
+        </Providers>
+
+        <SanityLive />
+        {isDraftMode ? (
+          <>
+            <VisualEditing />
+            <DisableDraftMode />
+          </>
+        ) : null}
+      </body>
+    </html>
   )
 }
 ```
 
-Render `{sanityLive}` **outside** the main app shell (e.g. after `</main>`, still inside `<body>`) so overlays do not interfere with layout.
+Render `SanityLive`/`VisualEditing` **outside** the main app shell (after `</main>` — or after `</Providers>` — still inside `<body>`) so overlays do not interfere with layout.
 
-**`app/(site)/Client.tsx`** — accept optional `sanityLive?: React.ReactNode` prop and render it at the end of `<body>`.
+**`app/(site)/Providers.tsx`** — client-side providers only (`'use client'`: theme, contexts); the layout owns the shell.
 
 ### 8. Draft mode API routes
 
@@ -606,7 +609,7 @@ Copy everything below into your AI / project brief:
 This repo’s `sanity` branch is the source of truth. Key files:
 
 - `sanity.config.ts`
-- `app/(site)/layout.tsx`, `app/(site)/Client.tsx`
+- `app/(site)/layout.tsx`, `app/(site)/Providers.tsx`
 - `app/(studio)/studio/[[...tool]]/page.tsx`
 - `sanity/lib/live.server.ts`, `sanity/lib/fetch.server.ts`
 - `sanity/presentation/resolve.ts`

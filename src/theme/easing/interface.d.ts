@@ -1,11 +1,8 @@
 // Easing Types / Interfaces
 // ------------
+import type { easingValues } from './index';
 
-// SECTION • Easing
-// NOTE — The main easing object structure
-export interface Easing {
-	bezzy: string;
-	bezzy2: string;
-	bezzy3: string;
-	ease: string;
-}
+// SECTION • Easing
+// NOTE — Pure easing curves (durations live in @theme/time).
+// Derived from easingValues, so adding a curve there updates this automatically
+export type Easing = { [K in keyof typeof easingValues]: string };

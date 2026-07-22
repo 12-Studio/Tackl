@@ -21,11 +21,7 @@
 
 import { theme } from '@theme';
 
-const { xxl, sm, m } = theme.grid.breakpoints;
-
-const desktop = Number(xxl?.replace('px', '') || '1920');
-const tablet = Number(m?.replace('px', '') || '768');
-const mobile = Number(sm?.replace('px', '') || '375');
+const { desktop, tablet, mobile } = theme.grid.design;
 
 export const getVw = (px: number): string => {
 	const vw = (px / desktop) * 100;

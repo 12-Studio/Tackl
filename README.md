@@ -1,160 +1,210 @@
 ![Tackl Banner](/src/images/readme-banner.png)
 
-✨ A comprehensive starter kit designed to accelerate web development with best-in-class tooling, performance optimization, and developer experience. Built on Next.js, it provides everything needed to create fast, scalable, and maintainable web applications. ✨
+✨ An animation-first Next.js starter kit for agencies: styled-components, a zero-JS grid system, CSS-variable design tokens, GSAP + Lenis, and a CMS-ready data layer — tuned so the out-of-the-box Lighthouse story is something you can show a client. ✨
 
-![Version Number](https://img.shields.io/badge/Version-3.3.0-8000FF)
+![Version Number](https://img.shields.io/badge/Version-3.4.0-8000FF)
 ![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
 
-`For detailed documentation and guides on how to use this starter kit, please refer to the 'docs' directory.`
+> Full guides live in [`docs/`](./docs) — this README is the map.
 
-## 🎯 Key Features
-
-- **Next.js 16** - Latest version with App Router and React Server Components
-- **TypeScript** - Full type safety and enhanced developer experience _Optional_
-- **Biome** - Linting, formatting, and import organization
-- **Storybook** - Component development and documentation
-- **Performance Context** - Built-in performance optimizations and user preference detection
-- **GSAP** - Smooth animations and transitions
-- **Lenis** - Smooth scroll and parallax animations
-- **Responsive Images** - Automatic image optimization and responsive handling
-- **SEO Ready** - Built-in SEO components and best practices
-- **Accessibility** - WCAG compliance and accessibility features
-- **Centralized Font Management** - Fonts are defined once in `theme/fonts.js` and shared across both Next.js and Storybook
-- **Documentation** - Comprehensive guides and API documentation
-
----
-
-This project is built with [Next.js](https://nextjs.org/), a powerful React framework that enables features like server-side rendering, static site generation, and optimized client-side routing. The starter kit leverages Next.js 15's advanced capabilities including the App Router, React Server Components, and built-in performance optimizations.
-
-## 🚀 Getting Started
-
-First, run the development server:
+## 🚀 Quickstart
 
 ```bash
+# Scaffold into an empty directory / freshly-created git repo (recommended)
+mkdir my-app && cd my-app     # or clone your empty repo and cd in
+bunx tackl                    # asks: DatoCMS, Sanity, or no CMS
 bun run dev
+
+# …or clone this repo directly (keeps both CMS adapters)
+git clone https://github.com/12-studio/tackl my-app
+cd my-app && bun install && bun run dev
 ```
 
-To create a production build
+The CLI keeps your existing `.git`/remote, prunes the CMS you didn't pick (code, dependencies, docs, env keys), and installs with bun. `bun create tackl` and `npm create tackl@latest` work too.
 
-```bash
-bun run build
+Open [http://localhost:3000](http://localhost:3000). The placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(home)/page.tsx`) and start building.
+
+Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.). `.env` is gitignored; `.env.example` is the documented template.
+
+### Scripts
+
+| Command | What it does |
+| --- | --- |
+| `bun run dev` | Dev server (Turbopack) |
+| `bun run build` | Production build (Turbopack) |
+| `bun run start` | Serve the production build |
+| `bun run type-check` | TypeScript, no emit |
+| `bun run lint` / `lint:fix` | Biome check / auto-fix |
+| `bun run format` | Biome format |
+| `bun run storybook` | Storybook dev on :6006 |
+| `bun run build-storybook` | Static Storybook build |
+| `bun run lighthouse` | Lighthouse CI run |
+| `git commit` | Husky runs the guided commit-message prompt |
+
+## 🎯 What's in the box
+
+- **Next.js 16 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds
+- **TypeScript everywhere** — strict, with typed design tokens that derive from the values (add a token, the type follows)
+- **styled-components v6** — SSR wired via the registry; one polymorphic `Div` primitive instead of a component per HTML tag
+- **Tackl theming** — every design token is a CSS custom property on `:root`; runtime theming (dark mode, white-label) is a CSS override, not a re-render
+- **Waffl grid** — a 12/6/2-column grid with **zero JavaScript**; plain and server-rendered elements are first-class grid children
+- **GSAP + ScrollTrigger + Lenis** — smooth scrolling and scroll animations, pre-wired to share one ticker, with `prefers-reduced-motion` users automatically getting native scroll and no rAF loop
+- **View Transitions** — page transitions via the View Transitions API with a typed `Link`/router wrapper
+- **Storybook 10** — token-aware (the preview renders the same `:root` variables as the app)
+- **Biome + Husky** — linting, formatting, and a guided commit-message flow
+- **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time
+- **SEO plumbing** — `metadata`/`viewport` exports, `sitemap.xml` and `robots.txt` (staging deploys auto-blocked from indexing), all driven by one `NEXT_PUBLIC_SITE_URL`
+
+### Performance posture
+
+The kit ships **~210 KB of gzipped JS** on first load. That budget is spent deliberately: React + Next (~120 KB), GSAP + ScrollTrigger + Lenis (~45 KB), styled-components (~13 KB). Everything else is engineered to cost nothing at runtime — the grid is pure CSS, the token system is CSS variables (no theme re-renders), `sideEffects` is configured so unused exports tree-shake, fonts load as a single variable-font file, and reduced-motion users skip the animation stack entirely.
+
+## 🧠 Core concepts (5-minute tour)
+
+### 1. One component: `Div`
+
+Tackl exports **one** semantic primitive. Pick the rendered tag with `as`:
+
+```tsx
+import { Div } from '@tackl';
+
+<Div as='section' $pad>…</Div>
+<Div as='h1' $m='2/6' $l='3/9'>Heading</Div>
 ```
 
-To serve a production build
+Every `Div` accepts spacing props (`$mar`, `$pad`, …), responsive grid-span props (`$s`…`$uber`), and — because it's a real `styled.div` — all normal HTML attributes, fully typed. In styles files you fix the tag once: `styled(Div).attrs({ as: 'header' })`.
 
-```bash
-bun run serve
-# you may need to install serve globally:
-bun add -g serve
+➜ [docs/Tackl/WritingComponents.md](./docs/Tackl/WritingComponents.md)
+
+### 2. Tokens are CSS variables
+
+Raw values live once in `src/theme/*`; `GlobalStyle` emits them on `:root`; everything — styled-components, plain CSS, Server Components — references them:
+
+```tsx
+background: ${getBrand('bc1')};        /* → var(--brand-bc1) */
+border-color: ${getBrand('bc1', 20)};  /* → color-mix(in srgb, var(--brand-bc1) 20%, transparent) */
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.jsx`. The page auto-updates as you edit the file.
-
-## Committing code
-
-This project uses Husky and a custom commit message script to ensure consistent and informative commit messages. When you're ready to commit your changes:
-
-1. Stage your changes:
-
-```bash
-git add .
+```css
+.card { padding: var(--space-m); }     /* plain CSS works too */
 ```
 
-2. Commit your changes:
+Dark mode / white-labeling = redefine variables under `html[data-theme='…']`. No JS.
 
-```bash
-git commit
+➜ [docs/Tackl/Theming.md](./docs/Tackl/Theming.md)
+
+### 3. The Waffl grid
+
+`Grid` (from `@waffl`) renders a plain `<waffl-grid>` tag — no web component, no client JS. Children span the full grid by default; span props opt into columns per breakpoint:
+
+```tsx
+import Grid from '@waffl';
+
+<Grid $isFixed>
+	<Div as='article' $m='2/6' $l='1/7'>Half on desktop</Div>
+	<figure>Plain elements work too — full width by default</figure>
+</Grid>
 ```
 
-3. Husky will take care of the rest and ask you some important questions to help you create a good commit message.
+### 4. Mobile-first breakpoints: `bp`
 
-## 🧐 What's inside?
+Base styles are mobile. `bp.m`, `bp.l`, … layer upwards with `min-width` queries:
 
-A quick look at the top-level files and directories you'll see in a Tackl project.
+```tsx
+import { bp } from '@tackl';
+
+font-size: 1.8rem;              /* mobile default */
+${bp.m` font-size: 2.4rem; `}   /* ≥ 700px */
+${bp.l` font-size: 3.2rem; `}   /* ≥ 1024px */
+```
+
+(`bpd` exists for the rare max-width case.)
+
+### 5. Motion, responsibly
+
+`SmoothScroll` wires Lenis into GSAP's ticker (one clock for scrolling and ScrollTrigger). Users with `prefers-reduced-motion` skip Lenis entirely — native scroll, no animation loop. Register component animations with `useGSAP` and they clean themselves up.
+
+➜ [docs/Motion.md](./docs/Motion.md) · [docs/GSAP](./docs/GSAP)
+
+## 🏗 Architecture
+
+```mermaid
+flowchart TD
+    VT[ViewTransitions] --> HTML[html + Inter font variable]
+    HTML --> BODY[body]
+    BODY --> P[Providers - client boundary\nregistry · ThemeProvider · GlobalStyle · Contexts]
+    P --> H[Header]
+    P --> MAIN[main#page]
+    MAIN --> SS[SmoothScroll - Lenis]
+    SS --> PAGES[Your pages - Server Components]
+```
+
+`app/layout.tsx` (a Server Component) owns the document shell and site-wide `metadata`. `app/Providers.tsx` is the only client boundary in the shell — page content passes through it as `children`, so your pages stay server-rendered.
+
+➜ [docs/Tackl/AppArchitecture.md](./docs/Tackl/AppArchitecture.md)
+
+## 📁 Project structure
 
     .
-    ├── node_modules
-    ├── storybook
-    ├── app
-    ├── public
-    ├── src
-    ├── .env
-    ├── biome.json
-    ├── .gitignore
-    ├── .npmrc
-    ├── .deployment_guide.md
-    ├── .jsconfig.json
-    ├── next.config.js
-    ├── bun.lock
-    ├── package.json
-    ├── docs
-    └── README.md
+    ├── app/                    # Routes (App Router)
+    │   ├── layout.tsx          # Server shell: html/body, metadata, chrome
+    │   ├── Providers.tsx       # Client providers (styled-components, contexts)
+    │   ├── (home)/             # Home route group
+    │   ├── sitemap.ts          # /sitemap.xml
+    │   ├── robots.ts           # /robots.txt (blocks staging deploys)
+    │   └── icon.svg            # Favicon
+    ├── src/
+    │   ├── cms/                # CMS seam — import from '@cms' only
+    │   │   ├── index.ts        # Adapter switch (the line the CLI rewires)
+    │   │   ├── dato/           # DatoCMS adapter (GraphQL)
+    │   │   └── sanity/         # Sanity adapter (GROQ)
+    │   ├── components/         # UI components (one folder each — see WritingComponents.md)
+    │   ├── theme/              # Design tokens + the tackl toolkit
+    │   │   ├── colors|space|gap|borderRadius|easing|time|fonts|grid/
+    │   │   ├── cssVariables/   # toVarRefs / toVarDeclarations helpers
+    │   │   └── tackl/          # Div, getters, bp/bpd, alpha, type styles, waffl grid
+    │   ├── css/global.css      # Reset, waffl default rule, reduced-motion fallback
+    │   ├── config.ts           # siteUrl (drives metadataBase, sitemap, robots)
+    │   ├── utils/              # Hooks and helpers (incl. viewTransitions)
+    │   └── types/              # Ambient types (styled DefaultTheme, waffl-grid tag)
+    ├── docs/                   # The full documentation set
+    ├── public/                 # Static assets
+    ├── tackl/                  # The Tackl CLI (npm: `tackl` + `create-tackl`)
+    ├── .env.example            # Documented environment template
+    ├── LICENSE                 # MIT
+    ├── biome.json              # Lint + format config
+    ├── next.config.js          # Images, compiler settings
+    └── tsconfig.json           # Strict TS + path aliases (@tackl, @waffl, @theme, @cms, …)
 
-1.  **`/node_modules`**: The core dependency directory containing all external packages and libraries your project relies on. These are automatically installed based on your package.json specifications and should never be manually modified or committed to version control.
+## 📚 Documentation index
 
-2.  **`/storybook`**: Houses all Storybook configuration and setup files. Storybook is our component development environment where we build and test UI components in isolation. Individual component stories are co-located with their components in `src/parts/YourComponent` for better maintainability. Note that fonts must be imported into `.storybook/preview.js` to be available in your stories (see example in that file for importing Inter font).
+| Guide | What it covers |
+| --- | --- |
+| [WritingComponents](./docs/Tackl/WritingComponents.md) | File anatomy, comment style, imports, `Div`, grid spans, `bp` |
+| [Theming](./docs/Tackl/Theming.md) | Tokens, CSS variables, opacity, runtime theming |
+| [AppArchitecture](./docs/Tackl/AppArchitecture.md) | The app shell, Providers, data flow |
+| [WafflGridSystem](./docs/Tackl/WafflGridSystem.md) · [GridSystemProps](./docs/Tackl/GridSystemProps.md) | Grid internals and prop reference |
+| [SemanticComponents](./docs/Tackl/SemanticComponents.md) | The `Div` primitive in depth |
+| [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
+| [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
+| [CMS](./docs/CMS.md) | The `@cms` adapter seam and choosing Dato/Sanity |
+| [DatoCMS](./docs/DatoCMS) | Querying, images, structured text, SEO |
+| [Sanity](./docs/Sanity/README.md) | Setting up the Sanity variant |
+| [Lighthouse](./docs/Lighthouse.md) | Performance auditing |
 
-3.  **`./app`**: The main application directory utilizing Next.js 13+'s App Router architecture. This modern routing approach offers enhanced features like server components, layouts, and more streamlined data fetching compared to the legacy Pages Router. [Learn more about App Router](https://nextjs.org/docs/app)
+## ✍️ Committing
 
-4.  **`./public`**: Static asset directory for files that need to be publicly accessible. This includes images, fonts, icons, and other media files that don't require processing. Files in this directory are served as-is from the root URL path.
-
-5.  **`/src`**: The primary source code directory containing all front-end application code. This follows the conventional source directory structure and includes components, utilities, hooks, and other application logic organized in a modular fashion.
-
-6.  **`.env`**: Environment configuration file storing sensitive data like API keys, database credentials, and other environment-specific variables. This file should never be committed to version control - use .env.example instead for documentation.
-
-7.  **`.gitignore`**: Version control configuration file that specifies which files and directories Git should ignore, such as node_modules, build outputs, and environment files.
-
-8.  **`.npmrc`**: Package manager configuration file that customizes Bun/npm registry behavior for this project. In Tackl, it's primarily used for configuring GSAP Club access and other package-specific settings.
-
-9.  **`deployment_guide`**: Comprehensive AWS deployment documentation providing step-by-step instructions for setting up and deploying your Tackl project to production.
-
-10. **`jsconfig.json`**: JavaScript project configuration file that enhances development experience by enabling TypeScript-like features, custom path aliases, and better IntelliSense support in modern IDEs.
-
-11. **`biome.json`**: Biome configuration for linting, formatting, and import organization with consistent code style across the project.
-
-12. **`next.config.js`**: Next.js framework configuration file where you can customize build settings, add environment variables, configure plugins, and modify webpack behavior. Essential for tailoring Next.js to your project's needs.
-
-13. **`bun.lock`**: Automatically generated dependency lock file that ensures consistent installations across different environments by recording the exact version of each installed package. Should be committed to version control but never manually edited.
-
-14. **`package.json`**: Project manifest file defining your application's dependencies, scripts, metadata, and other important configurations. This is the central configuration file for your Node.js/JavaScript project.
-
-15. **`docs`**: Comprehensive documentation directory containing detailed guides, best practices, and technical documentation specific to working with Tackl's features and conventions.
-
-16. **`README.md`**: The primary project documentation file providing an overview, setup instructions, and essential information for developers working with the project. You're reading it right now!
-
-## 🎓Learning NextJS
-
-Next.js is a powerful React framework that enables features like server-side rendering and static site generation. To deepen your understanding of Next.js and make the most of its capabilities, we recommend exploring these valuable resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - Comprehensive documentation covering all Next.js features, APIs, and best practices. Perfect for both beginners and advanced developers.
-- [Learn Next.js](https://nextjs.org/learn) - An interactive, hands-on tutorial that guides you through building a full Next.js application from scratch. Great for practical learning.
-- [Next.js Examples](https://github.com/vercel/next.js/tree/canary/examples) - A collection of example projects demonstrating various Next.js features and integration patterns.
-- [Next.js Discord Community](https://discord.com/invite/bUG2bvbtHy) - Join thousands of Next.js developers for real-time discussions, help, and networking.
-
-The framework is open source and actively maintained by Vercel and the community. You can explore or contribute to [the Next.js GitHub repository](https://github.com/vercel/next.js/). Whether you're fixing bugs, adding features, or improving documentation, your contributions help make Next.js better for everyone!
+Husky runs a guided prompt on `git commit` — describe the change, pick a type, and it formats a consistent message for you.
 
 ## 👥 Authors & Maintainers
 
-This project is developed and maintained by the 12 Studio Team:
+Developed and maintained by the 12 Studio team:
 
-### Core Team
+- **Joe Taylor** (joe@12studio.agency)
+- **Adam Roberts** (adam@12studio.agency)
 
-- **Lead Developers**
-    - Joe Taylor (joe@12studio.agency)
-    - Adam Roberts (adam@12studio.agency)
-
-### Contributing
-
-We welcome contributions from the community! Please read our contribution guidelines before submitting pull requests.
-
-For support, feature requests, or bug reports, please:
-
-1. Check existing GitHub issues
-2. Create a new issue if needed
-3. Contact the development team at hello+tackl@12studio.agency
+Contributions welcome — check existing GitHub issues first, or reach the team at hello+tackl@12studio.agency.
 
 ### License
 
-This project is proprietary software owned by Tackl. All rights reserved.
+[MIT](./LICENSE) © 12 Studio — use it, ship client work with it, no strings beyond the notice.

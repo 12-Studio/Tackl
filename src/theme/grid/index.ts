@@ -3,13 +3,11 @@
 
 // NOTE • This file exports the grid object, the grid object is used to store all the grid values for the application.
 
-// Imports
-// ------------
-import type { Grid } from './interface';
-
 // Exports
 // ------------
-export const grid: Grid = {
+// NOTE • Grid values stay literal (no CSS variables) — media queries can't
+// read custom properties, so these are build-time tokens
+export const grid = {
 	columns: {
 		s: 2,
 		m: 6,
@@ -31,4 +29,9 @@ export const grid: Grid = {
 		l: '3.6rem',
 	},
 	maxSize: '1440px',
+	design: {
+		mobile: 390,
+		tablet: 700,
+		desktop: 1440,
+	},
 };

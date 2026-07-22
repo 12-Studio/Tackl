@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Waffl Grid System is a powerful, responsive grid system built on top of CSS Grid that provides semantic components with built-in grid functionality. It combines the flexibility of CSS Grid with the convenience of semantic HTML elements and responsive design patterns.
+The Waffl Grid System is a powerful, responsive grid system built on top of CSS Grid. A single styled `Grid` component renders a plain `<waffl-grid>` tag, direct children are full-width by default via a zero-specificity global rule, and the polymorphic `Div` semantic component opts children into narrower spans with responsive props.
 
 ## Architecture
 
@@ -10,11 +10,11 @@ The Waffl Grid System is a powerful, responsive grid system built on top of CSS 
 ┌─────────────────────────────────────────────────────────────┐
 │                    Waffl Grid System                      │
 ├─────────────────────────────────────────────────────────────┤
-│  Semantic Components (Waffl, Section, Div, etc.)          │
+│  Grid (styled <waffl-grid> tag) + Div (semantic child)    │
 │  ┌─────────────────────────────────────────────────────────┐ │
-│  │  Grid System Props ($s, $m, $l, etc.)                │ │
+│  │  Full-width default (global :where rule)              │ │
 │  │  ┌─────────────────────────────────────────────────┐  │ │
-│  │  │  Responsive Breakpoints (s, m, l, xl, etc.)   │  │ │
+│  │  │  Grid Span Props ($s, $m, $l, etc.)           │  │ │
 │  │  │  ┌─────────────────────────────────────────────┐ │  │ │
 │  │  │  │  CSS Grid Implementation                  │ │  │ │
 │  │  │  └─────────────────────────────────────────────┘ │  │ │
@@ -25,23 +25,35 @@ The Waffl Grid System is a powerful, responsive grid system built on top of CSS 
 
 ## Core Concepts
 
-### 1. Semantic Components
+### 1. The Grid Component
 
-Waffl provides semantic HTML components that automatically include grid functionality:
+The grid container is the styled `Grid` component (`src/theme/tackl/waffl/index.ts`), imported as a default from `@waffl`. It renders a plain `<waffl-grid>` tag — the tag is just a name (typed as a JSX intrinsic in `src/types/waffl.d.ts`); there is **no** JS custom element, no shadow DOM, and no side-effect import to register. All styling comes from the styled component:
 
 ```typescript
-// Available semantic components
-export const Waffl = createSemanticComponent('waffl-grid');
-export const Section = createSemanticComponent('section');
-export const Div = createSemanticComponent('div');
-export const Main = createSemanticComponent('main');
-export const Article = createSemanticComponent('article');
-// ... and many more
+import Grid from '@waffl';
+
+<Grid>
+    {/* children */}
+</Grid>
 ```
 
-### 2. Grid System Props
+### 2. Full-Width by Default
 
-All semantic components accept responsive grid props:
+Children no longer emit `grid-column: 1/-1` themselves. The default lives on the grid, in `src/css/global.css`:
+
+```css
+/* :where() keeps specificity at zero, so any span prop, class,
+   or --col-* variable on the child wins. */
+waffl-grid > :where(*) {
+    grid-column: 1 / -1;
+}
+```
+
+Because the rule targets *any* direct child, plain elements — including Server Components with no styled-components at all — participate in the grid and span full width automatically. Only children that need narrower spans need span props.
+
+### 3. Grid Span Props
+
+Children use the polymorphic `Div` semantic component (from `@tackl`) with responsive span props:
 
 ```typescript
 // Responsive grid props
@@ -50,12 +62,12 @@ type ResponsiveProps = {
 }
 
 // Example usage - 2, 6, 12 columns.
-<Section $s="1/3" $m="1/7" $l="1/13">
+<Div as='section' $s='1/3' $m='1/7' $l='1/13'>
     Content
-</Section>
+</Div>
 ```
 
-### 3. Responsive Breakpoints
+### 4. Responsive Breakpoints
 
 The system uses predefined breakpoints for responsive design:
 
@@ -133,12 +145,10 @@ const gridVariants = {
 
 ### 3. Responsive Grid Columns
 
-The system automatically handles responsive grid column spans:
+Span props only emit `grid-column` when set — the full-width default comes from the grid, not the child:
 
 ```typescript
 export const gridSemantics = (props: SemanticProps) => css`
-	grid-column: 1/-1; // Default: full width
-
 	${breakpointKeys.map(
 		key =>
 			props[`$${key}`] &&
@@ -151,44 +161,47 @@ export const gridSemantics = (props: SemanticProps) => css`
 `;
 ```
 
+This also means elements used *outside* a grid carry no grid CSS at all.
+
 ### 4. Smart Breakpoint Inheritance
 
 **Key Feature**: You only need to specify props for breakpoints that change! The system automatically inherits the previous breakpoint's value. (Meaning, if your grid props only change on desktop, $l, you do not need to specify $s or $m)
 
 ```typescript
 // ✅ Only specify what changes
-<Section $l="3/9">
-    // Mobile: full width (1/-1)
-    // Tablet: full width (1/-1)
+<Div as='section' $l='3/9'>
+    // Mobile: full width (grid default)
+    // Tablet: full width (grid default)
     // Desktop: 3/9
-</Section>
+</Div>
 
 // ✅ Skip intermediate breakpoints
-<Section $m="1/5" $xl="4/10">
-    // Mobile: full width (1/-1)
+<Div as='section' $m='1/5' $xl='4/10'>
+    // Mobile: full width (grid default)
     // Tablet: Changes
     // Desktop: Changes
-</Section>
+</Div>
 ```
 
-## Basic Usageop
+## Basic Usage
 
 ```jsx
-import { Waffl, Section, Div } from '@tackl';
+import { Div } from '@tackl';
+import Grid from '@waffl';
 
 // Basic grid layout
-<Waffl>
-  <Section $s="1/-1" $m="2/6" $l="3/9">
+<Grid>
+  <Div as='section' $m='2/6' $l='3/9'>
     Content
-  </Section>
-</Waffl>
+  </Div>
+</Grid>
 
 // Common configurations
-<Waffl $isFixed>               {/* Max-width container */}
-<Waffl $noGutter>              {/* Remove column gaps */}
-<Waffl $isFullscreen>          {/* Full viewport height */}
-<Waffl $isCenter>              {/* Center content */}
-<Waffl $noMargin>              {/* Remove padding */}
+<Grid $isFixed>               {/* Max-width container */}
+<Grid $noGutter>              {/* Remove column gaps */}
+<Grid $isFullscreen>          {/* Full viewport height */}
+<Grid $isCenter>              {/* Center content */}
+<Grid $noMargin>              {/* Remove padding */}
 ```
 
 ## Grid Configuration
@@ -262,126 +275,137 @@ export const grid: Grid = {
 ### 1. Basic Grid Layout
 
 ```jsx
-<Waffl>
-	<Section $s='1/-1' $m='2/6' $l='3/9'>
+<Grid>
+	<Div as='section' $m='2/6' $l='3/9'>
 		Content spans full width on mobile, 2-6 on tablet, 3-9 on desktop
-	</Section>
-</Waffl>
+	</Div>
+</Grid>
 ```
 
 ### 1.1. Smart Breakpoint Inheritance
 
 ```jsx
 // ✅ Efficient: Only specify what changes
-<Section $s='1/-1' $l='3/9'>
-	// Mobile: full width (1/-1)
-	// Tablet: inherits mobile (1/-1)
+<Div as='section' $l='3/9'>
+	// Mobile: full width (grid default)
+	// Tablet: inherits mobile (full width)
 	// Desktop: 3/9
-</Section>
+</Div>
 
 // ✅ Skip intermediate breakpoints
-<Section $s='1/-1' $xl='4/10'>
-	// Mobile: full width (1/-1)
-	// Tablet: inherits mobile (1/-1)
-	// Desktop: inherits tablet (1/-1)
+<Div as='section' $xl='4/10'>
+	// Mobile: full width (grid default)
+	// Tablet: inherits mobile (full width)
+	// Desktop: inherits tablet (full width)
 	// Large Desktop: 4/10
-</Section>
+</Div>
 
 // ✅ Start from any breakpoint
-<Section $m='2/6' $l='3/9'>
-	// Mobile: default (1/-1)
+<Div as='section' $m='2/6' $l='3/9'>
+	// Mobile: default (full width)
 	// Tablet: 2/6
 	// Desktop: 3/9
-</Section>
+</Div>
+```
+
+### 1.2. Plain and Server-Rendered Children
+
+```jsx
+// ✅ No styled-components needed for full-width children —
+// the global waffl-grid rule makes them span the grid
+<Grid>
+	<section>Full-width Server Component content</section>
+	<Div as='section' $l='3/9'>Narrower content</Div>
+</Grid>
 ```
 
 ### 2. Responsive Grid Layout
 
 ```jsx
-<Waffl>
-	<Section $s='1/-1' $m='1/3' $l='1/4'>
+<Grid>
+	<Div as='section' $m='1/3' $l='1/4'>
 		Sidebar
-	</Section>
-	<Section $s='1/-1' $m='3/7' $l='4/10'>
+	</Div>
+	<Div as='section' $m='3/7' $l='4/10'>
 		Main content
-	</Section>
-	<Section $s='1/-1' $m='7/9' $l='10/13'>
+	</Div>
+	<Div as='section' $m='7/9' $l='10/13'>
 		Right sidebar
-	</Section>
-</Waffl>
+	</Div>
+</Grid>
 ```
 
 ### 2.1. Efficient Responsive Layout
 
 ```jsx
 // ✅ Only specify what changes at each breakpoint
-<Waffl>
-	<Section $s='1/-1' $l='1/4'>
-		// Mobile: full width, Desktop: left quarter // Tablet inherits mobile
-		(full width) Sidebar
-	</Section>
-	<Section $s='1/-1' $l='4/10'>
-		// Mobile: full width, Desktop: middle half // Tablet inherits mobile
-		(full width) Main content
-	</Section>
-	<Section $s='1/-1' $l='10/13'>
-		// Mobile: full width, Desktop: right quarter // Tablet inherits mobile
-		(full width) Right sidebar
-	</Section>
-</Waffl>
+<Grid>
+	<Div as='section' $l='1/4'>
+		// Mobile/Tablet: full width (grid default) // Desktop: left quarter
+		Sidebar
+	</Div>
+	<Div as='section' $l='4/10'>
+		// Mobile/Tablet: full width (grid default) // Desktop: middle half
+		Main content
+	</Div>
+	<Div as='section' $l='10/13'>
+		// Mobile/Tablet: full width (grid default) // Desktop: right quarter
+		Right sidebar
+	</Div>
+</Grid>
 ```
 
 ### 3. Grid with Variants
 
 ```jsx
-<Waffl $noGutter $isFixed>
-	<Section $s='1/-1' $m='2/6'>
+<Grid $noGutter $isFixed>
+	<Div as='section' $m='2/6'>
 		Content with no gutters and fixed max width
-	</Section>
-</Waffl>
+	</Div>
+</Grid>
 ```
 
 ### 4. Semantic HTML with Grid
 
 ```jsx
-<Main $s='1/-1' $m='2/6' $l='3/9'>
-	<Article $s='1/-1' $m='1/3' $l='1/4'>
+<Grid>
+	<Div as='article' $m='1/3' $l='1/4'>
 		Article content
-	</Article>
-	<Aside $s='1/-1' $m='3/5' $l='4/6'>
+	</Div>
+	<Div as='aside' $m='3/5' $l='4/6'>
 		Sidebar content
-	</Aside>
-</Main>
+	</Div>
+</Grid>
 ```
 
 ### 5. Centered Content
 
 ```jsx
-<Waffl $isCenter $isFullscreen>
-	<Section $s='1/-1' $m='2/6'>
+<Grid $isCenter $isFullscreen>
+	<Div as='section' $m='2/6'>
 		Centered vertically and horizontally
-	</Section>
-</Waffl>
+	</Div>
+</Grid>
 ```
 
 ### 6. Fixed Width Container
 
 ```jsx
-<Waffl $isFixed>
-	<Section $s='1/-1' $m='2/6'>
+<Grid $isFixed>
+	<Div as='section' $m='2/6'>
 		Fixed width container content
-	</Section>
-</Waffl>
+	</Div>
+</Grid>
 ```
 
 ### 7. No Gutters
 
 ```jsx
-<Waffl $noGutter>
-	<Section $s='1/-1' $m='1/3'>
+<Grid $noGutter>
+	<Div as='section' $m='1/3'>
 		Content with no column gaps
-	</Section>
-</Waffl>
+	</Div>
+</Grid>
 ```
 
 ## Grid Column Syntax
@@ -390,26 +414,26 @@ export const grid: Grid = {
 
 ```typescript
 // Single column
-<Section $s="1/2"> // Spans 1 column on small screens
+<Div as='section' $s='1/2'> // Spans 1 column on small screens
 
 // Multiple columns
-<Section $s="1/3"> // Spans 2 columns on small screens
+<Div as='section' $s='1/3'> // Spans 2 columns on small screens
 
 // Full width
-<Section $s="1/-1"> // Spans all columns (default)
+<Div as='section'> // Spans all columns (grid default — no prop needed)
 ```
 
 ### Responsive Column Spans
 
 ```typescript
 // Responsive grid spans
-<Section
-    $s="1/-1"    // Full width on mobile
-    $m="2/6"     // Spans columns 2-6 on tablet
-    $l="3/9"     // Spans columns 3-9 on desktop
+<Div
+    as='section'
+    $m='2/6'     // Spans columns 2-6 on tablet
+    $l='3/9'     // Spans columns 3-9 on desktop
 >
     Content
-</Section>
+</Div>
 ```
 
 ### Smart Breakpoint Inheritance
@@ -418,33 +442,26 @@ export const grid: Grid = {
 
 ```typescript
 // ✅ Efficient: Only specify what changes
-<Section $s="1/-1" $l="3/9">
-    // Mobile: full width (1/-1)
-    // Tablet: inherits mobile (1/-1)
+<Div as='section' $l='3/9'>
+    // Mobile: full width (grid default)
+    // Tablet: inherits mobile (full width)
     // Desktop: 3/9
-</Section>
+</Div>
 
 // ✅ Skip intermediate breakpoints
-<Section $s="1/-1" $xl="4/10">
-    // Mobile: full width (1/-1)
-    // Tablet: inherits mobile (1/-1)
-    // Desktop: inherits tablet (1/-1)
+<Div as='section' $xl='4/10'>
+    // Mobile: full width (grid default)
+    // Tablet: inherits mobile (full width)
+    // Desktop: inherits tablet (full width)
     // Large Desktop: 4/10
-</Section>
+</Div>
 
 // ✅ Start from any breakpoint
-<Section $m="2/6" $l="3/9">
-    // Mobile: default (1/-1)
+<Div as='section' $m='2/6' $l='3/9'>
+    // Mobile: default (full width)
     // Tablet: 2/6
     // Desktop: 3/9
-</Section>
-
-// ✅ Only specify the breakpoints you need
-<Section $l="3/9">
-    // Mobile: default (1/-1)
-    // Tablet: default (1/-1)
-    // Desktop: 3/9
-</Section>
+</Div>
 ```
 
 ## Responsive Behavior
@@ -475,50 +492,50 @@ The grid automatically adjusts based on breakpoints:
 
 ```typescript
 // Nested grid system
-<Waffl>
-    <Section $s="1/-1" $m="2/6" $l="3/9">
-        <Waffl>
-            <Section $s="1/-1" $m="1/3">
+<Grid>
+    <Div as='section' $m='2/6' $l='3/9'>
+        <Grid $noMargin>
+            <Div as='section' $m='1/3'>
                 Nested left
-            </Section>
-            <Section $s="1/-1" $m="3/5">
+            </Div>
+            <Div as='section' $m='3/5'>
                 Nested right
-            </Section>
-        </Waffl>
-    </Section>
-</Waffl>
+            </Div>
+        </Grid>
+    </Div>
+</Grid>
 ```
 
 ### 2. Grid with Variants
 
 ```typescript
 // Grid with multiple variants
-<Waffl $noGutter $isFixed $isCenter>
-    <Section $s="1/-1" $m="2/6">
+<Grid $noGutter $isFixed $isCenter>
+    <Div as='section' $m='2/6'>
         Centered content with no gutters
-    </Section>
-</Waffl>
+    </Div>
+</Grid>
 ```
 
 ### 3. Semantic HTML with Grid
 
 ```typescript
 // Using semantic HTML with grid system
-<Main $s="1/-1" $m="2/6" $l="3/9">
-    <Header $s="1/-1" $m="1/3" $l="1/4">
-        <H1 $s="1/-1">Page Title</H1>
-    </Header>
+<Grid>
+    <Div as='header' $m='1/3' $l='1/4'>
+        <Div as='h1'>Page Title</Div>
+    </Div>
 
-    <Article $s="1/-1" $m="3/7" $l="4/10">
-        <H2 $s="1/-1">Article Title</H2>
-        <P $s="1/-1">Article content...</P>
-    </Article>
+    <Div as='article' $m='3/7' $l='4/10'>
+        <Div as='h2'>Article Title</Div>
+        <Div as='p'>Article content...</Div>
+    </Div>
 
-    <Aside $s="1/-1" $m="7/9" $l="10/13">
-        <H3 $s="1/-1">Sidebar</H3>
-        <P $s="1/-1">Sidebar content...</P>
-    </Aside>
-</Main>
+    <Div as='aside' $m='7/9' $l='10/13'>
+        <Div as='h3'>Sidebar</Div>
+        <Div as='p'>Sidebar content...</Div>
+    </Div>
+</Grid>
 ```
 
 ## Performance Optimizations
@@ -528,21 +545,21 @@ The grid automatically adjusts based on breakpoints:
 - **Containment**: Uses `contain: layout` for performance
 - **CSS Variables**: Efficient responsive updates
 - **Pre-computed Styles**: Base styles are pre-computed
-- **Optimized Renders**: Minimal re-renders
+- **No Runtime Registration**: `<waffl-grid>` is a plain tag — no custom element JS, no shadow DOM, no client-side registration cost
 
 ### 2. Responsive Performance
 
 - **Mobile-First**: Optimized for mobile devices
-- **Efficient Breakpoints**: Only necessary breakpoints are applied
-- **CSS Variables**: Smooth responsive transitions
+- **Efficient Breakpoints**: Span CSS is only emitted for breakpoints you set
+- **Zero-Specificity Default**: The full-width default is one global rule, not per-element CSS
 - **Grid Containment**: Prevents layout thrashing
 
 ### 3. Development Performance
 
-- **Type Safety**: Full TypeScript support
+- **Type Safety**: Full TypeScript support (the tag is typed in `src/types/waffl.d.ts`)
 - **IntelliSense**: Auto-completion for props
 - **Error Prevention**: Compile-time error checking
-- **Hot Reloading**: Fast development iteration
+- **Tree-Shaking**: `package.json` declares `"sideEffects": ["*.css", "src/components/AnimationPlugins/**"]`, so unused modules are dropped from the bundle
 
 ## Grid Exposer Tool
 
@@ -566,16 +583,16 @@ The Grid Exposer provides:
 
 - **Mobile-First**: Start with mobile layout and enhance for larger screens
 - **Progressive Enhancement**: Add complexity for larger screens
-- **Semantic HTML**: Use appropriate HTML elements
+- **Semantic HTML**: Pick the right tag with `as` (or plain elements for full-width children)
 - **Accessibility**: Maintain semantic structure
 - **Smart Breakpoints**: Only specify props for breakpoints that change
 
 ### 2. Performance
 
-- **Efficient Breakpoints**: Use only necessary breakpoints
+- **Rely on the Default**: Don't pass span props for full-width children — the grid handles it
 - **Grid Containment**: Use `contain: layout` for performance
 - **CSS Variables**: Leverage CSS custom properties
-- **Optimized Renders**: Minimize re-renders
+- **Prefer Plain Elements**: Server Components need no styled-components to sit in the grid
 - **Smart Inheritance**: Only specify props for breakpoints that change
 
 ### 3. Component Design
@@ -588,86 +605,84 @@ The Grid Exposer provides:
 ### 4. Responsive Design
 
 ```jsx
-// Mobile-first responsive design
-<Section
-    $s="1/-1"    // Mobile: full width
-    $m="1/3"     // Tablet: left third
-    $l="1/4"     // Desktop: left quarter
+// Mobile-first responsive design (full width on mobile by default)
+<Div
+    as='section'
+    $m='1/3'     // Tablet: left third
+    $l='1/4'     // Desktop: left quarter
 >
     Left content
-</Section>
+</Div>
 
-<Section
-    $s="1/-1"    // Mobile: full width
-    $m="3/7"     // Tablet: middle two-thirds
-    $l="4/10"    // Desktop: middle half
+<Div
+    as='section'
+    $m='3/7'     // Tablet: middle two-thirds
+    $l='4/10'    // Desktop: middle half
 >
     Main content
-</Section>
+</Div>
 
-<Section
-    $s="1/-1"    // Mobile: full width
-    $m="7/9"     // Tablet: right third
-    $l="10/13"   // Desktop: right quarter
+<Div
+    as='section'
+    $m='7/9'     // Tablet: right third
+    $l='10/13'   // Desktop: right quarter
 >
     Right content
-</Section>
+</Div>
 ```
 
 ### 4.1. Efficient Responsive Design
 
 ```jsx
 // ✅ Only specify what changes at each breakpoint
-<Section $s="1/-1" $l="1/4">
-    // Mobile: full width, Desktop: left quarter
-    // Tablet inherits mobile (full width)
+<Div as='section' $l='1/4'>
+    // Mobile/Tablet: full width (grid default)
+    // Desktop: left quarter
     Left content
-</Section>
+</Div>
 
-<Section $s="1/-1" $l="4/10">
-    // Mobile: full width, Desktop: middle half
-    // Tablet inherits mobile (full width)
+<Div as='section' $l='4/10'>
+    // Mobile/Tablet: full width (grid default)
+    // Desktop: middle half
     Main content
-</Section>
+</Div>
 
-<Section $s="1/-1" $l="10/13">
-    // Mobile: full width, Desktop: right quarter
-    // Tablet inherits mobile (full width)
+<Div as='section' $l='10/13'>
+    // Mobile/Tablet: full width (grid default)
+    // Desktop: right quarter
     Right content
-</Section>
+</Div>
 ```
 
 ### 5. Container Usage
 
 ```jsx
 // Preferred: Fixed container for content
-<Waffl $isFixed>
-    <Section $s="1/-1" $m="2/6">
+<Grid $isFixed>
+    <Div as='section' $m='2/6'>
         Content
-    </Section>
-</Waffl>
+    </Div>
+</Grid>
 
 // Full-width sections
-<Waffl>
-    <Section $s="1/-1">
-        Full width content
-    </Section>
-</Waffl>
+<Grid>
+    <section>Full width content</section>
+</Grid>
 ```
 
 ### 6. Nesting Grids
 
 ```jsx
 // Proper grid nesting
-<Waffl $isFixed>
-	<Section $s='1/-1' $m='1/3' $l='1/4'>
-		<Waffl $noMargin>
-			<Section $s='1/-1' $m='1/3'>
+<Grid $isFixed>
+	<Div as='section' $m='1/3' $l='1/4'>
+		<Grid $noMargin>
+			<Div as='section' $m='1/3'>
 				Nested content
-			</Section>
-		</Waffl>
-	</Section>
-</Waffl>
+			</Div>
+		</Grid>
+	</Div>
+</Grid>
 ```
 
 ## Troubleshooting
@@ -728,17 +743,18 @@ The Waffl Grid System provides a powerful, flexible, and performant grid system 
 
 ### Key Benefits
 
-- **Semantic HTML**: Use proper HTML elements with grid functionality
+- **Semantic HTML**: One polymorphic `Div` picks the right tag with `as`
+- **Zero-Cost Participation**: Plain and server-rendered elements are grid children automatically
 - **Responsive Design**: Mobile-first approach with progressive enhancement
-- **Performance**: Optimized CSS Grid implementation with containment
+- **Performance**: Optimized CSS Grid implementation with containment, no custom element runtime
 - **Developer Experience**: TypeScript support with IntelliSense
 - **Accessibility**: Maintains semantic structure for screen readers
 - **Flexibility**: Supports complex layouts and nested grids
 
 ### Getting Started
 
-1. **Import Components**: Use semantic components from `@tackl`
-2. **Apply Grid Props**: Use responsive grid props (`$s`, `$m`, `$l`, etc.)
+1. **Import Components**: `import Grid from '@waffl'` and `import { Div } from '@tackl'`
+2. **Apply Grid Props**: Use responsive grid props (`$s`, `$m`, `$l`, etc.) on children that need narrower spans
 3. **Use Variants**: Apply grid variants (`$isFixed`, `$noGutter`, etc.)
 4. **Test Responsively**: Use Grid Exposer for development
 5. **Follow Best Practices**: Mobile-first, semantic HTML, performance optimization

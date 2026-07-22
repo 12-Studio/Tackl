@@ -1,12 +1,7 @@
-// BorderRadius Types / Interfaces
+// Border Radius Types / Interfaces
 // ------------
+import type { borderRadiusValues } from './index';
 
-// SECTION • BorderRadius
-// NOTE — The main borderRadius object structure
-export interface BorderRadius {
-	xs: string;
-	s: string;
-	m: string;
-	l: string;
-	round: string;
-}
+// SECTION • Border Radius
+// NOTE — Derived from borderRadiusValues, so adding a token there updates this automatically
+export type BorderRadius = { [K in keyof typeof borderRadiusValues]: string };

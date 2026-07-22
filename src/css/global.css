@@ -6,7 +6,6 @@
 	box-sizing: border-box;
 	-webkit-font-smoothing: subpixel-antialiased; /* Enable subpixel antialiasing for better text rendering */
 	-moz-osx-font-smoothing: grayscale; /* Enable grayscale antialiasing for better text rendering */
-	text-rendering: geometricPrecision; /* Improve text rendering quality */
 }
 
 /* HTML5 Elements */
@@ -43,6 +42,7 @@ body {
 #page {
 	height: 100%;
 	overflow: hidden;
+	view-transition-name: page;
 }
 
 a {
@@ -73,6 +73,14 @@ button:focus {
 	outline: none;
 }
 
+/* Waffl Grid — direct children span the full grid by default.
+   :where() keeps specificity at zero, so any span prop ($s/$m/$l…), class,
+   or --col-* variable on the child wins. Works for plain/server-rendered
+   elements too — no styled-component required to sit in the grid. */
+waffl-grid > :where(*) {
+	grid-column: 1 / -1;
+}
+
 /* Scrollbar & Performance */
 * {
 	scrollbar-width: none;
@@ -83,29 +91,27 @@ button:focus {
 	display: none;
 }
 
-/* Optimize paint performance */
-.fast-scroll * {
-	will-change: transform;
-}
-
-/* Force GPU acceleration for smooth animations */
-.smooth-scroll {
-	transform: translateZ(0);
-	backface-visibility: hidden;
-	perspective: 1000px;
-}
-
-.disable-hover,
-.disable-hover * {
-	pointer-events: none !important;
-}
-
 /* Nested Lenis — wrapper is the viewport; content scrolls via transform (not overflow-y) */
 .lenis {
 	position: relative;
 	width: 100%;
 	height: 100dvh;
 	overflow: hidden;
+}
+
+/* Reduced motion — SmoothScroll skips Lenis entirely (no rAF loop), so the
+   locked-viewport layout above must hand scrolling back to the browser */
+@media (prefers-reduced-motion: reduce) {
+	html,
+	body {
+		height: auto;
+		overflow: auto;
+	}
+
+	#page {
+		height: auto;
+		overflow: visible;
+	}
 }
 
 /* Page Transitions using the new transitions API*/

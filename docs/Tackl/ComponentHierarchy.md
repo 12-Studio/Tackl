@@ -8,20 +8,20 @@ This document explains the component hierarchy and data flow in the Tackl applic
 
 ```
 RootLayout (app/layout.tsx)
-├── Client (app/Client.tsx)
-│   ├── StyledComponentsRegistry
-│   │   └── ThemeProvider
-│   │       ├── GlobalStyle
-│   │       ├── GridExposer (dev only)
-│   │       ├── CookieBar (prod only)
-│   │       └── Contexts
-│   │           ├── ReactLenis
-│   │           ├── AnimationPlugins
-│   │           └── Server (app/Server.tsx)
-│   │               ├── Header
-│   │               ├── Page Components
-│   │               │   └── Content Components
-│   │               └── Footer (commented)
+├── ViewTransitions
+│   └── html > body
+│       └── Providers (app/Providers.tsx)
+│           ├── StyledComponentsRegistry
+│           │   └── ThemeProvider
+│           │       ├── GlobalStyle
+│           │       ├── GridExposer (dev only)
+│           │       ├── CookieBar (prod only)
+│           │       └── Contexts
+│           │           ├── Header
+│           │           └── main#page
+│           │               └── SmoothScroll
+│           │                   └── Page Components
+│           │                       └── Content Components
 ```
 
 ## Detailed Component Breakdown
@@ -30,93 +30,79 @@ RootLayout (app/layout.tsx)
 
 **Position**: Top-level component
 **Type**: Server Component
-**Purpose**: Application entry point
+**Purpose**: Application entry point — owns the document shell and site chrome
 
 ```typescript
+export const metadata: Metadata = { /* site-wide defaults */ };
+export const viewport: Viewport = { /* width, initialScale, themeColor */ };
+
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <Client>
-            <Server>{children}</Server>
-        </Client>
+        <ViewTransitions>
+            <html lang='en' className={inter.variable} suppressHydrationWarning>
+                <body>
+                    <Providers>
+                        <Header />
+
+                        <main id='page'>
+                            <SmoothScroll>{children}</SmoothScroll>
+                        </main>
+                    </Providers>
+                </body>
+            </html>
+        </ViewTransitions>
     );
 };
 ```
 
 **Responsibilities**:
 
+- Exports site-wide `metadata` and `viewport`
 - Imports global CSS
-- Imports Waffl Web Components
-- Sets up component hierarchy
-- Provides base HTML structure
+- Provides the `html`/`body` structure (Inter font variable, view transitions)
+- Renders `Header` before `main#page` for correct landmark semantics
+- Fetches global/site-wide CMS data (server component, so it's async-capable)
+- Wraps page content in `SmoothScroll` inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
-### 2. Client Component (`app/Client.tsx`)
+**Note**: `main#page` gets `view-transition-name: page` from `src/css/global.css` — there is no inline style.
+
+### 2. Providers (`app/Providers.tsx`)
 
 **Position**: Second level
 **Type**: Client Component (`'use client'`)
-**Purpose**: Client-side functionality wrapper
+**Purpose**: Client-side providers only
 
 ```typescript
-const Client = ({ children }: { children: React.ReactNode }) => {
+'use client';
+
+import '@parts/AnimationPlugins';
+
+const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
-        <html lang='en' className={classes}>
-            <body>
-                <StyledComponentsRegistry>
-                    <ThemeProvider theme={theme}>
-                        <GlobalStyle />
-                        {/* Environment-specific components */}
-                        <Contexts>
-                            <ReactLenis />
-                            <AnimationPlugins />
-                            {children}
-                        </Contexts>
-                    </ThemeProvider>
-                </StyledComponentsRegistry>
-            </body>
-        </html>
+        <StyledComponentsRegistry>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                {process.env.NODE_ENV === 'development' && <GridExposer />}
+                {process.env.NODE_ENV === 'production' && <CookieBar />}
+                <Contexts>{children}</Contexts>
+            </ThemeProvider>
+        </StyledComponentsRegistry>
     );
 };
 ```
 
 **Key Features**:
 
-- **Font Management**: Inter font variable classes
+- **Side-Effect Import**: Animation plugins (the only side-effect import — the Waffl grid needs no client-side registration)
 - **Theme Provider**: Styled Components theme context
 - **Global Styles**: CSS custom properties and global styles
 - **Environment Detection**: Different components for dev/prod
-- **Animation Setup**: GSAP + Lenis integration
 - **Performance Contexts**: Performance optimization contexts
+- **No Document Shell**: `html`/`body` and site chrome live in `app/layout.tsx`, so page content stays server-rendered
 
-### 3. Server Component (`app/Server.tsx`)
+### 3. Page Components (`app/(home)/page.tsx`)
 
 **Position**: Third level
-**Type**: Server Component
-**Purpose**: Server-side data and layout
-
-```typescript
-const Server = async ({ children }: { children: React.ReactNode }) => {
-    // Server-side data fetching
-    // const data = await getGlobalData();
-
-    return (
-        <>
-            <Header />
-            {children}
-            {/* <Footer /> */}
-        </>
-    );
-};
-```
-
-**Key Features**:
-
-- **Data Fetching**: Server-side data retrieval
-- **Layout Structure**: Header, main content, footer
-- **SEO Optimization**: Server-rendered content
-- **Performance**: Static generation benefits
-
-### 4. Page Components (`app/(home)/page.tsx`)
-
-**Position**: Fourth level
 **Type**: Server Component
 **Purpose**: Page-specific logic and data
 
@@ -136,9 +122,9 @@ const Page = async () => {
 - **SEO Metadata**: Page-specific meta tags
 - **Performance**: Static generation
 
-### 5. Content Components (`app/(home)/Content.tsx`)
+### 4. Content Components (`app/(home)/Content.tsx`)
 
-**Position**: Fifth level
+**Position**: Fourth level
 **Type**: Client Component (`'use client'`)
 **Purpose**: Interactive content and user interactions
 
@@ -164,15 +150,15 @@ const Content = ({ data }: HomeProps) => {
 ### 1. Server-to-Client Data Flow
 
 ```
-Server Component → Page Component → Content Component
-       ↓                ↓                ↓
+Root Layout → Page Component → Content Component
+       ↓             ↓                ↓
    Data Fetching → Data Passing → Data Consumption
 ```
 
 **Example**:
 
 ```typescript
-// Server Component (Server.tsx)
+// Root Layout (app/layout.tsx)
 const data = await getGlobalData();
 
 // Page Component (page.tsx)
@@ -187,8 +173,8 @@ const Content = ({ data }: HomeProps) => {
 ### 2. Client-to-Server Data Flow
 
 ```
-Content Component → Client Component → Server Component
-       ↓                ↓                ↓
+Content Component → Providers → Root Layout
+       ↓                ↓            ↓
    State Update → Context Update → Data Refresh
 ```
 
@@ -198,12 +184,12 @@ Content Component → Client Component → Server Component
 // Content Component
 const [state, setState] = useState();
 
-// Client Component
+// Providers
 <ThemeProvider theme={theme}>
     {/* Theme updates affect all children */}
 </ThemeProvider>
 
-// Server Component
+// Root Layout
 // Receives updated data through props
 ```
 
@@ -218,13 +204,13 @@ ThemeProvider → All Child Components
 **Example**:
 
 ```typescript
-// Client Component
+// Providers (app/Providers.tsx)
 <ThemeProvider theme={theme}>
-    <Server>
+    <Contexts>
         <Page>
             <Content /> {/* Has access to theme */}
         </Page>
-    </Server>
+    </Contexts>
 </ThemeProvider>
 ```
 

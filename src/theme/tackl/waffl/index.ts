@@ -1,10 +1,10 @@
-// @ts-nocheck
 // Imports
 // ------------
-
 import { theme } from '@theme';
 import styled, { css } from 'styled-components';
-import { bp, Waffl } from '@/theme/tackl';
+import { bp } from '@/theme/tackl';
+import { gridSemantics, semantics } from '@/theme/tackl/semantics';
+import type { SemanticProps } from '@/theme/tackl/semantics/interface';
 import type { GridInterface } from './interface';
 
 // Constants
@@ -12,6 +12,10 @@ import type { GridInterface } from './interface';
 const { columns, gutter, maxSize } = theme.grid;
 
 // Base styles to reduce recalculation
+// NOTE • Renders as a plain <waffl-grid> tag (no JS custom element — the tag
+// is just a name, styling comes entirely from here). Direct children span
+// the full grid by default via the waffl-grid rule in src/css/global.css;
+// children opt into narrower spans with $s/$m/$l… props or --col-* variables.
 const baseGridStyles = css`
 	--grid-columns: repeat(${columns?.s}, 1fr);
 	--grid-gutter: ${gutter.s};
@@ -58,8 +62,10 @@ const gridVariants = {
 	`,
 };
 
-export const Grid = styled(Waffl)<GridInterface>(
-	(props: GridInterface) => css`
+export const Grid = styled('waffl-grid')<GridInterface & SemanticProps>(
+	props => css`
+		${semantics(props)}
+		${gridSemantics(props)}
 		${baseGridStyles}
 
 		${props.$noGutter && gridVariants.noGutter}

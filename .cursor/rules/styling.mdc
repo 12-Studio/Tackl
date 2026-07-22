@@ -18,16 +18,28 @@ alwaysApply: false
 // - Prefer descriptive, component-specific styled component names (e.g., Jacket, Wrapper, Coat, Content).
 // - Use CSS custom properties for dynamic styles when possible.
 // - For module-level constants or shared styling utilities, use the same 'styles.ts' file.
-// - use Tackl components for most semantic elements
-// - Use Tackl functions to get theming (e.g. getBrand, getGlobal, getRadius, getEase, getFont, getFontWeight)
+// - Use the polymorphic Tackl `Div` for semantic elements: import { Div } from '@tackl'
+//   and pick the tag with the `as` prop, or fix it in styles.ts via
+//   styled(Div).attrs({ as: 'section' }). Per-tag components (Section, Main, H1, P...)
+//   do not exist — never import them.
+// - Grid container: import Grid from '@waffl'. Children of a grid are full-width by
+//   default (global waffl-grid :where rule) — plain elements included — so only add
+//   span props ($s/$m/$l...) for narrower spans.
+// - Use Tackl functions to get theming (e.g. getBrand, getGlobal, getRadius, getEase, getTime, getFont, getFontWeight)
+// - For translucent colors use alpha() from @tackl: alpha('--brand-bc1', 20) or
+//   alpha(props.theme.colors.global.white, 15) — wraps the color in color-mix.
 // - Use Tackl/Type for pulling through global text styles (e.g. headingL, bodyM, captionS)
+// - Design tokens are CSS custom properties on :root (--brand-bc1, --space-m, --gap-l, --br-m,
+//   --easing-bezzy, --font-heading). The theme getters resolve to var() references, so in plain CSS
+//   or Server Components you can use var(--space-m) etc. directly — see docs/Tackl/Theming.md.
+// - Breakpoints/grid values are NOT CSS variables (media queries can't read them) — use bp/bpd from @tackl.
 
 // Example:
 // components/example/styles.ts
 // import {} from '@tackl/type';
 // import styled, { css } from 'styled-components';
-// import { Section, getBrand } from '@theme/tackl';
-// export const Jacket = styled(Section)(`
+// import { Div, getBrand } from '@tackl';
+// export const Jacket = styled(Div).attrs({ as: 'section' })(
 //   () => css`
 //     display: flex;
 //     padding: 1rem;

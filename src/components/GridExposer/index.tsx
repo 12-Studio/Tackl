@@ -55,7 +55,7 @@ const GridExposer = () => {
 
 	// Set up keyboard shortcuts
 	useEffect(() => {
-		const handleKeyDown = e => {
+		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.ctrlKey) {
 				if (e.key === 'g') {
 					e.preventDefault();
@@ -74,11 +74,11 @@ const GridExposer = () => {
 	// No memoization: gridColumns is created on each render
 	const gridColumns = Array.from({ length: GRID_SIZE }, (_, i) => (
 		<Col
-			key={`col-${Math.random()}`}
+			key={`col-${i}`}
 			$isMobile={i < MOBILE_COLUMNS}
 			$isTablet={i < TABLET_COLUMNS}
 			$altColor={useAltColor}
-			style={{ gridColumn: i + 1 }}
+			$col={i + 1}
 		>
 			<span />
 		</Col>

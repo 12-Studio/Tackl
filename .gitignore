@@ -94,3 +94,4 @@ lhr-*.json
 lh-output/
 # Ignore any temp files
 *.lhci-*
+storybook-static

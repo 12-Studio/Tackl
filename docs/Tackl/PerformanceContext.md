@@ -15,6 +15,7 @@ The context provides the following values:
 - Type: `boolean`
 - Description: Indicates if the user has requested reduced motion through their system preferences
 - Use case: Disable or reduce animations for accessibility
+- Built-in consumer: `SmoothScroll` skips Lenis entirely when this is true — the page uses native scrolling (see the reduced-motion overrides in `src/css/global.css`) and the constant rAF loop never starts
 
 ### isLowPowerMode
 

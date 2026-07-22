@@ -95,11 +95,12 @@ export const semantics = (props: SemanticProps) => css`
 // --------------
 // 4. Grid Semantics
 // --------------
+// NOTE • Only emits grid-column when a span prop is set. The full-width
+// default for grid children lives on the grid itself (waffl-grid rule in
+// src/css/global.css), so elements outside a grid carry no grid CSS.
 const breakpointKeys = Object.keys(theme.grid.breakpoints) as (keyof typeof theme.grid.breakpoints)[];
 
 export const gridSemantics = (props: SemanticProps) => css`
-    grid-column: 1/-1;
-    
     ${breakpointKeys.map(
 		key =>
 			props[`$${key}`] &&

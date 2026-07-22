@@ -11,7 +11,7 @@ type ResponsiveProps = {
 
 // SECTION • Waffl
 // NOTE — The main waffl object structure
-interface GridInterface extends ResponsiveProps {
+export interface GridInterface extends ResponsiveProps {
 	theme?: Theme;
 	$noMargin?: boolean;
 	$isFixed?: boolean;

@@ -21,8 +21,9 @@ import { isDocument } from '@utils/isDocument';
 import { storage } from '@utils/useLocalStorage';
 import { useEffect, useState } from 'react';
 
-// Styles
+// Styles + Interfaces
 // ------------
+import type * as I from './interface';
 import { Jacket } from './styles';
 
 // Constants
@@ -38,7 +39,7 @@ const CookieBar = ({
 	onAccept = () => {},
 	onDecline = () => {},
 	className = '',
-}) => {
+}: I.CookieBarProps) => {
 	/** State to control visibility of the cookie banner */
 	const [isVisible, setIsVisible] = useState(false);
 
@@ -83,8 +84,12 @@ const CookieBar = ({
 		<Jacket className={className}>
 			<p>{message}</p>
 			<div>
-				<button onClick={handleAccept}>{acceptButtonText}</button>
-				<button onClick={handleDecline}>{declineButtonText}</button>
+				<button type='button' onClick={handleAccept}>
+					{acceptButtonText}
+				</button>
+				<button type='button' onClick={handleDecline}>
+					{declineButtonText}
+				</button>
 			</div>
 		</Jacket>
 	);

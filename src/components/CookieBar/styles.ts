@@ -2,11 +2,11 @@
 // ------------
 
 import styled, { css } from 'styled-components';
-import { Aside } from '@/theme/tackl';
+import { Div } from '@/theme/tackl';
 
 // Exports
 // ------------
-export const Jacket = styled(Aside)(
+export const Jacket = styled(Div).attrs({ as: 'aside' })(
 	props => css`
 		position: fixed;
 		inset: 2.4rem;
@@ -19,7 +19,7 @@ export const Jacket = styled(Aside)(
 		gap: 2.4rem;
 		padding: 2.4rem;
 
-		background: ${props.theme.colors.global.white[100]};
+		background: ${props.theme.colors.global.white};
 		border-radius: 2.4rem;
 		height: 8.4rem;
 
@@ -40,9 +40,9 @@ export const Jacket = styled(Aside)(
 
 		button {
 			border-radius: 1.2rem;
-			color: ${props.theme.colors.global.white[100]};
+			color: ${props.theme.colors.global.white};
 			padding: 1.2rem 2.4rem;
-			background: ${props.theme.colors.brand.bc1[100]};
+			background: ${props.theme.colors.brand.bc1};
 		}
 	`
 );

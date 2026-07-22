@@ -8,12 +8,9 @@ type GridProps = {
 };
 
 // SECTION • Semantics
-// NOTE — The main semantics object structure
+// NOTE — Transient props only; HTML attributes (id, className, style, ref…)
+// come from styled.div's own typing on the polymorphic Div base
 export interface SemanticProps extends GridProps {
-	children?: React.ReactNode;
-	ref?: React.Ref<unknown>;
-	id?: string;
-	className?: string;
 	$marBottom?: boolean;
 	$marTop?: boolean;
 	$mar?: boolean;

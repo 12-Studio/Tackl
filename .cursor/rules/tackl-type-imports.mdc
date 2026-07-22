@@ -18,4 +18,4 @@ import { headlineL, bodyM } from '@tackl/type';
 
 When editing existing files, replace any `@/theme/tackl/type` imports with `@tackl/type`.
 
-Note: `@theme/tackl` and `@/theme/tackl` remain valid for Tackl primitives and utilities (e.g. `Section`, `getBrand`, `bp`). This rule applies only to typography from the `type` module.
+Note: `@tackl` (or `@theme/tackl` / `@/theme/tackl`) remains valid for Tackl primitives and utilities (e.g. the polymorphic `Div`, `getBrand`, `bp`). `Div` is the only semantic component — per-tag components like `Section` or `H1` do not exist. This rule applies only to typography from the `type` module.

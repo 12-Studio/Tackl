@@ -1,56 +1,15 @@
 // Color Types / Interfaces
 // ------------
+import type { baseColors } from './index';
 
-// SECTION • Colors
-// NOTE — The main color object structure
-export type Colors = {
-	brand: BrandColorVariations;
-	global: GlobalColors;
-	social: SocialColors;
-	feedback: FeedbackColors;
-};
+// SECTION • Colors
+// NOTE — Every color token is a var() reference string; opacity is applied
+// at the point of use (getters, alpha(), or color-mix in CSS).
+// Derived from baseColors, so adding a color there updates this automatically
+export type Colors = { [G in keyof typeof baseColors]: ColorGroup<(typeof baseColors)[G]> };
 
-// SECTION • AlphaShades
-// NOTE — Used for colors with alpha (opacity) variations and a solid value
-export type AlphaShades = {
-	[key: number]: string;
-	solid: string;
-};
+export type ColorGroup<T> = { [K in keyof T]: string };
 
-// SECTION • Brand Colors
-// NOTE — Each brand color, each with AlphaShades
-export type BrandColorVariations = {
-	bc1: AlphaShades;
-	bc2: AlphaShades;
-	bc3: AlphaShades;
-	bc4?: AlphaShades;
-	bc5?: AlphaShades;
-	bc6?: AlphaShades;
-};
-
-// SECTION • Global Colors
-// NOTE — White + Black, each with AlphaShades
-export type GlobalColors = {
-	white: AlphaShades;
-	black: AlphaShades;
-};
-
-// SECTION • Social Colors
-// NOTE — Each social color has AlphaShades
-export type SocialColors = {
-	facebook?: AlphaShades;
-	twitter?: AlphaShades;
-	creativeMarket?: AlphaShades;
-	slack?: AlphaShades;
-	instagram?: AlphaShades;
-	dribbble?: AlphaShades;
-	linkedin?: AlphaShades;
-};
-
-// SECTION • Feedback Colors
-// NOTE — Each feedback color has AlphaShades
-export type FeedbackColors = {
-	positive: AlphaShades;
-	negative: AlphaShades;
-	warning: AlphaShades;
-};
+export type BrandColors = Colors['brand'];
+export type GlobalColors = Colors['global'];
+export type FeedbackColors = Colors['feedback'];

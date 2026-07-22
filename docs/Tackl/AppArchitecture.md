@@ -2,17 +2,18 @@
 
 ## Overview
 
-Tackl uses a sophisticated three-layer architecture that separates concerns between server-side rendering, client-side interactivity, and layout management. This architecture leverages Next.js 15's App Router capabilities while maintaining clean separation of concerns.
+Tackl uses a server-first architecture where the root layout owns the entire document shell and a single client-side `Providers` component handles browser-only concerns. This architecture leverages Next.js 15's App Router capabilities while maintaining clean separation of concerns.
 
 ## Architecture Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Root Layout (layout.tsx)                │
+│              Root Layout (layout.tsx, Server)              │
+│  ViewTransitions > html > body                              │
 │  ┌─────────────────────────────────────────────────────────┐ │
-│  │                Client Component                        │ │
+│  │              Providers (Client)                        │ │
 │  │  ┌─────────────────────────────────────────────────┐  │ │
-│  │  │              Server Component                   │  │ │
+│  │  │   Header + main#page > SmoothScroll             │  │ │
 │  │  │  ┌─────────────────────────────────────────────┐ │  │ │
 │  │  │  │            Page Components                 │ │  │ │
 │  │  │  │  ┌─────────────────────────────────────┐   │ │  │ │
@@ -28,35 +29,48 @@ Tackl uses a sophisticated three-layer architecture that separates concerns betw
 
 ```
 app/
-├── layout.tsx          # Root layout (Server Component)
-├── Client.tsx          # Client wrapper (Client Component)
-├── Server.tsx          # Server wrapper (Server Component)
+├── layout.tsx          # Root layout: document shell + metadata (Server Component)
+├── Providers.tsx       # Client-side providers (Client Component)
 └── (home)/
-    ├── page.tsx        # Page component (Server Component)
-    └── Content.tsx     # Content component (Client Component)
+    ├── layout.tsx      # Per-route metadata (commented generateMetadata example)
+    └── page.tsx        # Page component (Server Component)
 ```
 
 ## Component Breakdown
 
 ### 1. Root Layout (`app/layout.tsx`)
 
-**Purpose**: The root layout that wraps the entire application.
+**Purpose**: The root layout that owns the document shell and site chrome.
 
 **Type**: Server Component (default in Next.js)
 
 **Responsibilities**:
 
+- Exports site-wide `metadata` (metadataBase, title default + template, description, robots, openGraph) and `viewport` (width, initialScale, themeColor)
 - Imports global CSS styles
-- Imports Waffl Web Components
-- Sets up the component hierarchy
-- Provides the base HTML structure
+- Renders the `html`/`body` structure with the Inter font variable
+- Renders site chrome: `Header` before `main#page` for correct landmark semantics
+- Fetches global/site-wide CMS data (it's async-capable, so data fetching happens here or in a dedicated server component)
 
 ```typescript
+export const metadata: Metadata = { /* site-wide defaults */ };
+export const viewport: Viewport = { /* width, initialScale, themeColor */ };
+
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <Client>
-            <Server>{children}</Server>
-        </Client>
+        <ViewTransitions>
+            <html lang='en' className={inter.variable} suppressHydrationWarning>
+                <body>
+                    <Providers>
+                        <Header />
+
+                        <main id='page'>
+                            <SmoothScroll>{children}</SmoothScroll>
+                        </main>
+                    </Providers>
+                </body>
+            </html>
+        </ViewTransitions>
     );
 };
 ```
@@ -64,96 +78,53 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 **Key Features**:
 
 - ✅ Server-side rendered by default
+- ✅ Site-wide `metadata` and `viewport` exports
 - ✅ Imports global styles (`@css/global.css`)
-- ✅ Imports Waffl Web Components
-- ✅ Sets up component hierarchy
+- ✅ Header rendered as a sibling before `main` (landmark semantics)
+- ✅ `main#page` picks up `view-transition-name: page` from `src/css/global.css`
+- ✅ SmoothScroll wraps page content inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
-### 2. Client Component (`app/Client.tsx`)
+### 2. Providers (`app/Providers.tsx`)
 
-**Purpose**: Handles all client-side functionality and browser-specific features.
+**Purpose**: Contains only the client-side providers and browser-specific features.
 
 **Type**: Client Component (`'use client'`)
 
 **Responsibilities**:
 
-- Manages client-side state and effects
-- Handles animations (GSAP + Lenis)
-- Provides theme context
-- Manages development tools
-- Handles browser-specific features
+- Registers the AnimationPlugins side-effect import (the Waffl grid needs no client-side registration — it renders a plain `<waffl-grid>` tag styled by `Grid` from `@waffl`)
+- Provides theme context via Styled Components
+- Injects global styles
+- Manages environment-specific tools (GridExposer/CookieBar)
+- Provides performance contexts
 
 ```typescript
 'use client';
 
-const Client = ({ children }: { children: React.ReactNode }) => {
-    // Client-side logic here
+const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
-        <html lang='en' className={classes}>
-            <body>
-                <StyledComponentsRegistry>
-                    <ThemeProvider theme={theme}>
-                        <GlobalStyle />
-                        {/* Development tools */}
-                        <Contexts>
-                            <ReactLenis />
-                            <AnimationPlugins />
-                            {children}
-                        </Contexts>
-                    </ThemeProvider>
-                </StyledComponentsRegistry>
-            </body>
-        </html>
+        <StyledComponentsRegistry>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                {process.env.NODE_ENV === 'development' && <GridExposer />}
+                {process.env.NODE_ENV === 'production' && <CookieBar />}
+                <Contexts>{children}</Contexts>
+            </ThemeProvider>
+        </StyledComponentsRegistry>
     );
 };
 ```
 
 **Key Features**:
 
-- ✅ Client-side rendering
-- ✅ GSAP + Lenis smooth scrolling
-- ✅ Styled Components theme provider
+- ✅ Client-side providers only — no document shell, so page content stays server-rendered
+- ✅ Styled Components theme provider + registry
 - ✅ Development tools (GridExposer)
 - ✅ Production tools (CookieBar)
-- ✅ Animation plugins
+- ✅ Animation plugins (side-effect import)
 - ✅ Performance contexts
 
-### 3. Server Component (`app/Server.tsx`)
-
-**Purpose**: Handles server-side data fetching and static content.
-
-**Type**: Server Component (default in Next.js)
-
-**Responsibilities**:
-
-- Fetches data at build time
-- Renders static content
-- Manages server-side logic
-- Provides layout structure
-
-```typescript
-const Server = async ({ children }: { children: React.ReactNode }) => {
-    // Server-side data fetching
-    // const data = await getGlobalData();
-
-    return (
-        <>
-            <Header />
-            {children}
-            {/* <Footer /> */}
-        </>
-    );
-};
-```
-
-**Key Features**:
-
-- ✅ Server-side rendering
-- ✅ Data fetching at build time
-- ✅ Static content generation
-- ✅ SEO optimization
-- ✅ Performance optimization
-
-### 4. Page Components (`app/(home)/page.tsx`)
+### 3. Page Components (`app/(home)/page.tsx`)
 
 **Purpose**: Individual page components that define routes.
 
@@ -162,7 +133,7 @@ const Server = async ({ children }: { children: React.ReactNode }) => {
 **Responsibilities**:
 
 - Define page-specific data fetching
-- Handle SEO metadata
+- Handle SEO metadata (per-route `metadata`/`generateMetadata` — see the commented example in `app/(home)/layout.tsx`)
 - Render page content
 - Manage page-specific logic
 
@@ -182,7 +153,7 @@ const Page = async () => {
 - ✅ SEO metadata generation
 - ✅ Route handling
 
-### 5. Content Components (`app/(home)/Content.tsx`)
+### 4. Content Components (`app/(home)/Content.tsx`)
 
 **Purpose**: Client-side interactive content components.
 
@@ -219,16 +190,16 @@ const Content = ({ data }: HomeProps) => {
 ### 1. Server-Side Data Flow
 
 ```
-Build Time → Server Component → Page Component → Content Component
-     ↓              ↓                ↓                ↓
+Build Time → Root Layout → Page Component → Content Component
+     ↓            ↓              ↓                ↓
 Data Fetching → Static Content → Page Content → Interactive Content
 ```
 
 ### 2. Client-Side Data Flow
 
 ```
-User Interaction → Content Component → Client Component → Server Component
-        ↓                ↓                    ↓                ↓
+User Interaction → Content Component → Providers → Root Layout
+        ↓                ↓                ↓            ↓
    State Update → Re-render → Theme Update → Data Refresh
 ```
 

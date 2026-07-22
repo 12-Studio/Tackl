@@ -1,7 +1,7 @@
 /**
  * Executes a DatoCMS Content Delivery API query with error handling and environment token injection.
  *
- * This utility function wraps the DatoCMS `executeQuery` method, automatically injecting the API token
+ * Wraps the DatoCMS `executeQuery` method, automatically injecting the API token
  * from the `NEXT_DATOCMS_API_TOKEN` environment variable. It provides robust error handling, logging
  * authentication issues and response errors, and returns `null` on failure instead of throwing.
  *
@@ -12,26 +12,23 @@
  *
  * @example
  * ```ts
- * const query = `
- *   query {
- *     allArticles {
- *       id
- *       title
- *     }
- *   }
- * `;
- * const data = await performRequest<{ allArticles: { id: string; title: string }[] }>(query);
- * if (data) {
- *   // Use data.allArticles
- * }
+ * import { fetchContent, GET_HOME } from '@cms';
+ *
+ * const data = await fetchContent<{ page: { pageTitle: string } }>(GET_HOME);
  * ```
  */
+
+// Imports
+// ------------
 import { executeQuery } from '@datocms/cda-client';
 
-export const performRequest = async <T = any>(query: string, options?: Record<string, any>): Promise<T | null> => {
+// Exports
+// ------------
+export const fetchContent = async <T = any>(query: string, options?: Record<string, any>): Promise<T | null> => {
 	try {
-		// Check if API token is available
-		if (!process.env.NEXT_DATOCMS_API_TOKEN) {
+		// NOTE • Fail loudly (but non-fatally) when the token is missing or unset
+		const token = process.env.NEXT_DATOCMS_API_TOKEN;
+		if (!token || token === 'CHANGE_ME') {
 			console.error(
 				'DatoCMS API token is missing. Please set NEXT_DATOCMS_API_TOKEN in your environment variables.'
 			);
@@ -40,7 +37,7 @@ export const performRequest = async <T = any>(query: string, options?: Record<st
 
 		const queryResponse = await executeQuery(query, {
 			...options,
-			token: process.env.NEXT_DATOCMS_API_TOKEN,
+			token,
 			// environment: process.env.NODE_ENV,
 		});
 
@@ -68,3 +65,6 @@ export const performRequest = async <T = any>(query: string, options?: Record<st
 		return null;
 	}
 };
+
+// NOTE • Dato-native alias for the same function
+export const performRequest = fetchContent;

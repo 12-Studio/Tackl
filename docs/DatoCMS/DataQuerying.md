@@ -1,5 +1,7 @@
 # Next.js + DatoCMS Overview
 
+> **Tackl note:** this guide follows DatoCMS's official docs, which place the fetch helper at `lib/datocms`. In Tackl it already exists at `src/cms/dato/` — import it as `import { fetchContent, GET_HOME } from '@cms'` (`performRequest` is an alias of `fetchContent`). See [docs/CMS.md](../CMS.md) for the adapter seam.
+
 Next.js is an exceptional tool for building modern, universal frontend applications with the power of React. It lets you get started without having to write much boilerplate code and with a set of sane defaults upon which you can build.
 
 Vercel is the easiest way to deploy a production-ready, highly available Next.js website, with static assets being served through the CDN automatically and built-in support for Next.js' automatic static optimization and API routes.

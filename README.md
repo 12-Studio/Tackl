@@ -196,6 +196,7 @@ flowchart TD
 | [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
 | [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
 | [CMS](./docs/CMS.md) | The `@cms` adapter seam and choosing Dato/Sanity |
+| [MigratingFromV3](./docs/Tackl/MigratingFromV3.md) | Phased playbook for upgrading a Tackl 3 project |
 | [DatoCMS](./docs/DatoCMS) | Querying, images, structured text, SEO |
 | [Sanity](./docs/Sanity/README.md) | Setting up the Sanity variant |
 | [Lighthouse](./docs/Lighthouse.md) | Performance auditing |

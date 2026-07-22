@@ -20,30 +20,34 @@ Raw token values are emitted once as CSS custom properties on `:root`, and the t
 
 ### 2. Tackl Semantic Components
 
-Tackl provides semantic HTML components with built-in styling capabilities:
+Tackl provides one polymorphic semantic component with built-in styling capabilities:
 
-#### Base Components
+#### The `Div` Component
 
--   Section, Div, Main, Nav, Article, Aside, Header, Footer
--   Each component supports responsive margin/padding props:
+-   `import { Div } from '@tackl'` — a properly typed `styled.div`
+-   Pick the rendered tag with the `as` prop: `<Div as='section' $pad>`, `<Div as='h1' $m='2/6' $l='3/9'>`
+-   In styles files, fix the tag with `styled(Div).attrs({ as: 'header' })(...)`
+-   Supports responsive margin/padding props:
     -   `$marBottom`, `$marTop`, `$mar`,
     -   `$padBottom`, `$padTop`, `$pad`,
+-   Supports responsive grid span props (`$s`, `$sm`, `$m`, `$l`, `$xl`, `$xxl`, `$huge`, `$uber`)
+-   Accepts all normal HTML attributes (`style`, `aria-*`, event handlers, etc.) with full typing
 
-#### Typography Components
+#### Typography
 
--   H1 through H6, P, Em, Span (add more as needed)
+-   Global text styles live in `@tackl/type` (e.g. `headlineL`, `bodyM`) and are applied via `Div` with the matching `as` tag (`as='h1'` … `as='h6'`, `as='p'`, `as='span'`)
 -   Responsive font sizing
 -   Consistent line heights
 -   Font family management
 
 ### 3. Waffl Grid System
 
-A flexible grid system for layout management with configurable:
+A flexible grid system for layout management. The styled `Grid` component (`import Grid from '@waffl'`) renders a plain `<waffl-grid>` tag — no web component, no shadow DOM — with configurable:
 
 -   Column layouts
--   Row layouts
 -   Gaps and spacing
 -   Responsive behaviors
+-   Full-width children by default (the `waffl-grid > :where(*)` rule in `src/css/global.css`), so plain and server-rendered elements participate without span props
 
 ### 4. Responsive Breakpoints
 

@@ -14,9 +14,15 @@ import { Grid } from '@waffl';
 import Grid from '@/theme/tackl/waffl';
 import Grid from '@theme/tackl/waffl';
 import { Grid } from '@/theme/tackl/waffl';
+import { Waffl } from '@tackl'; // does not exist
 
 // ✅ GOOD
 import Grid from '@waffl';
 ```
 
-When editing existing files, replace any other `Grid` import with `import Grid from '@waffl';`.
+When editing existing files, replace any other `Grid` (or legacy `Waffl`) import with `import Grid from '@waffl';`.
+
+Notes:
+
+- `Grid` is a styled component that renders a plain `<waffl-grid>` tag. There is no web component, no shadow DOM, and no side-effect import to register — never import `WebComponent` (it no longer exists).
+- Direct children of a `Grid` span the full grid by default (via the `waffl-grid > :where(*)` rule in `src/css/global.css`). Plain/server-rendered elements participate too. Only add span props (`$s`/`$m`/`$l`…) to children that need narrower spans.

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides a comprehensive reference for all grid system props available in Tackl's semantic components. These props enable responsive grid layouts while maintaining semantic HTML structure.
+This document provides a comprehensive reference for all grid system props available on Tackl's polymorphic `Div` component and the `Grid` container. These props enable responsive grid layouts while maintaining semantic HTML structure (pick the rendered tag with `Div`'s `as` prop).
 
 ## Prop Categories
 
@@ -43,6 +43,8 @@ const breakpoints = {
 | `$huge` | 1600px+ | `string` | Huge screen grid span | `"6/12"` |
 | `$uber` | 1800px+ | `string` | Ultra wide grid span | `"7/13"` |
 
+**Full-width is the default**: children of a `Grid` span all columns automatically via the `waffl-grid > :where(*)` rule in `src/css/global.css` — you only need span props for narrower placement. Plain elements (including Server Components) get the default too.
+
 ### Grid Column Syntax
 
 Grid column props accept CSS Grid column span syntax:
@@ -51,7 +53,7 @@ Grid column props accept CSS Grid column span syntax:
 // Basic column spans
 "1/2"    // Spans 1 column
 "1/3"    // Spans 2 columns  
-"1/-1"   // Spans all columns (full width)
+"1/-1"   // Spans all columns (full width — the grid default, rarely needed)
 
 // Specific column positions
 "2/4"    // Starts at column 2, ends at column 4
@@ -62,25 +64,27 @@ Grid column props accept CSS Grid column span syntax:
 ### Responsive Grid Examples
 
 ```typescript
-// Mobile-first responsive design
-<Section 
-    $s="1/-1"    // Mobile: full width
-    $m="2/6"     // Tablet: columns 2-6
-    $l="3/9"      // Desktop: columns 3-9
+import { Div } from '@tackl';
+
+// Mobile-first responsive design (full width on mobile by default)
+<Div
+    as='section'
+    $m='2/6'     // Tablet: columns 2-6
+    $l='3/9'     // Desktop: columns 3-9
 >
     Content
-</Section>
+</Div>
 
 // Complex responsive layout
-<Section 
-    $s="1/-1"    // Mobile: full width
-    $sm="1/2"    // Large mobile: half width
-    $m="1/3"     // Tablet: one third
-    $l="1/4"     // Desktop: one quarter
-    $xl="1/5"    // Large desktop: one fifth
+<Div
+    as='section'
+    $sm='1/2'    // Large mobile: half width
+    $m='1/3'     // Tablet: one third
+    $l='1/4'     // Desktop: one quarter
+    $xl='1/5'    // Large desktop: one fifth
 >
     Content
-</Section>
+</Div>
 ```
 
 ## Semantic Props
@@ -169,40 +173,42 @@ const paddingStyles = (props: SemanticProps) => {
 
 ```typescript
 // Margin examples
-<Section $marBottom>
+<Div as='section' $marBottom>
     Content with bottom margin
-</Section>
+</Div>
 
-<Section $marTop>
+<Div as='section' $marTop>
     Content with top margin
-</Section>
+</Div>
 
-<Section $mar>
+<Div as='section' $mar>
     Content with vertical margins
-</Section>
+</Div>
 
 // Padding examples
-<Section $padBottom>
+<Div as='section' $padBottom>
     Content with bottom padding
-</Section>
+</Div>
 
-<Section $padTop>
+<Div as='section' $padTop>
     Content with top padding
-</Section>
+</Div>
 
-<Section $pad>
+<Div as='section' $pad>
     Content with vertical padding
-</Section>
+</Div>
 
 // Combined semantic props
-<Section $mar $pad>
+<Div as='section' $mar $pad>
     Content with both margins and padding
-</Section>
+</Div>
 ```
 
 ## Grid Variant Props
 
-### Waffl Grid Variants
+### Grid Container Variants
+
+These props belong on the `Grid` container (`import Grid from '@waffl'`):
 
 | Prop | Type | Description | CSS Effect |
 |------|------|-------------|------------|
@@ -237,43 +243,48 @@ const gridVariants = {
 ### Grid Variant Examples
 
 ```typescript
+import Grid from '@waffl';
+
 // No gutters
-<Waffl $noGutter>
-    <Section $s="1/-1" $m="1/3">Content 1</Section>
-    <Section $s="1/-1" $m="3/5">Content 2</Section>
-    <Section $s="1/-1" $m="5/7">Content 3</Section>
-</Waffl>
+<Grid $noGutter>
+    <Div as='section' $m='1/3'>Content 1</Div>
+    <Div as='section' $m='3/5'>Content 2</Div>
+    <Div as='section' $m='5/7'>Content 3</Div>
+</Grid>
 
 // No margins
-<Waffl $noMargin>
-    <Section $s="1/-1" $m="1/3">Content 1</Section>
-    <Section $s="1/-1" $m="3/5">Content 2</Section>
-</Waffl>
+<Grid $noMargin>
+    <Div as='section' $m='1/3'>Content 1</Div>
+    <Div as='section' $m='3/5'>Content 2</Div>
+</Grid>
 
 // Fullscreen
-<Waffl $isFullscreen>
-    <Section $s="1/-1">Full height content</Section>
-</Waffl>
+<Grid $isFullscreen>
+    <section>Full height content</section>
+</Grid>
 
 // Centered
-<Waffl $isCenter>
-    <Section $s="1/-1" $m="2/6">Centered content</Section>
-</Waffl>
+<Grid $isCenter>
+    <Div as='section' $m='2/6'>Centered content</Div>
+</Grid>
 
 // Fixed width
-<Waffl $isFixed>
-    <Section $s="1/-1" $m="2/6">Fixed width content</Section>
-</Waffl>
+<Grid $isFixed>
+    <Div as='section' $m='2/6'>Fixed width content</Div>
+</Grid>
 ```
 
 ## Standard HTML Props
+
+Because `Div` is a properly typed `styled.div`, it accepts all normal HTML attributes with full typing — nothing needs to be declared in `SemanticProps`.
 
 ### React Props
 
 | Prop | Type | Description |
 |------|------|-------------|
+| `as` | `string` | HTML tag to render (`'section'`, `'h1'`, …) |
 | `children` | `React.ReactNode` | React children |
-| `ref` | `React.Ref<unknown>` | React ref |
+| `ref` | `React.Ref<HTMLDivElement>` | React ref |
 | `key` | `string \| number` | React key |
 
 ### HTML Attributes
@@ -282,116 +293,106 @@ const gridVariants = {
 |------|------|-------------|
 | `id` | `string` | HTML id attribute |
 | `className` | `string` | CSS class name |
+| `style` | `React.CSSProperties` | Inline style object |
+| `aria-*` | `string` | Accessibility attributes |
 | `onClick` | `function` | Click handler |
 | `onChange` | `function` | Change handler |
 | `onSubmit` | `function` | Submit handler |
 
-### Element-Specific Props
-
-| Prop | Type | Description | Elements |
-|------|------|-------------|----------|
-| `href` | `string` | Link URL | `A` |
-| `src` | `string` | Image source | `Img` |
-| `alt` | `string` | Alt text | `Img` |
-| `type` | `string` | Input type | `Input` |
-| `value` | `string` | Input value | `Input` |
-| `placeholder` | `string` | Input placeholder | `Input` |
+For elements with tag-specific attributes (`href`, `src`, `type`, `value`, …), use the plain element (`<a>`, `<img>`, `<input>`) — inside a `Grid` it still gets the full-width default — or pass the attributes through `Div` with the matching `as` tag.
 
 ## Complete Usage Examples
 
 ### 1. Basic Grid Layout
 
 ```typescript
-<Waffl>
-    <Section $s="1/-1" $m="1/3" $l="1/4">
-        <H2 $s="1/-1">Sidebar</H2>
-        <P $s="1/-1">Sidebar content...</P>
-    </Section>
-    
-    <Section $s="1/-1" $m="3/7" $l="4/10">
-        <H1 $s="1/-1">Main Content</H1>
-        <P $s="1/-1">Main content...</P>
-    </Section>
-    
-    <Section $s="1/-1" $m="7/9" $l="10/13">
-        <H3 $s="1/-1">Right Sidebar</H3>
-        <P $s="1/-1">Right sidebar content...</P>
-    </Section>
-</Waffl>
+import { Div } from '@tackl';
+import Grid from '@waffl';
+
+<Grid>
+    <Div as='section' $m='1/3' $l='1/4'>
+        <Div as='h2'>Sidebar</Div>
+        <Div as='p'>Sidebar content...</Div>
+    </Div>
+
+    <Div as='section' $m='3/7' $l='4/10'>
+        <Div as='h1'>Main Content</Div>
+        <Div as='p'>Main content...</Div>
+    </Div>
+
+    <Div as='section' $m='7/9' $l='10/13'>
+        <Div as='h3'>Right Sidebar</Div>
+        <Div as='p'>Right sidebar content...</Div>
+    </Div>
+</Grid>
 ```
 
 ### 2. Form Layout
 
 ```typescript
-<Form $s="1/-1" $m="2/6" $l="3/9">
-    <Fieldset $s="1/-1">
-        <Legend $s="1/-1">Contact Form</Legend>
-        
-        <Label $s="1/-1" $m="1/3" htmlFor="name">
-            Name
-        </Label>
-        <Input 
-            $s="1/-1" $m="3/5" 
-            id="name" 
-            type="text" 
-            placeholder="Enter your name"
-        />
-        
-        <Label $s="1/-1" $m="1/3" htmlFor="email">
-            Email
-        </Label>
-        <Input 
-            $s="1/-1" $m="3/5" 
-            id="email" 
-            type="email" 
-            placeholder="Enter your email"
-        />
-        
-        <Button $s="1/-1" $m="3/5" type="submit">
-            Submit
-        </Button>
-    </Fieldset>
-</Form>
+<Grid>
+    <Div as='form' $m='2/6' $l='3/9'>
+        <fieldset>
+            <legend>Contact Form</legend>
+
+            <label htmlFor='name'>Name</label>
+            <input
+                id='name'
+                type='text'
+                placeholder='Enter your name'
+            />
+
+            <label htmlFor='email'>Email</label>
+            <input
+                id='email'
+                type='email'
+                placeholder='Enter your email'
+            />
+
+            <button type='submit'>Submit</button>
+        </fieldset>
+    </Div>
+</Grid>
 ```
 
 ### 3. Card Layout
 
 ```typescript
-<Section $s="1/-1" $m="1/3" $l="1/4">
-    <Article $s="1/-1" $mar $pad>
-        <Header $s="1/-1" $marBottom>
-            <H3 $s="1/-1">Card Title</H3>
-        </Header>
-        
-        <Div $s="1/-1" $marBottom>
-            <P $s="1/-1">Card description...</P>
+<Div as='section' $m='1/3' $l='1/4'>
+    <Div as='article' $mar $pad>
+        <Div as='header' $marBottom>
+            <Div as='h3'>Card Title</Div>
         </Div>
-        
-        <Footer $s="1/-1">
-            <Button $s="1/-1">Learn More</Button>
-        </Footer>
-    </Article>
-</Section>
+
+        <Div $marBottom>
+            <Div as='p'>Card description...</Div>
+        </Div>
+
+        <Div as='footer'>
+            <button>Learn More</button>
+        </Div>
+    </Div>
+</Div>
 ```
 
 ### 4. Responsive Navigation
 
 ```typescript
-<Header $s="1/-1" $m="1/3" $l="1/4">
-    <Nav $s="1/-1">
-        <H1 $s="1/-1" $m="1/3">Logo</H1>
-        
-        <Div $s="1/-1" $m="3/5">
-            <A $s="1/-1" $m="1/2" href="/">Home</A>
-            <A $s="1/-1" $m="1/2" href="/about">About</A>
-            <A $s="1/-1" $m="1/2" href="/contact">Contact</A>
+<Div as='header' $m='1/3' $l='1/4'>
+    <Div as='nav'>
+        <Div as='h1' $m='1/3'>Logo</Div>
+
+        <Div $m='3/5'>
+            <a href='/'>Home</a>
+            <a href='/about'>About</a>
+            <a href='/contact'>Contact</a>
         </Div>
-        
-        <Div $s="1/-1" $m="5/7">
-            <Button $s="1/-1">Sign In</Button>
+
+        <Div $m='5/7'>
+            <button>Sign In</button>
         </Div>
-    </Nav>
-</Header>
+    </Div>
+</Div>
 ```
 
 ## Best Practices
@@ -399,8 +400,9 @@ const gridVariants = {
 ### 1. Grid System
 
 - **Mobile-first**: Start with mobile layout and enhance for larger screens
+- **Rely on the default**: Don't pass span props for full-width children — the grid handles that
 - **Consistent spacing**: Use consistent grid spans across components
-- **Semantic HTML**: Choose appropriate HTML elements for content
+- **Semantic HTML**: Choose the appropriate `as` tag for content
 - **Accessibility**: Ensure components are accessible to screen readers
 
 ### 2. Responsive Design
@@ -423,7 +425,7 @@ const gridVariants = {
 
 - **Grid column syntax**: Ensure correct column span syntax
 - **Responsive breakpoints**: Check breakpoint values
-- **Semantic HTML**: Verify proper HTML element usage
+- **Semantic HTML**: Verify the `as` tag matches the content's meaning
 - **Accessibility**: Test with screen readers
 
 ### 2. Debugging Tips
@@ -442,6 +444,6 @@ const gridVariants = {
 
 ## Conclusion
 
-The grid system props in Tackl provide a powerful and flexible way to create responsive layouts while maintaining semantic HTML structure. By understanding these props and their usage patterns, developers can build complex, accessible, and performant web applications.
+The grid system props in Tackl provide a powerful and flexible way to create responsive layouts while maintaining semantic HTML structure through the polymorphic `Div` component. By understanding these props and their usage patterns, developers can build complex, accessible, and performant web applications.
 
 For more specific implementation details, refer to the Waffl Grid System documentation and the Semantic Components guide.

@@ -92,7 +92,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
 **Responsibilities**:
 
-- Registers side-effect imports (Waffl WebComponent, AnimationPlugins)
+- Registers the AnimationPlugins side-effect import (the Waffl grid needs no client-side registration — it renders a plain `<waffl-grid>` tag styled by `Grid` from `@waffl`)
 - Provides theme context via Styled Components
 - Injects global styles
 - Manages environment-specific tools (GridExposer/CookieBar)

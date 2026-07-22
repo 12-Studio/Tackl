@@ -33,7 +33,14 @@ alwaysApply: false
 // -------
 // - All component styling via styled-components, never inline or in index.tsx.
 // - Use a styles.ts file adjacent to the component for all styled elements.
-// - Use Tackl primitives, utilities, and naming (e.g., import from '@tackl/type', '@theme/tackl').
+// - Use Tackl primitives, utilities, and naming (e.g., import from '@tackl/type', '@tackl').
+// - The only semantic component is the polymorphic `Div` (import { Div } from '@tackl').
+//   Pick the rendered tag via the `as` prop, or in styles.ts with .attrs:
+//   styled(Div).attrs({ as: 'header' })(...). Per-tag components (Section, Main,
+//   H1, P, etc.) do NOT exist — never import them.
+// - Grid container: import Grid from '@waffl'. Direct children of a Grid are
+//   full-width by default (global waffl-grid :where rule); only add span props
+//   ($s/$m/$l...) for narrower spans. Plain/server elements work as grid children too.
 // - Mobile-first, responsive styles: use bp.l`` and CSS custom props for theming.
 // - Example styled component import/use:
 //     import * as S from './styles';
@@ -59,8 +66,8 @@ export function Example(props: ExampleProps) {
 
 // components/Example/styles.ts
 import styled from 'styled-components';
-import { Section } from '@theme/tackl';
-export const Jacket = styled(Section)`...`;
+import { Div } from '@tackl';
+export const Jacket = styled(Div).attrs({ as: 'section' })`...`;
 */
 
 // ROUTING, STATE, & PERFORMANCE

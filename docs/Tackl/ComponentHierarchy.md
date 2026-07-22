@@ -75,7 +75,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 ```typescript
 'use client';
 
-import '@theme/tackl/waffl/WebComponent';
 import '@parts/AnimationPlugins';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
@@ -94,7 +93,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 
 **Key Features**:
 
-- **Side-Effect Imports**: Waffl WebComponent registration and animation plugins
+- **Side-Effect Import**: Animation plugins (the only side-effect import — the Waffl grid needs no client-side registration)
 - **Theme Provider**: Styled Components theme context
 - **Global Styles**: CSS custom properties and global styles
 - **Environment Detection**: Different components for dev/prod

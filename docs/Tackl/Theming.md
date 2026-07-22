@@ -16,7 +16,7 @@ src/theme/{colors,space,gap,borderRadius,easing,fonts}/index.ts
              theme.colors.brand.bc1[50] === 'color-mix(in srgb, var(--brand-bc1) 50%, transparent)'
 ```
 
-Because every theme value is a `var()` reference, the browser resolves tokens at paint time. Styles that import `theme` statically (the semantic components, type styles, waffl grid) and styles that read `props.theme` produce identical CSS — there is one source of truth, and overriding a variable at runtime restyles both.
+Because every theme value is a `var()` reference, the browser resolves tokens at paint time. Styles that import `theme` statically (the semantic `Div` component, type styles, waffl grid) and styles that read `props.theme` produce identical CSS — there is one source of truth, and overriding a variable at runtime restyles both.
 
 ## Variable naming
 

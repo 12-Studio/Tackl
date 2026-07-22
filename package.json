@@ -1,6 +1,7 @@
 {
 	"name": "tackl",
 	"version": "3.4.0",
+	"private": true,
 	"description": "The ultimate Next.js starter kit!",
 	"license": "MIT",
 	"engines": {

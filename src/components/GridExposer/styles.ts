@@ -2,7 +2,7 @@
 // ------
 
 import styled, { css } from 'styled-components';
-import { Aside, bp, Div, getEase, getFeedback } from '@/theme/tackl';
+import { bp, Div, getEase, getFeedback } from '@/theme/tackl';
 
 // Interfaces
 // ------
@@ -72,7 +72,7 @@ export const Col = styled(Div)<ColProps>(
 	`
 );
 
-export const Jacket = styled(Aside)<JacketProps>(
+export const Jacket = styled(Div).attrs({ as: 'aside' })<JacketProps>(
 	props => css`
 		position: fixed;
 		top: 0;

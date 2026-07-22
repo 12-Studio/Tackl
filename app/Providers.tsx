@@ -2,7 +2,6 @@
 
 // Imports
 // ------------
-import '@theme/tackl/waffl/WebComponent';
 import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';

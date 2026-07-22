@@ -7,6 +7,10 @@
 		"node": ">=24.0.0"
 	},
 	"author": "joebentaylor1995",
+	"sideEffects": [
+		"*.css",
+		"src/components/AnimationPlugins/**"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/12-studio/tackl"

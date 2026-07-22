@@ -74,6 +74,14 @@ button:focus {
 	outline: none;
 }
 
+/* Waffl Grid — direct children span the full grid by default.
+   :where() keeps specificity at zero, so any span prop ($s/$m/$l…), class,
+   or --col-* variable on the child wins. Works for plain/server-rendered
+   elements too — no styled-component required to sit in the grid. */
+waffl-grid > :where(*) {
+	grid-column: 1 / -1;
+}
+
 /* Scrollbar & Performance */
 * {
 	scrollbar-width: none;

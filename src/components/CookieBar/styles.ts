@@ -2,11 +2,11 @@
 // ------------
 
 import styled, { css } from 'styled-components';
-import { Aside } from '@/theme/tackl';
+import { Div } from '@/theme/tackl';
 
 // Exports
 // ------------
-export const Jacket = styled(Aside)(
+export const Jacket = styled(Div).attrs({ as: 'aside' })(
 	props => css`
 		position: fixed;
 		inset: 2.4rem;

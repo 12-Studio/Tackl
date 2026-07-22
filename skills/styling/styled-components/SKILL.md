@@ -89,6 +89,6 @@ Global theme lives in `src/theme/index.ts`. Access in styled-components via `pro
 
 ## References
 
-- `.cursor/rules/styling.mdc`
-- `.cursor/rules/components.mdc`
+- `AGENTS.md` — Styling & theming, Writing a component
+- `docs/Tackl/WritingComponents.md` · `docs/Tackl/Theming.md`
 - `src/theme/tackl/` — primitives, breakpoints, semantics

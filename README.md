@@ -54,7 +54,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 - **Biome + Husky** — linting, formatting, and a guided commit-message flow
 - **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time
 - **SEO plumbing** — `metadata`/`viewport` exports, `sitemap.xml` and `robots.txt` (staging deploys auto-blocked from indexing), all driven by one `NEXT_PUBLIC_SITE_URL`
-- **AI-agent ready** — Cursor rules teach the Tackl conventions, and MCP servers ship pre-configured (`.mcp.json` for Claude Code, `.cursor/mcp.json` for Cursor): Next.js devtools plus Chrome DevTools, so agents can inspect builds and drive a real browser against your dev server (screencast tools need `ffmpeg` on PATH)
+- **AI-agent ready (vendor-neutral)** — [`AGENTS.md`](./AGENTS.md) teaches the Tackl conventions to any agent (Cursor, Claude Code, Copilot, Zed, Aider…); [`skills/`](./skills) holds deep-dive Agent Skills; and MCP servers ship pre-configured (`.mcp.json` + `.cursor/mcp.json`) — Next.js devtools plus Chrome DevTools, so agents can inspect builds and drive a real browser against your dev server (screencast tools need `ffmpeg` on PATH)
 
 ### Performance posture
 
@@ -169,8 +169,11 @@ flowchart TD
     │   ├── utils/              # Hooks and helpers (incl. viewTransitions)
     │   └── types/              # Ambient types (styled DefaultTheme, waffl-grid tag)
     ├── docs/                   # The full documentation set
+    ├── skills/                 # Agent Skills (deep-dive SKILL.md playbooks)
     ├── public/                 # Static assets
     ├── tackl/                  # The Tackl CLI (npm: `tackl` + `create-tackl`)
+    ├── AGENTS.md               # Vendor-neutral agent instructions
+    ├── CLAUDE.md               # Claude Code → imports AGENTS.md
     ├── .env.example            # Documented environment template
     ├── LICENSE                 # MIT
     ├── biome.json              # Lint + format config

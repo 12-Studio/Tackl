@@ -31,4 +31,9 @@ export const grid: Grid = {
 		l: '3.6rem',
 	},
 	maxSize: '1440px',
+	design: {
+		mobile: 390,
+		tablet: 700,
+		desktop: 1440,
+	},
 };

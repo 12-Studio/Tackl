@@ -1,14 +1,14 @@
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import Icon from './';
 
-export default {
+const meta: Meta<typeof Icon> = {
 	title: 'Components/Icon',
 	component: Icon,
 	parameters: {
 		layout: 'centered',
 	},
 	argTypes: {
-		name: {
+		type: {
 			table: {
 				disable: true,
 			},
@@ -27,11 +27,12 @@ export default {
 	},
 };
 
-// Template for all stories
-const Template = args => <Icon {...args} />;
+export default meta;
+type Story = StoryObj<typeof Icon>;
 
 // Default story
-export const Default = Template.bind({});
-Default.args = {
-	name: 'home',
+export const Default: Story = {
+	args: {
+		type: 'facebook',
+	},
 };

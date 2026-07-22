@@ -8,6 +8,15 @@ export interface Grid {
 	breakpoints: Breakpoints;
 	gutter: Gutter;
 	maxSize: string;
+	design: DesignWidths;
+}
+
+// NOTE — Reference artboard widths (in px) the designs are produced at.
+// Used by getVw/getVwTablet/getVwMobile to convert px values to vw units.
+export interface DesignWidths {
+	mobile: number;
+	tablet: number;
+	desktop: number;
 }
 
 export interface Columns {

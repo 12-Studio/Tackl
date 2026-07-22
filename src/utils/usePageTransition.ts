@@ -30,16 +30,19 @@
  *   and DOM updates after the component unmounts during an in-flight transition.
  */
 
+import type { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
+
+type AppRouter = ReturnType<typeof useRouter>;
 
 const PAGE_TRANSITION_DURATION = 1000; // Duration of the entire transition
 const TRANSITION_DURATION = PAGE_TRANSITION_DURATION / 2; // Duration in milliseconds
 const CLEANUP_DELAY = TRANSITION_DURATION / 2;
 
-const usePageTransition = router => {
-	const bodyRef = useRef(null);
-	const rafIdRef = useRef(null);
-	const timeoutIdRef = useRef(null);
+const usePageTransition = (router: AppRouter) => {
+	const bodyRef = useRef<HTMLBodyElement | null>(null);
+	const rafIdRef = useRef<number | null>(null);
+	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	useEffect(() => {
 		return () => {
@@ -55,7 +58,7 @@ const usePageTransition = router => {
 	}, []);
 
 	return useCallback(
-		async to => {
+		async (to: string) => {
 			if (!bodyRef.current) {
 				bodyRef.current = document.querySelector('body');
 			}
@@ -63,7 +66,7 @@ const usePageTransition = router => {
 			try {
 				bodyRef.current?.classList.add('page-transition');
 
-				await new Promise(resolve => {
+				await new Promise<void>(resolve => {
 					rafIdRef.current = requestAnimationFrame(() => {
 						rafIdRef.current = null;
 						timeoutIdRef.current = setTimeout(() => {
@@ -75,7 +78,7 @@ const usePageTransition = router => {
 
 				router.push(to);
 
-				await new Promise(resolve => {
+				await new Promise<void>(resolve => {
 					rafIdRef.current = requestAnimationFrame(() => {
 						rafIdRef.current = null;
 						timeoutIdRef.current = setTimeout(() => {

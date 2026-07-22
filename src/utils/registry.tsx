@@ -15,10 +15,10 @@
  */
 
 import { useServerInsertedHTML } from 'next/navigation';
-import React, { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
-export default function StyledComponentsRegistry({ children }) {
+export default function StyledComponentsRegistry({ children }: { children: ReactNode }) {
 	// Initialize style sheet once using useState to maintain instance across renders
 	const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet());
 

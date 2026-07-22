@@ -3,6 +3,7 @@
 // Imports
 // ------------
 import { GlobalContext } from '@parts/Contexts';
+import { PerformanceContext } from '@parts/Contexts/Performance';
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { ReactLenis, useLenis } from 'lenis/react';
@@ -68,6 +69,13 @@ const LenisGsapBridge = () => {
 // ------------
 const SmoothScroll = ({ children }: I.SmoothScrollProps) => {
 	const { lenisRef } = use(GlobalContext);
+	const { isReducedMotion } = use(PerformanceContext);
+
+	// NOTE • prefers-reduced-motion: skip Lenis entirely — native scrolling
+	// takes over (see the reduced-motion overrides in src/css/global.css) and
+	// the constant rAF loop never starts. ScrollTrigger falls back to the
+	// default window scroller.
+	if (isReducedMotion) return children;
 
 	return (
 		<ReactLenis ref={lenisRef} options={{ autoRaf: false }}>

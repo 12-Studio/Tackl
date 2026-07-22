@@ -6,7 +6,6 @@
 	box-sizing: border-box;
 	-webkit-font-smoothing: subpixel-antialiased; /* Enable subpixel antialiasing for better text rendering */
 	-moz-osx-font-smoothing: grayscale; /* Enable grayscale antialiasing for better text rendering */
-	text-rendering: geometricPrecision; /* Improve text rendering quality */
 }
 
 /* HTML5 Elements */
@@ -92,29 +91,27 @@ waffl-grid > :where(*) {
 	display: none;
 }
 
-/* Optimize paint performance */
-.fast-scroll * {
-	will-change: transform;
-}
-
-/* Force GPU acceleration for smooth animations */
-.smooth-scroll {
-	transform: translateZ(0);
-	backface-visibility: hidden;
-	perspective: 1000px;
-}
-
-.disable-hover,
-.disable-hover * {
-	pointer-events: none !important;
-}
-
 /* Nested Lenis — wrapper is the viewport; content scrolls via transform (not overflow-y) */
 .lenis {
 	position: relative;
 	width: 100%;
 	height: 100dvh;
 	overflow: hidden;
+}
+
+/* Reduced motion — SmoothScroll skips Lenis entirely (no rAF loop), so the
+   locked-viewport layout above must hand scrolling back to the browser */
+@media (prefers-reduced-motion: reduce) {
+	html,
+	body {
+		height: auto;
+		overflow: auto;
+	}
+
+	#page {
+		height: auto;
+		overflow: visible;
+	}
 }
 
 /* Page Transitions using the new transitions API*/

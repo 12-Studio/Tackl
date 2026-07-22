@@ -17,7 +17,7 @@
 	},
 	"scripts": {
 		"dev": "next dev --turbopack",
-		"build": "next build --webpack",
+		"build": "next build",
 		"start": "next start",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
@@ -47,8 +47,7 @@
 		"react-datocms": "^8.1.0",
 		"react-dom": "^19.2.7",
 		"styled-components": "^6.4.3",
-		"tar": "^7.5.19",
-		"unicornstudio-react": "^2.1.12-1"
+		"tar": "^7.5.19"
 	},
 	"devDependencies": {
 		"@lhci/cli": "^0.15.1",

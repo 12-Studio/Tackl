@@ -7,10 +7,11 @@ import { Inter } from 'next/font/google';
 import type { Fonts } from './interface';
 
 // SECTION • Inter font configuration optimized with swap display for better loading performance
+// NOTE • No `weight` array — Inter is a variable font, so this loads ONE file
+// covering every weight (100–900) instead of a request per static weight
 export const inter = Inter({
 	subsets: ['latin'],
 	display: 'swap', // Uses fallback font until Inter loads
-	weight: ['400', '500', '700'],
 	variable: '--inter',
 	preload: true,
 });

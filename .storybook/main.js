@@ -1,4 +1,7 @@
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config = {
 	stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -20,12 +23,6 @@ const config = {
 			'@utils': path.resolve(__dirname, '../src/utils'),
 			'@public': path.resolve(__dirname, '../public'),
 			'@': path.resolve(__dirname, '../src'),
-		};
-
-		// Add this section to handle the Color package
-		config.resolve.fallback = {
-			...config.resolve.fallback,
-			util: require.resolve('util/'),
 		};
 
 		return config;

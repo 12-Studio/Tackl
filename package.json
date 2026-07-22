@@ -32,7 +32,6 @@
 	"dependencies": {
 		"@datocms/cda-client": "^0.2.10",
 		"@gsap/react": "^2.1.2",
-		"color": "^5.0.3",
 		"graphql": "^17.0.2",
 		"graphql-tag": "^2.12.7",
 		"gsap": "^3.15.0",

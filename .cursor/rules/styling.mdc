@@ -21,6 +21,10 @@ alwaysApply: false
 // - use Tackl components for most semantic elements
 // - Use Tackl functions to get theming (e.g. getBrand, getGlobal, getRadius, getEase, getFont, getFontWeight)
 // - Use Tackl/Type for pulling through global text styles (e.g. headingL, bodyM, captionS)
+// - Design tokens are CSS custom properties on :root (--brand-bc1, --space-m, --gap-l, --br-m,
+//   --easing-bezzy, --font-heading). The theme getters resolve to var() references, so in plain CSS
+//   or Server Components you can use var(--space-m) etc. directly — see docs/Tackl/Theming.md.
+// - Breakpoints/grid values are NOT CSS variables (media queries can't read them) — use bp/bpd from @tackl.
 
 // Example:
 // components/example/styles.ts

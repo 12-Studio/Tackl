@@ -1,15 +1,15 @@
 // Theme Types / Interfaces
 // ------------
 
+import { BorderRadius } from './borderRadius/interface';
 // Imports
 // ------------
 import { Colors } from './colors/interface';
-import { Space } from './space/interface';
-import { Gap } from './gap/interface';
-import { BorderRadius } from './borderRadius/interface';
-import { Fonts } from './fonts/interface';
-import { Grid } from './grid/interface';
 import { Easing } from './easing/interface';
+import { Fonts } from './fonts/interface';
+import { Gap } from './gap/interface';
+import { Grid } from './grid/interface';
+import { Space } from './space/interface';
 
 // Exports
 // ------------

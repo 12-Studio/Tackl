@@ -8,13 +8,15 @@ Tackl 3 is a comprehensive Next.js starter kit designed for building scalable, p
 
 ### 1. Theme System
 
-The theme system (`src/theme/index.js`) provides:
+The theme system (`src/theme/index.ts`) provides:
 
 -   Brand color management with alpha variations
 -   Responsive breakpoints
 -   Spacing scales
 -   Typography settings
 -   Animation easings
+
+Raw token values are emitted once as CSS custom properties on `:root`, and the theme object exposes `var()` references to them — so tokens work identically in styled-components, plain CSS and Server Components, and can be overridden at runtime (e.g. `html[data-theme='dark']`). See [Theming.md](./Theming.md) for the full guide.
 
 ### 2. Tackl Semantic Components
 

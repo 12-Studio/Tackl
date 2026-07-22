@@ -1,13 +1,14 @@
 /** @type { import('@storybook/nextjs').Preview } */
 
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
-import { theme } from '@theme';
+import { GlobalStyle, theme } from '@theme';
 import { inter } from '@theme/fonts';
 import { ThemeProvider } from 'styled-components';
 
 // Styles
 // ------------
 import '@/css/global.css';
+
 // import './fonts.css';
 
 // Add the font variable class
@@ -52,8 +53,10 @@ const customViewports = {
 };
 
 // Create a theme decorator that wraps MDX content
+// NOTE • GlobalStyle emits the :root CSS variables the theme's var() references resolve to
 const withTheme = StoryFn => (
 	<ThemeProvider theme={theme}>
+		<GlobalStyle />
 		<StoryFn />
 	</ThemeProvider>
 );

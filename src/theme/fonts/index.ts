@@ -1,7 +1,9 @@
 // Imports
 // ------------
-import { Inter } from 'next/font/google';
+
 // import localFont from 'next/font/local';
+import { toVarRefs } from '@theme/cssVariables';
+import { Inter } from 'next/font/google';
 import type { Fonts } from './interface';
 
 // SECTION • Inter font configuration optimized with swap display for better loading performance
@@ -37,15 +39,21 @@ export const inter = Inter({
 // 	preload: true,
 // });
 
+// SECTION • Raw Font Stacks
+// NOTE • Emitted as --font-{key} on :root by GlobalStyle (@theme).
+// --inter is set on <html> by next/font (see app/layout.tsx)
+export const fontFamilies = {
+	heading: `var(--inter), Arial, sans-serif`,
+	body: `var(--inter), Arial, sans-serif`,
+	mono: `var(--inter), Arial, sans-serif`,
+	script: `var(--inter), Arial, sans-serif`,
+};
+
 // Exports
 // ------------
+// NOTE • Weights stay literal numbers — they're not runtime-themeable
 export const fonts: Fonts = {
-	family: {
-		heading: `var(--inter), Arial, sans-serif`,
-		body: `var(--inter), Arial, sans-serif`,
-		mono: `var(--inter), Arial, sans-serif`,
-		script: `var(--inter), Arial, sans-serif`,
-	},
+	family: toVarRefs('font', fontFamilies),
 	weight: {
 		light: 300,
 		regular: 400,

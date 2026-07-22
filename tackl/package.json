@@ -1,6 +1,6 @@
 {
 	"name": "tackl",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "Scaffold a Tackl project into the current directory — Next.js, styled-components, Waffl grid, DatoCMS/Sanity adapters",
 	"type": "module",
 	"bin": {

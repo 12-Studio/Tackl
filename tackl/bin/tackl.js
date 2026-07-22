@@ -107,13 +107,18 @@ const stripDeps = (root, deps) => {
 	fs.writeFileSync(p, JSON.stringify(json, null, '\t') + '\n');
 };
 
+// NOTE • Everything that exists solely for the embedded Sanity Studio
+const SANITY_STUDIO_PATHS = ['app/(studio)', 'app/api/draft-mode', 'sanity.config.ts', 'sanity'];
+const SANITY_DEPS = ['next-sanity', 'sanity', '@sanity/vision'];
+
 const CMS = {
 	dato: {
 		title: 'DatoCMS',
 		prune: root => {
 			rmrf(root, 'src/cms/sanity');
 			rmrf(root, 'docs/Sanity');
-			stripDeps(root, ['next-sanity']);
+			for (const p of SANITY_STUDIO_PATHS) rmrf(root, p);
+			stripDeps(root, SANITY_DEPS);
 			stripEnvBlock(root, '# CMS — Sanity');
 		},
 	},
@@ -138,7 +143,8 @@ const CMS = {
 			rmrf(root, 'docs/Sanity');
 			rmrf(root, 'docs/DatoCMS');
 			rmrf(root, 'docs/CMS.md');
-			stripDeps(root, ['next-sanity', '@datocms/cda-client', 'react-datocms', 'graphql', 'graphql-tag']);
+			for (const p of SANITY_STUDIO_PATHS) rmrf(root, p);
+			stripDeps(root, [...SANITY_DEPS, '@datocms/cda-client', 'react-datocms', 'graphql', 'graphql-tag']);
 			stripEnvBlock(root, '# CMS — Sanity');
 			stripEnvBlock(root, '# CMS — DatoCMS');
 		},
@@ -330,11 +336,39 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 		log.info('Skipped dependency install.');
 	}
 
+	// SECTION • Sanity project link
+	// NOTE • A Sanity scaffold isn't usable until a project id exists —
+	// sanity's own init logs in, creates/links a project and writes .env.
+	let sanityLinked = false;
+	if (cms === 'sanity' && process.stdout.isTTY) {
+		const { link } = await prompts({
+			type: 'confirm',
+			name: 'link',
+			message: 'Link a Sanity project now? (opens a browser login, writes .env)',
+			initial: true,
+		});
+		if (link) {
+			try {
+				execSync('bunx sanity@latest init --env .env', { cwd: targetDir, stdio: 'inherit' });
+				sanityLinked = true;
+				log.ok('Sanity project linked!');
+			} catch (e) {
+				log.warn(`sanity init did not complete: ${e.message}`);
+			}
+		}
+	}
+
 	console.log('\n' + pc.bold(pc.green('Success!')) + ' Project scaffolded.\n');
 	console.log('  Next steps:');
-	console.log('  1) cp .env.example .env   # then fill in your values');
-	if (!doInstall) console.log('  2) bun install');
-	console.log(`  ${doInstall ? '2' : '3'}) bun run dev`);
+	let step = 1;
+	if (cms === 'sanity' && !sanityLinked) {
+		console.log(`  ${step++}) bunx sanity init --env .env   # create/link your Sanity project`);
+	} else if (cms !== 'sanity') {
+		console.log(`  ${step++}) cp .env.example .env   # then fill in your values`);
+	}
+	if (!doInstall) console.log(`  ${step++}) bun install`);
+	console.log(`  ${step++}) bun run dev`);
+	if (cms === 'sanity') console.log(`  ${step}) open http://localhost:3000/studio to start editing content`);
 }
 
 main().catch(e => {

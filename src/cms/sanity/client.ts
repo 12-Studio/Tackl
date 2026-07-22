@@ -24,9 +24,11 @@ import { createClient } from 'next-sanity';
 
 // SECTION • Client
 // NOTE • useCdn true = fast cached reads; switch to false (or use a token +
-// perspective: 'previewDrafts') when wiring live preview / draft mode
+// perspective: 'previewDrafts') when wiring live preview / draft mode.
+// The 'placeholder' fallback keeps builds working before a project is
+// linked — fetchContent guards against it at call time.
 export const client = createClient({
-	projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+	projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'placeholder',
 	dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
 	apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2025-06-01',
 	useCdn: true,

@@ -18,7 +18,7 @@
 
 // Imports
 // -------
-import { createGlobalStyle, css } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { borderRadius, borderRadiusValues } from './borderRadius';
 import { baseColors, colors } from './colors';
 import { toVarDeclarations } from './cssVariables';
@@ -49,18 +49,6 @@ export const theme: Theme = {
 	easing: easing,
 	// SECTION • Time (Transition/Animation Durations)
 	time: time,
-	// SECTION • Utility Functions
-	utils: {
-		noscrollbars: css`
-			scrollbar-width: none;
-			-ms-overflow-style: none;
-			&::-webkit-scrollbar {
-				width: 0;
-				height: 0;
-				background: transparent;
-			}
-		`,
-	},
 };
 
 // CSS Custom Properties

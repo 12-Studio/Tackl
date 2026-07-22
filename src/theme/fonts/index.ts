@@ -4,7 +4,6 @@
 // import localFont from 'next/font/local';
 import { toVarRefs } from '@theme/cssVariables';
 import { Inter } from 'next/font/google';
-import type { Fonts } from './interface';
 
 // SECTION • Inter font configuration optimized with swap display for better loading performance
 // NOTE • No `weight` array — Inter is a variable font, so this loads ONE file
@@ -50,18 +49,21 @@ export const fontFamilies = {
 	script: `var(--inter), Arial, sans-serif`,
 };
 
+// SECTION • Raw Font Weights
+// NOTE • Literal numbers — they're not runtime-themeable
+export const fontWeights = {
+	light: 300,
+	regular: 400,
+	medium: 500,
+	semi: 600,
+	bold: 700,
+	heavy: 800,
+	black: 900,
+};
+
 // Exports
 // ------------
-// NOTE • Weights stay literal numbers — they're not runtime-themeable
-export const fonts: Fonts = {
+export const fonts = {
 	family: toVarRefs('font', fontFamilies),
-	weight: {
-		light: 300,
-		regular: 400,
-		medium: 500,
-		semi: 600,
-		bold: 700,
-		heavy: 800,
-		black: 900,
-	},
+	weight: fontWeights,
 };

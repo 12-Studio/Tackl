@@ -1,17 +1,7 @@
 // Gap Types / Interfaces
 // ------------
+import type { gapValues } from './index';
 
-// SECTION • Gap
-// NOTE — The main gap object structure
-export interface Gap {
-	xxs?: string;
-	xs?: string;
-	s?: string;
-	sm?: string;
-	m?: string;
-	l?: string;
-	xl?: string;
-	xxl?: string;
-	huge?: string;
-	uber?: string;
-}
+// SECTION • Gap
+// NOTE — Derived from gapValues, so adding a token there updates this automatically
+export type Gap = { [K in keyof typeof gapValues]: string };

@@ -1,43 +1,14 @@
 // Grid Types / Interfaces
 // ------------
+import type { grid } from './index';
 
-// SECTION • Grid
-// NOTE — The main grid object structure
-export interface Grid {
-	columns: Columns;
-	breakpoints: Breakpoints;
-	gutter: Gutter;
-	maxSize: string;
-	design: DesignWidths;
-}
+// SECTION • Grid
+// NOTE — Derived from the grid values object, so adding a breakpoint or
+// column count there updates every dependent type (responsive props, bp/bpd)
+// automatically
+export type Grid = typeof grid;
 
-// NOTE — Reference artboard widths (in px) the designs are produced at.
-// Used by getVw/getVwTablet/getVwMobile to convert px values to vw units.
-export interface DesignWidths {
-	mobile: number;
-	tablet: number;
-	desktop: number;
-}
-
-export interface Columns {
-	s?: number;
-	m?: number;
-	l?: number;
-}
-
-export interface Breakpoints {
-	s?: string;
-	sm?: string;
-	m?: string;
-	l?: string;
-	xl?: string;
-	xxl?: string;
-	huge?: string;
-	uber?: string;
-}
-
-export interface Gutter {
-	s?: string;
-	m?: string;
-	l?: string;
-}
+export type Columns = Grid['columns'];
+export type Breakpoints = Grid['breakpoints'];
+export type Gutter = Grid['gutter'];
+export type DesignWidths = Grid['design'];

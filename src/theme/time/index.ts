@@ -8,7 +8,6 @@
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
-import type { Time } from './interface';
 
 // SECTION • Raw Time Values
 // NOTE • Emitted as --time-{key} on :root by GlobalStyle (@theme)
@@ -20,4 +19,4 @@ export const timeValues = {
 
 // Exports
 // ------------
-export const time: Time = toVarRefs('time', timeValues);
+export const time = toVarRefs('time', timeValues);

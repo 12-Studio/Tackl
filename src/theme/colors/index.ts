@@ -8,7 +8,6 @@
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
-import type { Colors } from './interface';
 
 // SECTION • Raw Color Values
 // NOTE • The single source of truth — emitted as CSS custom properties on
@@ -41,7 +40,7 @@ export const baseColors = {
 // NOTE • Each color is a plain var() reference resolved by the browser.
 // Need opacity? Use the getters — getBrand('bc1', 50) — or color-mix
 // directly in CSS: color-mix(in srgb, var(--brand-bc1) 50%, transparent)
-export const colors: Colors = {
+export const colors = {
 	brand: toVarRefs('brand', baseColors.brand),
 	global: toVarRefs('global', baseColors.global),
 	feedback: toVarRefs('feedback', baseColors.feedback),

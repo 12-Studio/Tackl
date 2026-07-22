@@ -1,34 +1,15 @@
 // Color Types / Interfaces
 // ------------
+import type { baseColors } from './index';
 
 // SECTION • Colors
 // NOTE — Every color token is a var() reference string; opacity is applied
-// at the point of use (getters or color-mix in CSS), not stored per shade
-export type Colors = {
-	brand: BrandColors;
-	global: GlobalColors;
-	feedback: FeedbackColors;
-};
+// at the point of use (getters, alpha(), or color-mix in CSS).
+// Derived from baseColors, so adding a color there updates this automatically
+export type Colors = { [G in keyof typeof baseColors]: ColorGroup<(typeof baseColors)[G]> };
 
-// SECTION • Brand Colors
-export type BrandColors = {
-	bc1: string;
-	bc2: string;
-	bc3: string;
-	bc4?: string;
-	bc5?: string;
-	bc6?: string;
-};
+export type ColorGroup<T> = { [K in keyof T]: string };
 
-// SECTION • Global Colors
-export type GlobalColors = {
-	white: string;
-	black: string;
-};
-
-// SECTION • Feedback Colors
-export type FeedbackColors = {
-	positive: string;
-	negative: string;
-	warning: string;
-};
+export type BrandColors = Colors['brand'];
+export type GlobalColors = Colors['global'];
+export type FeedbackColors = Colors['feedback'];

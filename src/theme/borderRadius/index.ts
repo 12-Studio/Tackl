@@ -8,7 +8,6 @@
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
-import type { BorderRadius } from './interface';
 
 // SECTION • Raw Border Radius Values
 // NOTE • Emitted as --br-{key} on :root by GlobalStyle (@theme)
@@ -22,4 +21,4 @@ export const borderRadiusValues = {
 
 // Exports
 // ------------
-export const borderRadius: BorderRadius = toVarRefs('br', borderRadiusValues);
+export const borderRadius = toVarRefs('br', borderRadiusValues);

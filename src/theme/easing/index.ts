@@ -8,7 +8,6 @@
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
-import type { Easing } from './interface';
 
 // SECTION • Raw Easing Values
 // NOTE • Emitted as --easing-{key} on :root by GlobalStyle (@theme).
@@ -21,4 +20,4 @@ export const easingValues = {
 
 // Exports
 // ------------
-export const easing: Easing = toVarRefs('easing', easingValues);
+export const easing = toVarRefs('easing', easingValues);

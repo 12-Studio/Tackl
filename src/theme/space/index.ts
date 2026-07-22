@@ -8,7 +8,6 @@
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
-import type { Space } from './interface';
 
 // SECTION • Raw Space Values
 // NOTE • Emitted as --space-{key} on :root by GlobalStyle (@theme)
@@ -22,4 +21,4 @@ export const spaceValues = {
 
 // Exports
 // ------------
-export const space: Space = toVarRefs('space', spaceValues);
+export const space = toVarRefs('space', spaceValues);

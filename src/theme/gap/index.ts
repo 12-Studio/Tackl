@@ -8,7 +8,6 @@
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
-import type { Gap } from './interface';
 
 // SECTION • Raw Gap Values
 // NOTE • Emitted as --gap-{key} on :root by GlobalStyle (@theme)
@@ -27,4 +26,4 @@ export const gapValues = {
 
 // Exports
 // ------------
-export const gap: Gap = toVarRefs('gap', gapValues);
+export const gap = toVarRefs('gap', gapValues);

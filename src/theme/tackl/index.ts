@@ -2,7 +2,7 @@
 // -----------------
 import type { Theme } from '@theme/interface';
 import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
-import styled from 'styled-components';
+import styled, { css, type RuleSet } from 'styled-components';
 import { breakpointDown, breakpointUp } from './breakpoints';
 import { gridSemantics, semantics } from './semantics';
 import type { SemanticProps } from './semantics/interface';
@@ -85,9 +85,19 @@ export const getTime = (timeSize: keyof Theme['time']) => (props: { theme: Theme
 	return props.theme.time[timeSize];
 };
 
-export const getUtil = (util: keyof Theme['utils']) => (props: { theme: Theme }) => {
-	return props.theme.utils[util];
-};
+// SECTION • Style Utilities
+// ------------
+// NOTE • Hides scrollbars while keeping the element scrollable
+// Usage: ${noscrollbars}
+export const noscrollbars: RuleSet = css`
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	&::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+		background: transparent;
+	}
+`;
 
 // SECTION • Viewport Utilities
 // ------------

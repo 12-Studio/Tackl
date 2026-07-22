@@ -1,12 +1,7 @@
-// Imports
+// Space Types / Interfaces
 // ------------
+import type { spaceValues } from './index';
 
-// Exports
-// ------------
-export interface Space {
-	s?: string;
-	m?: string;
-	l?: string;
-	xl?: string;
-	col?: string;
-}
+// SECTION • Space
+// NOTE — Derived from spaceValues, so adding a token there updates this automatically
+export type Space = { [K in keyof typeof spaceValues]: string };

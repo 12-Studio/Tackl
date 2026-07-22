@@ -23,7 +23,4 @@ export interface Theme {
 	grid: Grid;
 	easing: Easing;
 	time: Time;
-	utils: {
-		noscrollbars: object;
-	};
 }

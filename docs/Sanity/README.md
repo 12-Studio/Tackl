@@ -1,8 +1,8 @@
 # Sanity + Next.js Integration Guide
 
-> **Tackl note:** the kit ships a minimal Sanity adapter at `src/cms/sanity/` (selected by the CLI, imported as `import { fetchContent } from '@cms'`) that covers plain GROQ fetching. This guide is the **full** setup — embedded Studio, live updates, visual draft preview. When following it, keep the `@cms` seam: grow the adapter in `src/cms/sanity/` (e.g. re-export `fetchSanity` there) instead of importing Sanity libraries from app code directly. See [docs/CMS.md](../CMS.md).
+> **Tackl note:** choosing Sanity in the CLI now ships the core of this setup out of the box — the embedded Studio at `/studio` (`app/(studio)/studio/[[...tool]]/page.tsx` + root `sanity.config.ts`), schemas in `sanity/schemaTypes/` (`homePage`, `siteSettings`), the draft-mode routes under `app/api/draft-mode/`, and the fetch adapter at `src/cms/sanity/` (imported as `import { fetchContent } from '@cms'`); the CLI can also run `bunx sanity init --env .env` for you. This guide remains the **deep spec** for the rest — live content (`SanityLive`), visual editing / Presentation, and deployment. When following it, keep the `@cms` seam: grow the adapter in `src/cms/sanity/` (e.g. re-export `fetchSanity` there) instead of importing Sanity libraries from app code directly. See [docs/CMS.md](../CMS.md).
 
-Use this document as a **replication spec** for embedding Sanity CMS into a Next.js App Router project. It describes the architecture implemented on the `sanity` branch of Tackl: one repo, one build, site + Studio + draft preview deployed together.
+Use this document as a **replication spec** for embedding Sanity CMS into a Next.js App Router project. It describes the architecture the Tackl Sanity scaffold is built on: one repo, one build, site + Studio + draft preview deployed together.
 
 ---
 
@@ -53,13 +53,13 @@ Use this document as a **replication spec** for embedding Sanity CMS into a Next
            Sanity project (CDN + API)
 ```
 
-**No root `app/layout.tsx`.** Each route group owns its own root layout (`<html>` / `<body>`).
+**No top-level layout in `app/`.** Each route group owns its own root layout (`<html>` / `<body>`); only `sitemap.ts`, `robots.ts`, and `icon.svg` sit at the `app/` root.
 
 ---
 
 ## Directory structure
 
-Create this layout (paths are relative to project root):
+The kit already ships the skeleton of this layout: `app/(site)/` (site root layout + `Providers.tsx` + `(home)/`), `app/(studio)/` (bare layout + `studio/[[...tool]]/page.tsx`), `app/api/draft-mode/`, root `sanity.config.ts`, `sanity/schemaTypes/` (`homePage`, `siteSettings`), and the adapter in `src/cms/sanity/` (`client.ts`, `queries/`). The tree below is the **full** target this guide builds towards — extend the shipped files into it (paths are relative to project root):
 
 ```
 app/
@@ -588,7 +588,7 @@ Copy everything below into your AI / project brief:
 >
 > Requirements:
 > 1. Route groups: `app/(site)/` for the public site, `app/(studio)/` for Studio at `/studio` with a minimal root layout.
-> 2. No root `app/layout.tsx` — each group owns `<html>/<body>`.
+> 2. No top-level layout in `app/` — each group owns `<html>/<body>`.
 > 3. `sanity/` folder with `env.ts`, `lib/client.ts`, `lib/live.server.ts`, `lib/fetch.server.ts`, `lib/queries.ts`, `lib/image.ts`, `lib/metadata.ts`, `schemaTypes/`, `deskStructure.ts`, `presentation/resolve.ts`.
 > 4. Root `sanity.config.ts` with Presentation, Structure, Media, and Vision plugins.
 > 5. Draft mode: `/api/draft-mode/enable/` (503 if `SANITY_API_READ_TOKEN` missing) and `/api/draft-mode/disable/`.
@@ -606,11 +606,14 @@ Copy everything below into your AI / project brief:
 
 ## Reference implementation
 
-This repo’s `sanity` branch is the source of truth. Key files:
+This repo's Sanity scaffold ships the starting point; key files (some, like the `sanity/lib/` and `sanity/presentation/` helpers, are built by following this guide):
 
 - `sanity.config.ts`
 - `app/(site)/layout.tsx`, `app/(site)/Providers.tsx`
-- `app/(studio)/studio/[[...tool]]/page.tsx`
+- `app/(studio)/layout.tsx`, `app/(studio)/studio/[[...tool]]/page.tsx`
+- `app/api/draft-mode/enable/route.ts`, `app/api/draft-mode/disable/route.ts`
+- `sanity/schemaTypes/` (`homePage`, `siteSettings`)
+- `src/cms/sanity/` (`client.ts`, `queries/`)
 - `sanity/lib/live.server.ts`, `sanity/lib/fetch.server.ts`
 - `sanity/presentation/resolve.ts`
 - `netlify.toml`

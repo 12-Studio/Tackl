@@ -35,7 +35,7 @@ This document explains how data flows through the Tackl application architecture
 **Benefits**: Better performance, SEO, and user experience
 
 ```typescript
-// Root Layout (app/layout.tsx) — a server component, so it can fetch directly
+// Root Layout (app/(site)/layout.tsx) — a server component, so it can fetch directly
 import { fetchContent, GET_GLOBAL } from '@cms';
 
 async function getGlobalData() {
@@ -62,7 +62,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 **Benefits**: Page-specific optimization and SEO
 
 ```typescript
-// Page Component (app/(home)/page.tsx)
+// Page Component (app/(site)/(home)/page.tsx)
 import { fetchContent, GET_HOME } from '@cms';
 
 async function getHomeData() {
@@ -107,7 +107,7 @@ const Content = ({ data }: HomeProps) => {
 **Benefits**: Responsive user experience
 
 ```typescript
-// Content Component (app/(home)/Content.tsx)
+// Content Component (app/(site)/(home)/Content.tsx)
 const Content = ({ data }: HomeProps) => {
     const [state, setState] = useState(data);
 
@@ -133,7 +133,7 @@ const Content = ({ data }: HomeProps) => {
 **Benefits**: Avoid prop drilling and centralize state
 
 ```typescript
-// Providers (app/Providers.tsx)
+// Providers (app/(site)/Providers.tsx)
 <ThemeProvider theme={theme}>
     <Contexts>
         <Page>
@@ -145,7 +145,7 @@ const Content = ({ data }: HomeProps) => {
 
 ### 3. Animation Data Flow
 
-**Location**: SmoothScroll (rendered inside `main#page` in `app/layout.tsx`)
+**Location**: SmoothScroll (rendered inside `main#page` in `app/(site)/layout.tsx`)
 **Purpose**: Handle animation state and updates
 **Benefits**: Smooth animations and performance
 
@@ -176,7 +176,7 @@ Root Layout → Page Component → Content Component
 **Implementation**:
 
 ```typescript
-// 1. Root Layout (app/layout.tsx) fetches data — any server component can
+// 1. Root Layout (app/(site)/layout.tsx) fetches data — any server component can
 const RootLayout = async ({ children }) => {
     const data = await getGlobalData();
     return <Header data={data} />;
@@ -218,7 +218,7 @@ const Content = ({ data }) => {
     return <button onClick={updateData}>Update</button>;
 };
 
-// 2. Providers (app/Providers.tsx) provides context
+// 2. Providers (app/(site)/Providers.tsx) provides context
 <ThemeProvider theme={theme}>
     <Content />
 </ThemeProvider>
@@ -241,7 +241,7 @@ ThemeProvider → All Child Components
 **Implementation**:
 
 ```typescript
-// 1. ThemeProvider (in app/Providers.tsx) provides theme context
+// 1. ThemeProvider (in app/(site)/Providers.tsx) provides theme context
 <ThemeProvider theme={theme}>
     <Contexts>
         <Page>

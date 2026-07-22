@@ -4,13 +4,15 @@
 
 This document explains the component hierarchy and data flow in the Tackl application architecture. Understanding this hierarchy is crucial for effective development and debugging.
 
+The app has **two root layouts** via route groups (which don't affect URLs): `app/(site)/layout.tsx` for the website — the tree below — and `app/(studio)/layout.tsx`, a bare `html`/`body` shell for the embedded Sanity Studio at `/studio` (present in Sanity scaffolds; pruned by the CLI otherwise).
+
 ## Component Tree Structure
 
 ```
-RootLayout (app/layout.tsx)
+RootLayout (app/(site)/layout.tsx)
 ├── ViewTransitions
 │   └── html > body
-│       └── Providers (app/Providers.tsx)
+│       └── Providers (app/(site)/Providers.tsx)
 │           ├── StyledComponentsRegistry
 │           │   └── ThemeProvider
 │           │       ├── GlobalStyle
@@ -26,11 +28,11 @@ RootLayout (app/layout.tsx)
 
 ## Detailed Component Breakdown
 
-### 1. RootLayout (`app/layout.tsx`)
+### 1. RootLayout (`app/(site)/layout.tsx`)
 
 **Position**: Top-level component
 **Type**: Server Component
-**Purpose**: Application entry point — owns the document shell and site chrome
+**Purpose**: The site's entry point — owns the document shell and site chrome
 
 ```typescript
 export const metadata: Metadata = { /* site-wide defaults */ };
@@ -66,7 +68,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
 **Note**: `main#page` gets `view-transition-name: page` from `src/css/global.css` — there is no inline style.
 
-### 2. Providers (`app/Providers.tsx`)
+### 2. Providers (`app/(site)/Providers.tsx`)
 
 **Position**: Second level
 **Type**: Client Component (`'use client'`)
@@ -98,9 +100,9 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 - **Global Styles**: CSS custom properties and global styles
 - **Environment Detection**: Different components for dev/prod
 - **Performance Contexts**: Performance optimization contexts
-- **No Document Shell**: `html`/`body` and site chrome live in `app/layout.tsx`, so page content stays server-rendered
+- **No Document Shell**: `html`/`body` and site chrome live in `app/(site)/layout.tsx`, so page content stays server-rendered
 
-### 3. Page Components (`app/(home)/page.tsx`)
+### 3. Page Components (`app/(site)/(home)/page.tsx`)
 
 **Position**: Third level
 **Type**: Server Component
@@ -122,7 +124,7 @@ const Page = async () => {
 - **SEO Metadata**: Page-specific meta tags
 - **Performance**: Static generation
 
-### 4. Content Components (`app/(home)/Content.tsx`)
+### 4. Content Components (`app/(site)/(home)/Content.tsx`)
 
 **Position**: Fourth level
 **Type**: Client Component (`'use client'`)
@@ -158,7 +160,7 @@ Root Layout → Page Component → Content Component
 **Example**:
 
 ```typescript
-// Root Layout (app/layout.tsx)
+// Root Layout (app/(site)/layout.tsx)
 const data = await getGlobalData();
 
 // Page Component (page.tsx)
@@ -204,7 +206,7 @@ ThemeProvider → All Child Components
 **Example**:
 
 ```typescript
-// Providers (app/Providers.tsx)
+// Providers (app/(site)/Providers.tsx)
 <ThemeProvider theme={theme}>
     <Contexts>
         <Page>

@@ -1,56 +1,34 @@
 // Color Types / Interfaces
 // ------------
 
-// SECTION • Colors
-// NOTE — The main color object structure
+// SECTION • Colors
+// NOTE — Every color token is a var() reference string; opacity is applied
+// at the point of use (getters or color-mix in CSS), not stored per shade
 export type Colors = {
-	brand: BrandColorVariations;
+	brand: BrandColors;
 	global: GlobalColors;
-	social: SocialColors;
 	feedback: FeedbackColors;
 };
 
-// SECTION • AlphaShades
-// NOTE — Used for colors with alpha (opacity) variations and a solid value
-export type AlphaShades = {
-	[key: number]: string;
-	solid: string;
-};
-
 // SECTION • Brand Colors
-// NOTE — Each brand color, each with AlphaShades
-export type BrandColorVariations = {
-	bc1: AlphaShades;
-	bc2: AlphaShades;
-	bc3: AlphaShades;
-	bc4?: AlphaShades;
-	bc5?: AlphaShades;
-	bc6?: AlphaShades;
+export type BrandColors = {
+	bc1: string;
+	bc2: string;
+	bc3: string;
+	bc4?: string;
+	bc5?: string;
+	bc6?: string;
 };
 
-// SECTION • Global Colors
-// NOTE — White + Black, each with AlphaShades
+// SECTION • Global Colors
 export type GlobalColors = {
-	white: AlphaShades;
-	black: AlphaShades;
-};
-
-// SECTION • Social Colors
-// NOTE — Each social color has AlphaShades
-export type SocialColors = {
-	facebook?: AlphaShades;
-	twitter?: AlphaShades;
-	creativeMarket?: AlphaShades;
-	slack?: AlphaShades;
-	instagram?: AlphaShades;
-	dribbble?: AlphaShades;
-	linkedin?: AlphaShades;
+	white: string;
+	black: string;
 };
 
 // SECTION • Feedback Colors
-// NOTE — Each feedback color has AlphaShades
 export type FeedbackColors = {
-	positive: AlphaShades;
-	negative: AlphaShades;
-	warning: AlphaShades;
+	positive: string;
+	negative: string;
+	warning: string;
 };

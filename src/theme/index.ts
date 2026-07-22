@@ -28,6 +28,7 @@ import { gap, gapValues } from './gap';
 import { grid } from './grid';
 import type { Theme } from './interface';
 import { space, spaceValues } from './space';
+import { time, timeValues } from './time';
 
 // Theme Configuration
 // ------------
@@ -44,8 +45,10 @@ export const theme: Theme = {
 	font: fonts,
 	// SECTION • Grid (All Grid Values)
 	grid: grid,
-	// SECTION • Easing (All Easing Values)
+	// SECTION • Easing (All Easing Curves)
 	easing: easing,
+	// SECTION • Time (Transition/Animation Durations)
+	time: time,
 	// SECTION • Utility Functions
 	utils: {
 		noscrollbars: css`
@@ -70,6 +73,7 @@ const cssVariables = [
 	toVarDeclarations('gap', gapValues),
 	toVarDeclarations('br', borderRadiusValues),
 	toVarDeclarations('easing', easingValues),
+	toVarDeclarations('time', timeValues),
 	toVarDeclarations('font', fontFamilies),
 ].join('\n');
 
@@ -91,7 +95,7 @@ export const GlobalStyle = createGlobalStyle`
 	*/
 
 	body {
-		background: ${theme.colors.global.black.solid};
-		color: ${theme.colors.global.white.solid};
+		background: ${theme.colors.global.black};
+		color: ${theme.colors.global.white};
 	}
 `;

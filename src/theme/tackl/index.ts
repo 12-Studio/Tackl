@@ -27,20 +27,24 @@ export const bpd = breakpointDown;
 
 // SECTION • Theme Getters
 // ------------
+// NOTE • Optional opacity (0–100) wraps the token in color-mix — the browser
+// resolves it, so runtime theme overrides apply to translucent uses too
+const withOpacity = (color?: string, opacity?: number) =>
+	color === undefined || opacity === undefined || opacity >= 100
+		? color
+		: `color-mix(in srgb, ${color} ${opacity}%, transparent)`;
+
 export const getGlobal = (color: keyof Theme['colors']['global'], opacity?: number) => (props: { theme: Theme }) => {
-	const global = props.theme.colors.global;
-	return global?.[color]?.[opacity !== undefined ? opacity : 100];
+	return withOpacity(props.theme.colors.global[color], opacity);
 };
 
 export const getBrand = (color: keyof Theme['colors']['brand'], opacity?: number) => (props: { theme: Theme }) => {
-	const brand = props.theme.colors?.brand;
-	return brand?.[color]?.[opacity !== undefined ? opacity : 'solid'];
+	return withOpacity(props.theme.colors.brand[color], opacity);
 };
 
 export const getFeedback =
 	(color: 'positive' | 'negative' | 'warning', opacity?: number) => (props: { theme: Theme }) => {
-		const feedback = props.theme.colors.feedback[color];
-		return feedback?.[opacity !== undefined ? opacity : 'solid'];
+		return withOpacity(props.theme.colors.feedback[color], opacity);
 	};
 
 export const getGap = (gapSize: keyof Theme['gap']) => (props: { theme: Theme }) => {
@@ -65,6 +69,10 @@ export const getRadius = (radiusSize: keyof Theme['br']) => (props: { theme: The
 
 export const getEase = (easeSize: keyof Theme['easing']) => (props: { theme: Theme }) => {
 	return props.theme.easing[easeSize];
+};
+
+export const getTime = (timeSize: keyof Theme['time']) => (props: { theme: Theme }) => {
+	return props.theme.time[timeSize];
 };
 
 export const getUtil = (util: keyof Theme['utils']) => (props: { theme: Theme }) => {

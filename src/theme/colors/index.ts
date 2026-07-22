@@ -3,12 +3,12 @@
 
 // NOTE • This file exports the colors object, the colors object is used to store all the colors for the application.
 
-// REVIEW — Usage: ${props => props.theme.colors.brand.bc1[50]}
+// REVIEW — Usage: ${props => props.theme.colors.brand.bc1} or ${getBrand('bc1', 50)} for opacity
 
 // Imports
 // ------------
-import { generateColorVariants } from './generateColorVariants';
-import type { AlphaShades, Colors } from './interface';
+import { toVarRefs } from '@theme/cssVariables';
+import type { Colors } from './interface';
 
 // SECTION • Raw Color Values
 // NOTE • The single source of truth — emitted as CSS custom properties on
@@ -28,16 +28,6 @@ export const baseColors = {
 		black: '#000000',
 	},
 
-	social: {
-		facebook: '#1877f2',
-		twitter: '#1da1f2',
-		creativeMarket: '#8ba753',
-		slack: '#e01563',
-		instagram: '#405de6',
-		dribbble: '#ea4c89',
-		linkedin: '#0a66c2',
-	},
-
 	feedback: {
 		positive: '#3adb76',
 		negative: '#cc4b37',
@@ -45,21 +35,14 @@ export const baseColors = {
 	},
 };
 
-// SECTION • Variant Generation
-// NOTE • Maps each raw color to alpha shades that reference its CSS variable
-const variantsFor = <T extends Record<string, string>>(group: string, values: T): { [K in keyof T]: AlphaShades } =>
-	Object.fromEntries(Object.keys(values).map(name => [name, generateColorVariants(`--${group}-${name}`)])) as {
-		[K in keyof T]: AlphaShades;
-	};
-
 // Exports
 // ------------
-// SECTION • Core Brand Colors
-// NOTE • Every value is a var()/color-mix() reference — resolved by the
-// browser, so these are safe to use from statically imported styles too
+// SECTION • Color Tokens
+// NOTE • Each color is a plain var() reference resolved by the browser.
+// Need opacity? Use the getters — getBrand('bc1', 50) — or color-mix
+// directly in CSS: color-mix(in srgb, var(--brand-bc1) 50%, transparent)
 export const colors: Colors = {
-	brand: variantsFor('brand', baseColors.brand),
-	global: variantsFor('global', baseColors.global),
-	social: variantsFor('social', baseColors.social),
-	feedback: variantsFor('feedback', baseColors.feedback),
+	brand: toVarRefs('brand', baseColors.brand),
+	global: toVarRefs('global', baseColors.global),
+	feedback: toVarRefs('feedback', baseColors.feedback),
 };

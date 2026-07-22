@@ -6,6 +6,7 @@ import { BorderRadius } from './borderRadius/interface';
 // ------------
 import { Colors } from './colors/interface';
 import { Easing } from './easing/interface';
+import { Time } from './time/interface';
 import { Fonts } from './fonts/interface';
 import { Gap } from './gap/interface';
 import { Grid } from './grid/interface';
@@ -21,6 +22,7 @@ export interface Theme {
 	font: Fonts;
 	grid: Grid;
 	easing: Easing;
+	time: Time;
 	utils: {
 		noscrollbars: object;
 	};

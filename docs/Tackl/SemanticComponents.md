@@ -241,7 +241,7 @@ Because `Div` is a typed `styled.div`, all normal HTML attributes are accepted w
 ```typescript
 // Custom styled semantic component — fix the tag with .attrs
 const CustomSection = styled(Div).attrs({ as: 'section' })`
-    background-color: ${props => props.theme.colors.brand.bc1.solid};
+    background-color: ${props => props.theme.colors.brand.bc1};
     border-radius: ${props => props.theme.br.m};
 
     &:hover {

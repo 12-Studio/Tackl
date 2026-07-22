@@ -13,7 +13,7 @@ src/theme/{colors,space,gap,borderRadius,easing,fonts}/index.ts
     │
     └──► theme object exposes var() references
              theme.space.m === 'var(--space-m)'
-             theme.colors.brand.bc1[50] === 'color-mix(in srgb, var(--brand-bc1) 50%, transparent)'
+             theme.colors.brand.bc1 === 'var(--brand-bc1)'
 ```
 
 Because every theme value is a `var()` reference, the browser resolves tokens at paint time. Styles that import `theme` statically (the semantic `Div` component, type styles, waffl grid) and styles that read `props.theme` produce identical CSS — there is one source of truth, and overriding a variable at runtime restyles both.
@@ -22,11 +22,12 @@ Because every theme value is a `var()` reference, the browser resolves tokens at
 
 | Section | Pattern | Example |
 | --- | --- | --- |
-| Colors | `--{group}-{name}` | `--brand-bc1`, `--global-white`, `--feedback-positive`, `--social-facebook` |
+| Colors | `--{group}-{name}` | `--brand-bc1`, `--global-white`, `--feedback-positive` |
 | Space | `--space-{key}` | `--space-s` … `--space-xl`, `--space-col` |
 | Gap | `--gap-{key}` | `--gap-xxs` … `--gap-uber` |
 | Border radius | `--br-{key}` | `--br-xs` … `--br-round` |
-| Easing | `--easing-{key}` | `--easing-bezzy`, `--easing-ease` |
+| Easing | `--easing-{key}` | `--easing-bezzy`, `--easing-bezzy2` |
+| Time | `--time-{key}` | `--time-s`, `--time-m`, `--time-l` |
 | Font stacks | `--font-{key}` | `--font-heading`, `--font-body` |
 
 ## Using tokens
@@ -37,13 +38,13 @@ The existing APIs work exactly as before — they now emit `var()` references un
 
 ```tsx
 import styled, { css } from 'styled-components';
-import { Div, getBrand, getSpace } from '@tackl';
+import { Div, getBrand, getGlobal, getSpace } from '@tackl';
 
 export const Jacket = styled(Div)(
 	props => css`
 		padding: ${getSpace('m')};
 		background: ${getBrand('bc1')};
-		color: ${props.theme.colors.global.white[80]};
+		color: ${getGlobal('white', 80)};
 		border-radius: ${props.theme.br.m};
 	`
 );
@@ -58,7 +59,7 @@ Tokens are now usable anywhere CSS is, with no styled-components (and no `'use c
 	padding: var(--space-m);
 	background: var(--brand-bc3);
 	border-radius: var(--br-m);
-	transition: transform var(--easing-ease);
+	transition: transform var(--time-m) var(--easing-bezzy);
 }
 ```
 
@@ -67,17 +68,16 @@ Tokens are now usable anywhere CSS is, with no styled-components (and no `'use c
 const Badge = () => <span style={{ color: 'var(--feedback-positive)' }}>Live</span>;
 ```
 
-### Alpha shades
+### Opacity
 
-Color opacity steps (`0`–`100` in steps of 5, plus `solid`) are `color-mix()` expressions instead of precomputed rgba strings:
+Color tokens are plain `var()` references — there is no per-shade object. Opacity is applied at the point of use:
 
 ```
-theme.colors.brand.bc1[50]  →  color-mix(in srgb, var(--brand-bc1) 50%, transparent)
-theme.colors.brand.bc1[100] →  var(--brand-bc1)
-theme.colors.brand.bc1.solid →  var(--brand-bc1)
+getBrand('bc1')      →  var(--brand-bc1)
+getBrand('bc1', 50)  →  color-mix(in srgb, var(--brand-bc1) 50%, transparent)
 ```
 
-The browser does the mixing, so alpha shades follow runtime theme overrides too. In hand-written CSS, use `color-mix()` directly for the same effect.
+The browser does the mixing, so translucent uses follow runtime theme overrides too. In hand-written CSS, use `color-mix()` directly for the same effect.
 
 ## Runtime theming
 

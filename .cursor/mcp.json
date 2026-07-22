@@ -10,7 +10,7 @@
 				"-y",
 				"chrome-devtools-mcp@latest",
 				"--isolated",
-				"--viewport=1920x1080",
+				"--viewport=1440x900",
 				"--experimentalScreencast",
 				"--screenshotFormat=jpeg",
 				"--screenshotMaxWidth=1440",

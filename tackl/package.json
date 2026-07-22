@@ -1,10 +1,10 @@
 {
 	"name": "tackl",
 	"version": "2.0.0",
-	"description": "Scaffold a Tackl project into the current directory \u2014 Next.js, styled-components, Waffl grid, DatoCMS/Sanity adapters",
+	"description": "Scaffold a Tackl project into the current directory — Next.js, styled-components, Waffl grid, DatoCMS/Sanity adapters",
 	"type": "module",
 	"bin": {
-		"tackl": "./bin/tackl.js"
+		"tackl": "bin/tackl.js"
 	},
 	"main": "index.js",
 	"scripts": {
@@ -27,7 +27,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/12-studio/tackl"
+		"url": "git+https://github.com/12-studio/tackl.git"
 	},
 	"homepage": "https://github.com/12-studio/tackl",
 	"bugs": {

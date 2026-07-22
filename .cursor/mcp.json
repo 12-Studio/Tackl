@@ -1,0 +1,21 @@
+{
+	"mcpServers": {
+		"next-devtools": {
+			"command": "npx",
+			"args": ["-y", "next-devtools-mcp@latest"]
+		},
+		"chrome-devtools": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"chrome-devtools-mcp@latest",
+				"--isolated",
+				"--viewport=1920x1080",
+				"--experimentalScreencast",
+				"--screenshotFormat=jpeg",
+				"--screenshotMaxWidth=1440",
+				"--no-usage-statistics"
+			]
+		}
+	}
+}

@@ -54,6 +54,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 - **Biome + Husky** — linting, formatting, and a guided commit-message flow
 - **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time
 - **SEO plumbing** — `metadata`/`viewport` exports, `sitemap.xml` and `robots.txt` (staging deploys auto-blocked from indexing), all driven by one `NEXT_PUBLIC_SITE_URL`
+- **AI-agent ready** — Cursor rules teach the Tackl conventions, and MCP servers ship pre-configured (`.mcp.json` for Claude Code, `.cursor/mcp.json` for Cursor): Next.js devtools plus Chrome DevTools, so agents can inspect builds and drive a real browser against your dev server (screencast tools need `ffmpeg` on PATH)
 
 ### Performance posture
 

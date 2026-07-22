@@ -235,6 +235,11 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 	log.step(`Template: ${pc.bold(pc.yellow(`${OWNER}/${REPO}@${ref}`))} · CMS: ${pc.bold(CMS[cms].title)}`);
 	console.log();
 
+	// NOTE • If the repo already has its own LICENSE, that choice wins —
+	// stash it and restore it after extraction (the template ships MIT)
+	const licensePath = path.join(targetDir, 'LICENSE');
+	const existingLicense = fs.existsSync(licensePath) ? fs.readFileSync(licensePath, 'utf8') : null;
+
 	// SECTION • Download + extract
 	// NOTE • TACKL_TEMPLATE_TAR points at a local tarball — used by tests/CI
 	const tmpTar = process.env.TACKL_TEMPLATE_TAR || path.join(os.tmpdir(), `tackl-${Date.now()}.tgz`);
@@ -271,6 +276,10 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 
 	// SECTION • Prune
 	log.step('🧹 Pruning template...');
+	if (existingLicense !== null) {
+		fs.writeFileSync(licensePath, existingLicense);
+		log.info('Kept your existing LICENSE.');
+	}
 	for (const cargo of REPO_CARGO) rmrf(targetDir, cargo);
 	for (const lock of ['yarn.lock', 'package-lock.json', 'pnpm-lock.yaml']) rmrf(targetDir, lock);
 	CMS[cms].prune(targetDir);

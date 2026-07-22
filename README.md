@@ -194,4 +194,4 @@ Contributions welcome — check existing GitHub issues first, or reach the team 
 
 ### License
 
-This project is proprietary software owned by Tackl. All rights reserved.
+[MIT](./LICENSE) © 12 Studio — use it, ship client work with it, no strings beyond the notice.

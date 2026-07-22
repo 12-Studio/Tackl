@@ -74,6 +74,7 @@ const GridExposer = () => {
 	// No memoization: gridColumns is created on each render
 	const gridColumns = Array.from({ length: GRID_SIZE }, (_, i) => (
 		<Col
+			// biome-ignore lint/suspicious/noArrayIndexKey: static fixed-length column list — the index is the column's identity
 			key={`col-${i}`}
 			$isMobile={i < MOBILE_COLUMNS}
 			$isTablet={i < TABLET_COLUMNS}

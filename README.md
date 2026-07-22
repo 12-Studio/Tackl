@@ -22,7 +22,7 @@ cd my-app && bun install && bun run dev
 
 The CLI keeps your existing `.git`/remote, prunes the CMS you didn't pick (code, dependencies, docs, env keys), and installs with bun. `bun create tackl` and `npm create tackl@latest` work too.
 
-Open [http://localhost:3000](http://localhost:3000). The placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(home)/page.tsx`) and start building.
+Open [http://localhost:3000](http://localhost:3000). The placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(site)/(home)/page.tsx`) and start building.
 
 Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.). `.env` is gitignored; `.env.example` is the documented template.
 
@@ -52,7 +52,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 - **View Transitions** — page transitions via the View Transitions API with a typed `Link`/router wrapper
 - **Storybook 10** — token-aware (the preview renders the same `:root` variables as the app)
 - **Biome + Husky** — linting, formatting, and a guided commit-message flow
-- **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time
+- **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time. Choosing Sanity sets up the full experience: embedded Studio at `/studio`, example schemas, draft-mode preview, and an offer to run `sanity init` for you
 - **SEO plumbing** — `metadata`/`viewport` exports, `sitemap.xml` and `robots.txt` (staging deploys auto-blocked from indexing), all driven by one `NEXT_PUBLIC_SITE_URL`
 - **AI-agent ready (vendor-neutral)** — [`AGENTS.md`](./AGENTS.md) teaches the Tackl conventions to any agent (Cursor, Claude Code, Copilot, Zed, Aider…); [`skills/`](./skills) holds deep-dive Agent Skills; and MCP servers ship pre-configured (`.mcp.json` + `.cursor/mcp.json`) — Next.js devtools plus Chrome DevTools, so agents can inspect builds and drive a real browser against your dev server (screencast tools need `ffmpeg` on PATH)
 
@@ -140,7 +140,7 @@ flowchart TD
     SS --> PAGES[Your pages - Server Components]
 ```
 
-`app/layout.tsx` (a Server Component) owns the document shell and site-wide `metadata`. `app/Providers.tsx` is the only client boundary in the shell — page content passes through it as `children`, so your pages stay server-rendered.
+`app/(site)/layout.tsx` (a Server Component) owns the site's document shell and site-wide `metadata`; `app/(studio)/layout.tsx` is a second, bare root layout for the embedded Sanity Studio. `app/(site)/Providers.tsx` is the only client boundary in the site shell — page content passes through it as `children`, so your pages stay server-rendered.
 
 ➜ [docs/Tackl/AppArchitecture.md](./docs/Tackl/AppArchitecture.md)
 
@@ -148,9 +148,12 @@ flowchart TD
 
     .
     ├── app/                    # Routes (App Router)
-    │   ├── layout.tsx          # Server shell: html/body, metadata, chrome
-    │   ├── Providers.tsx       # Client providers (styled-components, contexts)
-    │   ├── (home)/             # Home route group
+    │   ├── (site)/             # The website — its own root layout
+    │   │   ├── layout.tsx      # Server shell: html/body, metadata, chrome
+    │   │   ├── Providers.tsx   # Client providers (styled-components, contexts)
+    │   │   └── (home)/         # Home route group
+    │   ├── (studio)/           # Embedded Sanity Studio at /studio (Sanity scaffolds)
+    │   ├── api/draft-mode/     # Sanity draft preview on/off (Sanity scaffolds)
     │   ├── sitemap.ts          # /sitemap.xml
     │   ├── robots.ts           # /robots.txt (blocks staging deploys)
     │   └── icon.svg            # Favicon
@@ -168,6 +171,7 @@ flowchart TD
     │   ├── config.ts           # siteUrl (drives metadataBase, sitemap, robots)
     │   ├── utils/              # Hooks and helpers (incl. viewTransitions)
     │   └── types/              # Ambient types (styled DefaultTheme, waffl-grid tag)
+    ├── sanity/                 # Studio schemas (Sanity scaffolds; config: sanity.config.ts)
     ├── docs/                   # The full documentation set
     ├── skills/                 # Agent Skills (deep-dive SKILL.md playbooks)
     ├── public/                 # Static assets
@@ -192,6 +196,7 @@ flowchart TD
 | [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
 | [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
 | [CMS](./docs/CMS.md) | The `@cms` adapter seam and choosing Dato/Sanity |
+| [MigratingFromV3](./docs/Tackl/MigratingFromV3.md) | Phased playbook for upgrading a Tackl 3 project |
 | [DatoCMS](./docs/DatoCMS) | Querying, images, structured text, SEO |
 | [Sanity](./docs/Sanity/README.md) | Setting up the Sanity variant |
 | [Lighthouse](./docs/Lighthouse.md) | Performance auditing |

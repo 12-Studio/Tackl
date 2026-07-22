@@ -24,7 +24,10 @@ import { executeQuery } from '@datocms/cda-client';
 
 // Exports
 // ------------
-export const fetchContent = async <T = any>(query: string, options?: Record<string, any>): Promise<T | null> => {
+export const fetchContent = async <T = unknown>(
+	query: string,
+	options?: Record<string, unknown>
+): Promise<T | null> => {
 	try {
 		// NOTE • Fail loudly (but non-fatally) when the token is missing or unset
 		const token = process.env.NEXT_DATOCMS_API_TOKEN;
@@ -42,22 +45,24 @@ export const fetchContent = async <T = any>(query: string, options?: Record<stri
 		});
 
 		return queryResponse as T;
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error('DatoCMS request failed:', error);
 
 		// Check if it's an authentication error
-		if (error?.message?.includes('token') || error?.message?.includes('unauthorized')) {
+		const message = error instanceof Error ? error.message : '';
+		if (message.includes('token') || message.includes('unauthorized')) {
 			console.error(
 				'DatoCMS API token is missing or invalid. Please check your NEXT_DATOCMS_API_TOKEN environment variable.'
 			);
 		}
 
 		// Log additional error details for debugging
-		if (error?.response) {
+		const response = (error as { response?: { status?: number; statusText?: string; data?: unknown } }).response;
+		if (response) {
 			console.error('DatoCMS response error:', {
-				status: error.response.status,
-				statusText: error.response.statusText,
-				data: error.response.data,
+				status: response.status,
+				statusText: response.statusText,
+				data: response.data,
 			});
 		}
 

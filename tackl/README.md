@@ -11,6 +11,8 @@ bunx tackl                  # or: bun create tackl / npm create tackl@latest
 
 You'll be asked which CMS to use — **DatoCMS**, **Sanity**, or **None** — and the scaffold is pruned to match: only the chosen adapter, its dependencies, its docs, and its `.env.example` block survive.
 
+Choosing **Sanity** sets the whole thing up: an embedded Studio at `/studio`, example schemas, and draft-mode preview routes ship in the scaffold, and the CLI offers to run `sanity init` for you — logging in, creating/linking a project, and writing your `.env`. Scaffold → `bun run dev` → `/studio` → start editing.
+
 ## What it does
 
 1. Verifies the directory is empty (an existing `.git`, `.gitignore`, `README.md` or `LICENSE` is fine — your repo's `.git` and remote are kept)

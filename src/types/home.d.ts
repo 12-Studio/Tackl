@@ -5,8 +5,8 @@
 // ------------
 export interface HomeProps {
 	data: {
-		page: any;
+		page: unknown;
 	};
 }
 
-export type PageProps = {};
+export type PageProps = Record<string, never>;

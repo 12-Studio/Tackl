@@ -62,7 +62,7 @@ const DEFAULT_BREAKPOINTS: Breakpoints = {
  */
 export function useAnimation(
 	animationCallback: AnimationCallback,
-	options: Record<string, any> = {},
+	options: Parameters<typeof useGSAP>[1] = {},
 	breakpoints: Breakpoints = {}
 ): void {
 	const mergedBreakpoints: Breakpoints = { ...DEFAULT_BREAKPOINTS, ...breakpoints };

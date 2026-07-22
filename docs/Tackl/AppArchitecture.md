@@ -2,13 +2,15 @@
 
 ## Overview
 
-Tackl uses a server-first architecture where the root layout owns the entire document shell and a single client-side `Providers` component handles browser-only concerns. This architecture leverages Next.js 15's App Router capabilities while maintaining clean separation of concerns.
+Tackl uses a server-first architecture where the site's root layout owns the entire document shell and a single client-side `Providers` component handles browser-only concerns. This architecture leverages Next.js 15's App Router capabilities while maintaining clean separation of concerns.
+
+The app has **two root layouts** via route groups (route groups don't affect URLs): `app/(site)/layout.tsx` is the website — everything described below — and `app/(studio)/layout.tsx` is a bare `html`/`body` shell for the embedded Sanity Studio at `/studio` (present in Sanity scaffolds; pruned by the CLI otherwise). There is no top-level layout in `app/`; only `sitemap.ts`, `robots.ts`, and `icon.svg` live at the `app/` root.
 
 ## Architecture Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│              Root Layout (layout.tsx, Server)              │
+│        Site Root Layout ((site)/layout.tsx, Server)        │
 │  ViewTransitions > html > body                              │
 │  ┌─────────────────────────────────────────────────────────┐ │
 │  │              Providers (Client)                        │ │
@@ -29,18 +31,25 @@ Tackl uses a server-first architecture where the root layout owns the entire doc
 
 ```
 app/
-├── layout.tsx          # Root layout: document shell + metadata (Server Component)
-├── Providers.tsx       # Client-side providers (Client Component)
-└── (home)/
-    ├── layout.tsx      # Per-route metadata (commented generateMetadata example)
-    └── page.tsx        # Page component (Server Component)
+├── (site)/
+│   ├── layout.tsx      # Site root layout: document shell + metadata (Server Component)
+│   ├── Providers.tsx   # Client-side providers (Client Component)
+│   └── (home)/
+│       ├── layout.tsx  # Per-route metadata (commented generateMetadata example)
+│       └── page.tsx    # Page component (Server Component)
+├── (studio)/           # Embedded Sanity Studio (Sanity scaffolds only)
+│   ├── layout.tsx      # Bare html/body shell
+│   └── studio/[[...tool]]/page.tsx  # NextStudio mount at /studio
+├── sitemap.ts
+├── robots.ts
+└── icon.svg
 ```
 
 ## Component Breakdown
 
-### 1. Root Layout (`app/layout.tsx`)
+### 1. Root Layout (`app/(site)/layout.tsx`)
 
-**Purpose**: The root layout that owns the document shell and site chrome.
+**Purpose**: The site's root layout — it owns the document shell and site chrome.
 
 **Type**: Server Component (default in Next.js)
 
@@ -84,7 +93,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 - ✅ `main#page` picks up `view-transition-name: page` from `src/css/global.css`
 - ✅ SmoothScroll wraps page content inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
-### 2. Providers (`app/Providers.tsx`)
+### 2. Providers (`app/(site)/Providers.tsx`)
 
 **Purpose**: Contains only the client-side providers and browser-specific features.
 
@@ -124,7 +133,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 - ✅ Animation plugins (side-effect import)
 - ✅ Performance contexts
 
-### 3. Page Components (`app/(home)/page.tsx`)
+### 3. Page Components (`app/(site)/(home)/page.tsx`)
 
 **Purpose**: Individual page components that define routes.
 
@@ -133,7 +142,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 **Responsibilities**:
 
 - Define page-specific data fetching
-- Handle SEO metadata (per-route `metadata`/`generateMetadata` — see the commented example in `app/(home)/layout.tsx`)
+- Handle SEO metadata (per-route `metadata`/`generateMetadata` — see the commented example in `app/(site)/(home)/layout.tsx`)
 - Render page content
 - Manage page-specific logic
 
@@ -153,7 +162,7 @@ const Page = async () => {
 - ✅ SEO metadata generation
 - ✅ Route handling
 
-### 4. Content Components (`app/(home)/Content.tsx`)
+### 4. Content Components (`app/(site)/(home)/Content.tsx`)
 
 **Purpose**: Client-side interactive content components.
 

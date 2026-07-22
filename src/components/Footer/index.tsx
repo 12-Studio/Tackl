@@ -10,7 +10,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Footer = ({ example }: I.FooterProps) => {
+const Footer = (_props: I.FooterProps) => {
 	return (
 		<S.Jacket>
 			{/*  */}

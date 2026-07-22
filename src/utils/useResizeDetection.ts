@@ -142,14 +142,10 @@ export type OrientationChangeCallback = (newOrientation: Orientation, prevOrient
  *   Use a stable reference (e.g. useCallback) to avoid unnecessary effect churn.
  * @returns The current orientation ('portrait' or 'landscape').
  */
-export function useOrientationChange(callback?: OrientationChangeCallback): Orientation {
-	const getOrientation = (): Orientation =>
-		typeof window !== 'undefined'
-			? window.innerWidth > window.innerHeight
-				? 'landscape'
-				: 'portrait'
-			: 'portrait';
+const getOrientation = (): Orientation =>
+	typeof window !== 'undefined' ? (window.innerWidth > window.innerHeight ? 'landscape' : 'portrait') : 'portrait';
 
+export function useOrientationChange(callback?: OrientationChangeCallback): Orientation {
 	const [orientation, setOrientation] = useState<Orientation>(getOrientation);
 	const callbackRef = useRef<OrientationChangeCallback | undefined>(callback);
 	callbackRef.current = callback;

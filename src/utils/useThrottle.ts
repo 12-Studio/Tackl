@@ -24,7 +24,7 @@
  */
 import { useCallback, useEffect, useRef } from 'react';
 
-export function useThrottle<TArgs extends any[]>(
+export function useThrottle<TArgs extends unknown[]>(
 	fn: (...args: TArgs) => void,
 	limit: number
 ): (...args: TArgs) => void {

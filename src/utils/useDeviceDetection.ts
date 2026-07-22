@@ -36,7 +36,10 @@ export function useDeviceDetection(): DeviceType {
 		const detectDevice = () => {
 			const userAgent: string =
 				typeof navigator !== 'undefined'
-					? navigator.userAgent || (navigator as any).vendor || (window as any).opera
+					? navigator.userAgent ||
+						(navigator as Navigator & { vendor?: string }).vendor ||
+						(window as Window & { opera?: string }).opera ||
+						''
 					: '';
 
 			// Check if it's a mobile device by user agent

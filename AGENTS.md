@@ -179,8 +179,10 @@ on unmount or when a matchMedia condition stops matching.
 
 ## App Router & data
 
-- `app/layout.tsx` is a Server Component owning `<html>`/`<body>`, site chrome, and
-  site-wide `metadata`. `app/Providers.tsx` is the only client boundary in the shell;
+- The app has two root layouts via route groups: `app/(site)/layout.tsx` (the website —
+  a Server Component owning `<html>`/`<body>`, site chrome, and site-wide `metadata`)
+  and `app/(studio)/layout.tsx` (a bare shell for the embedded Sanity Studio, when
+  present). `app/(site)/Providers.tsx` is the only client boundary in the site shell;
   page content passes through as `children` and stays server-rendered.
 - Fetch CMS data in Server Components with `fetchContent` from `@cms` — it returns `null`
   on failure (never throws), so an unconfigured CMS can't crash a route.

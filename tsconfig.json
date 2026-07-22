@@ -35,6 +35,13 @@
 			}
 		]
 	},
-	"include": ["app/**/*", "src/**/*", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
+	"include": [
+		"app/**/*",
+		"src/**/*",
+		"sanity.config.ts",
+		"sanity/**/*",
+		".next/types/**/*.ts",
+		".next/dev/types/**/*.ts"
+	],
 	"exclude": ["node_modules"]
 }

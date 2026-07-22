@@ -2,7 +2,7 @@
 
 ✨ An animation-first Next.js starter kit for agencies: styled-components, a zero-JS grid system, CSS-variable design tokens, GSAP + Lenis, and a CMS-ready data layer — tuned so the out-of-the-box Lighthouse story is something you can show a client. ✨
 
-![Version Number](https://img.shields.io/badge/Version-3.4.0-8000FF)
+![Version Number](https://img.shields.io/badge/Version-4.0.0-8000FF)
 ![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
 
 > Full guides live in [`docs/`](./docs) — this README is the map.

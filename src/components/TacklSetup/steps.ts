@@ -157,15 +157,22 @@ const breakpointRow = (group: I.TokenGroup, label: string, suffix: '' | 'M' | 'X
 	};
 };
 
-const typeScaleSections = (groups: I.TokenGroup[]): I.SectionDef[] =>
-	groups.map(group => ({
-		title: group,
-		rows: [
-			breakpointRow(group, 'Base', ''),
-			breakpointRow(group, 'From bp.m', 'M'),
-			breakpointRow(group, 'From bp.xl', 'Xl'),
-		],
-	}));
+// NOTE • One step per type style — a whole style fits on one screen
+const typeScaleStep = (group: I.TokenGroup, description: string): I.StepDef => ({
+	id: `type-${group}`,
+	title: group,
+	intro: `${description} Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from the smaller breakpoint.`,
+	kind: 'text',
+	sections: [
+		{
+			rows: [
+				breakpointRow(group, 'Base', ''),
+				breakpointRow(group, 'From bp.m', 'M'),
+				breakpointRow(group, 'From bp.xl', 'Xl'),
+			],
+		},
+	],
+});
 
 export const stepFields = (step: I.StepDef): I.FieldDef[] =>
 	step.sections.flatMap(section => section.rows.flatMap(row => row.fields));
@@ -247,27 +254,16 @@ export const steps: I.StepDef[] = [
 		],
 		hasFontUpload: true,
 	},
-	{
-		id: 'display',
-		title: 'Display & headline',
-		intro: 'The biggest text on the page. Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from the breakpoint below.',
-		kind: 'text',
-		sections: typeScaleSections(['displayL', 'displayS', 'headlineL', 'headlineS']),
-	},
-	{
-		id: 'title-body',
-		title: 'Title & body',
-		intro: 'Section titles and running copy, same px-based sizing and per-breakpoint overrides.',
-		kind: 'text',
-		sections: typeScaleSections(['titleL', 'titleS', 'bodyL', 'bodyS']),
-	},
-	{
-		id: 'caption',
-		title: 'Caption',
-		intro: 'The smallest supporting text.',
-		kind: 'text',
-		sections: typeScaleSections(['captionL', 'captionS']),
-	},
+	typeScaleStep('displayL', 'The largest display text — hero moments.'),
+	typeScaleStep('displayS', 'Smaller display text.'),
+	typeScaleStep('headlineL', 'Large headlines.'),
+	typeScaleStep('headlineS', 'Small headlines.'),
+	typeScaleStep('titleL', 'Large section titles.'),
+	typeScaleStep('titleS', 'Small section titles.'),
+	typeScaleStep('bodyL', 'Large body copy.'),
+	typeScaleStep('bodyS', 'Standard body copy.'),
+	typeScaleStep('captionL', 'Large captions and supporting text.'),
+	typeScaleStep('captionS', 'The smallest supporting text.'),
 ];
 
 // Validation

@@ -157,6 +157,30 @@ export const Label = styled.label(
 	`
 );
 
+export const LabelRow = styled(Div)(
+	() => css`
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: ${getGap('s')};
+	`
+);
+
+export const RemoveButton = styled.button(
+	() => css`
+		${bodyS}
+		border: none;
+		background: none;
+		color: ${getFeedback('negative')};
+		cursor: pointer;
+		transition: opacity ${getTime('s')} ${getEase('bezzy')};
+
+		&:hover {
+			opacity: 0.7;
+		}
+	`
+);
+
 export const ColorRow = styled(Div)(
 	() => css`
 		display: flex;

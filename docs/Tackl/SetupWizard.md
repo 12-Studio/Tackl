@@ -2,9 +2,9 @@
 
 The first time you pull down Tackl and run `bun dev`, a full-screen setup wizard
 greets you in the browser. It walks through every theme token like a form —
-brand colours, global & feedback colours, font stacks, the heading and body
-type scales, spacing, gaps, radii, durations and easing curves — and previews
-your values live as you type.
+fonts first, then the type scale, brand colours, global & feedback colours,
+spacing, gaps, radii, durations and easing curves — and previews your values
+live as you type.
 
 ## What it does
 
@@ -25,11 +25,18 @@ your values live as you type.
   override fields simply inherit from the block below. **Sizes are entered
   in px** and written as rem (px ÷ 10, matching the 10px html base); CSS
   sizes like `clamp(…)` pass through as-is.
-- **Fonts can be uploaded from the Typography step.** The file lands in
-  `src/theme/fonts/custom/`, a `next/font` `localFont` export is generated
-  under your variable name (weight 400 — add more weights in
-  `src/theme/fonts` afterwards), the variable class is added to `<html>`, and
-  the resulting `var(--…)` can be used in the font stacks.
+- **Fonts come first and are passed by name only.** The `fontVariables`
+  registry in `src/theme/fonts` lists every available font (`inter` out of
+  the box). Uploading a font drops the file in `src/theme/fonts/custom/`,
+  generates its `next/font` `localFont` export (weight 400 — add more
+  weights afterwards), wires the variable onto `<html>` and registers it —
+  it immediately appears in the role dropdowns. Each role (heading / body /
+  mono / script) picks a font by name; the full `var(--…), Arial,
+  sans-serif` stacks are generated on finish.
+- **Brand colours are flexible.** Add as many `bc*` colours as the project
+  needs or remove ones it doesn't (minimum one) — `baseColors.brand`,
+  the `--brand-*` variables and `getBrand()` typing all follow
+  automatically.
 - **Then it deletes itself.** On finish (or skip), the route removes
   `src/components/TacklSetup`, the API route folder and the marked
   `tackl:setup-*` lines in `app/(site)/Providers.tsx`. Hot reload picks up the

@@ -7,7 +7,15 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import { defaultTokens, pxToRem, stepFields, steps, validateField } from './steps';
+import {
+	BRAND_LABELS,
+	DEFAULT_AVAILABLE_FONTS,
+	defaultTokens,
+	pxToRem,
+	stepFields,
+	steps,
+	validateField,
+} from './steps';
 import * as S from './styles';
 
 // Constants
@@ -63,13 +71,32 @@ const TacklSetup = () => {
 	const [isUploading, setIsUploading] = useState(false);
 	const [uploadError, setUploadError] = useState<string | null>(null);
 	const [uploadedFonts, setUploadedFonts] = useState<I.UploadedFont[]>([]);
+	const [availableFonts, setAvailableFonts] = useState<string[]>(DEFAULT_AVAILABLE_FONTS);
 
 	// Derived
 	const stepIndex = typeof screen === 'number' ? screen : null;
 	const step = stepIndex === null ? undefined : steps[stepIndex];
 	const fieldKind = (currentStep: I.StepDef, field: I.FieldDef): I.FieldKind => field.kind ?? currentStep.kind;
+	// NOTE • The brand section is dynamic — its fields come from state, so any
+	// added/removed colours show up everywhere (fields, validation, review)
+	const sectionRows = (section: I.SectionDef): I.RowDef[] =>
+		section.dynamic === 'brand'
+			? [
+					{
+						fields: Object.keys(tokens.brand).map(key => ({
+							group: 'brand' as const,
+							key,
+							label: BRAND_LABELS[key] ?? key,
+						})),
+					},
+				]
+			: section.rows;
+
+	const liveStepFields = (currentStep: I.StepDef): I.FieldDef[] =>
+		currentStep.sections.flatMap(section => sectionRows(section).flatMap(row => row.fields));
+
 	const hasStepErrors = (currentStep: I.StepDef): boolean =>
-		stepFields(currentStep).some(
+		liveStepFields(currentStep).some(
 			field =>
 				validateField(fieldKind(currentStep, field), tokens[field.group][field.key], field.optional) !== null
 		);
@@ -100,6 +127,7 @@ const TacklSetup = () => {
 				screen: I.Screen;
 				tokens: I.TokenValues;
 				uploadedFonts: I.UploadedFont[];
+				availableFonts: string[];
 			}>;
 			const storedTokens = stored.tokens;
 
@@ -109,12 +137,16 @@ const TacklSetup = () => {
 						Object.fromEntries(
 							(Object.keys(prev) as I.TokenGroup[]).map(group => [
 								group,
-								{ ...prev[group], ...storedTokens[group] },
+								// NOTE • brand is dynamic — restore it verbatim, merge the rest
+								group === 'brand' && storedTokens.brand
+									? storedTokens.brand
+									: { ...prev[group], ...storedTokens[group] },
 							])
 						) as I.TokenValues
 				);
 			}
 			if (stored.uploadedFonts) setUploadedFonts(stored.uploadedFonts);
+			if (stored.availableFonts) setAvailableFonts(stored.availableFonts);
 			if (stored.screen !== undefined) setScreen(stored.screen);
 		} catch {
 			sessionStorage.removeItem(STORAGE_KEY);
@@ -126,12 +158,27 @@ const TacklSetup = () => {
 			sessionStorage.removeItem(STORAGE_KEY);
 			return;
 		}
-		sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ screen, tokens, uploadedFonts }));
-	}, [screen, tokens, uploadedFonts]);
+		sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ screen, tokens, uploadedFonts, availableFonts }));
+	}, [screen, tokens, uploadedFonts, availableFonts]);
 
 	// Handlers
 	const setValue = (group: I.TokenGroup, key: string, value: string) => {
 		setTokens(prev => ({ ...prev, [group]: { ...prev[group], [key]: value } }));
+	};
+
+	const addBrandColour = () => {
+		setTokens(prev => {
+			const next = Math.max(0, ...Object.keys(prev.brand).map(key => Number.parseInt(key.slice(2), 10) || 0)) + 1;
+			return { ...prev, brand: { ...prev.brand, [`bc${next}`]: '#888888' } };
+		});
+	};
+
+	const removeBrandColour = (key: string) => {
+		setTokens(prev => {
+			if (Object.keys(prev.brand).length <= 1) return prev;
+			const { [key]: _removed, ...rest } = prev.brand;
+			return { ...prev, brand: rest };
+		});
 	};
 
 	// NOTE • px fields are edited in px but stored in the theme as rem (px ÷ 10)
@@ -214,6 +261,7 @@ const TacklSetup = () => {
 
 			const uploaded = payload as I.UploadedFont;
 			setUploadedFonts(prev => [...prev, uploaded]);
+			setAvailableFonts(prev => (prev.includes(uploaded.exportName) ? prev : [...prev, uploaded.exportName]));
 			setFontName('');
 			if (fileRef.current) fileRef.current.value = '';
 		} catch (error) {
@@ -257,11 +305,42 @@ const TacklSetup = () => {
 					<S.StepTitle>{step.title}</S.StepTitle>
 					<S.Intro>{step.intro}</S.Intro>
 
+					{step.hasFontUpload && (
+						<S.Upload>
+							<S.UploadTitle>Add a font</S.UploadTitle>
+							<S.Intro>
+								Drops the file into <code>src/theme/fonts/custom</code>, wires it up with next/font and
+								registers it in the theme under your name — it appears in the role dropdowns below.
+							</S.Intro>
+
+							<S.UploadRow>
+								<S.Input
+									value={fontName}
+									onChange={event => setFontName(event.target.value)}
+									placeholder='Font name, e.g. myFont'
+									spellCheck={false}
+									aria-label='Font name'
+								/>
+								<S.FileInput ref={fileRef} accept='.woff2,.woff,.ttf,.otf' aria-label='Font file' />
+								<S.Ghost type='button' onClick={uploadFont} disabled={isUploading}>
+									{isUploading ? 'Uploading…' : 'Upload'}
+								</S.Ghost>
+							</S.UploadRow>
+
+							{uploadedFonts.map(font => (
+								<S.UploadHint key={font.cssVariable}>
+									✓ <code>{font.exportName}</code> added — pick it in the dropdowns below
+								</S.UploadHint>
+							))}
+							{uploadError && <S.ErrorText role='alert'>{uploadError}</S.ErrorText>}
+						</S.Upload>
+					)}
+
 					{step.sections.map((section, sectionIndex) => (
 						<S.Section key={section.title ?? sectionIndex}>
 							{section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
 
-							{section.rows.map((row, rowIndex) => (
+							{sectionRows(section).map((row, rowIndex) => (
 								<S.Row key={row.label ?? rowIndex}>
 									{row.label && <S.RowLabel>{row.label}</S.RowLabel>}
 
@@ -271,6 +350,10 @@ const TacklSetup = () => {
 											const kind = fieldKind(step, field);
 											const value = tokens[field.group][field.key];
 											const error = validateField(kind, value, field.optional);
+											const options =
+												field.optionsKey === 'fonts' ? availableFonts : (field.options ?? []);
+											const removable =
+												section.dynamic === 'brand' && Object.keys(tokens.brand).length > 1;
 											const onChange = (
 												event:
 													| React.ChangeEvent<HTMLInputElement>
@@ -279,7 +362,18 @@ const TacklSetup = () => {
 
 											return (
 												<S.Field key={id}>
-													<S.Label htmlFor={id}>{field.label}</S.Label>
+													<S.LabelRow>
+														<S.Label htmlFor={id}>{field.label}</S.Label>
+														{removable && (
+															<S.RemoveButton
+																type='button'
+																onClick={() => removeBrandColour(field.key)}
+																aria-label={`Remove ${field.label}`}
+															>
+																Remove
+															</S.RemoveButton>
+														)}
+													</S.LabelRow>
 
 													{kind === 'color' && (
 														<S.ColorRow>
@@ -300,7 +394,7 @@ const TacklSetup = () => {
 
 													{kind === 'select' && (
 														<S.Select id={id} value={value} onChange={onChange}>
-															{(field.options ?? []).map(option => (
+															{options.map(option => (
 																<option key={option} value={option}>
 																	{option === '' ? '—' : option}
 																</option>
@@ -326,41 +420,16 @@ const TacklSetup = () => {
 									</S.Fields>
 								</S.Row>
 							))}
+
+							{section.dynamic === 'brand' && (
+								<S.Nav>
+									<S.Ghost type='button' onClick={addBrandColour}>
+										+ Add colour
+									</S.Ghost>
+								</S.Nav>
+							)}
 						</S.Section>
 					))}
-
-					{step.hasFontUpload && (
-						<S.Upload>
-							<S.UploadTitle>Add a font</S.UploadTitle>
-							<S.Intro>
-								Drops the file into <code>src/theme/fonts/custom</code>, wires it up with next/font and
-								registers it under your variable name — then reference it in the stacks above, e.g.{' '}
-								<code>var(--my-font), Arial, sans-serif</code>.
-							</S.Intro>
-
-							<S.UploadRow>
-								<S.Input
-									value={fontName}
-									onChange={event => setFontName(event.target.value)}
-									placeholder='Variable name, e.g. myFont'
-									spellCheck={false}
-									aria-label='Font variable name'
-								/>
-								<S.FileInput ref={fileRef} accept='.woff2,.woff,.ttf,.otf' aria-label='Font file' />
-								<S.Ghost type='button' onClick={uploadFont} disabled={isUploading}>
-									{isUploading ? 'Uploading…' : 'Upload'}
-								</S.Ghost>
-							</S.UploadRow>
-
-							{uploadedFonts.map(font => (
-								<S.UploadHint key={font.cssVariable}>
-									✓ <code>{font.exportName}</code> added — use <code>{font.varRef}</code> in a stack
-									above
-								</S.UploadHint>
-							))}
-							{uploadError && <S.ErrorText role='alert'>{uploadError}</S.ErrorText>}
-						</S.Upload>
-					)}
 
 					<S.Nav>
 						<S.Ghost type='button' onClick={() => setScreen(stepIndex === 0 ? 'welcome' : stepIndex - 1)}>
@@ -399,7 +468,7 @@ const TacklSetup = () => {
 									{section.title && <S.ReviewSection>{section.title}</S.ReviewSection>}
 
 									<S.ReviewList>
-										{section.rows.flatMap(row =>
+										{sectionRows(section).flatMap(row =>
 											row.fields
 												.filter(field => tokens[field.group][field.key].trim() !== '')
 												.map(field => (

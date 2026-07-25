@@ -39,6 +39,14 @@ export const inter = Inter({
 // 	preload: true,
 // });
 
+// SECTION • Font Registry
+// NOTE • Every next/font instance is registered here — key is the font's
+// name, value is the CSS variable it exposes on <html>. The setup wizard
+// (and you) pick fonts by name from this registry; uploads append to it.
+export const fontVariables = {
+	inter: '--inter',
+};
+
 // SECTION • Raw Font Stacks
 // NOTE • Emitted as --font-{key} on :root by GlobalStyle (@theme).
 // --inter is set on <html> by next/font (see app/layout.tsx)

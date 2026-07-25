@@ -11,7 +11,7 @@ import { type TypeScaleBreakpoint, type TypeScaleEntry, typeScale } from '@tackl
 import { borderRadiusValues } from '@theme/borderRadius';
 import { baseColors } from '@theme/colors';
 import { easingValues } from '@theme/easing';
-import { fontFamilies, fontWeights } from '@theme/fonts';
+import { fontFamilies, fontVariables, fontWeights } from '@theme/fonts';
 import { gapValues } from '@theme/gap';
 import { spaceValues } from '@theme/space';
 import { timeValues } from '@theme/time';
@@ -64,11 +64,19 @@ const typeDefaults = (entry: TypeScaleEntry): Record<string, string> => ({
 	...flattenBreakpoint(entry.xl, 'Xl'),
 });
 
+// NOTE • The wizard passes fonts by registry name only — the stacks in
+// fontFamilies are derived. Recover the selected name from a stack's var()
+const fontNameFromStack = (stack: string): string => {
+	const cssVariable = stack.match(/var\((--[a-z0-9-]+)\)/i)?.[1];
+	const entry = Object.entries(fontVariables).find(([, value]) => value === cssVariable);
+	return entry?.[0] ?? Object.keys(fontVariables)[0] ?? '';
+};
+
 export const defaultTokens: I.TokenValues = {
 	brand: { ...baseColors.brand },
 	global: { ...baseColors.global },
 	feedback: { ...baseColors.feedback },
-	fonts: { ...fontFamilies },
+	fonts: Object.fromEntries(Object.entries(fontFamilies).map(([role, stack]) => [role, fontNameFromStack(stack)])),
 	space: { ...spaceValues },
 	gap: { ...gapValues },
 	radius: { ...borderRadiusValues },
@@ -101,6 +109,15 @@ const fieldsFrom = (
 export const FONT_FAMILY_OPTIONS = Object.keys(fontFamilies);
 export const FONT_WEIGHT_OPTIONS = Object.keys(fontWeights);
 export const TEXT_TRANSFORM_OPTIONS = ['', 'uppercase', 'lowercase', 'capitalize'];
+export const DEFAULT_AVAILABLE_FONTS = Object.keys(fontVariables);
+
+export const BRAND_LABELS: Record<string, string> = {
+	bc1: 'bc1 — primary',
+	bc2: 'bc2 — secondary',
+	bc3: 'bc3 — tertiary',
+	bc4: 'bc4 — light',
+	bc5: 'bc5 — muted',
+};
 
 const breakpointRow = (group: I.TokenGroup, label: string, suffix: '' | 'M' | 'Xl'): I.RowDef => {
 	const isBase = suffix === '';
@@ -158,42 +175,26 @@ export const stepFields = (step: I.StepDef): I.FieldDef[] =>
 // ------------
 export const steps: I.StepDef[] = [
 	{
-		id: 'brand',
-		title: 'Brand colours',
-		intro: 'The five colours behind every getBrand() call and --brand-* variable.',
-		kind: 'color',
+		id: 'type',
+		title: 'Fonts',
+		intro: 'Upload font files to add them to the theme, then assign each role a font by name — the stacks and CSS variables are generated for you.',
+		kind: 'text',
 		sections: [
 			{
+				title: 'Roles',
 				rows: [
 					{
-						fields: fieldsFrom('brand', baseColors.brand, {
-							bc1: 'bc1 — primary',
-							bc2: 'bc2 — secondary',
-							bc3: 'bc3 — tertiary',
-							bc4: 'bc4 — light',
-							bc5: 'bc5 — muted',
-						}),
+						fields: Object.keys(fontFamilies).map(role => ({
+							group: 'fonts' as const,
+							key: role,
+							label: role,
+							kind: 'select' as const,
+							optionsKey: 'fonts' as const,
+						})),
 					},
 				],
 			},
 		],
-	},
-	{
-		id: 'system',
-		title: 'Global & feedback',
-		intro: 'Base white/black, plus the colours for success, error and warning states.',
-		kind: 'color',
-		sections: [
-			{ title: 'Global', rows: [{ fields: fieldsFrom('global', baseColors.global) }] },
-			{ title: 'Feedback', rows: [{ fields: fieldsFrom('feedback', baseColors.feedback) }] },
-		],
-	},
-	{
-		id: 'type',
-		title: 'Typography',
-		intro: 'Font stacks emitted as --font-* variables. Upload a font file below to add it to the theme — it becomes a var(--…) you can use in these stacks.',
-		kind: 'text',
-		sections: [{ title: 'Font stacks', rows: [{ fields: fieldsFrom('fonts', fontFamilies) }] }],
 		hasFontUpload: true,
 	},
 	{
@@ -216,6 +217,23 @@ export const steps: I.StepDef[] = [
 		intro: 'The smallest supporting text.',
 		kind: 'text',
 		sections: typeScaleSections(['captionL', 'captionS']),
+	},
+	{
+		id: 'brand',
+		title: 'Brand colours',
+		intro: 'The colours behind every getBrand() call and --brand-* variable. Add as many as the project needs, or remove the ones it doesn’t.',
+		kind: 'color',
+		sections: [{ dynamic: 'brand', rows: [] }],
+	},
+	{
+		id: 'system',
+		title: 'Global & feedback',
+		intro: 'Base white/black, plus the colours for success, error and warning states.',
+		kind: 'color',
+		sections: [
+			{ title: 'Global', rows: [{ fields: fieldsFrom('global', baseColors.global) }] },
+			{ title: 'Feedback', rows: [{ fields: fieldsFrom('feedback', baseColors.feedback) }] },
+		],
 	},
 	{
 		id: 'rhythm',

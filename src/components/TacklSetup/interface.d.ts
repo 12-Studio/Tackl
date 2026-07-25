@@ -34,6 +34,7 @@ export type FieldDef = {
 	label: string;
 	kind?: FieldKind;
 	options?: string[];
+	optionsKey?: 'fonts';
 	optional?: boolean;
 };
 
@@ -46,6 +47,7 @@ export type SectionDef = {
 	title?: string;
 	rows: RowDef[];
 	columns?: number;
+	dynamic?: 'brand';
 };
 
 export type StepDef = {

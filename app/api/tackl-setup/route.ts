@@ -40,7 +40,12 @@ type TokenGroup =
 
 type TokenValues = Record<TokenGroup, Record<string, string>>;
 
-type GroupSpec = { required: readonly string[]; optional?: readonly string[]; kind: 'color' | 'text' };
+type GroupSpec = {
+	required: readonly string[];
+	optional?: readonly string[];
+	kind: 'color' | 'text';
+	dynamicKeys?: RegExp;
+};
 
 // Constants
 // ------------
@@ -67,7 +72,8 @@ const TYPE_SCALE_SPEC: GroupSpec = {
 };
 
 const GROUPS: Record<TokenGroup, GroupSpec> = {
-	brand: { required: ['bc1', 'bc2', 'bc3', 'bc4', 'bc5'], kind: 'color' },
+	// NOTE • Brand colours are flexible — any bc1…bc99 keys, at least one
+	brand: { required: [], dynamicKeys: /^bc\d{1,2}$/, kind: 'color' },
 	global: { required: ['white', 'black'], kind: 'color' },
 	feedback: { required: ['positive', 'negative', 'warning'], kind: 'color' },
 	fonts: { required: ['heading', 'body', 'mono', 'script'], kind: 'text' },
@@ -86,6 +92,29 @@ const GROUPS: Record<TokenGroup, GroupSpec> = {
 	bodyS: TYPE_SCALE_SPEC,
 	captionL: TYPE_SCALE_SPEC,
 	captionS: TYPE_SCALE_SPEC,
+};
+
+// NOTE • The registry in src/theme/fonts is the source of truth for which
+// fonts exist — the wizard passes names only, stacks are generated here
+const FONT_FALLBACK = 'Arial, sans-serif';
+
+const readFontRegistry = (): Record<string, string> => {
+	const source = fs.readFileSync(path.join(ROOT, FONTS_FILE), 'utf8');
+	const start = source.indexOf('export const fontVariables = {');
+	if (start === -1) return {};
+	const end = source.indexOf('};', start);
+	const registry: Record<string, string> = {};
+	for (const match of source.slice(start, end).matchAll(/([a-zA-Z][a-zA-Z0-9]*):\s*'(--[a-z0-9-]+)'/g)) {
+		registry[match[1]] = match[2];
+	}
+	return registry;
+};
+
+const buildFontStacks = (roles: Record<string, string>): Record<string, string> => {
+	const registry = readFontRegistry();
+	return Object.fromEntries(
+		Object.entries(roles).map(([role, name]) => [role, `var(${registry[name] ?? '--inter'}), ${FONT_FALLBACK}`])
+	);
 };
 
 // NOTE • Regroup a flat wizard record ({family, sizeM, …}) into the nested
@@ -118,7 +147,7 @@ const TOKEN_TARGETS: {
 		exportName: 'baseColors',
 		build: tokens => ({ brand: tokens.brand, global: tokens.global, feedback: tokens.feedback }),
 	},
-	{ file: 'src/theme/fonts/index.ts', exportName: 'fontFamilies', build: tokens => tokens.fonts },
+	{ file: 'src/theme/fonts/index.ts', exportName: 'fontFamilies', build: tokens => buildFontStacks(tokens.fonts) },
 	{ file: 'src/theme/space/index.ts', exportName: 'spaceValues', build: tokens => tokens.space },
 	{ file: 'src/theme/gap/index.ts', exportName: 'gapValues', build: tokens => tokens.gap },
 	{
@@ -176,12 +205,30 @@ const parseTokens = (input: unknown): TokenValues | null => {
 	if (typeof input !== 'object' || input === null) return null;
 	const record = input as Record<string, unknown>;
 	const result = {} as TokenValues;
+	const fontRegistry = readFontRegistry();
 
 	for (const [group, spec] of Object.entries(GROUPS) as [TokenGroup, GroupSpec][]) {
 		const values = record[group];
 		if (typeof values !== 'object' || values === null) return null;
 		const valueRecord = values as Record<string, unknown>;
 		const parsed: Record<string, string> = {};
+
+		// NOTE • Dynamic groups (brand) accept any keys matching their pattern —
+		// submission order is preserved, unknown keys are rejected
+		if (spec.dynamicKeys) {
+			const keys = Object.keys(valueRecord);
+			if (keys.length === 0 || keys.length > 24) return null;
+			for (const key of keys) {
+				const value = valueRecord[key];
+				if (!spec.dynamicKeys.test(key) || typeof value !== 'string') return null;
+				const trimmed = value.trim();
+				if (!trimmed || UNSAFE_PATTERN.test(trimmed)) return null;
+				if (spec.kind === 'color' && !HEX_PATTERN.test(trimmed)) return null;
+				parsed[key] = trimmed;
+			}
+			result[group] = parsed;
+			continue;
+		}
 
 		for (const key of spec.required) {
 			const value = valueRecord[key];
@@ -190,6 +237,7 @@ const parseTokens = (input: unknown): TokenValues | null => {
 			if (!trimmed || UNSAFE_PATTERN.test(trimmed)) return null;
 			if (spec.kind === 'color' && !HEX_PATTERN.test(trimmed)) return null;
 			if (spec === TYPE_SCALE_SPEC && !validTypeValue(key, trimmed)) return null;
+			if (group === 'fonts' && !(trimmed in fontRegistry)) return null;
 			parsed[key] = trimmed;
 		}
 
@@ -318,7 +366,8 @@ const installFont = (name: string, fileName: string, data: string): { exportName
 
 	const fontsPath = path.join(ROOT, FONTS_FILE);
 	let fontsSource = fs.readFileSync(fontsPath, 'utf8');
-	if (fontsSource.includes(`export const ${name} `) || fontsSource.includes(`export const ${name} =`)) {
+	const registry = readFontRegistry();
+	if (name in registry || fontsSource.includes(`export const ${name} =`)) {
 		throw new Error(`"${name}" is already used in src/theme/fonts`);
 	}
 
@@ -354,6 +403,9 @@ const installFont = (name: string, fileName: string, data: string): { exportName
 	const stacksMarker = '// SECTION • Raw Font Stacks';
 	if (!fontsSource.includes(stacksMarker)) throw new Error('Could not find the font stacks section to update');
 	fontsSource = fontsSource.replace(stacksMarker, `${fontExport}${stacksMarker}`);
+
+	// NOTE • Register the font so it shows up in every font dropdown
+	fontsSource = replaceExport(fontsSource, 'fontVariables', serialize({ ...registry, [name]: cssVariable }));
 	fs.writeFileSync(fontsPath, fontsSource);
 
 	// NOTE • The variable class must be on <html> for the CSS var to exist

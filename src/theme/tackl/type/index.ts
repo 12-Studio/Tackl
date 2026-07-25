@@ -7,123 +7,94 @@ import { breakpointUp as bp } from '@/theme/tackl/breakpoints';
 
 // SECTION • Raw Type Scale
 // NOTE • Single source of truth for the type styles below — mobile-first:
-// `size` is the base, `sizeM`/`sizeXl` layer up at bp.m/bp.xl. `family` picks
-// a stack from @theme/fonts (--font-*). Optional keys (letterSpacing,
-// letterSpacingM, sizeXl, letterSpacingXl) can be omitted per style.
+// `base` always applies, `m`/`xl` layer overrides from bp.m/bp.xl up. Every
+// property is optional per breakpoint (omitted = inherited); family/weight
+// resolve through the theme getters, so tokens stay the single source.
 export type TypeScaleFamily = 'heading' | 'body' | 'mono' | 'script';
+export type TypeScaleWeight = 'light' | 'regular' | 'medium' | 'semi' | 'bold' | 'heavy' | 'black';
+
+export type TypeScaleBreakpoint = {
+	family?: TypeScaleFamily;
+	weight?: TypeScaleWeight;
+	size?: string;
+	lineHeight?: string;
+	letterSpacing?: string;
+	textTransform?: string;
+};
 
 export type TypeScaleEntry = {
-	family: TypeScaleFamily;
-	size: string;
-	sizeM: string;
-	lineHeight: string;
-	letterSpacing?: string;
-	letterSpacingM?: string;
-	sizeXl?: string;
-	letterSpacingXl?: string;
+	base: TypeScaleBreakpoint;
+	m?: TypeScaleBreakpoint;
+	xl?: TypeScaleBreakpoint;
 };
 
 export const typeScale = {
 	displayL: {
-		family: 'heading',
-		size: '4.8rem',
-		sizeM: '9.6rem',
-		lineHeight: '1.1',
-		letterSpacing: '-1px',
-		letterSpacingM: '-2px',
-		sizeXl: 'clamp(9.6rem, 8.333vw, 12rem)',
-		letterSpacingXl: '-2px',
+		base: { family: 'heading', weight: 'regular', size: '4.8rem', lineHeight: '1.1', letterSpacing: '-1px' },
+		m: { size: '9.6rem', letterSpacing: '-2px' },
+		xl: { size: 'clamp(9.6rem, 8.333vw, 12rem)', letterSpacing: '-2px' },
 	},
 
 	displayS: {
-		family: 'heading',
-		size: '4rem',
-		sizeM: '7.2rem',
-		lineHeight: '1.1',
-		letterSpacing: '-1px',
-		letterSpacingM: '-2px',
+		base: { family: 'heading', weight: 'regular', size: '4rem', lineHeight: '1.1', letterSpacing: '-1px' },
+		m: { size: '7.2rem', letterSpacing: '-2px' },
 	},
 
 	headlineL: {
-		family: 'heading',
-		size: '3.6rem',
-		sizeM: '6rem',
-		lineHeight: '1.15',
-		letterSpacingM: '-0.2rem',
+		base: { family: 'heading', weight: 'regular', size: '3.6rem', lineHeight: '1.15' },
+		m: { size: '6rem', letterSpacing: '-0.2rem' },
 	},
 
 	headlineS: {
-		family: 'heading',
-		size: '3rem',
-		sizeM: '4.8rem',
-		lineHeight: '1.2',
-		letterSpacingM: '-0.1rem',
+		base: { family: 'heading', weight: 'regular', size: '3rem', lineHeight: '1.2' },
+		m: { size: '4.8rem', letterSpacing: '-0.1rem' },
 	},
 
 	titleL: {
-		family: 'heading',
-		size: '2.6rem',
-		sizeM: '3.6rem',
-		lineHeight: '1.2',
+		base: { family: 'heading', weight: 'regular', size: '2.6rem', lineHeight: '1.2' },
+		m: { size: '3.6rem' },
 	},
 
 	titleS: {
-		family: 'heading',
-		size: '2.2rem',
-		sizeM: '2.8rem',
-		lineHeight: '1.25',
+		base: { family: 'heading', weight: 'regular', size: '2.2rem', lineHeight: '1.25' },
+		m: { size: '2.8rem' },
 	},
 
 	bodyL: {
-		family: 'body',
-		size: '2rem',
-		sizeM: '2.4rem',
-		lineHeight: '1.4',
+		base: { family: 'body', weight: 'regular', size: '2rem', lineHeight: '1.4' },
+		m: { size: '2.4rem' },
 	},
 
 	bodyS: {
-		family: 'body',
-		size: '1.6rem',
-		sizeM: '1.8rem',
-		lineHeight: '1.4',
+		base: { family: 'body', weight: 'regular', size: '1.6rem', lineHeight: '1.4' },
+		m: { size: '1.8rem' },
 	},
 
 	captionL: {
-		family: 'body',
-		size: '1.4rem',
-		sizeM: '1.6rem',
-		lineHeight: '1.5',
+		base: { family: 'body', weight: 'regular', size: '1.4rem', lineHeight: '1.5' },
+		m: { size: '1.6rem' },
 	},
 
 	captionS: {
-		family: 'body',
-		size: '1.2rem',
-		sizeM: '1.3rem',
-		lineHeight: '1.5',
+		base: { family: 'body', weight: 'regular', size: '1.2rem', lineHeight: '1.5' },
+		m: { size: '1.3rem' },
 	},
 } satisfies Record<string, TypeScaleEntry>;
 
-// ANCHOR • Font + responsive size rules for one type-scale entry
+// ANCHOR • Declarations for one breakpoint block — only set what's defined
+const breakpointStyles = (block: TypeScaleBreakpoint): RuleSet => css`
+	${block.family ? css`font-family: ${theme.font.family[block.family]};` : ''}
+	${block.weight ? css`font-weight: ${theme.font.weight[block.weight]};` : ''}
+	${block.size ? `font-size: ${block.size};` : ''}
+	${block.lineHeight ? `line-height: ${block.lineHeight};` : ''}
+	${block.letterSpacing ? `letter-spacing: ${block.letterSpacing};` : ''}
+	${block.textTransform ? `text-transform: ${block.textTransform};` : ''}
+`;
+
 const scaleStyles = (entry: TypeScaleEntry): RuleSet => css`
-	font-family: ${theme.font.family[entry.family]};
-	font-weight: ${theme.font.weight.regular};
-	font-size: ${entry.size};
-	line-height: ${entry.lineHeight};
-	${entry.letterSpacing ? `letter-spacing: ${entry.letterSpacing};` : ''}
-
-	${bp.m`
-		font-size: ${entry.sizeM};
-		${entry.letterSpacingM ? `letter-spacing: ${entry.letterSpacingM};` : ''}
-	`}
-
-	${
-		entry.sizeXl
-			? bp.xl`
-			font-size: ${entry.sizeXl};
-			${entry.letterSpacingXl ? `letter-spacing: ${entry.letterSpacingXl};` : ''}
-		`
-			: ''
-	}
+	${breakpointStyles(entry.base)}
+	${entry.m ? bp.m`${breakpointStyles(entry.m)}` : ''}
+	${entry.xl ? bp.xl`${breakpointStyles(entry.xl)}` : ''}
 `;
 
 // SECTION • Display styles

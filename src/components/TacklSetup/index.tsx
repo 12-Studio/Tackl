@@ -70,7 +70,8 @@ const TacklSetup = () => {
 	const fieldKind = (currentStep: I.StepDef, field: I.FieldDef): I.FieldKind => field.kind ?? currentStep.kind;
 	const hasStepErrors = (currentStep: I.StepDef): boolean =>
 		stepFields(currentStep).some(
-			field => validateField(fieldKind(currentStep, field), tokens[field.group][field.key]) !== null
+			field =>
+				validateField(fieldKind(currentStep, field), tokens[field.group][field.key], field.optional) !== null
 		);
 
 	// NOTE • Overrides the :root tokens inside the overlay only — the wizard
@@ -260,65 +261,71 @@ const TacklSetup = () => {
 						<S.Section key={section.title ?? sectionIndex}>
 							{section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
 
-							<S.Fields $columns={section.columns}>
-								{section.fields.map(field => {
-									const id = `tackl-setup-${field.group}-${field.key}`;
-									const kind = fieldKind(step, field);
-									const value = tokens[field.group][field.key];
-									const error = validateField(kind, value);
-									const onChange = (
-										event:
-											| React.ChangeEvent<HTMLInputElement>
-											| React.ChangeEvent<HTMLSelectElement>
-									) => setValue(field.group, field.key, event.target.value);
+							{section.rows.map((row, rowIndex) => (
+								<S.Row key={row.label ?? rowIndex}>
+									{row.label && <S.RowLabel>{row.label}</S.RowLabel>}
 
-									return (
-										<S.Field key={id}>
-											<S.Label htmlFor={id}>{field.label}</S.Label>
+									<S.Fields $columns={section.columns}>
+										{row.fields.map(field => {
+											const id = `tackl-setup-${field.group}-${field.key}`;
+											const kind = fieldKind(step, field);
+											const value = tokens[field.group][field.key];
+											const error = validateField(kind, value, field.optional);
+											const onChange = (
+												event:
+													| React.ChangeEvent<HTMLInputElement>
+													| React.ChangeEvent<HTMLSelectElement>
+											) => setValue(field.group, field.key, event.target.value);
 
-											{kind === 'color' && (
-												<S.ColorRow>
-													<S.Swatch
-														value={toPickerHex(value)}
-														onChange={onChange}
-														aria-label={`${field.label} colour picker`}
-													/>
-													<S.Input
-														id={id}
-														value={value}
-														onChange={onChange}
-														$hasError={error !== null}
-														spellCheck={false}
-													/>
-												</S.ColorRow>
-											)}
+											return (
+												<S.Field key={id}>
+													<S.Label htmlFor={id}>{field.label}</S.Label>
 
-											{kind === 'select' && (
-												<S.Select id={id} value={value} onChange={onChange}>
-													{(field.options ?? []).map(option => (
-														<option key={option} value={option}>
-															{option}
-														</option>
-													))}
-												</S.Select>
-											)}
+													{kind === 'color' && (
+														<S.ColorRow>
+															<S.Swatch
+																value={toPickerHex(value)}
+																onChange={onChange}
+																aria-label={`${field.label} colour picker`}
+															/>
+															<S.Input
+																id={id}
+																value={value}
+																onChange={onChange}
+																$hasError={error !== null}
+																spellCheck={false}
+															/>
+														</S.ColorRow>
+													)}
 
-											{(kind === 'text' || kind === 'px') && (
-												<S.Input
-													id={id}
-													value={value}
-													onChange={onChange}
-													$hasError={error !== null}
-													spellCheck={false}
-													inputMode={kind === 'px' ? 'decimal' : undefined}
-												/>
-											)}
+													{kind === 'select' && (
+														<S.Select id={id} value={value} onChange={onChange}>
+															{(field.options ?? []).map(option => (
+																<option key={option} value={option}>
+																	{option === '' ? '—' : option}
+																</option>
+															))}
+														</S.Select>
+													)}
 
-											{error && <S.ErrorText>{error}</S.ErrorText>}
-										</S.Field>
-									);
-								})}
-							</S.Fields>
+													{(kind === 'text' || kind === 'px') && (
+														<S.Input
+															id={id}
+															value={value}
+															onChange={onChange}
+															$hasError={error !== null}
+															spellCheck={false}
+															inputMode={kind === 'px' ? 'decimal' : undefined}
+														/>
+													)}
+
+													{error && <S.ErrorText>{error}</S.ErrorText>}
+												</S.Field>
+											);
+										})}
+									</S.Fields>
+								</S.Row>
+							))}
 						</S.Section>
 					))}
 
@@ -392,20 +399,31 @@ const TacklSetup = () => {
 									{section.title && <S.ReviewSection>{section.title}</S.ReviewSection>}
 
 									<S.ReviewList>
-										{section.fields.map(field => (
-											<S.ReviewItem key={`${field.group}-${field.key}`}>
-												<S.ReviewTerm>{field.label}</S.ReviewTerm>
-												<S.ReviewValue>
-													{fieldKind(reviewStep, field) === 'color' && (
-														<S.ReviewSwatch
-															style={{ background: tokens[field.group][field.key] }}
-														/>
-													)}
-													{tokens[field.group][field.key]}
-													{fieldKind(reviewStep, field) === 'px' ? 'px' : ''}
-												</S.ReviewValue>
-											</S.ReviewItem>
-										))}
+										{section.rows.flatMap(row =>
+											row.fields
+												.filter(field => tokens[field.group][field.key].trim() !== '')
+												.map(field => (
+													<S.ReviewItem key={`${field.group}-${field.key}`}>
+														<S.ReviewTerm>
+															{row.label ? `${row.label} · ${field.label}` : field.label}
+														</S.ReviewTerm>
+														<S.ReviewValue>
+															{fieldKind(reviewStep, field) === 'color' && (
+																<S.ReviewSwatch
+																	style={{
+																		background: tokens[field.group][field.key],
+																	}}
+																/>
+															)}
+															{tokens[field.group][field.key]}
+															{fieldKind(reviewStep, field) === 'px' &&
+															/^\d*\.?\d+$/.test(tokens[field.group][field.key].trim())
+																? 'px'
+																: ''}
+														</S.ReviewValue>
+													</S.ReviewItem>
+												))
+										)}
 									</S.ReviewList>
 								</S.ReviewBlock>
 							))}

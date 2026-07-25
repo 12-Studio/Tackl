@@ -34,11 +34,17 @@ export type FieldDef = {
 	label: string;
 	kind?: FieldKind;
 	options?: string[];
+	optional?: boolean;
+};
+
+export type RowDef = {
+	label?: string;
+	fields: FieldDef[];
 };
 
 export type SectionDef = {
 	title?: string;
-	fields: FieldDef[];
+	rows: RowDef[];
 	columns?: number;
 };
 

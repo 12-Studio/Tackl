@@ -18,11 +18,13 @@ your values live as you type.
   downstream (`--brand-*` CSS variables, `getBrand()`, the theme object, the
   type styles) updates automatically because those objects are the single
   source of truth.
-- **The type scale steps cover the everyday knobs** — font family, mobile
-  size, desktop size (`bp.m`) and line-height per style. **Sizes are entered
-  in px** and written to the theme as rem (px ÷ 10, matching the 10px html
-  base). Letter-spacing and the `bp.xl` overrides stay in the `typeScale`
-  object and pass through setup untouched; edit them there any time.
+- **The type scale is edited per breakpoint.** Each style (`displayL` …
+  `captionS`) has a Base block plus `bp.m` and `bp.xl` override blocks, each
+  with font family and weight (theme token keys resolved through the
+  getters), size, line-height, letter-spacing and text-transform. Empty
+  override fields simply inherit from the block below. **Sizes are entered
+  in px** and written as rem (px ÷ 10, matching the 10px html base); CSS
+  sizes like `clamp(…)` pass through as-is.
 - **Fonts can be uploaded from the Typography step.** The file lands in
   `src/theme/fonts/custom/`, a `next/font` `localFont` export is generated
   under your variable name (weight 400 — add more weights in

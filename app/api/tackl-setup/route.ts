@@ -47,13 +47,22 @@ type GroupSpec = { required: readonly string[]; optional?: readonly string[]; ki
 const ROOT = process.cwd();
 
 const FONT_FAMILY_KEYS = ['heading', 'body', 'mono', 'script'];
+const FONT_WEIGHT_KEYS = ['light', 'regular', 'medium', 'semi', 'bold', 'heavy', 'black'];
+const TEXT_TRANSFORM_KEYS = ['uppercase', 'lowercase', 'capitalize', 'none'];
 
-// NOTE • Type-scale entries share one shape — family/sizes/line-height are
-// required, letter-spacing and the bp.xl overrides only exist on styles that
-// opt in
+// NOTE • Type-scale entries nest per breakpoint (base/m/xl) — the wizard sends
+// a flat record with M/Xl suffixes. Base needs family/weight/size/line-height;
+// every other key is an override that may be absent (= inherited).
+const TYPE_BREAKPOINT_KEYS = ['family', 'weight', 'size', 'lineHeight', 'letterSpacing', 'textTransform'];
+
 const TYPE_SCALE_SPEC: GroupSpec = {
-	required: ['family', 'size', 'sizeM', 'lineHeight'],
-	optional: ['letterSpacing', 'letterSpacingM', 'sizeXl', 'letterSpacingXl'],
+	required: ['family', 'weight', 'size', 'lineHeight'],
+	optional: [
+		'letterSpacing',
+		'textTransform',
+		...TYPE_BREAKPOINT_KEYS.map(key => `${key}M`),
+		...TYPE_BREAKPOINT_KEYS.map(key => `${key}Xl`),
+	],
 	kind: 'text',
 };
 
@@ -77,6 +86,26 @@ const GROUPS: Record<TokenGroup, GroupSpec> = {
 	bodyS: TYPE_SCALE_SPEC,
 	captionL: TYPE_SCALE_SPEC,
 	captionS: TYPE_SCALE_SPEC,
+};
+
+// NOTE • Regroup a flat wizard record ({family, sizeM, …}) into the nested
+// typeScale shape ({base, m?, xl?}); empty breakpoint blocks are dropped
+const nestTypeStyle = (flat: Record<string, string>): Record<string, unknown> => {
+	const pick = (suffix: string) => {
+		const block: Record<string, string> = {};
+		for (const key of TYPE_BREAKPOINT_KEYS) {
+			const value = flat[`${key}${suffix}`];
+			if (value) block[key] = value;
+		}
+		return block;
+	};
+
+	const entry: Record<string, unknown> = { base: pick('') };
+	const m = pick('M');
+	const xl = pick('Xl');
+	if (Object.keys(m).length > 0) entry.m = m;
+	if (Object.keys(xl).length > 0) entry.xl = xl;
+	return entry;
 };
 
 const TOKEN_TARGETS: {
@@ -103,16 +132,16 @@ const TOKEN_TARGETS: {
 		file: 'src/theme/tackl/type/index.ts',
 		exportName: 'typeScale',
 		build: tokens => ({
-			displayL: tokens.displayL,
-			displayS: tokens.displayS,
-			headlineL: tokens.headlineL,
-			headlineS: tokens.headlineS,
-			titleL: tokens.titleL,
-			titleS: tokens.titleS,
-			bodyL: tokens.bodyL,
-			bodyS: tokens.bodyS,
-			captionL: tokens.captionL,
-			captionS: tokens.captionS,
+			displayL: nestTypeStyle(tokens.displayL),
+			displayS: nestTypeStyle(tokens.displayS),
+			headlineL: nestTypeStyle(tokens.headlineL),
+			headlineS: nestTypeStyle(tokens.headlineS),
+			titleL: nestTypeStyle(tokens.titleL),
+			titleS: nestTypeStyle(tokens.titleS),
+			bodyL: nestTypeStyle(tokens.bodyL),
+			bodyS: nestTypeStyle(tokens.bodyS),
+			captionL: nestTypeStyle(tokens.captionL),
+			captionS: nestTypeStyle(tokens.captionS),
 		}),
 	},
 ];
@@ -134,6 +163,15 @@ const HEX_PATTERN = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 const UNSAFE_PATTERN = /[`\\\r\n]|\$\{/;
 const FONT_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9]*$/;
 
+// NOTE • family/weight/textTransform values are token keys, validated
+// against the theme's own lists
+const validTypeValue = (key: string, value: string): boolean => {
+	if (key.startsWith('family')) return FONT_FAMILY_KEYS.includes(value);
+	if (key.startsWith('weight')) return FONT_WEIGHT_KEYS.includes(value);
+	if (key.startsWith('textTransform')) return TEXT_TRANSFORM_KEYS.includes(value);
+	return true;
+};
+
 const parseTokens = (input: unknown): TokenValues | null => {
 	if (typeof input !== 'object' || input === null) return null;
 	const record = input as Record<string, unknown>;
@@ -151,7 +189,7 @@ const parseTokens = (input: unknown): TokenValues | null => {
 			const trimmed = value.trim();
 			if (!trimmed || UNSAFE_PATTERN.test(trimmed)) return null;
 			if (spec.kind === 'color' && !HEX_PATTERN.test(trimmed)) return null;
-			if (key === 'family' && !FONT_FAMILY_KEYS.includes(trimmed)) return null;
+			if (spec === TYPE_SCALE_SPEC && !validTypeValue(key, trimmed)) return null;
 			parsed[key] = trimmed;
 		}
 
@@ -164,6 +202,7 @@ const parseTokens = (input: unknown): TokenValues | null => {
 			const trimmed = value.trim();
 			if (!trimmed) continue;
 			if (UNSAFE_PATTERN.test(trimmed)) return null;
+			if (spec === TYPE_SCALE_SPEC && !validTypeValue(key, trimmed)) return null;
 			parsed[key] = trimmed;
 		}
 

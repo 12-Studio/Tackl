@@ -110,6 +110,27 @@ export const SectionTitle = styled(Div).attrs({ as: 'legend' })(
 	`
 );
 
+export const Row = styled(Div)(
+	() => css`
+		display: flex;
+		flex-direction: column;
+		gap: ${getGap('xs')};
+
+		& + & {
+			margin-top: ${getGap('s')};
+			padding-top: ${getGap('s')};
+			border-top: 1px dashed ${getGlobal('white', 8)};
+		}
+	`
+);
+
+export const RowLabel = styled(Div).attrs({ as: 'p' })(
+	() => css`
+		${bodyS}
+		color: ${getGlobal('white', 40)};
+	`
+);
+
 export const Fields = styled(Div)<{ $columns?: number }>(
 	({ $columns }) => css`
 		display: grid;

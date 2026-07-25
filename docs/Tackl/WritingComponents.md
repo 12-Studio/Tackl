@@ -75,7 +75,7 @@ export interface CardProps {
 // ------------
 import styled, { css } from 'styled-components';
 import { alpha, bp, Div, getBrand, getEase, getRadius, getTime } from '@tackl';
-import { bodyS, headingS } from '@tackl/type';
+import { bodyS, titleS } from '@tackl/type';
 
 // Exports
 // ------------
@@ -102,7 +102,7 @@ export const Jacket = styled(Div).attrs({ as: 'article' })(
 
 export const Title = styled(Div).attrs({ as: 'h3' })(
 	() => css`
-		${headingS}
+		${titleS}
 	`
 );
 
@@ -146,7 +146,7 @@ export default Card;
 | Import | Gives you | Use for |
 | --- | --- | --- |
 | `@tackl` | `Div`, `bp`, `bpd`, `alpha`, `noscrollbars`, getters (`getBrand`, `getGlobal`, `getFeedback`, `getSpace`, `getGap`, `getRadius`, `getEase`, `getTime`, `getFont`, `getFontWeight`) | Everything you style with |
-| `@tackl/type` | `headingXXL`…`headingS`, `bodyM`, `bodyS`, `emphasis` | Global text styles, composed into styled blocks |
+| `@tackl/type` | `displayL`/`displayS`, `headlineL`/`headlineS`, `titleL`/`titleS`, `bodyL`/`bodyS`, `captionL`/`captionS` | Global text styles, composed into styled blocks |
 | `@waffl` | `Grid` (default export) | The grid container |
 | `@theme` | `theme`, `GlobalStyle` | Rarely needed directly — the getters wrap it |
 | `@parts/*` | `src/components/*` | Other components |

@@ -13,24 +13,27 @@ export type TokenGroup =
 	| 'radius'
 	| 'time'
 	| 'easing'
-	| 'headingXXL'
-	| 'headingXL'
-	| 'headingL'
-	| 'headingM'
-	| 'headingSM'
-	| 'headingS'
-	| 'bodyM'
+	| 'displayL'
+	| 'displayS'
+	| 'headlineL'
+	| 'headlineS'
+	| 'titleL'
+	| 'titleS'
+	| 'bodyL'
 	| 'bodyS'
-	| 'emphasis';
+	| 'captionL'
+	| 'captionS';
 
 export type TokenValues = Record<TokenGroup, Record<string, string>>;
 
-export type FieldKind = 'color' | 'text';
+export type FieldKind = 'color' | 'text' | 'px' | 'select';
 
 export type FieldDef = {
 	group: TokenGroup;
 	key: string;
 	label: string;
+	kind?: FieldKind;
+	options?: string[];
 };
 
 export type StepDef = {
@@ -39,6 +42,13 @@ export type StepDef = {
 	intro: string;
 	kind: FieldKind;
 	fields: FieldDef[];
+	hasFontUpload?: boolean;
+};
+
+export type UploadedFont = {
+	exportName: string;
+	cssVariable: string;
+	varRef: string;
 };
 
 export type Screen = 'welcome' | 'review' | 'done' | number;

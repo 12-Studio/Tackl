@@ -7,9 +7,13 @@ import { breakpointUp as bp } from '@/theme/tackl/breakpoints';
 
 // SECTION • Raw Type Scale
 // NOTE • Single source of truth for the type styles below — mobile-first:
-// `size` is the base, `sizeM`/`sizeXl` layer up at bp.m/bp.xl. Optional keys
-// (letterSpacing, letterSpacingM, sizeXl, letterSpacingXl) can be omitted.
+// `size` is the base, `sizeM`/`sizeXl` layer up at bp.m/bp.xl. `family` picks
+// a stack from @theme/fonts (--font-*). Optional keys (letterSpacing,
+// letterSpacingM, sizeXl, letterSpacingXl) can be omitted per style.
+export type TypeScaleFamily = 'heading' | 'body' | 'mono' | 'script';
+
 export type TypeScaleEntry = {
+	family: TypeScaleFamily;
 	size: string;
 	sizeM: string;
 	lineHeight: string;
@@ -20,7 +24,8 @@ export type TypeScaleEntry = {
 };
 
 export const typeScale = {
-	headingXXL: {
+	displayL: {
+		family: 'heading',
 		size: '4.8rem',
 		sizeM: '9.6rem',
 		lineHeight: '1.1',
@@ -30,76 +35,78 @@ export const typeScale = {
 		letterSpacingXl: '-2px',
 	},
 
-	headingXL: {
-		size: '4.8rem',
-		sizeM: '10.8rem',
+	displayS: {
+		family: 'heading',
+		size: '4rem',
+		sizeM: '7.2rem',
 		lineHeight: '1.1',
 		letterSpacing: '-1px',
 		letterSpacingM: '-2px',
 	},
 
-	headingL: {
+	headlineL: {
+		family: 'heading',
 		size: '3.6rem',
-		sizeM: '9.6rem',
-		lineHeight: '1.1',
-		letterSpacing: '-0.1rem',
-		letterSpacingM: '-0.2rem',
-	},
-
-	headingM: {
-		size: '2.6rem',
-		sizeM: '7.2rem',
-		lineHeight: '1.2',
-		letterSpacingM: '-0.2rem',
-	},
-
-	headingSM: {
-		size: '2.4rem',
 		sizeM: '6rem',
-		lineHeight: '1.2',
+		lineHeight: '1.15',
 		letterSpacingM: '-0.2rem',
 	},
 
-	headingS: {
-		size: '2.2rem',
+	headlineS: {
+		family: 'heading',
+		size: '3rem',
 		sizeM: '4.8rem',
-		lineHeight: '1.32',
-		letterSpacingM: '-1px',
+		lineHeight: '1.2',
+		letterSpacingM: '-0.1rem',
 	},
 
-	bodyM: {
-		size: '2rem',
+	titleL: {
+		family: 'heading',
+		size: '2.6rem',
 		sizeM: '3.6rem',
-		lineHeight: '1.32',
-		letterSpacingM: '-0.5px',
+		lineHeight: '1.2',
+	},
+
+	titleS: {
+		family: 'heading',
+		size: '2.2rem',
+		sizeM: '2.8rem',
+		lineHeight: '1.25',
+	},
+
+	bodyL: {
+		family: 'body',
+		size: '2rem',
+		sizeM: '2.4rem',
+		lineHeight: '1.4',
 	},
 
 	bodyS: {
-		size: '1.8rem',
-		sizeM: '2.4rem',
-		lineHeight: '1.32',
+		family: 'body',
+		size: '1.6rem',
+		sizeM: '1.8rem',
+		lineHeight: '1.4',
 	},
 
-	emphasis: {
+	captionL: {
+		family: 'body',
 		size: '1.4rem',
-		sizeM: '1.8rem',
-		lineHeight: '1.6',
+		sizeM: '1.6rem',
+		lineHeight: '1.5',
+	},
+
+	captionS: {
+		family: 'body',
+		size: '1.2rem',
+		sizeM: '1.3rem',
+		lineHeight: '1.5',
 	},
 } satisfies Record<string, TypeScaleEntry>;
 
-// REVIEW • Shared styles as constants to avoid recalculation
-const baseHeadingStyles: RuleSet = css`
-	font-weight: ${theme.font.weight.regular};
-	font-family: ${theme.font.family.heading};
-`;
-
-const baseBodyStyles: RuleSet = css`
-	font-family: ${theme.font.family.body};
-	font-weight: ${theme.font.weight.regular};
-`;
-
-// ANCHOR • Responsive size rules for one type-scale entry
+// ANCHOR • Font + responsive size rules for one type-scale entry
 const scaleStyles = (entry: TypeScaleEntry): RuleSet => css`
+	font-family: ${theme.font.family[entry.family]};
+	font-weight: ${theme.font.weight.regular};
 	font-size: ${entry.size};
 	line-height: ${entry.lineHeight};
 	${entry.letterSpacing ? `letter-spacing: ${entry.letterSpacing};` : ''}
@@ -119,52 +126,47 @@ const scaleStyles = (entry: TypeScaleEntry): RuleSet => css`
 	}
 `;
 
-// SECTION • Heading styles
-export const headingXXL: RuleSet = css`
-	${baseHeadingStyles}
-	${scaleStyles(typeScale.headingXXL)}
+// SECTION • Display styles
+export const displayL: RuleSet = css`
+	${scaleStyles(typeScale.displayL)}
 `;
 
-export const headingXL: RuleSet = css`
-	${baseHeadingStyles}
-	${scaleStyles(typeScale.headingXL)}
+export const displayS: RuleSet = css`
+	${scaleStyles(typeScale.displayS)}
 `;
 
-export const headingL: RuleSet = css`
-	${baseHeadingStyles}
-	${scaleStyles(typeScale.headingL)}
+// SECTION • Headline styles
+export const headlineL: RuleSet = css`
+	${scaleStyles(typeScale.headlineL)}
 `;
 
-export const headingM: RuleSet = css`
-	${baseHeadingStyles}
-	${scaleStyles(typeScale.headingM)}
+export const headlineS: RuleSet = css`
+	${scaleStyles(typeScale.headlineS)}
 `;
 
-export const headingSM: RuleSet = css`
-	${baseHeadingStyles}
-	${scaleStyles(typeScale.headingSM)}
+// SECTION • Title styles
+export const titleL: RuleSet = css`
+	${scaleStyles(typeScale.titleL)}
 `;
 
-export const headingS: RuleSet = css`
-	${baseHeadingStyles}
-	${scaleStyles(typeScale.headingS)}
+export const titleS: RuleSet = css`
+	${scaleStyles(typeScale.titleS)}
 `;
 
 // SECTION • Body styles
-export const bodyM: RuleSet = css`
-	${baseBodyStyles}
-	${scaleStyles(typeScale.bodyM)}
+export const bodyL: RuleSet = css`
+	${scaleStyles(typeScale.bodyL)}
 `;
 
 export const bodyS: RuleSet = css`
-	${baseBodyStyles}
-	display: block;
 	${scaleStyles(typeScale.bodyS)}
 `;
 
-export const emphasis: RuleSet = css`
-	${baseBodyStyles}
-	display: block;
-	font-style: normal;
-	${scaleStyles(typeScale.emphasis)}
+// SECTION • Caption styles
+export const captionL: RuleSet = css`
+	${scaleStyles(typeScale.captionL)}
+`;
+
+export const captionS: RuleSet = css`
+	${scaleStyles(typeScale.captionS)}
 `;

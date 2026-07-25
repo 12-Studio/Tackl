@@ -29,7 +29,7 @@ const Hero = (props: HeroProps) => <S.Jacket {...props}>...</S.Jacket>;
 1. **Never** put styled-components in `index.tsx`.
 2. **Never** use Tailwind, CSS modules, inline styles, or SASS for component styling.
 3. Use **Tackl primitives** from `@theme/tackl` (`Section`, `Header`, `Div`, etc.) as styled bases.
-4. Use **Tackl type styles** from `@tackl/type` for typography (`headingL`, `bodyM`, `captionS`).
+4. Use **Tackl type styles** from `@tackl/type` for typography (`headlineL`, `bodyL`, `captionS`).
 5. Use **theme helpers**: `getBrand`, `getGlobal`, `getRadius`, `getEase`, `getFont`, `getFontWeight`.
 6. Mobile-first responsive styles via `bp.l` / `bp.m` / `bp.s` from `@theme/tackl`.
 7. Pass styling props with `$` prefix (transient props) to avoid DOM leakage.

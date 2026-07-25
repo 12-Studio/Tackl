@@ -2,7 +2,7 @@
 // ------------
 
 import { alpha, bp, Div, getBrand, getEase, getFeedback, getFont, getGap, getGlobal, getRadius, getTime } from '@tackl';
-import { bodyS, emphasis, headingM, headingXL } from '@tackl/type';
+import { bodyS, captionL, displayS, headlineS } from '@tackl/type';
 import styled, { css } from 'styled-components';
 
 // Exports
@@ -54,13 +54,13 @@ export const Kicker = styled(Div).attrs({ as: 'p' })(
 
 export const Title = styled(Div).attrs({ as: 'h1' })(
 	() => css`
-		${headingXL}
+		${displayS}
 	`
 );
 
 export const StepTitle = styled(Div).attrs({ as: 'h2' })(
 	() => css`
-		${headingM}
+		${headlineS}
 	`
 );
 
@@ -157,6 +157,91 @@ export const Input = styled.input<{ $hasError?: boolean }>(
 	`
 );
 
+export const Select = styled.select(
+	() => css`
+		${bodyS}
+		width: 100%;
+		padding: ${getGap('s')} ${getGap('sm')};
+
+		border: 1px solid ${getGlobal('white', 15)};
+		border-radius: ${getRadius('s')};
+		background: ${getGlobal('black', 40)};
+		color: ${getGlobal('white')};
+		transition: border-color ${getTime('s')} ${getEase('bezzy')};
+
+		&:focus {
+			outline: none;
+			border-color: ${getBrand('bc1')};
+		}
+
+		option {
+			background: ${getGlobal('black')};
+		}
+	`
+);
+
+export const Upload = styled(Div)(
+	() => css`
+		display: flex;
+		flex-direction: column;
+		gap: ${getGap('s')};
+		padding: ${getGap('m')};
+
+		border: 1px dashed ${getGlobal('white', 15)};
+		border-radius: ${getRadius('m')};
+	`
+);
+
+export const UploadTitle = styled(Div).attrs({ as: 'h3' })(
+	() => css`
+		${captionL}
+	`
+);
+
+export const UploadRow = styled(Div)(
+	() => css`
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: ${getGap('s')};
+
+		> input[type='text'],
+		> input:not([type]) {
+			flex: 1 1 18rem;
+		}
+	`
+);
+
+export const FileInput = styled.input.attrs({ type: 'file' })(
+	() => css`
+		${bodyS}
+		flex: 1 1 18rem;
+		color: ${getGlobal('white', 80)};
+
+		&::file-selector-button {
+			${bodyS}
+			margin-right: ${getGap('s')};
+			padding: ${getGap('xs')} ${getGap('sm')};
+			border: 1px solid ${getGlobal('white', 20)};
+			border-radius: ${getRadius('round')};
+			background: none;
+			color: ${getGlobal('white', 80)};
+			cursor: pointer;
+		}
+	`
+);
+
+export const UploadHint = styled(Div).attrs({ as: 'p' })(
+	() => css`
+		${bodyS}
+		color: ${getFeedback('positive')};
+
+		code {
+			font-family: ${getFont('mono')};
+		}
+	`
+);
+
 export const ErrorText = styled(Div).attrs({ as: 'p' })(
 	() => css`
 		${bodyS}
@@ -174,7 +259,7 @@ export const Nav = styled(Div)(
 );
 
 const buttonBase = css`
-	${emphasis}
+	${captionL}
 	padding: ${getGap('sm')} ${getGap('l')};
 	border-radius: ${getRadius('round')};
 	cursor: pointer;
@@ -236,7 +321,7 @@ export const ReviewHeader = styled(Div)(
 
 export const ReviewTitle = styled(Div).attrs({ as: 'h3' })(
 	() => css`
-		${emphasis}
+		${captionL}
 	`
 );
 

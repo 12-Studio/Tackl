@@ -5,7 +5,9 @@
 // 'finish' writes the submitted tokens into the raw value objects in src/theme,
 // then removes the wizard entirely — this route, the component folder and the
 // marked lines in app/(site)/Providers.tsx. 'skip' removes the wizard and keeps
-// the default theme. Either way this file deletes itself, so it never ships.
+// the default theme. 'upload-font' saves a font file into src/theme/fonts/custom
+// and generates its next/font wiring. The route deletes itself on finish/skip,
+// so it never ships.
 
 // Imports
 // ------------
@@ -25,15 +27,16 @@ type TokenGroup =
 	| 'radius'
 	| 'time'
 	| 'easing'
-	| 'headingXXL'
-	| 'headingXL'
-	| 'headingL'
-	| 'headingM'
-	| 'headingSM'
-	| 'headingS'
-	| 'bodyM'
+	| 'displayL'
+	| 'displayS'
+	| 'headlineL'
+	| 'headlineS'
+	| 'titleL'
+	| 'titleS'
+	| 'bodyL'
 	| 'bodyS'
-	| 'emphasis';
+	| 'captionL'
+	| 'captionS';
 
 type TokenValues = Record<TokenGroup, Record<string, string>>;
 
@@ -43,12 +46,13 @@ type GroupSpec = { required: readonly string[]; optional?: readonly string[]; ki
 // ------------
 const ROOT = process.cwd();
 
-// NOTE • Mirrors the token keys in src/theme — safe to hardcode because this
-// route only exists until first-run setup completes
-// NOTE • Type-scale entries share one shape — sizes/line-height are required,
-// letter-spacing and the bp.xl overrides only exist on styles that opt in
+const FONT_FAMILY_KEYS = ['heading', 'body', 'mono', 'script'];
+
+// NOTE • Type-scale entries share one shape — family/sizes/line-height are
+// required, letter-spacing and the bp.xl overrides only exist on styles that
+// opt in
 const TYPE_SCALE_SPEC: GroupSpec = {
-	required: ['size', 'sizeM', 'lineHeight'],
+	required: ['family', 'size', 'sizeM', 'lineHeight'],
 	optional: ['letterSpacing', 'letterSpacingM', 'sizeXl', 'letterSpacingXl'],
 	kind: 'text',
 };
@@ -63,15 +67,16 @@ const GROUPS: Record<TokenGroup, GroupSpec> = {
 	radius: { required: ['xs', 's', 'm', 'l', 'round'], kind: 'text' },
 	time: { required: ['s', 'm', 'l'], kind: 'text' },
 	easing: { required: ['bezzy', 'bezzy2', 'bezzy3'], kind: 'text' },
-	headingXXL: TYPE_SCALE_SPEC,
-	headingXL: TYPE_SCALE_SPEC,
-	headingL: TYPE_SCALE_SPEC,
-	headingM: TYPE_SCALE_SPEC,
-	headingSM: TYPE_SCALE_SPEC,
-	headingS: TYPE_SCALE_SPEC,
-	bodyM: TYPE_SCALE_SPEC,
+	displayL: TYPE_SCALE_SPEC,
+	displayS: TYPE_SCALE_SPEC,
+	headlineL: TYPE_SCALE_SPEC,
+	headlineS: TYPE_SCALE_SPEC,
+	titleL: TYPE_SCALE_SPEC,
+	titleS: TYPE_SCALE_SPEC,
+	bodyL: TYPE_SCALE_SPEC,
 	bodyS: TYPE_SCALE_SPEC,
-	emphasis: TYPE_SCALE_SPEC,
+	captionL: TYPE_SCALE_SPEC,
+	captionS: TYPE_SCALE_SPEC,
 };
 
 const TOKEN_TARGETS: {
@@ -98,15 +103,16 @@ const TOKEN_TARGETS: {
 		file: 'src/theme/tackl/type/index.ts',
 		exportName: 'typeScale',
 		build: tokens => ({
-			headingXXL: tokens.headingXXL,
-			headingXL: tokens.headingXL,
-			headingL: tokens.headingL,
-			headingM: tokens.headingM,
-			headingSM: tokens.headingSM,
-			headingS: tokens.headingS,
-			bodyM: tokens.bodyM,
+			displayL: tokens.displayL,
+			displayS: tokens.displayS,
+			headlineL: tokens.headlineL,
+			headlineS: tokens.headlineS,
+			titleL: tokens.titleL,
+			titleS: tokens.titleS,
+			bodyL: tokens.bodyL,
 			bodyS: tokens.bodyS,
-			emphasis: tokens.emphasis,
+			captionL: tokens.captionL,
+			captionS: tokens.captionS,
 		}),
 	},
 ];
@@ -116,10 +122,17 @@ const GATE_FILE = 'app/(site)/Providers.tsx';
 const GATE_MARKER_START = 'tackl:setup-start';
 const GATE_MARKER_END = 'tackl:setup-end';
 
+const FONTS_FILE = 'src/theme/fonts/index.ts';
+const FONTS_DIR = 'src/theme/fonts/custom';
+const LAYOUT_FILE = 'app/(site)/layout.tsx';
+const FONT_EXTENSIONS = ['.woff2', '.woff', '.ttf', '.otf'];
+const FONT_SIZE_LIMIT = 5 * 1024 * 1024;
+
 // Validation
 // ------------
 const HEX_PATTERN = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 const UNSAFE_PATTERN = /[`\\\r\n]|\$\{/;
+const FONT_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9]*$/;
 
 const parseTokens = (input: unknown): TokenValues | null => {
 	if (typeof input !== 'object' || input === null) return null;
@@ -138,6 +151,7 @@ const parseTokens = (input: unknown): TokenValues | null => {
 			const trimmed = value.trim();
 			if (!trimmed || UNSAFE_PATTERN.test(trimmed)) return null;
 			if (spec.kind === 'color' && !HEX_PATTERN.test(trimmed)) return null;
+			if (key === 'family' && !FONT_FAMILY_KEYS.includes(trimmed)) return null;
 			parsed[key] = trimmed;
 		}
 
@@ -244,6 +258,90 @@ const removeWizard = (): void => {
 	}
 };
 
+// Font upload
+// ------------
+const kebabCase = (name: string): string => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+
+const installFont = (name: string, fileName: string, data: string): { exportName: string; cssVariable: string } => {
+	if (!FONT_NAME_PATTERN.test(name)) {
+		throw new Error('Font name must be a simple identifier, e.g. myFont');
+	}
+
+	const extension = path.extname(fileName).toLowerCase();
+	if (!FONT_EXTENSIONS.includes(extension)) {
+		throw new Error(`Font file must be one of: ${FONT_EXTENSIONS.join(', ')}`);
+	}
+
+	const buffer = Buffer.from(data, 'base64');
+	if (buffer.length === 0 || buffer.length > FONT_SIZE_LIMIT) {
+		throw new Error('Font file is empty or larger than 5MB');
+	}
+
+	const fontsPath = path.join(ROOT, FONTS_FILE);
+	let fontsSource = fs.readFileSync(fontsPath, 'utf8');
+	if (fontsSource.includes(`export const ${name} `) || fontsSource.includes(`export const ${name} =`)) {
+		throw new Error(`"${name}" is already used in src/theme/fonts`);
+	}
+
+	// NOTE • Save the file under a name derived from the variable, keeping it 1:1
+	const safeFileName = `${name}${extension}`;
+	fs.mkdirSync(path.join(ROOT, FONTS_DIR), { recursive: true });
+	fs.writeFileSync(path.join(ROOT, FONTS_DIR, safeFileName), buffer);
+
+	// NOTE • Uncomment the localFont import on first use
+	if (!/^import localFont from 'next\/font\/local';$/m.test(fontsSource)) {
+		fontsSource = fontsSource.replace(
+			"// import localFont from 'next/font/local';",
+			"import localFont from 'next/font/local';"
+		);
+		if (!fontsSource.includes("import localFont from 'next/font/local';")) {
+			fontsSource = `import localFont from 'next/font/local';\n${fontsSource}`;
+		}
+	}
+
+	const cssVariable = `--${kebabCase(name)}`;
+	const fontExport = [
+		'// SECTION • Uploaded via Tackl setup — adjust weights/styles as needed',
+		`export const ${name} = localFont({`,
+		`\tsrc: [{ path: './custom/${safeFileName}', weight: '400', style: 'normal' }],`,
+		"\tdisplay: 'swap',",
+		`\tvariable: '${cssVariable}',`,
+		'\tpreload: true,',
+		'});',
+		'',
+		'',
+	].join('\n');
+
+	const stacksMarker = '// SECTION • Raw Font Stacks';
+	if (!fontsSource.includes(stacksMarker)) throw new Error('Could not find the font stacks section to update');
+	fontsSource = fontsSource.replace(stacksMarker, `${fontExport}${stacksMarker}`);
+	fs.writeFileSync(fontsPath, fontsSource);
+
+	// NOTE • The variable class must be on <html> for the CSS var to exist
+	const layoutPath = path.join(ROOT, LAYOUT_FILE);
+	let layoutSource = fs.readFileSync(layoutPath, 'utf8');
+
+	layoutSource = layoutSource.replace(/import \{ ([^}]+) \} from '@theme\/fonts';/, (match, names: string) =>
+		names.includes(name) ? match : `import { ${names.trim()}, ${name} } from '@theme/fonts';`
+	);
+
+	if (layoutSource.includes('className={inter.variable}')) {
+		layoutSource = layoutSource.replace(
+			'className={inter.variable}',
+			`className={\`\${inter.variable} \${${name}.variable}\`}`
+		);
+	} else {
+		layoutSource = layoutSource.replace(
+			/className=\{`([^`]*)`\}/,
+			(_match, existing: string) => `className={\`${existing} \${${name}.variable}\`}`
+		);
+	}
+
+	fs.writeFileSync(layoutPath, layoutSource);
+
+	return { exportName: name, cssVariable };
+};
+
 // Handler
 // ------------
 export const POST = async (request: Request): Promise<NextResponse> => {
@@ -252,16 +350,25 @@ export const POST = async (request: Request): Promise<NextResponse> => {
 	}
 
 	const body: unknown = await request.json().catch(() => null);
-	const action =
-		body !== null && typeof body === 'object' && 'action' in body ? (body as { action: unknown }).action : null;
-
-	if (action !== 'finish' && action !== 'skip') {
-		return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
-	}
+	const record = body !== null && typeof body === 'object' ? (body as Record<string, unknown>) : {};
+	const action = record.action;
 
 	try {
+		if (action === 'upload-font') {
+			const { name, fileName, data } = record;
+			if (typeof name !== 'string' || typeof fileName !== 'string' || typeof data !== 'string') {
+				return NextResponse.json({ error: 'Invalid font upload' }, { status: 400 });
+			}
+			const font = installFont(name.trim(), fileName, data);
+			return NextResponse.json({ ok: true, ...font, varRef: `var(${font.cssVariable})` });
+		}
+
+		if (action !== 'finish' && action !== 'skip') {
+			return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
+		}
+
 		if (action === 'finish') {
-			const tokens = parseTokens((body as { tokens?: unknown }).tokens);
+			const tokens = parseTokens(record.tokens);
 			if (tokens === null) {
 				return NextResponse.json({ error: 'Invalid token values' }, { status: 400 });
 			}

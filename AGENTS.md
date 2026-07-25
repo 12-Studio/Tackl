@@ -37,7 +37,7 @@ grid-span props (`$s`…`$uber`), and every normal HTML attribute — all fully 
 | Import | Use for | Never write |
 | --- | --- | --- |
 | `import { Div, bp, bpd, alpha, getBrand, … } from '@tackl'` | Primitives, breakpoints, theme getters | `import { Section } from '@tackl'` (doesn't exist) |
-| `import { headingL, bodyM } from '@tackl/type'` | Typography styles | `import … from '@/theme/tackl/type'` |
+| `import { headlineL, bodyL } from '@tackl/type'` | Typography styles | `import … from '@/theme/tackl/type'` |
 | `import Grid from '@waffl'` | The grid container (**default** import) | `import { Grid } from '@waffl'`, deep paths, `import { Waffl }` |
 | `import { fetchContent, GET_HOME } from '@cms'` | CMS data | importing a CMS adapter folder directly |
 

@@ -14,14 +14,20 @@ your values live as you type.
   (`app/api/tackl-setup`) that rewrites the raw value objects in place:
   `baseColors`, `fontFamilies`, `spaceValues`, `gapValues`,
   `borderRadiusValues`, `timeValues`, `easingValues` and the `typeScale`
-  behind `headingXXL`…`emphasis` in `src/theme/tackl/type`. Everything
+  behind `displayL`…`captionS` in `src/theme/tackl/type`. Everything
   downstream (`--brand-*` CSS variables, `getBrand()`, the theme object, the
   type styles) updates automatically because those objects are the single
   source of truth.
-- **The type scale steps cover the everyday knobs** — mobile size, desktop
-  size (`bp.m`) and line-height per style. Letter-spacing and the `bp.xl`
-  overrides stay in the `typeScale` object and pass through setup untouched;
-  edit them there any time.
+- **The type scale steps cover the everyday knobs** — font family, mobile
+  size, desktop size (`bp.m`) and line-height per style. **Sizes are entered
+  in px** and written to the theme as rem (px ÷ 10, matching the 10px html
+  base). Letter-spacing and the `bp.xl` overrides stay in the `typeScale`
+  object and pass through setup untouched; edit them there any time.
+- **Fonts can be uploaded from the Typography step.** The file lands in
+  `src/theme/fonts/custom/`, a `next/font` `localFont` export is generated
+  under your variable name (weight 400 — add more weights in
+  `src/theme/fonts` afterwards), the variable class is added to `<html>`, and
+  the resulting `var(--…)` can be used in the font stacks.
 - **Then it deletes itself.** On finish (or skip), the route removes
   `src/components/TacklSetup`, the API route folder and the marked
   `tackl:setup-*` lines in `app/(site)/Providers.tsx`. Hot reload picks up the

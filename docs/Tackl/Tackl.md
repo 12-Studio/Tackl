@@ -35,7 +35,7 @@ Tackl provides one polymorphic semantic component with built-in styling capabili
 
 #### Typography
 
--   Global text styles live in `@tackl/type` (e.g. `headlineL`, `bodyM`) and are applied via `Div` with the matching `as` tag (`as='h1'` … `as='h6'`, `as='p'`, `as='span'`)
+-   Global text styles live in `@tackl/type` (e.g. `headlineL`, `bodyL`) and are applied via `Div` with the matching `as` tag (`as='h1'` … `as='h6'`, `as='p'`, `as='span'`)
 -   Responsive font sizing
 -   Consistent line heights
 -   Font family management

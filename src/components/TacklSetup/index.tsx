@@ -2,12 +2,12 @@
 
 // Imports
 // ------------
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import { defaultTokens, steps, validateField } from './steps';
+import { defaultTokens, pxToRem, steps, validateField } from './steps';
 import * as S from './styles';
 
 // Constants
@@ -36,23 +36,41 @@ const toPickerHex = (value: string): string => {
 	return /^#[0-9a-fA-F]{6}$/.test(hex) ? hex : '#000000';
 };
 
+const readFileAsBase64 = (file: File): Promise<string> =>
+	new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => resolve(String(reader.result).split(',')[1] ?? '');
+		reader.onerror = () => reject(new Error('Could not read the font file'));
+		reader.readAsDataURL(file);
+	});
+
 // Component
 // ------------
 // NOTE • First-run theme setup — walks through the theme tokens like a form,
 // writes them into src/theme via /api/tackl-setup, then deletes itself
 // (component, API route and the marked lines in Providers.tsx).
 const TacklSetup = () => {
+	// Refs
+	const fileRef = useRef<HTMLInputElement>(null);
+
 	// State
 	const [screen, setScreen] = useState<I.Screen>('welcome');
 	const [tokens, setTokens] = useState<I.TokenValues>(defaultTokens);
 	const [isSaving, setIsSaving] = useState(false);
 	const [saveError, setSaveError] = useState<string | null>(null);
+	const [fontName, setFontName] = useState('');
+	const [isUploading, setIsUploading] = useState(false);
+	const [uploadError, setUploadError] = useState<string | null>(null);
+	const [uploadedFonts, setUploadedFonts] = useState<I.UploadedFont[]>([]);
 
 	// Derived
 	const stepIndex = typeof screen === 'number' ? screen : null;
 	const step = stepIndex === null ? undefined : steps[stepIndex];
+	const fieldKind = (currentStep: I.StepDef, field: I.FieldDef): I.FieldKind => field.kind ?? currentStep.kind;
 	const hasStepErrors = (currentStep: I.StepDef): boolean =>
-		currentStep.fields.some(field => validateField(currentStep.kind, tokens[field.group][field.key]) !== null);
+		currentStep.fields.some(
+			field => validateField(fieldKind(currentStep, field), tokens[field.group][field.key]) !== null
+		);
 
 	// NOTE • Overrides the :root tokens inside the overlay only — the wizard
 	// previews itself with the values being typed
@@ -73,6 +91,19 @@ const TacklSetup = () => {
 		setTokens(prev => ({ ...prev, [group]: { ...prev[group], [key]: value } }));
 	};
 
+	// NOTE • px fields are edited in px but stored in the theme as rem (px ÷ 10)
+	const buildPayload = (): I.TokenValues => {
+		const payload = structuredClone(tokens);
+		for (const payloadStep of steps) {
+			for (const field of payloadStep.fields) {
+				if (fieldKind(payloadStep, field) === 'px') {
+					payload[field.group][field.key] = pxToRem(payload[field.group][field.key]);
+				}
+			}
+		}
+		return payload;
+	};
+
 	const submit = async (action: 'finish' | 'skip') => {
 		setIsSaving(true);
 		setSaveError(null);
@@ -81,7 +112,7 @@ const TacklSetup = () => {
 			const response = await fetch(ENDPOINT, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(action === 'finish' ? { action, tokens } : { action }),
+				body: JSON.stringify(action === 'finish' ? { action, tokens: buildPayload() } : { action }),
 			});
 
 			if (!response.ok) {
@@ -101,6 +132,51 @@ const TacklSetup = () => {
 			setSaveError(error instanceof Error ? error.message : 'Setup failed — check the dev server logs.');
 		} finally {
 			setIsSaving(false);
+		}
+	};
+
+	const uploadFont = async () => {
+		const file = fileRef.current?.files?.[0];
+		if (!file || !fontName.trim()) {
+			setUploadError('Pick a font file and give it a name first');
+			return;
+		}
+
+		setIsUploading(true);
+		setUploadError(null);
+
+		try {
+			const response = await fetch(ENDPOINT, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					action: 'upload-font',
+					name: fontName.trim(),
+					fileName: file.name,
+					data: await readFileAsBase64(file),
+				}),
+			});
+
+			const payload: unknown = await response.json().catch(() => null);
+			if (!response.ok || payload === null || typeof payload !== 'object') {
+				const message =
+					payload !== null &&
+					typeof payload === 'object' &&
+					'error' in payload &&
+					typeof payload.error === 'string'
+						? payload.error
+						: 'Upload failed — check the dev server logs.';
+				throw new Error(message);
+			}
+
+			const uploaded = payload as I.UploadedFont;
+			setUploadedFonts(prev => [...prev, uploaded]);
+			setFontName('');
+			if (fileRef.current) fileRef.current.value = '';
+		} catch (error) {
+			setUploadError(error instanceof Error ? error.message : 'Upload failed — check the dev server logs.');
+		} finally {
+			setIsUploading(false);
 		}
 	};
 
@@ -141,35 +217,52 @@ const TacklSetup = () => {
 					<S.Fields>
 						{step.fields.map(field => {
 							const id = `tackl-setup-${field.group}-${field.key}`;
+							const kind = fieldKind(step, field);
 							const value = tokens[field.group][field.key];
-							const error = validateField(step.kind, value);
+							const error = validateField(kind, value);
+							const onChange = (
+								event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
+							) => setValue(field.group, field.key, event.target.value);
 
 							return (
 								<S.Field key={id}>
 									<S.Label htmlFor={id}>{field.label}</S.Label>
 
-									{step.kind === 'color' ? (
+									{kind === 'color' && (
 										<S.ColorRow>
 											<S.Swatch
 												value={toPickerHex(value)}
-												onChange={event => setValue(field.group, field.key, event.target.value)}
+												onChange={onChange}
 												aria-label={`${field.label} colour picker`}
 											/>
 											<S.Input
 												id={id}
 												value={value}
-												onChange={event => setValue(field.group, field.key, event.target.value)}
+												onChange={onChange}
 												$hasError={error !== null}
 												spellCheck={false}
 											/>
 										</S.ColorRow>
-									) : (
+									)}
+
+									{kind === 'select' && (
+										<S.Select id={id} value={value} onChange={onChange}>
+											{(field.options ?? []).map(option => (
+												<option key={option} value={option}>
+													{option}
+												</option>
+											))}
+										</S.Select>
+									)}
+
+									{(kind === 'text' || kind === 'px') && (
 										<S.Input
 											id={id}
 											value={value}
-											onChange={event => setValue(field.group, field.key, event.target.value)}
+											onChange={onChange}
 											$hasError={error !== null}
 											spellCheck={false}
+											inputMode={kind === 'px' ? 'decimal' : undefined}
 										/>
 									)}
 
@@ -178,6 +271,39 @@ const TacklSetup = () => {
 							);
 						})}
 					</S.Fields>
+
+					{step.hasFontUpload && (
+						<S.Upload>
+							<S.UploadTitle>Add a font</S.UploadTitle>
+							<S.Intro>
+								Drops the file into <code>src/theme/fonts/custom</code>, wires it up with next/font and
+								registers it under your variable name — then reference it in the stacks above, e.g.{' '}
+								<code>var(--my-font), Arial, sans-serif</code>.
+							</S.Intro>
+
+							<S.UploadRow>
+								<S.Input
+									value={fontName}
+									onChange={event => setFontName(event.target.value)}
+									placeholder='Variable name, e.g. myFont'
+									spellCheck={false}
+									aria-label='Font variable name'
+								/>
+								<S.FileInput ref={fileRef} accept='.woff2,.woff,.ttf,.otf' aria-label='Font file' />
+								<S.Ghost type='button' onClick={uploadFont} disabled={isUploading}>
+									{isUploading ? 'Uploading…' : 'Upload'}
+								</S.Ghost>
+							</S.UploadRow>
+
+							{uploadedFonts.map(font => (
+								<S.UploadHint key={font.cssVariable}>
+									✓ <code>{font.exportName}</code> added — use <code>{font.varRef}</code> in a stack
+									above
+								</S.UploadHint>
+							))}
+							{uploadError && <S.ErrorText role='alert'>{uploadError}</S.ErrorText>}
+						</S.Upload>
+					)}
 
 					<S.Nav>
 						<S.Ghost type='button' onClick={() => setScreen(stepIndex === 0 ? 'welcome' : stepIndex - 1)}>
@@ -216,12 +342,13 @@ const TacklSetup = () => {
 									<S.ReviewItem key={`${field.group}-${field.key}`}>
 										<S.ReviewTerm>{field.label}</S.ReviewTerm>
 										<S.ReviewValue>
-											{reviewStep.kind === 'color' && (
+											{fieldKind(reviewStep, field) === 'color' && (
 												<S.ReviewSwatch
 													style={{ background: tokens[field.group][field.key] }}
 												/>
 											)}
 											{tokens[field.group][field.key]}
+											{fieldKind(reviewStep, field) === 'px' ? 'px' : ''}
 										</S.ReviewValue>
 									</S.ReviewItem>
 								))}

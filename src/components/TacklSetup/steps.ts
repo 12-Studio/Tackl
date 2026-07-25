@@ -20,12 +20,31 @@ import { timeValues } from '@theme/time';
 // ------------
 import type * as I from './interface';
 
+// Conversions
+// ------------
+// NOTE • The theme stores rem (html base = 10px), the wizard edits px
+export const remToPx = (rem: string): string => {
+	const value = Number.parseFloat(rem);
+	return Number.isFinite(value) ? String(Math.round(value * 100) / 10) : '';
+};
+
+export const pxToRem = (px: string): string => {
+	const value = Number.parseFloat(px);
+	return Number.isFinite(value) ? `${Math.round(value * 10) / 100}rem` : px;
+};
+
 // Defaults
 // ------------
 // NOTE • Type-scale entries have optional keys — drop the absent ones so
 // every group is a plain Record<string, string>
 const compact = (values: Record<string, string | undefined>): Record<string, string> =>
 	Object.fromEntries(Object.entries(values).filter(([, value]) => value !== undefined)) as Record<string, string>;
+
+// NOTE • Wizard state holds the sizes in px; they go back to rem on submit
+const typeDefaults = (entry: Record<string, string | undefined>): Record<string, string> => {
+	const values = compact(entry);
+	return { ...values, size: remToPx(values.size), sizeM: remToPx(values.sizeM) };
+};
 
 export const defaultTokens: I.TokenValues = {
 	brand: { ...baseColors.brand },
@@ -37,15 +56,16 @@ export const defaultTokens: I.TokenValues = {
 	radius: { ...borderRadiusValues },
 	time: { ...timeValues },
 	easing: { ...easingValues },
-	headingXXL: compact(typeScale.headingXXL),
-	headingXL: compact(typeScale.headingXL),
-	headingL: compact(typeScale.headingL),
-	headingM: compact(typeScale.headingM),
-	headingSM: compact(typeScale.headingSM),
-	headingS: compact(typeScale.headingS),
-	bodyM: compact(typeScale.bodyM),
-	bodyS: compact(typeScale.bodyS),
-	emphasis: compact(typeScale.emphasis),
+	displayL: typeDefaults(typeScale.displayL),
+	displayS: typeDefaults(typeScale.displayS),
+	headlineL: typeDefaults(typeScale.headlineL),
+	headlineS: typeDefaults(typeScale.headlineS),
+	titleL: typeDefaults(typeScale.titleL),
+	titleS: typeDefaults(typeScale.titleS),
+	bodyL: typeDefaults(typeScale.bodyL),
+	bodyS: typeDefaults(typeScale.bodyS),
+	captionL: typeDefaults(typeScale.captionL),
+	captionS: typeDefaults(typeScale.captionS),
 };
 
 // Fields
@@ -61,16 +81,19 @@ const fieldsFrom = (
 		label: options?.labels?.[key] ?? (options?.prefix ? `${options.prefix} ${key}` : key),
 	}));
 
-// NOTE • The type-scale steps only surface the everyday knobs — letter-spacing
-// and bp.xl overrides stay in src/theme/tackl/type and survive setup untouched
-const TYPE_SCALE_KEYS = [
-	{ key: 'size', label: 'mobile size' },
-	{ key: 'sizeM', label: 'desktop size' },
-	{ key: 'lineHeight', label: 'line height' },
-];
+// NOTE • The type-scale steps surface the everyday knobs — sizes in px
+// (written to the theme as rem via px ÷ 10), the font family, and line-height.
+// Letter-spacing and bp.xl overrides stay in src/theme/tackl/type and survive
+// setup untouched.
+export const FONT_FAMILY_OPTIONS = Object.keys(fontFamilies);
 
 const typeScaleFields = (groups: I.TokenGroup[]): I.FieldDef[] =>
-	groups.flatMap(group => TYPE_SCALE_KEYS.map(({ key, label }) => ({ group, key, label: `${group} ${label}` })));
+	groups.flatMap(group => [
+		{ group, key: 'family', label: `${group} font family`, kind: 'select' as const, options: FONT_FAMILY_OPTIONS },
+		{ group, key: 'size', label: `${group} mobile size (px)`, kind: 'px' as const },
+		{ group, key: 'sizeM', label: `${group} desktop size (px)`, kind: 'px' as const },
+		{ group, key: 'lineHeight', label: `${group} line height` },
+	]);
 
 // Steps
 // ------------
@@ -100,23 +123,31 @@ export const steps: I.StepDef[] = [
 	{
 		id: 'type',
 		title: 'Typography',
-		intro: 'Font stacks emitted as --font-* variables. Load the actual font files with next/font in src/theme/fonts.',
+		intro: 'Font stacks emitted as --font-* variables. Upload a font file below to add it to the theme — it becomes a var(--…) you can use in these stacks.',
 		kind: 'text',
 		fields: fieldsFrom('fonts', fontFamilies),
+		hasFontUpload: true,
 	},
 	{
-		id: 'headings',
-		title: 'Heading scale',
-		intro: 'Mobile-first sizes and line-heights for the heading styles. Letter-spacing and bp.xl overrides stay editable in src/theme/tackl/type.',
+		id: 'display',
+		title: 'Display & headline',
+		intro: 'The biggest text on the page. Sizes are in px and written to the theme as rem (px ÷ 10).',
 		kind: 'text',
-		fields: typeScaleFields(['headingXXL', 'headingXL', 'headingL', 'headingM', 'headingSM', 'headingS']),
+		fields: typeScaleFields(['displayL', 'displayS', 'headlineL', 'headlineS']),
 	},
 	{
-		id: 'body',
-		title: 'Body scale',
-		intro: 'The body copy and emphasis styles, same mobile-first shape as the headings.',
+		id: 'title-body',
+		title: 'Title & body',
+		intro: 'Section titles and running copy, same px-based sizing.',
 		kind: 'text',
-		fields: typeScaleFields(['bodyM', 'bodyS', 'emphasis']),
+		fields: typeScaleFields(['titleL', 'titleS', 'bodyL', 'bodyS']),
+	},
+	{
+		id: 'caption',
+		title: 'Caption',
+		intro: 'The smallest supporting text.',
+		kind: 'text',
+		fields: typeScaleFields(['captionL', 'captionS']),
 	},
 	{
 		id: 'rhythm',
@@ -144,12 +175,16 @@ export const steps: I.StepDef[] = [
 // Validation
 // ------------
 const HEX_PATTERN = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
+const PX_PATTERN = /^\d+(?:\.\d+)?$/;
 const UNSAFE_PATTERN = /[`\\\r\n]|\$\{/;
 
 export const validateField = (kind: I.FieldKind, value: string): string | null => {
 	const trimmed = value.trim();
 	if (!trimmed) return 'Required';
 	if (kind === 'color' && !HEX_PATTERN.test(trimmed)) return 'Use a hex colour, e.g. #8000FF';
+	if (kind === 'px' && (!PX_PATTERN.test(trimmed) || Number.parseFloat(trimmed) <= 0)) {
+		return 'Use a positive number of px, e.g. 48';
+	}
 	if (UNSAFE_PATTERN.test(trimmed)) return 'Unsupported characters';
 	return null;
 };

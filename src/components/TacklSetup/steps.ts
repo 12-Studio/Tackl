@@ -73,27 +73,28 @@ export const defaultTokens: I.TokenValues = {
 const fieldsFrom = (
 	group: I.TokenGroup,
 	values: Record<string, string>,
-	options?: { labels?: Record<string, string>; prefix?: string }
-): I.FieldDef[] =>
-	Object.keys(values).map(key => ({
-		group,
-		key,
-		label: options?.labels?.[key] ?? (options?.prefix ? `${options.prefix} ${key}` : key),
-	}));
+	labels?: Record<string, string>
+): I.FieldDef[] => Object.keys(values).map(key => ({ group, key, label: labels?.[key] ?? key }));
 
 // NOTE • The type-scale steps surface the everyday knobs — sizes in px
 // (written to the theme as rem via px ÷ 10), the font family, and line-height.
 // Letter-spacing and bp.xl overrides stay in src/theme/tackl/type and survive
-// setup untouched.
+// setup untouched. One section per style keeps the labels short.
 export const FONT_FAMILY_OPTIONS = Object.keys(fontFamilies);
 
-const typeScaleFields = (groups: I.TokenGroup[]): I.FieldDef[] =>
-	groups.flatMap(group => [
-		{ group, key: 'family', label: `${group} font family`, kind: 'select' as const, options: FONT_FAMILY_OPTIONS },
-		{ group, key: 'size', label: `${group} mobile size (px)`, kind: 'px' as const },
-		{ group, key: 'sizeM', label: `${group} desktop size (px)`, kind: 'px' as const },
-		{ group, key: 'lineHeight', label: `${group} line height` },
-	]);
+const typeScaleSections = (groups: I.TokenGroup[]): I.SectionDef[] =>
+	groups.map(group => ({
+		title: group,
+		columns: 4,
+		fields: [
+			{ group, key: 'family', label: 'Family', kind: 'select' as const, options: FONT_FAMILY_OPTIONS },
+			{ group, key: 'size', label: 'Mobile size (px)', kind: 'px' as const },
+			{ group, key: 'sizeM', label: 'Desktop size (px)', kind: 'px' as const },
+			{ group, key: 'lineHeight', label: 'Line height' },
+		],
+	}));
+
+export const stepFields = (step: I.StepDef): I.FieldDef[] => step.sections.flatMap(section => section.fields);
 
 // Steps
 // ------------
@@ -103,29 +104,34 @@ export const steps: I.StepDef[] = [
 		title: 'Brand colours',
 		intro: 'The five colours behind every getBrand() call and --brand-* variable.',
 		kind: 'color',
-		fields: fieldsFrom('brand', baseColors.brand, {
-			labels: {
-				bc1: 'bc1 — primary',
-				bc2: 'bc2 — secondary',
-				bc3: 'bc3 — tertiary',
-				bc4: 'bc4 — light',
-				bc5: 'bc5 — muted',
+		sections: [
+			{
+				fields: fieldsFrom('brand', baseColors.brand, {
+					bc1: 'bc1 — primary',
+					bc2: 'bc2 — secondary',
+					bc3: 'bc3 — tertiary',
+					bc4: 'bc4 — light',
+					bc5: 'bc5 — muted',
+				}),
 			},
-		}),
+		],
 	},
 	{
 		id: 'system',
 		title: 'Global & feedback',
 		intro: 'Base white/black, plus the colours for success, error and warning states.',
 		kind: 'color',
-		fields: [...fieldsFrom('global', baseColors.global), ...fieldsFrom('feedback', baseColors.feedback)],
+		sections: [
+			{ title: 'Global', fields: fieldsFrom('global', baseColors.global) },
+			{ title: 'Feedback', fields: fieldsFrom('feedback', baseColors.feedback) },
+		],
 	},
 	{
 		id: 'type',
 		title: 'Typography',
 		intro: 'Font stacks emitted as --font-* variables. Upload a font file below to add it to the theme — it becomes a var(--…) you can use in these stacks.',
 		kind: 'text',
-		fields: fieldsFrom('fonts', fontFamilies),
+		sections: [{ title: 'Font stacks', fields: fieldsFrom('fonts', fontFamilies) }],
 		hasFontUpload: true,
 	},
 	{
@@ -133,30 +139,30 @@ export const steps: I.StepDef[] = [
 		title: 'Display & headline',
 		intro: 'The biggest text on the page. Sizes are in px and written to the theme as rem (px ÷ 10).',
 		kind: 'text',
-		fields: typeScaleFields(['displayL', 'displayS', 'headlineL', 'headlineS']),
+		sections: typeScaleSections(['displayL', 'displayS', 'headlineL', 'headlineS']),
 	},
 	{
 		id: 'title-body',
 		title: 'Title & body',
 		intro: 'Section titles and running copy, same px-based sizing.',
 		kind: 'text',
-		fields: typeScaleFields(['titleL', 'titleS', 'bodyL', 'bodyS']),
+		sections: typeScaleSections(['titleL', 'titleS', 'bodyL', 'bodyS']),
 	},
 	{
 		id: 'caption',
 		title: 'Caption',
 		intro: 'The smallest supporting text.',
 		kind: 'text',
-		fields: typeScaleFields(['captionL', 'captionS']),
+		sections: typeScaleSections(['captionL', 'captionS']),
 	},
 	{
 		id: 'rhythm',
 		title: 'Spacing & gaps',
 		intro: 'Section spacing (--space-*) and the gap scale (--gap-*). Any CSS length works.',
 		kind: 'text',
-		fields: [
-			...fieldsFrom('space', spaceValues, { prefix: 'space' }),
-			...fieldsFrom('gap', gapValues, { prefix: 'gap' }),
+		sections: [
+			{ title: 'Section spacing', fields: fieldsFrom('space', spaceValues) },
+			{ title: 'Gaps', columns: 4, fields: fieldsFrom('gap', gapValues) },
 		],
 	},
 	{
@@ -164,10 +170,10 @@ export const steps: I.StepDef[] = [
 		title: 'Shape & motion',
 		intro: 'Corner radii (--br-*), durations (--time-*) and easing curves (--easing-*).',
 		kind: 'text',
-		fields: [
-			...fieldsFrom('radius', borderRadiusValues, { prefix: 'radius' }),
-			...fieldsFrom('time', timeValues, { prefix: 'time' }),
-			...fieldsFrom('easing', easingValues),
+		sections: [
+			{ title: 'Radius', columns: 5, fields: fieldsFrom('radius', borderRadiusValues) },
+			{ title: 'Time', columns: 3, fields: fieldsFrom('time', timeValues) },
+			{ title: 'Easing', fields: fieldsFrom('easing', easingValues) },
 		],
 	},
 ];

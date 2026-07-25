@@ -83,13 +83,41 @@ export const Progress = styled(Div).attrs({ as: 'p' })(
 	`
 );
 
-export const Fields = styled(Div)(
+export const Section = styled(Div).attrs({ as: 'fieldset' })(
 	() => css`
+		display: flex;
+		flex-direction: column;
+		gap: ${getGap('s')};
+		margin: 0;
+		min-inline-size: auto;
+		padding: ${getGap('m')};
+
+		border: 1px solid ${getGlobal('white', 8)};
+		border-radius: ${getRadius('m')};
+		background: ${getGlobal('white', 3)};
+	`
+);
+
+export const SectionTitle = styled(Div).attrs({ as: 'legend' })(
+	() => css`
+		${captionL}
+		float: left;
+		width: 100%;
+		margin-bottom: ${getGap('xs')};
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: ${getBrand('bc1')};
+	`
+);
+
+export const Fields = styled(Div)<{ $columns?: number }>(
+	({ $columns }) => css`
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: ${getGap('m')};
 
 		${bp.m` grid-template-columns: repeat(2, 1fr); `}
+		${bp.l` grid-template-columns: repeat(${$columns ?? 2}, 1fr); `}
 	`
 );
 
@@ -322,6 +350,23 @@ export const ReviewHeader = styled(Div)(
 export const ReviewTitle = styled(Div).attrs({ as: 'h3' })(
 	() => css`
 		${captionL}
+	`
+);
+
+export const ReviewBlock = styled(Div)(
+	() => css`
+		display: flex;
+		flex-direction: column;
+		gap: ${getGap('xs')};
+	`
+);
+
+export const ReviewSection = styled(Div).attrs({ as: 'h4' })(
+	() => css`
+		${bodyS}
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: ${getBrand('bc1', 80)};
 	`
 );
 

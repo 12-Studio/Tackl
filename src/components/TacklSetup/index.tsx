@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import { defaultTokens, pxToRem, steps, validateField } from './steps';
+import { defaultTokens, pxToRem, stepFields, steps, validateField } from './steps';
 import * as S from './styles';
 
 // Constants
@@ -69,7 +69,7 @@ const TacklSetup = () => {
 	const step = stepIndex === null ? undefined : steps[stepIndex];
 	const fieldKind = (currentStep: I.StepDef, field: I.FieldDef): I.FieldKind => field.kind ?? currentStep.kind;
 	const hasStepErrors = (currentStep: I.StepDef): boolean =>
-		currentStep.fields.some(
+		stepFields(currentStep).some(
 			field => validateField(fieldKind(currentStep, field), tokens[field.group][field.key]) !== null
 		);
 
@@ -137,7 +137,7 @@ const TacklSetup = () => {
 	const buildPayload = (): I.TokenValues => {
 		const payload = structuredClone(tokens);
 		for (const payloadStep of steps) {
-			for (const field of payloadStep.fields) {
+			for (const field of stepFields(payloadStep)) {
 				if (fieldKind(payloadStep, field) === 'px') {
 					payload[field.group][field.key] = pxToRem(payload[field.group][field.key]);
 				}
@@ -256,63 +256,71 @@ const TacklSetup = () => {
 					<S.StepTitle>{step.title}</S.StepTitle>
 					<S.Intro>{step.intro}</S.Intro>
 
-					<S.Fields>
-						{step.fields.map(field => {
-							const id = `tackl-setup-${field.group}-${field.key}`;
-							const kind = fieldKind(step, field);
-							const value = tokens[field.group][field.key];
-							const error = validateField(kind, value);
-							const onChange = (
-								event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
-							) => setValue(field.group, field.key, event.target.value);
+					{step.sections.map((section, sectionIndex) => (
+						<S.Section key={section.title ?? sectionIndex}>
+							{section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
 
-							return (
-								<S.Field key={id}>
-									<S.Label htmlFor={id}>{field.label}</S.Label>
+							<S.Fields $columns={section.columns}>
+								{section.fields.map(field => {
+									const id = `tackl-setup-${field.group}-${field.key}`;
+									const kind = fieldKind(step, field);
+									const value = tokens[field.group][field.key];
+									const error = validateField(kind, value);
+									const onChange = (
+										event:
+											| React.ChangeEvent<HTMLInputElement>
+											| React.ChangeEvent<HTMLSelectElement>
+									) => setValue(field.group, field.key, event.target.value);
 
-									{kind === 'color' && (
-										<S.ColorRow>
-											<S.Swatch
-												value={toPickerHex(value)}
-												onChange={onChange}
-												aria-label={`${field.label} colour picker`}
-											/>
-											<S.Input
-												id={id}
-												value={value}
-												onChange={onChange}
-												$hasError={error !== null}
-												spellCheck={false}
-											/>
-										</S.ColorRow>
-									)}
+									return (
+										<S.Field key={id}>
+											<S.Label htmlFor={id}>{field.label}</S.Label>
 
-									{kind === 'select' && (
-										<S.Select id={id} value={value} onChange={onChange}>
-											{(field.options ?? []).map(option => (
-												<option key={option} value={option}>
-													{option}
-												</option>
-											))}
-										</S.Select>
-									)}
+											{kind === 'color' && (
+												<S.ColorRow>
+													<S.Swatch
+														value={toPickerHex(value)}
+														onChange={onChange}
+														aria-label={`${field.label} colour picker`}
+													/>
+													<S.Input
+														id={id}
+														value={value}
+														onChange={onChange}
+														$hasError={error !== null}
+														spellCheck={false}
+													/>
+												</S.ColorRow>
+											)}
 
-									{(kind === 'text' || kind === 'px') && (
-										<S.Input
-											id={id}
-											value={value}
-											onChange={onChange}
-											$hasError={error !== null}
-											spellCheck={false}
-											inputMode={kind === 'px' ? 'decimal' : undefined}
-										/>
-									)}
+											{kind === 'select' && (
+												<S.Select id={id} value={value} onChange={onChange}>
+													{(field.options ?? []).map(option => (
+														<option key={option} value={option}>
+															{option}
+														</option>
+													))}
+												</S.Select>
+											)}
 
-									{error && <S.ErrorText>{error}</S.ErrorText>}
-								</S.Field>
-							);
-						})}
-					</S.Fields>
+											{(kind === 'text' || kind === 'px') && (
+												<S.Input
+													id={id}
+													value={value}
+													onChange={onChange}
+													$hasError={error !== null}
+													spellCheck={false}
+													inputMode={kind === 'px' ? 'decimal' : undefined}
+												/>
+											)}
+
+											{error && <S.ErrorText>{error}</S.ErrorText>}
+										</S.Field>
+									);
+								})}
+							</S.Fields>
+						</S.Section>
+					))}
 
 					{step.hasFontUpload && (
 						<S.Upload>
@@ -379,22 +387,28 @@ const TacklSetup = () => {
 								</S.Ghost>
 							</S.ReviewHeader>
 
-							<S.ReviewList>
-								{reviewStep.fields.map(field => (
-									<S.ReviewItem key={`${field.group}-${field.key}`}>
-										<S.ReviewTerm>{field.label}</S.ReviewTerm>
-										<S.ReviewValue>
-											{fieldKind(reviewStep, field) === 'color' && (
-												<S.ReviewSwatch
-													style={{ background: tokens[field.group][field.key] }}
-												/>
-											)}
-											{tokens[field.group][field.key]}
-											{fieldKind(reviewStep, field) === 'px' ? 'px' : ''}
-										</S.ReviewValue>
-									</S.ReviewItem>
-								))}
-							</S.ReviewList>
+							{reviewStep.sections.map((section, sectionIndex) => (
+								<S.ReviewBlock key={section.title ?? sectionIndex}>
+									{section.title && <S.ReviewSection>{section.title}</S.ReviewSection>}
+
+									<S.ReviewList>
+										{section.fields.map(field => (
+											<S.ReviewItem key={`${field.group}-${field.key}`}>
+												<S.ReviewTerm>{field.label}</S.ReviewTerm>
+												<S.ReviewValue>
+													{fieldKind(reviewStep, field) === 'color' && (
+														<S.ReviewSwatch
+															style={{ background: tokens[field.group][field.key] }}
+														/>
+													)}
+													{tokens[field.group][field.key]}
+													{fieldKind(reviewStep, field) === 'px' ? 'px' : ''}
+												</S.ReviewValue>
+											</S.ReviewItem>
+										))}
+									</S.ReviewList>
+								</S.ReviewBlock>
+							))}
 						</S.ReviewGroup>
 					))}
 

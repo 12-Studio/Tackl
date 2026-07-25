@@ -36,12 +36,18 @@ export type FieldDef = {
 	options?: string[];
 };
 
+export type SectionDef = {
+	title?: string;
+	fields: FieldDef[];
+	columns?: number;
+};
+
 export type StepDef = {
 	id: string;
 	title: string;
 	intro: string;
 	kind: FieldKind;
-	fields: FieldDef[];
+	sections: SectionDef[];
 	hasFontUpload?: boolean;
 };
 

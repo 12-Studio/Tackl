@@ -3,7 +3,25 @@
 
 // Exports
 // ------------
-export type TokenGroup = 'brand' | 'global' | 'feedback' | 'fonts' | 'space' | 'gap' | 'radius' | 'time' | 'easing';
+export type TokenGroup =
+	| 'brand'
+	| 'global'
+	| 'feedback'
+	| 'fonts'
+	| 'space'
+	| 'gap'
+	| 'radius'
+	| 'time'
+	| 'easing'
+	| 'headingXXL'
+	| 'headingXL'
+	| 'headingL'
+	| 'headingM'
+	| 'headingSM'
+	| 'headingS'
+	| 'bodyM'
+	| 'bodyS'
+	| 'emphasis';
 
 export type TokenValues = Record<TokenGroup, Record<string, string>>;
 

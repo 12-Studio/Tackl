@@ -7,6 +7,7 @@
 
 // Imports
 // ------------
+import { typeScale } from '@tackl/type';
 import { borderRadiusValues } from '@theme/borderRadius';
 import { baseColors } from '@theme/colors';
 import { easingValues } from '@theme/easing';
@@ -21,6 +22,11 @@ import type * as I from './interface';
 
 // Defaults
 // ------------
+// NOTE • Type-scale entries have optional keys — drop the absent ones so
+// every group is a plain Record<string, string>
+const compact = (values: Record<string, string | undefined>): Record<string, string> =>
+	Object.fromEntries(Object.entries(values).filter(([, value]) => value !== undefined)) as Record<string, string>;
+
 export const defaultTokens: I.TokenValues = {
 	brand: { ...baseColors.brand },
 	global: { ...baseColors.global },
@@ -31,6 +37,15 @@ export const defaultTokens: I.TokenValues = {
 	radius: { ...borderRadiusValues },
 	time: { ...timeValues },
 	easing: { ...easingValues },
+	headingXXL: compact(typeScale.headingXXL),
+	headingXL: compact(typeScale.headingXL),
+	headingL: compact(typeScale.headingL),
+	headingM: compact(typeScale.headingM),
+	headingSM: compact(typeScale.headingSM),
+	headingS: compact(typeScale.headingS),
+	bodyM: compact(typeScale.bodyM),
+	bodyS: compact(typeScale.bodyS),
+	emphasis: compact(typeScale.emphasis),
 };
 
 // Fields
@@ -45,6 +60,17 @@ const fieldsFrom = (
 		key,
 		label: options?.labels?.[key] ?? (options?.prefix ? `${options.prefix} ${key}` : key),
 	}));
+
+// NOTE • The type-scale steps only surface the everyday knobs — letter-spacing
+// and bp.xl overrides stay in src/theme/tackl/type and survive setup untouched
+const TYPE_SCALE_KEYS = [
+	{ key: 'size', label: 'mobile size' },
+	{ key: 'sizeM', label: 'desktop size' },
+	{ key: 'lineHeight', label: 'line height' },
+];
+
+const typeScaleFields = (groups: I.TokenGroup[]): I.FieldDef[] =>
+	groups.flatMap(group => TYPE_SCALE_KEYS.map(({ key, label }) => ({ group, key, label: `${group} ${label}` })));
 
 // Steps
 // ------------
@@ -77,6 +103,20 @@ export const steps: I.StepDef[] = [
 		intro: 'Font stacks emitted as --font-* variables. Load the actual font files with next/font in src/theme/fonts.',
 		kind: 'text',
 		fields: fieldsFrom('fonts', fontFamilies),
+	},
+	{
+		id: 'headings',
+		title: 'Heading scale',
+		intro: 'Mobile-first sizes and line-heights for the heading styles. Letter-spacing and bp.xl overrides stay editable in src/theme/tackl/type.',
+		kind: 'text',
+		fields: typeScaleFields(['headingXXL', 'headingXL', 'headingL', 'headingM', 'headingSM', 'headingS']),
+	},
+	{
+		id: 'body',
+		title: 'Body scale',
+		intro: 'The body copy and emphasis styles, same mobile-first shape as the headings.',
+		kind: 'text',
+		fields: typeScaleFields(['bodyM', 'bodyS', 'emphasis']),
 	},
 	{
 		id: 'rhythm',

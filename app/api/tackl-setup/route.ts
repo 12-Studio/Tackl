@@ -15,11 +15,29 @@ import { NextResponse } from 'next/server';
 
 // Types
 // ------------
-type TokenGroup = 'brand' | 'global' | 'feedback' | 'fonts' | 'space' | 'gap' | 'radius' | 'time' | 'easing';
+type TokenGroup =
+	| 'brand'
+	| 'global'
+	| 'feedback'
+	| 'fonts'
+	| 'space'
+	| 'gap'
+	| 'radius'
+	| 'time'
+	| 'easing'
+	| 'headingXXL'
+	| 'headingXL'
+	| 'headingL'
+	| 'headingM'
+	| 'headingSM'
+	| 'headingS'
+	| 'bodyM'
+	| 'bodyS'
+	| 'emphasis';
 
 type TokenValues = Record<TokenGroup, Record<string, string>>;
 
-type GroupSpec = { keys: readonly string[]; kind: 'color' | 'text' };
+type GroupSpec = { required: readonly string[]; optional?: readonly string[]; kind: 'color' | 'text' };
 
 // Constants
 // ------------
@@ -27,16 +45,33 @@ const ROOT = process.cwd();
 
 // NOTE • Mirrors the token keys in src/theme — safe to hardcode because this
 // route only exists until first-run setup completes
+// NOTE • Type-scale entries share one shape — sizes/line-height are required,
+// letter-spacing and the bp.xl overrides only exist on styles that opt in
+const TYPE_SCALE_SPEC: GroupSpec = {
+	required: ['size', 'sizeM', 'lineHeight'],
+	optional: ['letterSpacing', 'letterSpacingM', 'sizeXl', 'letterSpacingXl'],
+	kind: 'text',
+};
+
 const GROUPS: Record<TokenGroup, GroupSpec> = {
-	brand: { keys: ['bc1', 'bc2', 'bc3', 'bc4', 'bc5'], kind: 'color' },
-	global: { keys: ['white', 'black'], kind: 'color' },
-	feedback: { keys: ['positive', 'negative', 'warning'], kind: 'color' },
-	fonts: { keys: ['heading', 'body', 'mono', 'script'], kind: 'text' },
-	space: { keys: ['s', 'm', 'l', 'xl', 'col'], kind: 'text' },
-	gap: { keys: ['xxs', 'xs', 's', 'sm', 'm', 'l', 'xl', 'xxl', 'huge', 'uber'], kind: 'text' },
-	radius: { keys: ['xs', 's', 'm', 'l', 'round'], kind: 'text' },
-	time: { keys: ['s', 'm', 'l'], kind: 'text' },
-	easing: { keys: ['bezzy', 'bezzy2', 'bezzy3'], kind: 'text' },
+	brand: { required: ['bc1', 'bc2', 'bc3', 'bc4', 'bc5'], kind: 'color' },
+	global: { required: ['white', 'black'], kind: 'color' },
+	feedback: { required: ['positive', 'negative', 'warning'], kind: 'color' },
+	fonts: { required: ['heading', 'body', 'mono', 'script'], kind: 'text' },
+	space: { required: ['s', 'm', 'l', 'xl', 'col'], kind: 'text' },
+	gap: { required: ['xxs', 'xs', 's', 'sm', 'm', 'l', 'xl', 'xxl', 'huge', 'uber'], kind: 'text' },
+	radius: { required: ['xs', 's', 'm', 'l', 'round'], kind: 'text' },
+	time: { required: ['s', 'm', 'l'], kind: 'text' },
+	easing: { required: ['bezzy', 'bezzy2', 'bezzy3'], kind: 'text' },
+	headingXXL: TYPE_SCALE_SPEC,
+	headingXL: TYPE_SCALE_SPEC,
+	headingL: TYPE_SCALE_SPEC,
+	headingM: TYPE_SCALE_SPEC,
+	headingSM: TYPE_SCALE_SPEC,
+	headingS: TYPE_SCALE_SPEC,
+	bodyM: TYPE_SCALE_SPEC,
+	bodyS: TYPE_SCALE_SPEC,
+	emphasis: TYPE_SCALE_SPEC,
 };
 
 const TOKEN_TARGETS: {
@@ -59,6 +94,21 @@ const TOKEN_TARGETS: {
 	},
 	{ file: 'src/theme/time/index.ts', exportName: 'timeValues', build: tokens => tokens.time },
 	{ file: 'src/theme/easing/index.ts', exportName: 'easingValues', build: tokens => tokens.easing },
+	{
+		file: 'src/theme/tackl/type/index.ts',
+		exportName: 'typeScale',
+		build: tokens => ({
+			headingXXL: tokens.headingXXL,
+			headingXL: tokens.headingXL,
+			headingL: tokens.headingL,
+			headingM: tokens.headingM,
+			headingSM: tokens.headingSM,
+			headingS: tokens.headingS,
+			bodyM: tokens.bodyM,
+			bodyS: tokens.bodyS,
+			emphasis: tokens.emphasis,
+		}),
+	},
 ];
 
 const WIZARD_PATHS = ['src/components/TacklSetup', 'app/api/tackl-setup'];
@@ -82,12 +132,24 @@ const parseTokens = (input: unknown): TokenValues | null => {
 		const valueRecord = values as Record<string, unknown>;
 		const parsed: Record<string, string> = {};
 
-		for (const key of spec.keys) {
+		for (const key of spec.required) {
 			const value = valueRecord[key];
 			if (typeof value !== 'string') return null;
 			const trimmed = value.trim();
 			if (!trimmed || UNSAFE_PATTERN.test(trimmed)) return null;
 			if (spec.kind === 'color' && !HEX_PATTERN.test(trimmed)) return null;
+			parsed[key] = trimmed;
+		}
+
+		// NOTE • Optional keys may be absent or empty (= omitted from the output),
+		// but when present they get the same safety checks
+		for (const key of spec.optional ?? []) {
+			const value = valueRecord[key];
+			if (value === undefined) continue;
+			if (typeof value !== 'string') return null;
+			const trimmed = value.trim();
+			if (!trimmed) continue;
+			if (UNSAFE_PATTERN.test(trimmed)) return null;
 			parsed[key] = trimmed;
 		}
 

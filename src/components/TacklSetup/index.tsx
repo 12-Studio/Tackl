@@ -14,8 +14,9 @@ import * as S from './styles';
 // ------------
 const ENDPOINT = '/api/tackl-setup';
 
-// NOTE • Wizard group → CSS variable prefix on :root (radius is --br-*, fonts are --font-*)
-const VAR_PREFIX: Record<I.TokenGroup, string> = {
+// NOTE • Wizard group → CSS variable prefix on :root (radius is --br-*, fonts are
+// --font-*). Type-scale groups are absent — they compile into the styles, not vars.
+const VAR_PREFIX: Partial<Record<I.TokenGroup, string>> = {
 	brand: 'brand',
 	global: 'global',
 	feedback: 'feedback',
@@ -58,9 +59,11 @@ const TacklSetup = () => {
 	const previewVars = useMemo(
 		() =>
 			Object.fromEntries(
-				(Object.keys(tokens) as I.TokenGroup[]).flatMap(group =>
-					Object.entries(tokens[group]).map(([key, value]) => [`--${VAR_PREFIX[group]}-${key}`, value])
-				)
+				(Object.keys(tokens) as I.TokenGroup[]).flatMap(group => {
+					const prefix = VAR_PREFIX[group];
+					if (!prefix) return [];
+					return Object.entries(tokens[group]).map(([key, value]) => [`--${prefix}-${key}`, value]);
+				})
 			) as React.CSSProperties,
 		[tokens]
 	);

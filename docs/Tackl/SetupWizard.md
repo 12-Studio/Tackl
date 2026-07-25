@@ -2,8 +2,9 @@
 
 The first time you pull down Tackl and run `bun dev`, a full-screen setup wizard
 greets you in the browser. It walks through every theme token like a form —
-brand colours, global & feedback colours, font stacks, spacing, gaps, radii,
-durations and easing curves — and previews your values live as you type.
+brand colours, global & feedback colours, font stacks, the heading and body
+type scales, spacing, gaps, radii, durations and easing curves — and previews
+your values live as you type.
 
 ## What it does
 
@@ -12,9 +13,15 @@ durations and easing curves — and previews your values live as you type.
 - **Finishing writes the theme.** The wizard POSTs to a dev-only API route
   (`app/api/tackl-setup`) that rewrites the raw value objects in place:
   `baseColors`, `fontFamilies`, `spaceValues`, `gapValues`,
-  `borderRadiusValues`, `timeValues` and `easingValues`. Everything downstream
-  (`--brand-*` CSS variables, `getBrand()`, the theme object) updates
-  automatically because those objects are the single source of truth.
+  `borderRadiusValues`, `timeValues`, `easingValues` and the `typeScale`
+  behind `headingXXL`…`emphasis` in `src/theme/tackl/type`. Everything
+  downstream (`--brand-*` CSS variables, `getBrand()`, the theme object, the
+  type styles) updates automatically because those objects are the single
+  source of truth.
+- **The type scale steps cover the everyday knobs** — mobile size, desktop
+  size (`bp.m`) and line-height per style. Letter-spacing and the `bp.xl`
+  overrides stay in the `typeScale` object and pass through setup untouched;
+  edit them there any time.
 - **Then it deletes itself.** On finish (or skip), the route removes
   `src/components/TacklSetup`, the API route folder and the marked
   `tackl:setup-*` lines in `app/(site)/Providers.tsx`. Hot reload picks up the

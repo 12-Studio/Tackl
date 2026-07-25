@@ -344,7 +344,7 @@ const TacklSetup = () => {
 								<S.Row key={row.label ?? rowIndex}>
 									{row.label && <S.RowLabel>{row.label}</S.RowLabel>}
 
-									<S.Fields $columns={section.columns}>
+									<S.Fields>
 										{row.fields.map(field => {
 											const id = `tackl-setup-${field.group}-${field.key}`;
 											const kind = fieldKind(step, field);

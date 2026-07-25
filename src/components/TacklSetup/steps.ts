@@ -160,7 +160,6 @@ const breakpointRow = (group: I.TokenGroup, label: string, suffix: '' | 'M' | 'X
 const typeScaleSections = (groups: I.TokenGroup[]): I.SectionDef[] =>
 	groups.map(group => ({
 		title: group,
-		columns: 3,
 		rows: [
 			breakpointRow(group, 'Base', ''),
 			breakpointRow(group, 'From bp.m', 'M'),
@@ -195,23 +194,33 @@ export const steps: I.StepDef[] = [
 		],
 	},
 	{
-		id: 'rhythm',
-		title: 'Spacing & gaps',
-		intro: 'Section spacing (--space-*) and the gap scale (--gap-*). Any CSS length works.',
+		id: 'spacing',
+		title: 'Spacing',
+		intro: 'Section spacing (--space-*) — the vertical rhythm between page sections. Any CSS length works.',
 		kind: 'text',
-		sections: [
-			{ title: 'Section spacing', rows: [{ fields: fieldsFrom('space', spaceValues) }] },
-			{ title: 'Gaps', columns: 4, rows: [{ fields: fieldsFrom('gap', gapValues) }] },
-		],
+		sections: [{ rows: [{ fields: fieldsFrom('space', spaceValues) }] }],
+	},
+	{
+		id: 'gaps',
+		title: 'Gaps',
+		intro: 'The gap scale (--gap-*) — the small spacing used inside components and layouts.',
+		kind: 'text',
+		sections: [{ rows: [{ fields: fieldsFrom('gap', gapValues) }] }],
+	},
+	{
+		id: 'radius',
+		title: 'Radius',
+		intro: 'Corner radii (--br-*), from subtle rounding to fully round.',
+		kind: 'text',
+		sections: [{ rows: [{ fields: fieldsFrom('radius', borderRadiusValues) }] }],
 	},
 	{
 		id: 'motion',
-		title: 'Shape & motion',
-		intro: 'Corner radii (--br-*), durations (--time-*) and easing curves (--easing-*).',
+		title: 'Motion',
+		intro: 'Durations (--time-*) and easing curves (--easing-*) behind every transition.',
 		kind: 'text',
 		sections: [
-			{ title: 'Radius', columns: 5, rows: [{ fields: fieldsFrom('radius', borderRadiusValues) }] },
-			{ title: 'Time', columns: 3, rows: [{ fields: fieldsFrom('time', timeValues) }] },
+			{ title: 'Timing', rows: [{ fields: fieldsFrom('time', timeValues) }] },
 			{ title: 'Easing', rows: [{ fields: fieldsFrom('easing', easingValues) }] },
 		],
 	},

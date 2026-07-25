@@ -46,7 +46,6 @@ export type RowDef = {
 export type SectionDef = {
 	title?: string;
 	rows: RowDef[];
-	columns?: number;
 	dynamic?: 'brand';
 };
 

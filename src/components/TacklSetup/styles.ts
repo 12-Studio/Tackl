@@ -131,14 +131,13 @@ export const RowLabel = styled(Div).attrs({ as: 'p' })(
 	`
 );
 
-export const Fields = styled(Div)<{ $columns?: number }>(
-	({ $columns }) => css`
-		display: grid;
-		grid-template-columns: 1fr;
+// NOTE • Fields stack one per line at every width — a linear form reads
+// faster than a grid of inputs
+export const Fields = styled(Div)(
+	() => css`
+		display: flex;
+		flex-direction: column;
 		gap: ${getGap('m')};
-
-		${bp.m` grid-template-columns: repeat(2, 1fr); `}
-		${bp.l` grid-template-columns: repeat(${$columns ?? 2}, 1fr); `}
 	`
 );
 

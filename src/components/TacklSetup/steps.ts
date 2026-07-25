@@ -173,7 +173,48 @@ export const stepFields = (step: I.StepDef): I.FieldDef[] =>
 
 // Steps
 // ------------
+// NOTE • Ordered by cognitive lift — quick wins (colours, spacing, motion)
+// first, fonts and the type scale last. Fonts stay ahead of the type steps
+// because the family dropdowns build on the roles assigned there.
 export const steps: I.StepDef[] = [
+	{
+		id: 'brand',
+		title: 'Brand colours',
+		intro: 'The colours behind every getBrand() call and --brand-* variable. Add as many as the project needs, or remove the ones it doesn’t.',
+		kind: 'color',
+		sections: [{ dynamic: 'brand', rows: [] }],
+	},
+	{
+		id: 'system',
+		title: 'Global & feedback',
+		intro: 'Base white/black, plus the colours for success, error and warning states.',
+		kind: 'color',
+		sections: [
+			{ title: 'Global', rows: [{ fields: fieldsFrom('global', baseColors.global) }] },
+			{ title: 'Feedback', rows: [{ fields: fieldsFrom('feedback', baseColors.feedback) }] },
+		],
+	},
+	{
+		id: 'rhythm',
+		title: 'Spacing & gaps',
+		intro: 'Section spacing (--space-*) and the gap scale (--gap-*). Any CSS length works.',
+		kind: 'text',
+		sections: [
+			{ title: 'Section spacing', rows: [{ fields: fieldsFrom('space', spaceValues) }] },
+			{ title: 'Gaps', columns: 4, rows: [{ fields: fieldsFrom('gap', gapValues) }] },
+		],
+	},
+	{
+		id: 'motion',
+		title: 'Shape & motion',
+		intro: 'Corner radii (--br-*), durations (--time-*) and easing curves (--easing-*).',
+		kind: 'text',
+		sections: [
+			{ title: 'Radius', columns: 5, rows: [{ fields: fieldsFrom('radius', borderRadiusValues) }] },
+			{ title: 'Time', columns: 3, rows: [{ fields: fieldsFrom('time', timeValues) }] },
+			{ title: 'Easing', rows: [{ fields: fieldsFrom('easing', easingValues) }] },
+		],
+	},
 	{
 		id: 'type',
 		title: 'Fonts',
@@ -217,44 +258,6 @@ export const steps: I.StepDef[] = [
 		intro: 'The smallest supporting text.',
 		kind: 'text',
 		sections: typeScaleSections(['captionL', 'captionS']),
-	},
-	{
-		id: 'brand',
-		title: 'Brand colours',
-		intro: 'The colours behind every getBrand() call and --brand-* variable. Add as many as the project needs, or remove the ones it doesn’t.',
-		kind: 'color',
-		sections: [{ dynamic: 'brand', rows: [] }],
-	},
-	{
-		id: 'system',
-		title: 'Global & feedback',
-		intro: 'Base white/black, plus the colours for success, error and warning states.',
-		kind: 'color',
-		sections: [
-			{ title: 'Global', rows: [{ fields: fieldsFrom('global', baseColors.global) }] },
-			{ title: 'Feedback', rows: [{ fields: fieldsFrom('feedback', baseColors.feedback) }] },
-		],
-	},
-	{
-		id: 'rhythm',
-		title: 'Spacing & gaps',
-		intro: 'Section spacing (--space-*) and the gap scale (--gap-*). Any CSS length works.',
-		kind: 'text',
-		sections: [
-			{ title: 'Section spacing', rows: [{ fields: fieldsFrom('space', spaceValues) }] },
-			{ title: 'Gaps', columns: 4, rows: [{ fields: fieldsFrom('gap', gapValues) }] },
-		],
-	},
-	{
-		id: 'motion',
-		title: 'Shape & motion',
-		intro: 'Corner radii (--br-*), durations (--time-*) and easing curves (--easing-*).',
-		kind: 'text',
-		sections: [
-			{ title: 'Radius', columns: 5, rows: [{ fields: fieldsFrom('radius', borderRadiusValues) }] },
-			{ title: 'Time', columns: 3, rows: [{ fields: fieldsFrom('time', timeValues) }] },
-			{ title: 'Easing', rows: [{ fields: fieldsFrom('easing', easingValues) }] },
-		],
 	},
 ];
 

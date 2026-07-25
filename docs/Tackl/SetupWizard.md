@@ -1,10 +1,10 @@
 # The Setup Wizard
 
 The first time you pull down Tackl and run `bun dev`, a full-screen setup wizard
-greets you in the browser. It walks through every theme token like a form —
-fonts first, then the type scale, brand colours, global & feedback colours,
-spacing, gaps, radii, durations and easing curves — and previews your values
-live as you type.
+greets you in the browser. It walks through every theme token like a form,
+ordered by cognitive lift: the quick wins first (brand, global & feedback
+colours, spacing, gaps, radii, durations and easing curves), then fonts and
+the per-breakpoint type scale at the end — with live previews as you type.
 
 ## What it does
 
@@ -25,7 +25,7 @@ live as you type.
   override fields simply inherit from the block below. **Sizes are entered
   in px** and written as rem (px ÷ 10, matching the 10px html base); CSS
   sizes like `clamp(…)` pass through as-is.
-- **Fonts come first and are passed by name only.** The `fontVariables`
+- **Fonts are passed by name only.** The `fontVariables`
   registry in `src/theme/fonts` lists every available font (`inter` out of
   the box). Uploading a font drops the file in `src/theme/fonts/custom/`,
   generates its `next/font` `localFont` export (weight 400 — add more

@@ -2,47 +2,56 @@
 // ------------
 
 import styled, { css } from 'styled-components';
-import { Div } from '@/theme/tackl';
+import { bp, Div, getBrand, getEase, getGap, getGlobal, getRadius, getTime } from '@/theme/tackl';
+import { captionL } from '@/theme/tackl/type';
 
 // Exports
 // ------------
 export const Jacket = styled(Div).attrs({ as: 'aside' })(
-	props => css`
+	() => css`
 		position: fixed;
-		inset: 2.4rem;
-		top: auto;
+		inset: auto ${getGap('l')} ${getGap('l')} ${getGap('l')};
 		z-index: 12;
 
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 2.4rem;
-		padding: 2.4rem;
+		flex-direction: column;
+		gap: ${getGap('m')};
+		padding: ${getGap('l')};
 
-		background: ${props.theme.colors.global.white};
-		border-radius: 2.4rem;
-		height: 8.4rem;
+		background: ${getGlobal('white')};
+		color: ${getGlobal('black')};
+		border-radius: ${getRadius('l')};
+
+		${bp.m`
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+		`}
 
 		p {
-			font-size: 1.4rem;
-			line-height: 1.4;
-			font-weight: 500;
-			text-transform: uppercase;
-			font-family: ${props.theme.font.family.heading};
+			${captionL}
 		}
 
 		> div {
 			display: flex;
-			justify-content: space-between;
 			align-items: center;
-			gap: 2.4rem;
+			gap: ${getGap('s')};
 		}
 
+		/* NOTE • Accept and Decline share one style on purpose — equal
+		prominence keeps the choice genuinely free */
 		button {
-			border-radius: 1.2rem;
-			color: ${props.theme.colors.global.white};
-			padding: 1.2rem 2.4rem;
-			background: ${props.theme.colors.brand.bc1};
+			${captionL}
+			padding: ${getGap('s')} ${getGap('l')};
+			border-radius: ${getRadius('round')};
+			background: ${getBrand('bc1')};
+			color: ${getGlobal('white')};
+			cursor: pointer;
+			transition: opacity ${getTime('s')} ${getEase('bezzy')};
+
+			&:hover {
+				opacity: 0.85;
+			}
 		}
 	`
 );

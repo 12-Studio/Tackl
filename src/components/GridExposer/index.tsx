@@ -17,15 +17,15 @@
  * - Ctrl + F: Toggle color scheme
  *
  * Constants:
- * - GRID_SIZE: Total number of columns (12)
- * - MOBILE_COLUMNS: Number of columns for mobile view (2)
- * - TABLET_COLUMNS: Number of columns for tablet view (6)
+ * - Column counts come straight from theme.grid.columns, so the overlay
+ *   always matches the real Waffl grid (same tokens drive both)
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { theme } from '@theme';
 // Imports
 // ------
-import { Grid } from '@/theme/tackl/waffl';
+import Grid from '@waffl';
+import { useCallback, useEffect, useState } from 'react';
 
 // Styles
 // ------
@@ -33,9 +33,11 @@ import { Col, Jacket } from './styles';
 
 // Constants
 // ------
-const GRID_SIZE = 12;
-const MOBILE_COLUMNS = 2;
-const TABLET_COLUMNS = 6;
+// NOTE • Derived from the same tokens the Waffl grid uses — edit
+// theme.grid.columns and this overlay follows
+const GRID_SIZE = theme.grid.columns?.l ?? 12;
+const MOBILE_COLUMNS = theme.grid.columns?.s ?? 2;
+const TABLET_COLUMNS = theme.grid.columns?.m ?? 6;
 
 // Component
 // ------

@@ -2,7 +2,7 @@
 
 // Imports
 // ------------
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 // Styles + Interfaces
 // ------------
@@ -13,6 +13,7 @@ import * as S from './styles';
 // Constants
 // ------------
 const ENDPOINT = '/api/tackl-setup';
+const STORAGE_KEY = 'tackl-setup';
 
 // NOTE • Wizard group → CSS variable prefix on :root (radius is --br-*, fonts are
 // --font-*). Type-scale groups are absent — they compile into the styles, not vars.
@@ -85,6 +86,47 @@ const TacklSetup = () => {
 			) as React.CSSProperties,
 		[tokens]
 	);
+
+	// Effects
+	// NOTE • Editing the root layout (font upload) hard-reloads the page, so
+	// progress lives in sessionStorage until setup completes
+	useEffect(() => {
+		const raw = sessionStorage.getItem(STORAGE_KEY);
+		if (!raw) return;
+
+		try {
+			const stored = JSON.parse(raw) as Partial<{
+				screen: I.Screen;
+				tokens: I.TokenValues;
+				uploadedFonts: I.UploadedFont[];
+			}>;
+			const storedTokens = stored.tokens;
+
+			if (storedTokens) {
+				setTokens(
+					prev =>
+						Object.fromEntries(
+							(Object.keys(prev) as I.TokenGroup[]).map(group => [
+								group,
+								{ ...prev[group], ...storedTokens[group] },
+							])
+						) as I.TokenValues
+				);
+			}
+			if (stored.uploadedFonts) setUploadedFonts(stored.uploadedFonts);
+			if (stored.screen !== undefined) setScreen(stored.screen);
+		} catch {
+			sessionStorage.removeItem(STORAGE_KEY);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (screen === 'done') {
+			sessionStorage.removeItem(STORAGE_KEY);
+			return;
+		}
+		sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ screen, tokens, uploadedFonts }));
+	}, [screen, tokens, uploadedFonts]);
 
 	// Handlers
 	const setValue = (group: I.TokenGroup, key: string, value: string) => {

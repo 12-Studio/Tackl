@@ -38,8 +38,13 @@ export const defaultTokens: I.TokenValues = {
 const fieldsFrom = (
 	group: I.TokenGroup,
 	values: Record<string, string>,
-	labels?: Record<string, string>
-): I.FieldDef[] => Object.keys(values).map(key => ({ group, key, label: labels?.[key] ?? key }));
+	options?: { labels?: Record<string, string>; prefix?: string }
+): I.FieldDef[] =>
+	Object.keys(values).map(key => ({
+		group,
+		key,
+		label: options?.labels?.[key] ?? (options?.prefix ? `${options.prefix} ${key}` : key),
+	}));
 
 // Steps
 // ------------
@@ -50,11 +55,13 @@ export const steps: I.StepDef[] = [
 		intro: 'The five colours behind every getBrand() call and --brand-* variable.',
 		kind: 'color',
 		fields: fieldsFrom('brand', baseColors.brand, {
-			bc1: 'bc1 — primary',
-			bc2: 'bc2 — secondary',
-			bc3: 'bc3 — tertiary',
-			bc4: 'bc4 — light',
-			bc5: 'bc5 — muted',
+			labels: {
+				bc1: 'bc1 — primary',
+				bc2: 'bc2 — secondary',
+				bc3: 'bc3 — tertiary',
+				bc4: 'bc4 — light',
+				bc5: 'bc5 — muted',
+			},
 		}),
 	},
 	{
@@ -76,7 +83,10 @@ export const steps: I.StepDef[] = [
 		title: 'Spacing & gaps',
 		intro: 'Section spacing (--space-*) and the gap scale (--gap-*). Any CSS length works.',
 		kind: 'text',
-		fields: [...fieldsFrom('space', spaceValues), ...fieldsFrom('gap', gapValues)],
+		fields: [
+			...fieldsFrom('space', spaceValues, { prefix: 'space' }),
+			...fieldsFrom('gap', gapValues, { prefix: 'gap' }),
+		],
 	},
 	{
 		id: 'motion',
@@ -84,8 +94,8 @@ export const steps: I.StepDef[] = [
 		intro: 'Corner radii (--br-*), durations (--time-*) and easing curves (--easing-*).',
 		kind: 'text',
 		fields: [
-			...fieldsFrom('radius', borderRadiusValues),
-			...fieldsFrom('time', timeValues),
+			...fieldsFrom('radius', borderRadiusValues, { prefix: 'radius' }),
+			...fieldsFrom('time', timeValues, { prefix: 'time' }),
 			...fieldsFrom('easing', easingValues),
 		],
 	},

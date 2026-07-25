@@ -173,8 +173,8 @@ export const stepFields = (step: I.StepDef): I.FieldDef[] =>
 // Steps
 // ------------
 // NOTE • Ordered by cognitive lift — quick wins (colours, spacing, motion)
-// first, fonts dead last. The type steps reference roles (heading/body/…),
-// so they don't need the role → font mapping decided yet.
+// first, then the type work: fonts are added and assigned to roles right
+// before the type-scale steps that build on them.
 export const steps: I.StepDef[] = [
 	{
 		id: 'brand',
@@ -225,6 +225,29 @@ export const steps: I.StepDef[] = [
 		],
 	},
 	{
+		id: 'type',
+		title: 'Fonts',
+		intro: 'Upload font files to add them to the theme, then assign each role a font by name — the type steps that follow build on these roles.',
+		kind: 'text',
+		sections: [
+			{
+				title: 'Roles',
+				rows: [
+					{
+						fields: Object.keys(fontFamilies).map(role => ({
+							group: 'fonts' as const,
+							key: role,
+							label: role,
+							kind: 'select' as const,
+							optionsKey: 'fonts' as const,
+						})),
+					},
+				],
+			},
+		],
+		hasFontUpload: true,
+	},
+	{
 		id: 'display',
 		title: 'Display & headline',
 		intro: 'The biggest text on the page. Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from the breakpoint below.',
@@ -244,29 +267,6 @@ export const steps: I.StepDef[] = [
 		intro: 'The smallest supporting text.',
 		kind: 'text',
 		sections: typeScaleSections(['captionL', 'captionS']),
-	},
-	{
-		id: 'type',
-		title: 'Fonts',
-		intro: 'Upload font files to add them to the theme, then assign each role a font by name — the type styles you just set pick these roles up automatically.',
-		kind: 'text',
-		sections: [
-			{
-				title: 'Roles',
-				rows: [
-					{
-						fields: Object.keys(fontFamilies).map(role => ({
-							group: 'fonts' as const,
-							key: role,
-							label: role,
-							kind: 'select' as const,
-							optionsKey: 'fonts' as const,
-						})),
-					},
-				],
-			},
-		],
-		hasFontUpload: true,
 	},
 ];
 

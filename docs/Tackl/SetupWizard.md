@@ -3,8 +3,10 @@
 The first time you pull down Tackl and run `bun dev`, a full-screen setup wizard
 greets you in the browser. It walks through every theme token like a form,
 ordered by cognitive lift: the quick wins first (brand, global & feedback
-colours, spacing, gaps, radii, durations and easing curves), then fonts and
-the per-breakpoint type scale at the end — with live previews as you type.
+colours, spacing, gaps, radii, durations and easing curves), then the
+per-breakpoint type scale, and fonts dead last — with live previews as you
+type. The type styles reference roles (heading/body/mono/script), so the
+role → font mapping can safely be the final decision.
 
 ## What it does
 

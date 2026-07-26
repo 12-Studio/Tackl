@@ -157,20 +157,17 @@ const breakpointRow = (group: I.TokenGroup, label: string, suffix: '' | 'M' | 'X
 	};
 };
 
-// NOTE • One step per type style — a whole style fits on one screen
+// NOTE • One step per type style — the three breakpoint blocks sit side by
+// side as columns, so a whole style fits on one screen
 const typeScaleStep = (group: I.TokenGroup, description: string): I.StepDef => ({
 	id: `type-${group}`,
 	title: group,
 	intro: `${description} Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from the smaller breakpoint.`,
 	kind: 'text',
 	sections: [
-		{
-			rows: [
-				breakpointRow(group, 'Base', ''),
-				breakpointRow(group, 'From bp.m', 'M'),
-				breakpointRow(group, 'From bp.xl', 'Xl'),
-			],
-		},
+		{ title: 'Base', rows: [breakpointRow(group, '', '')] },
+		{ title: 'From bp.m', rows: [breakpointRow(group, '', 'M')] },
+		{ title: 'From bp.xl', rows: [breakpointRow(group, '', 'Xl')] },
 	],
 });
 

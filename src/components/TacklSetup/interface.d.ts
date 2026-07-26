@@ -63,5 +63,3 @@ export type UploadedFont = {
 	cssVariable: string;
 	varRef: string;
 };
-
-export type Screen = 'welcome' | 'review' | 'done' | number;

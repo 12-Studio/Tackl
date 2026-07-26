@@ -2,6 +2,7 @@
 
 // Imports
 // ------------
+import gsap from 'gsap';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 // Styles + Interfaces
@@ -22,6 +23,10 @@ import * as S from './styles';
 // ------------
 const ENDPOINT = '/api/tackl-setup';
 const STORAGE_KEY = 'tackl-setup';
+
+// NOTE • Slide 0 is the welcome, then one slide per step, review last
+const SLIDE_COUNT = steps.length + 2;
+const REVIEW_SLIDE = SLIDE_COUNT - 1;
 
 // NOTE • Wizard group → CSS variable prefix on :root (radius is --br-*, fonts are
 // --font-*). Type-scale groups are absent — they compile into the styles, not vars.
@@ -55,15 +60,20 @@ const readFileAsBase64 = (file: File): Promise<string> =>
 
 // Component
 // ------------
-// NOTE • First-run theme setup — walks through the theme tokens like a form,
-// writes them into src/theme via /api/tackl-setup, then deletes itself
-// (component, API route and the marked lines in Providers.tsx).
+// NOTE • First-run theme setup — every screen is a fullscreen slide on a
+// GSAP-driven track (swipe or use the footer to move freely both ways).
+// Finishing writes the tokens into src/theme via /api/tackl-setup, then the
+// wizard deletes itself (component, API route and the marked lines in
+// Providers.tsx).
 const TacklSetup = () => {
 	// Refs
 	const fileRef = useRef<HTMLInputElement>(null);
+	const trackRef = useRef<HTMLDivElement>(null);
+	const touchStart = useRef<{ x: number; y: number } | null>(null);
 
 	// State
-	const [screen, setScreen] = useState<I.Screen>('welcome');
+	const [slide, setSlide] = useState(0);
+	const [isDone, setIsDone] = useState(false);
 	const [tokens, setTokens] = useState<I.TokenValues>(defaultTokens);
 	const [isSaving, setIsSaving] = useState(false);
 	const [saveError, setSaveError] = useState<string | null>(null);
@@ -74,9 +84,8 @@ const TacklSetup = () => {
 	const [availableFonts, setAvailableFonts] = useState<string[]>(DEFAULT_AVAILABLE_FONTS);
 
 	// Derived
-	const stepIndex = typeof screen === 'number' ? screen : null;
-	const step = stepIndex === null ? undefined : steps[stepIndex];
 	const fieldKind = (currentStep: I.StepDef, field: I.FieldDef): I.FieldKind => field.kind ?? currentStep.kind;
+
 	// NOTE • The brand section is dynamic — its fields come from state, so any
 	// added/removed colours show up everywhere (fields, validation, review)
 	const sectionRows = (section: I.SectionDef): I.RowDef[] =>
@@ -101,6 +110,9 @@ const TacklSetup = () => {
 				validateField(fieldKind(currentStep, field), tokens[field.group][field.key], field.optional) !== null
 		);
 
+	// NOTE • Navigation is free — validation only gates the finish
+	const invalidSteps = steps.filter(hasStepErrors);
+
 	// NOTE • Overrides the :root tokens inside the overlay only — the wizard
 	// previews itself with the values being typed
 	const previewVars = useMemo(
@@ -115,53 +127,34 @@ const TacklSetup = () => {
 		[tokens]
 	);
 
-	// Effects
-	// NOTE • Editing the root layout (font upload) hard-reloads the page, so
-	// progress lives in sessionStorage until setup completes
-	useEffect(() => {
-		const raw = sessionStorage.getItem(STORAGE_KEY);
-		if (!raw) return;
-
-		try {
-			const stored = JSON.parse(raw) as Partial<{
-				screen: I.Screen;
-				tokens: I.TokenValues;
-				uploadedFonts: I.UploadedFont[];
-				availableFonts: string[];
-			}>;
-			const storedTokens = stored.tokens;
-
-			if (storedTokens) {
-				setTokens(
-					prev =>
-						Object.fromEntries(
-							(Object.keys(prev) as I.TokenGroup[]).map(group => [
-								group,
-								// NOTE • brand is dynamic — restore it verbatim, merge the rest
-								group === 'brand' && storedTokens.brand
-									? storedTokens.brand
-									: { ...prev[group], ...storedTokens[group] },
-							])
-						) as I.TokenValues
-				);
-			}
-			if (stored.uploadedFonts) setUploadedFonts(stored.uploadedFonts);
-			if (stored.availableFonts) setAvailableFonts(stored.availableFonts);
-			if (stored.screen !== undefined) setScreen(stored.screen);
-		} catch {
-			sessionStorage.removeItem(STORAGE_KEY);
-		}
-	}, []);
-
-	useEffect(() => {
-		if (screen === 'done') {
-			sessionStorage.removeItem(STORAGE_KEY);
-			return;
-		}
-		sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ screen, tokens, uploadedFonts, availableFonts }));
-	}, [screen, tokens, uploadedFonts, availableFonts]);
-
 	// Handlers
+	// NOTE • GSAP slides the track — xPercent keeps it resize-proof, and the
+	// transient tween needs no revert (it only moves this track)
+	const goTo = (index: number) => {
+		const target = Math.max(0, Math.min(index, SLIDE_COUNT - 1));
+		setSlide(target);
+		gsap.to(trackRef.current, { xPercent: -100 * target, duration: 0.6, ease: 'power3.inOut' });
+	};
+
+	// NOTE • Lightweight swipe support — a horizontal flick moves one slide
+	const handleTouchStart = (event: React.TouchEvent) => {
+		const touch = event.touches[0];
+		touchStart.current = { x: touch.clientX, y: touch.clientY };
+	};
+
+	const handleTouchEnd = (event: React.TouchEvent) => {
+		const start = touchStart.current;
+		touchStart.current = null;
+		if (!start) return;
+
+		const touch = event.changedTouches[0];
+		const deltaX = touch.clientX - start.x;
+		const deltaY = touch.clientY - start.y;
+		if (Math.abs(deltaX) < 60 || Math.abs(deltaX) < Math.abs(deltaY) * 1.5) return;
+
+		goTo(deltaX < 0 ? slide + 1 : slide - 1);
+	};
+
 	const setValue = (group: I.TokenGroup, key: string, value: string) => {
 		setTokens(prev => ({ ...prev, [group]: { ...prev[group], [key]: value } }));
 	};
@@ -217,7 +210,7 @@ const TacklSetup = () => {
 				throw new Error(message);
 			}
 
-			setScreen('done');
+			setIsDone(true);
 		} catch (error) {
 			setSaveError(error instanceof Error ? error.message : 'Setup failed — check the dev server logs.');
 		} finally {
@@ -271,249 +264,61 @@ const TacklSetup = () => {
 		}
 	};
 
+	// Effects
+	// NOTE • Editing the root layout (font upload) hard-reloads the page, so
+	// progress lives in sessionStorage until setup completes
+	useEffect(() => {
+		const raw = sessionStorage.getItem(STORAGE_KEY);
+		if (!raw) return;
+
+		try {
+			const stored = JSON.parse(raw) as Partial<{
+				slide: number;
+				tokens: I.TokenValues;
+				uploadedFonts: I.UploadedFont[];
+				availableFonts: string[];
+			}>;
+			const storedTokens = stored.tokens;
+
+			if (storedTokens) {
+				setTokens(
+					prev =>
+						Object.fromEntries(
+							(Object.keys(prev) as I.TokenGroup[]).map(group => [
+								group,
+								// NOTE • brand is dynamic — restore it verbatim, merge the rest
+								group === 'brand' && storedTokens.brand
+									? storedTokens.brand
+									: { ...prev[group], ...storedTokens[group] },
+							])
+						) as I.TokenValues
+				);
+			}
+			if (stored.uploadedFonts) setUploadedFonts(stored.uploadedFonts);
+			if (stored.availableFonts) setAvailableFonts(stored.availableFonts);
+			if (typeof stored.slide === 'number') {
+				const target = Math.max(0, Math.min(stored.slide, SLIDE_COUNT - 1));
+				setSlide(target);
+				gsap.set(trackRef.current, { xPercent: -100 * target });
+			}
+		} catch {
+			sessionStorage.removeItem(STORAGE_KEY);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (isDone) {
+			sessionStorage.removeItem(STORAGE_KEY);
+			return;
+		}
+		sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ slide, tokens, uploadedFonts, availableFonts }));
+	}, [isDone, slide, tokens, uploadedFonts, availableFonts]);
+
 	// Render
-	return (
-		<S.Jacket style={previewVars}>
-			{screen === 'welcome' && (
-				<S.Panel>
-					<S.Kicker>Welcome to</S.Kicker>
-					<S.Title>Tackl</S.Title>
-					<S.Intro>
-						Let&rsquo;s make this theme yours. A few quick steps set every design token — colours, type,
-						spacing, motion — and write them straight into <code>src/theme</code>. When you finish, this
-						wizard deletes itself and the theme is ready for the front end.
-					</S.Intro>
-
-					<S.Nav>
-						<S.Primary type='button' onClick={() => setScreen(0)}>
-							Start setup
-						</S.Primary>
-						<S.Ghost type='button' onClick={() => submit('skip')} disabled={isSaving}>
-							{isSaving ? 'Removing…' : 'Skip — keep the defaults'}
-						</S.Ghost>
-					</S.Nav>
-
-					{saveError && <S.ErrorText role='alert'>{saveError}</S.ErrorText>}
-				</S.Panel>
-			)}
-
-			{step !== undefined && stepIndex !== null && (
-				<S.Panel>
-					<S.Progress>
-						Step {stepIndex + 1} of {steps.length}
-					</S.Progress>
-					<S.StepTitle>{step.title}</S.StepTitle>
-					<S.Intro>{step.intro}</S.Intro>
-
-					{step.hasFontUpload && (
-						<S.Upload>
-							<S.UploadTitle>Add a font</S.UploadTitle>
-							<S.Intro>
-								Drops the file into <code>src/theme/fonts/custom</code>, wires it up with next/font and
-								registers it in the theme under your name — it appears in the role dropdowns below.
-							</S.Intro>
-
-							<S.UploadRow>
-								<S.Input
-									value={fontName}
-									onChange={event => setFontName(event.target.value)}
-									placeholder='Font name, e.g. myFont'
-									spellCheck={false}
-									aria-label='Font name'
-								/>
-								<S.FileInput ref={fileRef} accept='.woff2,.woff,.ttf,.otf' aria-label='Font file' />
-								<S.Ghost type='button' onClick={uploadFont} disabled={isUploading}>
-									{isUploading ? 'Uploading…' : 'Upload'}
-								</S.Ghost>
-							</S.UploadRow>
-
-							{uploadedFonts.map(font => (
-								<S.UploadHint key={font.cssVariable}>
-									✓ <code>{font.exportName}</code> added — pick it in the dropdowns below
-								</S.UploadHint>
-							))}
-							{uploadError && <S.ErrorText role='alert'>{uploadError}</S.ErrorText>}
-						</S.Upload>
-					)}
-
-					{step.sections.map((section, sectionIndex) => (
-						<S.Section key={section.title ?? sectionIndex}>
-							{section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
-
-							{sectionRows(section).map((row, rowIndex) => (
-								<S.Row key={row.label ?? rowIndex}>
-									{row.label && <S.RowLabel>{row.label}</S.RowLabel>}
-
-									<S.Fields>
-										{row.fields.map(field => {
-											const id = `tackl-setup-${field.group}-${field.key}`;
-											const kind = fieldKind(step, field);
-											const value = tokens[field.group][field.key];
-											const error = validateField(kind, value, field.optional);
-											const options =
-												field.optionsKey === 'fonts' ? availableFonts : (field.options ?? []);
-											const removable =
-												section.dynamic === 'brand' && Object.keys(tokens.brand).length > 1;
-											const onChange = (
-												event:
-													| React.ChangeEvent<HTMLInputElement>
-													| React.ChangeEvent<HTMLSelectElement>
-											) => setValue(field.group, field.key, event.target.value);
-
-											return (
-												<S.Field key={id}>
-													<S.LabelRow>
-														<S.Label htmlFor={id}>{field.label}</S.Label>
-														{removable && (
-															<S.RemoveButton
-																type='button'
-																onClick={() => removeBrandColour(field.key)}
-																aria-label={`Remove ${field.label}`}
-															>
-																Remove
-															</S.RemoveButton>
-														)}
-													</S.LabelRow>
-
-													{kind === 'color' && (
-														<S.ColorRow>
-															<S.Swatch
-																value={toPickerHex(value)}
-																onChange={onChange}
-																aria-label={`${field.label} colour picker`}
-															/>
-															<S.Input
-																id={id}
-																value={value}
-																onChange={onChange}
-																$hasError={error !== null}
-																spellCheck={false}
-															/>
-														</S.ColorRow>
-													)}
-
-													{kind === 'select' && (
-														<S.Select id={id} value={value} onChange={onChange}>
-															{options.map(option => (
-																<option key={option} value={option}>
-																	{option === '' ? '—' : option}
-																</option>
-															))}
-														</S.Select>
-													)}
-
-													{(kind === 'text' || kind === 'px') && (
-														<S.Input
-															id={id}
-															value={value}
-															onChange={onChange}
-															$hasError={error !== null}
-															spellCheck={false}
-															inputMode={kind === 'px' ? 'decimal' : undefined}
-														/>
-													)}
-
-													{error && <S.ErrorText>{error}</S.ErrorText>}
-												</S.Field>
-											);
-										})}
-									</S.Fields>
-								</S.Row>
-							))}
-
-							{section.dynamic === 'brand' && (
-								<S.Nav>
-									<S.Ghost type='button' onClick={addBrandColour}>
-										+ Add colour
-									</S.Ghost>
-								</S.Nav>
-							)}
-						</S.Section>
-					))}
-
-					<S.Nav>
-						<S.Ghost type='button' onClick={() => setScreen(stepIndex === 0 ? 'welcome' : stepIndex - 1)}>
-							Back
-						</S.Ghost>
-						<S.Primary
-							type='button'
-							onClick={() => setScreen(stepIndex === steps.length - 1 ? 'review' : stepIndex + 1)}
-							disabled={hasStepErrors(step)}
-						>
-							{stepIndex === steps.length - 1 ? 'Review' : 'Next'}
-						</S.Primary>
-					</S.Nav>
-				</S.Panel>
-			)}
-
-			{screen === 'review' && (
-				<S.Panel>
-					<S.Progress>Review</S.Progress>
-					<S.StepTitle>Everything look right?</S.StepTitle>
-					<S.Intro>
-						Finishing writes these values into <code>src/theme</code> and removes the wizard for good.
-					</S.Intro>
-
-					{steps.map((reviewStep, reviewIndex) => (
-						<S.ReviewGroup key={reviewStep.id}>
-							<S.ReviewHeader>
-								<S.ReviewTitle>{reviewStep.title}</S.ReviewTitle>
-								<S.Ghost type='button' onClick={() => setScreen(reviewIndex)}>
-									Edit
-								</S.Ghost>
-							</S.ReviewHeader>
-
-							{reviewStep.sections.map((section, sectionIndex) => (
-								<S.ReviewBlock key={section.title ?? sectionIndex}>
-									{section.title && <S.ReviewSection>{section.title}</S.ReviewSection>}
-
-									<S.ReviewList>
-										{sectionRows(section).flatMap(row =>
-											row.fields
-												.filter(field => tokens[field.group][field.key].trim() !== '')
-												.map(field => (
-													<S.ReviewItem key={`${field.group}-${field.key}`}>
-														<S.ReviewTerm>
-															{row.label ? `${row.label} · ${field.label}` : field.label}
-														</S.ReviewTerm>
-														<S.ReviewValue>
-															{fieldKind(reviewStep, field) === 'color' && (
-																<S.ReviewSwatch
-																	style={{
-																		background: tokens[field.group][field.key],
-																	}}
-																/>
-															)}
-															{tokens[field.group][field.key]}
-															{fieldKind(reviewStep, field) === 'px' &&
-															/^\d*\.?\d+$/.test(tokens[field.group][field.key].trim())
-																? 'px'
-																: ''}
-														</S.ReviewValue>
-													</S.ReviewItem>
-												))
-										)}
-									</S.ReviewList>
-								</S.ReviewBlock>
-							))}
-						</S.ReviewGroup>
-					))}
-
-					<S.Nav>
-						<S.Ghost type='button' onClick={() => setScreen(steps.length - 1)}>
-							Back
-						</S.Ghost>
-						<S.Primary type='button' onClick={() => submit('finish')} disabled={isSaving}>
-							{isSaving ? 'Saving…' : 'Finish setup'}
-						</S.Primary>
-					</S.Nav>
-
-					{saveError && <S.ErrorText role='alert'>{saveError}</S.ErrorText>}
-				</S.Panel>
-			)}
-
-			{screen === 'done' && (
-				<S.Panel>
+	if (isDone) {
+		return (
+			<S.Jacket style={previewVars}>
+				<S.Panel $center>
 					<S.Kicker>All done</S.Kicker>
 					<S.Title>Happy building</S.Title>
 					<S.Intro>
@@ -521,7 +326,270 @@ const TacklSetup = () => {
 						the dev server reloads.
 					</S.Intro>
 				</S.Panel>
-			)}
+			</S.Jacket>
+		);
+	}
+
+	return (
+		<S.Jacket style={previewVars}>
+			<S.Slider onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+				<S.Track ref={trackRef}>
+					<S.Slide $center>
+						<S.Kicker>Welcome to</S.Kicker>
+						<S.Title>Tackl</S.Title>
+						<S.Intro>
+							Let&rsquo;s make this theme yours. Swipe through the slides and set every design token —
+							colours, type, spacing, motion — they&rsquo;re written straight into <code>src/theme</code>.
+							When you finish, this wizard deletes itself and the theme is ready for the front end.
+						</S.Intro>
+
+						<S.Nav>
+							<S.Ghost type='button' onClick={() => submit('skip')} disabled={isSaving}>
+								{isSaving ? 'Removing…' : 'Skip — keep the defaults'}
+							</S.Ghost>
+						</S.Nav>
+
+						{saveError && <S.ErrorText role='alert'>{saveError}</S.ErrorText>}
+					</S.Slide>
+
+					{steps.map(step => (
+						<S.Slide key={step.id}>
+							<S.StepTitle>{step.title}</S.StepTitle>
+							<S.Intro>{step.intro}</S.Intro>
+
+							{step.hasFontUpload && (
+								<S.Upload>
+									<S.UploadTitle>Add a font</S.UploadTitle>
+									<S.Intro>
+										Drops the file into <code>src/theme/fonts/custom</code>, wires it up with
+										next/font and registers it in the theme under your name — it appears in the role
+										dropdowns below.
+									</S.Intro>
+
+									<S.UploadRow>
+										<S.Input
+											value={fontName}
+											onChange={event => setFontName(event.target.value)}
+											placeholder='Font name, e.g. myFont'
+											spellCheck={false}
+											aria-label='Font name'
+										/>
+										<S.FileInput
+											ref={fileRef}
+											accept='.woff2,.woff,.ttf,.otf'
+											aria-label='Font file'
+										/>
+										<S.Ghost type='button' onClick={uploadFont} disabled={isUploading}>
+											{isUploading ? 'Uploading…' : 'Upload'}
+										</S.Ghost>
+									</S.UploadRow>
+
+									{uploadedFonts.map(font => (
+										<S.UploadHint key={font.cssVariable}>
+											✓ <code>{font.exportName}</code> added — pick it in the dropdowns below
+										</S.UploadHint>
+									))}
+									{uploadError && <S.ErrorText role='alert'>{uploadError}</S.ErrorText>}
+								</S.Upload>
+							)}
+
+							<S.Content>
+								{step.sections.map((section, sectionIndex) => (
+									<S.Section key={section.title ?? sectionIndex}>
+										{section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
+
+										{sectionRows(section).map((row, rowIndex) => (
+											<S.Row key={row.label ?? rowIndex}>
+												{row.label && <S.RowLabel>{row.label}</S.RowLabel>}
+
+												<S.Fields>
+													{row.fields.map(field => {
+														const id = `tackl-setup-${field.group}-${field.key}`;
+														const kind = fieldKind(step, field);
+														const value = tokens[field.group][field.key];
+														const error = validateField(kind, value, field.optional);
+														const options =
+															field.optionsKey === 'fonts'
+																? availableFonts
+																: (field.options ?? []);
+														const removable =
+															section.dynamic === 'brand' &&
+															Object.keys(tokens.brand).length > 1;
+														const onChange = (
+															event:
+																| React.ChangeEvent<HTMLInputElement>
+																| React.ChangeEvent<HTMLSelectElement>
+														) => setValue(field.group, field.key, event.target.value);
+
+														return (
+															<S.Field key={id}>
+																<S.LabelRow>
+																	<S.Label htmlFor={id}>{field.label}</S.Label>
+																	{removable && (
+																		<S.RemoveButton
+																			type='button'
+																			onClick={() => removeBrandColour(field.key)}
+																			aria-label={`Remove ${field.label}`}
+																		>
+																			Remove
+																		</S.RemoveButton>
+																	)}
+																</S.LabelRow>
+
+																{kind === 'color' && (
+																	<S.ColorRow>
+																		<S.Swatch
+																			value={toPickerHex(value)}
+																			onChange={onChange}
+																			aria-label={`${field.label} colour picker`}
+																		/>
+																		<S.Input
+																			id={id}
+																			value={value}
+																			onChange={onChange}
+																			$hasError={error !== null}
+																			spellCheck={false}
+																		/>
+																	</S.ColorRow>
+																)}
+
+																{kind === 'select' && (
+																	<S.Select id={id} value={value} onChange={onChange}>
+																		{options.map(option => (
+																			<option key={option} value={option}>
+																				{option === '' ? '—' : option}
+																			</option>
+																		))}
+																	</S.Select>
+																)}
+
+																{(kind === 'text' || kind === 'px') && (
+																	<S.Input
+																		id={id}
+																		value={value}
+																		onChange={onChange}
+																		$hasError={error !== null}
+																		spellCheck={false}
+																		inputMode={
+																			kind === 'px' ? 'decimal' : undefined
+																		}
+																	/>
+																)}
+
+																{error && <S.ErrorText>{error}</S.ErrorText>}
+															</S.Field>
+														);
+													})}
+												</S.Fields>
+											</S.Row>
+										))}
+
+										{section.dynamic === 'brand' && (
+											<S.Nav>
+												<S.Ghost type='button' onClick={addBrandColour}>
+													+ Add colour
+												</S.Ghost>
+											</S.Nav>
+										)}
+									</S.Section>
+								))}
+							</S.Content>
+						</S.Slide>
+					))}
+
+					<S.Slide>
+						<S.StepTitle>Everything look right?</S.StepTitle>
+						<S.Intro>
+							Finishing writes these values into <code>src/theme</code> and removes the wizard for good.
+						</S.Intro>
+
+						{invalidSteps.length > 0 && (
+							<S.ErrorText role='alert'>
+								Fix the invalid fields on: {invalidSteps.map(invalid => invalid.title).join(', ')}
+							</S.ErrorText>
+						)}
+
+						{steps.map((reviewStep, reviewIndex) => (
+							<S.ReviewGroup key={reviewStep.id}>
+								<S.ReviewHeader>
+									<S.ReviewTitle>{reviewStep.title}</S.ReviewTitle>
+									<S.Ghost type='button' onClick={() => goTo(reviewIndex + 1)}>
+										Edit
+									</S.Ghost>
+								</S.ReviewHeader>
+
+								{reviewStep.sections.map((section, sectionIndex) => (
+									<S.ReviewBlock key={section.title ?? sectionIndex}>
+										{section.title && <S.ReviewSection>{section.title}</S.ReviewSection>}
+
+										<S.ReviewList>
+											{sectionRows(section).flatMap(row =>
+												row.fields
+													.filter(field => tokens[field.group][field.key].trim() !== '')
+													.map(field => (
+														<S.ReviewItem key={`${field.group}-${field.key}`}>
+															<S.ReviewTerm>
+																{row.label
+																	? `${row.label} · ${field.label}`
+																	: field.label}
+															</S.ReviewTerm>
+															<S.ReviewValue>
+																{fieldKind(reviewStep, field) === 'color' && (
+																	<S.ReviewSwatch
+																		style={{
+																			background: tokens[field.group][field.key],
+																		}}
+																	/>
+																)}
+																{tokens[field.group][field.key]}
+																{fieldKind(reviewStep, field) === 'px' &&
+																/^\d*\.?\d+$/.test(
+																	tokens[field.group][field.key].trim()
+																)
+																	? 'px'
+																	: ''}
+															</S.ReviewValue>
+														</S.ReviewItem>
+													))
+											)}
+										</S.ReviewList>
+									</S.ReviewBlock>
+								))}
+							</S.ReviewGroup>
+						))}
+
+						{saveError && <S.ErrorText role='alert'>{saveError}</S.ErrorText>}
+					</S.Slide>
+				</S.Track>
+			</S.Slider>
+
+			<S.Footer>
+				<S.Ghost type='button' onClick={() => goTo(slide - 1)} disabled={slide === 0}>
+					Back
+				</S.Ghost>
+
+				<S.Progress>
+					{slide === 0 && 'Welcome'}
+					{slide > 0 &&
+						slide < REVIEW_SLIDE &&
+						`Step ${slide} of ${steps.length} · ${steps[slide - 1].title}`}
+					{slide === REVIEW_SLIDE && 'Review'}
+				</S.Progress>
+
+				{slide < REVIEW_SLIDE ? (
+					<S.Primary type='button' onClick={() => goTo(slide + 1)}>
+						{slide === 0 ? 'Start setup' : 'Next'}
+					</S.Primary>
+				) : (
+					<S.Primary
+						type='button'
+						onClick={() => submit('finish')}
+						disabled={isSaving || invalidSteps.length > 0}
+					>
+						{isSaving ? 'Saving…' : 'Finish setup'}
+					</S.Primary>
+				)}
+			</S.Footer>
 		</S.Jacket>
 	);
 };

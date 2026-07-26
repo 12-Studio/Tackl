@@ -1,21 +1,22 @@
 // Imports
 // ------------
 
-import { alpha, bp, Div, getBrand, getEase, getFeedback, getFont, getGap, getGlobal, getRadius, getTime } from '@tackl';
+import { bp, Div, getBrand, getEase, getFeedback, getFont, getGap, getGlobal, getRadius, getTime } from '@tackl';
 import { bodyS, captionL, displayS, headlineS } from '@tackl/type';
 import styled, { css } from 'styled-components';
 
 // Exports
 // ------------
+// NOTE • Fullscreen takeover — a scroll-snap slider (one slide per screen)
+// with a persistent footer nav. Swiping and the buttons both work.
 export const Jacket = styled(Div).attrs({ as: 'section' })(
 	() => css`
 		position: fixed;
 		inset: 0;
 		z-index: 1000;
-		display: grid;
-		place-items: center;
-		padding: ${getGap('l')};
-		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
 
 		background:
 			radial-gradient(70% 90% at 50% 120%, ${getBrand('bc1', 25)}, transparent),
@@ -23,23 +24,82 @@ export const Jacket = styled(Div).attrs({ as: 'section' })(
 	`
 );
 
-export const Panel = styled(Div)(
+export const Slider = styled(Div)(
+	() => css`
+		flex: 1;
+		overflow: hidden;
+	`
+);
+
+// NOTE • GSAP translates this track between slides (see goTo in index.tsx)
+export const Track = styled(Div)(
+	() => css`
+		display: flex;
+		height: 100%;
+		will-change: transform;
+	`
+);
+
+export const Slide = styled(Div)<{ $center?: boolean }>(
+	({ $center }) => css`
+		flex: 0 0 100%;
+		display: flex;
+		flex-direction: column;
+		${$center ? 'justify-content: center;' : ''}
+		gap: ${getGap('l')};
+		width: 100%;
+		height: 100%;
+		overflow-y: auto;
+		scroll-snap-align: start;
+		padding: ${getGap('xl')};
+
+		${bp.l` padding: ${getGap('huge')}; `}
+	`
+);
+
+export const Footer = styled(Div).attrs({ as: 'footer' })(
+	() => css`
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: ${getGap('m')};
+		padding: ${getGap('m')} ${getGap('xl')};
+
+		border-top: 1px solid ${getGlobal('white', 8)};
+		background: ${getGlobal('black', 40)};
+
+		${bp.l` padding-inline: ${getGap('huge')}; `}
+	`
+);
+
+export const Panel = styled(Div)<{ $center?: boolean }>(
+	({ $center }) => css`
+		display: flex;
+		flex-direction: column;
+		${$center ? 'justify-content: center;' : ''}
+		gap: ${getGap('l')};
+		width: 100%;
+		min-height: 100svh;
+		padding: ${getGap('xl')};
+
+		${bp.l` padding: ${getGap('huge')}; `}
+	`
+);
+
+// NOTE • Sections sit side by side as columns from bp.l — a whole step reads
+// left to right instead of one long stack
+export const Content = styled(Div)(
 	() => css`
 		display: flex;
 		flex-direction: column;
+		align-items: stretch;
 		gap: ${getGap('l')};
 		width: 100%;
-		max-width: 68rem;
-		max-height: calc(100svh - (${getGap('l')} * 2));
-		overflow-y: auto;
-		padding: ${getGap('xl')};
 
-		border: 1px solid ${getGlobal('white', 10)};
-		border-radius: ${getRadius('l')};
-		background: ${alpha('--brand-bc3', 30)};
-		backdrop-filter: blur(1rem);
-
-		${bp.l` padding: ${getGap('huge')}; `}
+		${bp.l`
+			flex-direction: row;
+			align-items: stretch;
+		`}
 	`
 );
 
@@ -67,6 +127,7 @@ export const StepTitle = styled(Div).attrs({ as: 'h2' })(
 export const Intro = styled(Div).attrs({ as: 'p' })(
 	() => css`
 		${bodyS}
+		max-width: 64rem;
 		color: ${getGlobal('white', 60)};
 
 		code {
@@ -86,15 +147,22 @@ export const Progress = styled(Div).attrs({ as: 'p' })(
 export const Section = styled(Div).attrs({ as: 'fieldset' })(
 	() => css`
 		display: flex;
+		flex: 1 1 0;
 		flex-direction: column;
 		gap: ${getGap('s')};
 		margin: 0;
+		min-width: 0;
 		min-inline-size: auto;
 		padding: ${getGap('m')};
 
 		border: 1px solid ${getGlobal('white', 8)};
 		border-radius: ${getRadius('m')};
 		background: ${getGlobal('white', 3)};
+
+		/* NOTE • A lone section shouldn't stretch across the whole screen */
+		&:only-child {
+			max-width: 64rem;
+		}
 	`
 );
 
@@ -257,6 +325,7 @@ export const Upload = styled(Div)(
 		display: flex;
 		flex-direction: column;
 		gap: ${getGap('s')};
+		max-width: 64rem;
 		padding: ${getGap('m')};
 
 		border: 1px dashed ${getGlobal('white', 15)};

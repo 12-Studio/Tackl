@@ -2,7 +2,7 @@
 // ------------
 import styled, { css } from 'styled-components';
 import { Div, getBrand, getGap, getGlobal } from '@/theme/tackl';
-import { emphasis, headingXXL } from '@/theme/tackl/type';
+import { captionL, displayL } from '@/theme/tackl/type';
 
 // Exports
 // ------------
@@ -18,20 +18,20 @@ export const Jacket = styled(Div)(
 		overflow: hidden;
 
 		background:
-			radial-gradient(60% 80% at 50% 110%, ${getBrand('bc1', 30)}, transparent),
+			radial-gradient(60% 80% at 50% 110%, ${getBrand('c1', 30)}, transparent),
 			${getGlobal('black')};
 	`
 );
 
 export const Title = styled(Div).attrs({ as: 'h1' })(
 	() => css`
-		${headingXXL}
+		${displayL}
 	`
 );
 
 export const Hint = styled(Div).attrs({ as: 'p' })(
 	() => css`
-		${emphasis}
+		${captionL}
 		color: ${getGlobal('white', 60)};
 	`
 );

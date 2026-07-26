@@ -75,7 +75,7 @@ export interface CardProps {
 // ------------
 import styled, { css } from 'styled-components';
 import { alpha, bp, Div, getBrand, getEase, getRadius, getTime } from '@tackl';
-import { bodyS, headingS } from '@tackl/type';
+import { bodyS, titleS } from '@tackl/type';
 
 // Exports
 // ------------
@@ -86,12 +86,12 @@ export const Jacket = styled(Div).attrs({ as: 'article' })(
 		gap: var(--gap-m);
 		padding: var(--gap-l);
 
-		background: ${alpha('--brand-bc3', 40)};
+		background: ${alpha('--brand-c3', 40)};
 		border-radius: ${getRadius('m')};
 		transition: background ${getTime('m')} ${getEase('bezzy')};
 
 		&:hover {
-			background: ${getBrand('bc3')};
+			background: ${getBrand('c3')};
 		}
 
 		${bp.l`
@@ -102,7 +102,7 @@ export const Jacket = styled(Div).attrs({ as: 'article' })(
 
 export const Title = styled(Div).attrs({ as: 'h3' })(
 	() => css`
-		${headingS}
+		${titleS}
 	`
 );
 
@@ -146,7 +146,7 @@ export default Card;
 | Import | Gives you | Use for |
 | --- | --- | --- |
 | `@tackl` | `Div`, `bp`, `bpd`, `alpha`, `noscrollbars`, getters (`getBrand`, `getGlobal`, `getFeedback`, `getSpace`, `getGap`, `getRadius`, `getEase`, `getTime`, `getFont`, `getFontWeight`) | Everything you style with |
-| `@tackl/type` | `headingXXL`…`headingS`, `bodyM`, `bodyS`, `emphasis` | Global text styles, composed into styled blocks |
+| `@tackl/type` | `displayL`/`displayS`, `headlineL`/`headlineS`, `titleL`/`titleS`, `bodyL`/`bodyS`, `captionL`/`captionS` | Global text styles, composed into styled blocks |
 | `@waffl` | `Grid` (default export) | The grid container |
 | `@theme` | `theme`, `GlobalStyle` | Rarely needed directly — the getters wrap it |
 | `@parts/*` | `src/components/*` | Other components |
@@ -265,7 +265,7 @@ The same scale drives the `Div`/`Grid` span props (`$m`, `$l`, …) and derives 
 | `<Div as='section' $pad>` | Import `Section` / `H1` / `P` — they don't exist |
 | Style in `styles.ts`, name the wrapper `Jacket` | Inline styled-components in `index.tsx` |
 | Base styles = mobile, `bp.m`+ upwards | Desktop styles first, `bpd` everywhere |
-| `${getBrand('bc1')}` / `var(--brand-bc1)` | Hard-coded hex values |
-| `${alpha('--brand-bc1', 20)}` for translucency | Hand-rolled rgba strings |
+| `${getBrand('c1')}` / `var(--brand-c1)` | Hard-coded hex values |
+| `${alpha('--brand-c1', 20)}` for translucency | Hand-rolled rgba strings |
 | Let grid children default to full width | `$s='1/-1'` on everything |
 | `transition: x ${getTime('m')} ${getEase('bezzy')}` | Magic duration numbers |

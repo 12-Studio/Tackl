@@ -78,7 +78,7 @@ export const GlobalStyle = createGlobalStyle`
 	   html[data-theme='dark'] {
 	       --global-white: #000000;
 	       --global-black: #ffffff;
-	       --brand-bc1: #9b30ff;
+	       --brand-c1: #9b30ff;
 	   }
 	*/
 

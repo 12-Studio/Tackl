@@ -11,3 +11,12 @@ export interface CookieBarProps {
 	onDecline?: () => void;
 	className?: string;
 }
+
+export type ConsentRecord = {
+	accepted: boolean;
+	at: string;
+};
+
+export type ConsentDetail = {
+	accepted: boolean | null;
+};

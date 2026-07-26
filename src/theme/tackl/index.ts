@@ -28,10 +28,10 @@ export const bpd = breakpointDown;
 // SECTION • Color Utilities
 // ------------
 // NOTE • Mixes any color with transparency via color-mix. Accepts a CSS
-// variable name ('--brand-bc1'), a theme token (already a var() reference),
+// variable name ('--brand-c1'), a theme token (already a var() reference),
 // or any color value. The browser resolves it, so runtime theme overrides
 // still apply to the translucent result.
-// Usage: background: ${alpha('--brand-bc1', 20)};
+// Usage: background: ${alpha('--brand-c1', 20)};
 //        border-color: ${props => alpha(props.theme.colors.global.white, 15)};
 export const alpha = (color: string, opacity: number): string => {
 	const value = color.startsWith('--') ? `var(${color})` : color;

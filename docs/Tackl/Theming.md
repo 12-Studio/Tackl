@@ -6,11 +6,11 @@ Tackl's tokens are defined once in TypeScript and emitted once as CSS custom pro
 
 ```mermaid
 flowchart TD
-    V["Raw values — the single source of truth\nsrc/theme/{colors,space,gap,borderRadius,easing,time,fonts}\nspaceValues = { m: '6rem' } · baseColors = { brand: { bc1: '#8000FF' } }"]
-    V -->|toVarDeclarations| R[":root via GlobalStyle\n--space-m: 6rem;\n--brand-bc1: #8000FF;"]
-    V -->|toVarRefs| T["theme object\ntheme.space.m = 'var(--space-m)'\ntheme.colors.brand.bc1 = 'var(--brand-bc1)'"]
+    V["Raw values — the single source of truth\nsrc/theme/{colors,space,gap,borderRadius,easing,time,fonts}\nspaceValues = { m: '6rem' } · baseColors = { brand: { c1: '#8000FF' } }"]
+    V -->|toVarDeclarations| R[":root via GlobalStyle\n--space-m: 6rem;\n--brand-c1: #8000FF;"]
+    V -->|toVarRefs| T["theme object\ntheme.space.m = 'var(--space-m)'\ntheme.colors.brand.c1 = 'var(--brand-c1)'"]
     V -->|keyof typeof| TY["TypeScript types\ninterface.d.ts derives — cannot drift"]
-    T --> SC["styled-components\n${getSpace('m')} · ${getBrand('bc1')}"]
+    T --> SC["styled-components\n${getSpace('m')} · ${getBrand('c1')}"]
     R --> B["Browser resolves at paint\n(runtime overrides apply here)"]
     SC --> B
     P["Plain CSS / Server Components\nvar(--space-m)"] --> B
@@ -18,7 +18,7 @@ flowchart TD
 
 ```
 theme.space.m         === 'var(--space-m)'
-theme.colors.brand.bc1 === 'var(--brand-bc1)'
+theme.colors.brand.c1 === 'var(--brand-c1)'
 ```
 
 Because every theme value is a `var()` reference, the browser resolves tokens at paint time. Styles that import `theme` statically (the semantic `Div` component, type styles, waffl grid) and styles that read `props.theme` produce identical CSS — there is one source of truth, and overriding a variable at runtime restyles both.
@@ -27,7 +27,7 @@ Because every theme value is a `var()` reference, the browser resolves tokens at
 
 | Section | Pattern | Example |
 | --- | --- | --- |
-| Colors | `--{group}-{name}` | `--brand-bc1`, `--global-white`, `--feedback-positive` |
+| Colors | `--{group}-{name}` | `--brand-c1`, `--global-white`, `--feedback-positive` |
 | Space | `--space-{key}` | `--space-s` … `--space-xl`, `--space-col` |
 | Gap | `--gap-{key}` | `--gap-xxs` … `--gap-uber` |
 | Border radius | `--br-{key}` | `--br-xs` … `--br-round` |
@@ -48,7 +48,7 @@ import { Div, getBrand, getGlobal, getSpace } from '@tackl';
 export const Jacket = styled(Div)(
 	props => css`
 		padding: ${getSpace('m')};
-		background: ${getBrand('bc1')};
+		background: ${getBrand('c1')};
 		color: ${getGlobal('white', 80)};
 		border-radius: ${props.theme.br.m};
 	`
@@ -62,7 +62,7 @@ Tokens are now usable anywhere CSS is, with no styled-components (and no `'use c
 ```css
 .card {
 	padding: var(--space-m);
-	background: var(--brand-bc3);
+	background: var(--brand-c3);
 	border-radius: var(--br-m);
 	transition: transform var(--time-m) var(--easing-bezzy);
 }
@@ -78,10 +78,10 @@ const Badge = () => <span style={{ color: 'var(--feedback-positive)' }}>Live</sp
 Color tokens are plain `var()` references — there is no per-shade object. Opacity is applied at the point of use, either through a getter or the `alpha()` helper:
 
 ```
-getBrand('bc1')          →  var(--brand-bc1)
-getBrand('bc1', 50)      →  color-mix(in srgb, var(--brand-bc1) 50%, transparent)
+getBrand('c1')          →  var(--brand-c1)
+getBrand('c1', 50)      →  color-mix(in srgb, var(--brand-c1) 50%, transparent)
 
-alpha('--brand-bc1', 50) →  color-mix(in srgb, var(--brand-bc1) 50%, transparent)
+alpha('--brand-c1', 50) →  color-mix(in srgb, var(--brand-c1) 50%, transparent)
 alpha('#8000FF', 50)     →  color-mix(in srgb, #8000FF 50%, transparent)
 ```
 
@@ -92,7 +92,7 @@ import { alpha } from '@tackl';
 
 export const Card = styled(Div)(
 	props => css`
-		background: ${alpha('--brand-bc3', 40)};
+		background: ${alpha('--brand-c3', 40)};
 		border-color: ${alpha(props.theme.colors.global.white, 15)};
 	`
 );
@@ -108,7 +108,7 @@ Redefine variables under a selector and every consumer follows — no JS, no re-
 html[data-theme='dark'] {
 	--global-white: #000000;
 	--global-black: #ffffff;
-	--brand-bc1: #9b30ff;
+	--brand-c1: #9b30ff;
 }
 ```
 

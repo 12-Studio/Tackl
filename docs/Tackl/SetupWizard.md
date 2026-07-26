@@ -41,7 +41,7 @@ the flow — with live previews as you type.
   it immediately appears in the role dropdowns. Each role (heading / body /
   mono / script) picks a font by name; the full `var(--…), Arial,
   sans-serif` stacks are generated on finish.
-- **Brand colours are flexible.** Add as many `bc*` colours as the project
+- **Brand colours are flexible.** Add as many `c*` colours as the project
   needs or remove ones it doesn't (minimum one) — `baseColors.brand`,
   the `--brand-*` variables and `getBrand()` typing all follow
   automatically.

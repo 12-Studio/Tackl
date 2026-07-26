@@ -22,7 +22,9 @@ cd my-app && bun install && bun run dev
 
 The CLI keeps your existing `.git`/remote, prunes the CMS you didn't pick (code, dependencies, docs, env keys), and installs with bun. `bun create tackl` and `npm create tackl@latest` work too.
 
-Open [http://localhost:3000](http://localhost:3000). The placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(site)/(home)/page.tsx`) and start building.
+Open [http://localhost:3000](http://localhost:3000). On the very first run a **setup wizard** greets you: a full-screen form that walks through every design token — colours, spacing, motion, fonts (with upload) and the full type scale — writes your answers into `src/theme`, then **deletes itself**. Skip it to keep the starter defaults. ➜ [docs/Tackl/SetupWizard.md](./docs/Tackl/SetupWizard.md)
+
+After that, the placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(site)/(home)/page.tsx`) and start building.
 
 Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.). `.env` is gitignored; `.env.example` is the documented template.
 
@@ -43,6 +45,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 
 ## 🎯 What's in the box
 
+- **First-run setup wizard** — an interactive, self-deleting overlay on first `bun dev` that fills in every theme token (brand colours, spacing, motion, font uploads, the per-breakpoint type scale) and writes them straight into `src/theme`
 - **Next.js 16 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds
 - **TypeScript everywhere** — strict, with typed design tokens that derive from the values (add a token, the type follows)
 - **styled-components v6** — SSR wired via the registry; one polymorphic `Div` primitive instead of a component per HTML tag
@@ -50,7 +53,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 - **Waffl grid** — a 12/6/2-column grid with **zero JavaScript**; plain and server-rendered elements are first-class grid children
 - **GSAP + ScrollTrigger + Lenis** — smooth scrolling and scroll animations, pre-wired to share one ticker, with `prefers-reduced-motion` users automatically getting native scroll and no rAF loop
 - **View Transitions** — page transitions via the View Transitions API with a typed `Link`/router wrapper
-- **Storybook 10** — token-aware (the preview renders the same `:root` variables as the app)
+- **Storybook 10** — token-aware (the preview renders the same `:root` variables as the app), with a live `Theme/Overview` story showing every current token — colours, fonts, the type scale with role descriptors, spacing, radii and motion — straight from the theme objects
 - **Biome + Husky** — linting, formatting, and a guided commit-message flow
 - **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time. Choosing Sanity sets up the full experience: embedded Studio at `/studio`, example schemas, draft-mode preview, and an offer to run `sanity init` for you
 - **SEO plumbing** — `metadata`/`viewport` exports, `sitemap.xml` and `robots.txt` (staging deploys auto-blocked from indexing), all driven by one `NEXT_PUBLIC_SITE_URL`
@@ -82,8 +85,8 @@ Every `Div` accepts spacing props (`$mar`, `$pad`, …), responsive grid-span pr
 Raw values live once in `src/theme/*`; `GlobalStyle` emits them on `:root`; everything — styled-components, plain CSS, Server Components — references them:
 
 ```tsx
-background: ${getBrand('bc1')};        /* → var(--brand-bc1) */
-border-color: ${getBrand('bc1', 20)};  /* → color-mix(in srgb, var(--brand-bc1) 20%, transparent) */
+background: ${getBrand('c1')};        /* → var(--brand-c1) */
+border-color: ${getBrand('c1', 20)};  /* → color-mix(in srgb, var(--brand-c1) 20%, transparent) */
 ```
 
 ```css
@@ -188,6 +191,7 @@ flowchart TD
 
 | Guide | What it covers |
 | --- | --- |
+| [SetupWizard](./docs/Tackl/SetupWizard.md) | The first-run theme setup wizard and how it removes itself |
 | [WritingComponents](./docs/Tackl/WritingComponents.md) | File anatomy, comment style, imports, `Div`, grid spans, `bp` |
 | [Theming](./docs/Tackl/Theming.md) | Tokens, CSS variables, opacity, runtime theming |
 | [AppArchitecture](./docs/Tackl/AppArchitecture.md) | The app shell, Providers, data flow |

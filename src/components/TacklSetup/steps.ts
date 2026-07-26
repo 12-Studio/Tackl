@@ -166,10 +166,10 @@ const typeScaleStep = (label: string, large: I.TokenGroup, small: I.TokenGroup, 
 	intro: `${description} Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from base.`,
 	kind: 'text',
 	sections: [
-		{ title: `${large} — Base`, rows: [breakpointRow(large, '', '')] },
-		{ title: `${large} — From bp.xl`, rows: [breakpointRow(large, '', 'Xl')] },
-		{ title: `${small} — Base`, rows: [breakpointRow(small, '', '')] },
-		{ title: `${small} — From bp.xl`, rows: [breakpointRow(small, '', 'Xl')] },
+		{ groupTitle: large, title: 'Base', rows: [breakpointRow(large, '', '')] },
+		{ groupTitle: large, title: 'From bp.xl', rows: [breakpointRow(large, '', 'Xl')] },
+		{ groupTitle: small, title: 'Base', rows: [breakpointRow(small, '', '')] },
+		{ groupTitle: small, title: 'From bp.xl', rows: [breakpointRow(small, '', 'Xl')] },
 	],
 });
 
@@ -207,11 +207,11 @@ export const steps: I.StepDef[] = [
 	{
 		id: 'motion',
 		title: 'Motion',
-		intro: 'Durations (--time-*) and easing curves (--easing-*) behind every transition.',
+		intro: 'Durations (--time-*) and easing curves (--easing-*) behind every transition. Add as many as the project needs.',
 		kind: 'text',
 		sections: [
-			{ title: 'Timing', rows: [{ fields: fieldsFrom('time', timeValues) }] },
-			{ title: 'Easing', rows: [{ fields: fieldsFrom('easing', easingValues) }] },
+			{ title: 'Timing', dynamic: 'time', rows: [] },
+			{ title: 'Easing', dynamic: 'easing', rows: [] },
 		],
 	},
 	{

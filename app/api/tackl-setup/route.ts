@@ -80,8 +80,9 @@ const GROUPS: Record<TokenGroup, GroupSpec> = {
 	space: { required: ['s', 'm', 'l', 'xl', 'col'], kind: 'text' },
 	gap: { required: ['xxs', 'xs', 's', 'sm', 'm', 'l', 'xl', 'xxl', 'huge', 'uber'], kind: 'text' },
 	radius: { required: ['xs', 's', 'm', 'l', 'round'], kind: 'text' },
-	time: { required: ['s', 'm', 'l'], kind: 'text' },
-	easing: { required: ['bezzy', 'bezzy2', 'bezzy3'], kind: 'text' },
+	// NOTE • Timings and easings are flexible like brand — any identifier keys
+	time: { required: [], dynamicKeys: /^[a-z][a-zA-Z0-9]{0,11}$/, kind: 'text' },
+	easing: { required: [], dynamicKeys: /^[a-z][a-zA-Z0-9]{0,11}$/, kind: 'text' },
 	displayL: TYPE_SCALE_SPEC,
 	displayS: TYPE_SCALE_SPEC,
 	headlineL: TYPE_SCALE_SPEC,

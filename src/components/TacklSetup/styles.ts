@@ -144,6 +144,40 @@ export const Progress = styled(Div).attrs({ as: 'p' })(
 	`
 );
 
+// NOTE • Wraps a pair of related sections (a type variant's Base + bp.xl)
+// under one label, so the grouping is unmistakable
+export const Cluster = styled(Div)(
+	() => css`
+		display: flex;
+		flex: 1 1 0;
+		flex-direction: column;
+		gap: ${getGap('s')};
+		min-width: 0;
+		padding: ${getGap('s')};
+
+		border: 1px solid ${getGlobal('white', 12)};
+		border-radius: ${getRadius('l')};
+	`
+);
+
+export const ClusterTitle = styled(Div).attrs({ as: 'h3' })(
+	() => css`
+		${captionL}
+		padding: ${getGap('xs')} ${getGap('s')} 0;
+		color: ${getGlobal('white', 90)};
+	`
+);
+
+export const ClusterRow = styled(Div)(
+	() => css`
+		display: flex;
+		flex-direction: column;
+		gap: ${getGap('s')};
+
+		${bp.l` flex-direction: row; `}
+	`
+);
+
 export const Section = styled(Div).attrs({ as: 'fieldset' })(
 	() => css`
 		display: flex;
@@ -320,12 +354,14 @@ export const Select = styled.select(
 	`
 );
 
+// NOTE • Sits beside the Roles section in the Content row on the Fonts slide
 export const Upload = styled(Div)(
 	() => css`
 		display: flex;
+		flex: 1 1 0;
 		flex-direction: column;
 		gap: ${getGap('s')};
-		max-width: 64rem;
+		min-width: 0;
 		padding: ${getGap('m')};
 
 		border: 1px dashed ${getGlobal('white', 15)};
@@ -483,13 +519,13 @@ export const ReviewSection = styled(Div).attrs({ as: 'h4' })(
 	`
 );
 
+// NOTE • The review reads as one linear list — no multi-column stacking
 export const ReviewList = styled(Div).attrs({ as: 'dl' })(
 	() => css`
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: ${getGap('xs')} ${getGap('m')};
-
-		${bp.m` grid-template-columns: repeat(2, 1fr); `}
+		display: flex;
+		flex-direction: column;
+		gap: ${getGap('xs')};
+		max-width: 64rem;
 	`
 );
 

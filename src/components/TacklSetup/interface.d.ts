@@ -43,10 +43,13 @@ export type RowDef = {
 	fields: FieldDef[];
 };
 
+export type DynamicGroup = 'brand' | 'time' | 'easing';
+
 export type SectionDef = {
 	title?: string;
 	rows: RowDef[];
-	dynamic?: 'brand';
+	dynamic?: DynamicGroup;
+	groupTitle?: string;
 };
 
 export type StepDef = {

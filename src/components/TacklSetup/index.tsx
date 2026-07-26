@@ -86,16 +86,49 @@ const TacklSetup = () => {
 	// Derived
 	const fieldKind = (currentStep: I.StepDef, field: I.FieldDef): I.FieldKind => field.kind ?? currentStep.kind;
 
-	// NOTE • The brand section is dynamic — its fields come from state, so any
-	// added/removed colours show up everywhere (fields, validation, review)
+	// NOTE • Dynamic sections (brand/time/easing) build their fields from
+	// state, so added/removed tokens show up everywhere — fields, validation,
+	// review. nextKey picks the next sensible token name.
+	const TIME_LADDER = ['s', 'm', 'l', 'xl', 'xxl', 'huge', 'uber'];
+	const DYNAMIC_CONFIG: Record<
+		I.DynamicGroup,
+		{ addLabel: string; defaultValue: string; nextKey: (keys: string[]) => string }
+	> = {
+		brand: {
+			addLabel: '+ Add colour',
+			defaultValue: '#888888',
+			nextKey: keys => `bc${Math.max(0, ...keys.map(key => Number.parseInt(key.slice(2), 10) || 0)) + 1}`,
+		},
+		time: {
+			addLabel: '+ Add timing',
+			defaultValue: '0.9s',
+			nextKey: keys => {
+				const ladder = TIME_LADDER.find(name => !keys.includes(name));
+				if (ladder) return ladder;
+				let index = keys.length + 1;
+				while (keys.includes(`t${index}`)) index++;
+				return `t${index}`;
+			},
+		},
+		easing: {
+			addLabel: '+ Add easing',
+			defaultValue: 'cubic-bezier(0.5, 0, 0, 1)',
+			nextKey: keys => {
+				let index = keys.length + 1;
+				while (keys.includes(`bezzy${index}`)) index++;
+				return `bezzy${index}`;
+			},
+		},
+	};
+
 	const sectionRows = (section: I.SectionDef): I.RowDef[] =>
-		section.dynamic === 'brand'
+		section.dynamic
 			? [
 					{
-						fields: Object.keys(tokens.brand).map(key => ({
-							group: 'brand' as const,
+						fields: Object.keys(tokens[section.dynamic]).map(key => ({
+							group: section.dynamic as I.TokenGroup,
 							key,
-							label: BRAND_LABELS[key] ?? key,
+							label: section.dynamic === 'brand' ? (BRAND_LABELS[key] ?? key) : key,
 						})),
 					},
 				]
@@ -159,18 +192,19 @@ const TacklSetup = () => {
 		setTokens(prev => ({ ...prev, [group]: { ...prev[group], [key]: value } }));
 	};
 
-	const addBrandColour = () => {
-		setTokens(prev => {
-			const next = Math.max(0, ...Object.keys(prev.brand).map(key => Number.parseInt(key.slice(2), 10) || 0)) + 1;
-			return { ...prev, brand: { ...prev.brand, [`bc${next}`]: '#888888' } };
-		});
+	const addToken = (dynamic: I.DynamicGroup) => {
+		const config = DYNAMIC_CONFIG[dynamic];
+		setTokens(prev => ({
+			...prev,
+			[dynamic]: { ...prev[dynamic], [config.nextKey(Object.keys(prev[dynamic]))]: config.defaultValue },
+		}));
 	};
 
-	const removeBrandColour = (key: string) => {
+	const removeToken = (dynamic: I.DynamicGroup, key: string) => {
 		setTokens(prev => {
-			if (Object.keys(prev.brand).length <= 1) return prev;
-			const { [key]: _removed, ...rest } = prev.brand;
-			return { ...prev, brand: rest };
+			if (Object.keys(prev[dynamic]).length <= 1) return prev;
+			const { [key]: _removed, ...rest } = prev[dynamic];
+			return { ...prev, [dynamic]: rest };
 		});
 	};
 
@@ -286,9 +320,9 @@ const TacklSetup = () => {
 						Object.fromEntries(
 							(Object.keys(prev) as I.TokenGroup[]).map(group => [
 								group,
-								// NOTE • brand is dynamic — restore it verbatim, merge the rest
-								group === 'brand' && storedTokens.brand
-									? storedTokens.brand
+								// NOTE • dynamic groups restore verbatim (their keys vary), the rest merge
+								(group === 'brand' || group === 'time' || group === 'easing') && storedTokens[group]
+									? storedTokens[group]
 									: { ...prev[group], ...storedTokens[group] },
 							])
 						) as I.TokenValues
@@ -352,150 +386,181 @@ const TacklSetup = () => {
 						{saveError && <S.ErrorText role='alert'>{saveError}</S.ErrorText>}
 					</S.Slide>
 
-					{steps.map(step => (
-						<S.Slide key={step.id}>
-							<S.StepTitle>{step.title}</S.StepTitle>
-							<S.Intro>{step.intro}</S.Intro>
+					{steps.map(step => {
+						const renderSection = (section: I.SectionDef, sectionIndex: number) => {
+							const dynamic = section.dynamic;
 
-							{step.hasFontUpload && (
-								<S.Upload>
-									<S.UploadTitle>Add a font</S.UploadTitle>
-									<S.Intro>
-										Drops the file into <code>src/theme/fonts/custom</code>, wires it up with
-										next/font and registers it in the theme under your name — it appears in the role
-										dropdowns below.
-									</S.Intro>
+							return (
+								<S.Section key={section.title ?? sectionIndex}>
+									{section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
 
-									<S.UploadRow>
-										<S.Input
-											value={fontName}
-											onChange={event => setFontName(event.target.value)}
-											placeholder='Font name, e.g. myFont'
-											spellCheck={false}
-											aria-label='Font name'
-										/>
-										<S.FileInput
-											ref={fileRef}
-											accept='.woff2,.woff,.ttf,.otf'
-											aria-label='Font file'
-										/>
-										<S.Ghost type='button' onClick={uploadFont} disabled={isUploading}>
-											{isUploading ? 'Uploading…' : 'Upload'}
-										</S.Ghost>
-									</S.UploadRow>
+									{sectionRows(section).map((row, rowIndex) => (
+										<S.Row key={row.label ?? rowIndex}>
+											{row.label && <S.RowLabel>{row.label}</S.RowLabel>}
 
-									{uploadedFonts.map(font => (
-										<S.UploadHint key={font.cssVariable}>
-											✓ <code>{font.exportName}</code> added — pick it in the dropdowns below
-										</S.UploadHint>
-									))}
-									{uploadError && <S.ErrorText role='alert'>{uploadError}</S.ErrorText>}
-								</S.Upload>
-							)}
+											<S.Fields>
+												{row.fields.map(field => {
+													const id = `tackl-setup-${field.group}-${field.key}`;
+													const kind = fieldKind(step, field);
+													const value = tokens[field.group][field.key];
+													const error = validateField(kind, value, field.optional);
+													const options =
+														field.optionsKey === 'fonts'
+															? availableFonts
+															: (field.options ?? []);
+													const removable =
+														dynamic !== undefined &&
+														Object.keys(tokens[dynamic]).length > 1;
+													const onChange = (
+														event:
+															| React.ChangeEvent<HTMLInputElement>
+															| React.ChangeEvent<HTMLSelectElement>
+													) => setValue(field.group, field.key, event.target.value);
 
-							<S.Content>
-								{step.sections.map((section, sectionIndex) => (
-									<S.Section key={section.title ?? sectionIndex}>
-										{section.title && <S.SectionTitle>{section.title}</S.SectionTitle>}
-
-										{sectionRows(section).map((row, rowIndex) => (
-											<S.Row key={row.label ?? rowIndex}>
-												{row.label && <S.RowLabel>{row.label}</S.RowLabel>}
-
-												<S.Fields>
-													{row.fields.map(field => {
-														const id = `tackl-setup-${field.group}-${field.key}`;
-														const kind = fieldKind(step, field);
-														const value = tokens[field.group][field.key];
-														const error = validateField(kind, value, field.optional);
-														const options =
-															field.optionsKey === 'fonts'
-																? availableFonts
-																: (field.options ?? []);
-														const removable =
-															section.dynamic === 'brand' &&
-															Object.keys(tokens.brand).length > 1;
-														const onChange = (
-															event:
-																| React.ChangeEvent<HTMLInputElement>
-																| React.ChangeEvent<HTMLSelectElement>
-														) => setValue(field.group, field.key, event.target.value);
-
-														return (
-															<S.Field key={id}>
-																<S.LabelRow>
-																	<S.Label htmlFor={id}>{field.label}</S.Label>
-																	{removable && (
-																		<S.RemoveButton
-																			type='button'
-																			onClick={() => removeBrandColour(field.key)}
-																			aria-label={`Remove ${field.label}`}
-																		>
-																			Remove
-																		</S.RemoveButton>
-																	)}
-																</S.LabelRow>
-
-																{kind === 'color' && (
-																	<S.ColorRow>
-																		<S.Swatch
-																			value={toPickerHex(value)}
-																			onChange={onChange}
-																			aria-label={`${field.label} colour picker`}
-																		/>
-																		<S.Input
-																			id={id}
-																			value={value}
-																			onChange={onChange}
-																			$hasError={error !== null}
-																			spellCheck={false}
-																		/>
-																	</S.ColorRow>
+													return (
+														<S.Field key={id}>
+															<S.LabelRow>
+																<S.Label htmlFor={id}>{field.label}</S.Label>
+																{dynamic !== undefined && removable && (
+																	<S.RemoveButton
+																		type='button'
+																		onClick={() => removeToken(dynamic, field.key)}
+																		aria-label={`Remove ${field.label}`}
+																	>
+																		Remove
+																	</S.RemoveButton>
 																)}
+															</S.LabelRow>
 
-																{kind === 'select' && (
-																	<S.Select id={id} value={value} onChange={onChange}>
-																		{options.map(option => (
-																			<option key={option} value={option}>
-																				{option === '' ? '—' : option}
-																			</option>
-																		))}
-																	</S.Select>
-																)}
-
-																{(kind === 'text' || kind === 'px') && (
+															{kind === 'color' && (
+																<S.ColorRow>
+																	<S.Swatch
+																		value={toPickerHex(value)}
+																		onChange={onChange}
+																		aria-label={`${field.label} colour picker`}
+																	/>
 																	<S.Input
 																		id={id}
 																		value={value}
 																		onChange={onChange}
 																		$hasError={error !== null}
 																		spellCheck={false}
-																		inputMode={
-																			kind === 'px' ? 'decimal' : undefined
-																		}
 																	/>
-																)}
+																</S.ColorRow>
+															)}
 
-																{error && <S.ErrorText>{error}</S.ErrorText>}
-															</S.Field>
-														);
-													})}
-												</S.Fields>
-											</S.Row>
-										))}
+															{kind === 'select' && (
+																<S.Select id={id} value={value} onChange={onChange}>
+																	{options.map(option => (
+																		<option key={option} value={option}>
+																			{option === '' ? '—' : option}
+																		</option>
+																	))}
+																</S.Select>
+															)}
 
-										{section.dynamic === 'brand' && (
-											<S.Nav>
-												<S.Ghost type='button' onClick={addBrandColour}>
-													+ Add colour
+															{(kind === 'text' || kind === 'px') && (
+																<S.Input
+																	id={id}
+																	value={value}
+																	onChange={onChange}
+																	$hasError={error !== null}
+																	spellCheck={false}
+																	inputMode={kind === 'px' ? 'decimal' : undefined}
+																/>
+															)}
+
+															{error && <S.ErrorText>{error}</S.ErrorText>}
+														</S.Field>
+													);
+												})}
+											</S.Fields>
+										</S.Row>
+									))}
+
+									{dynamic !== undefined && (
+										<S.Nav>
+											<S.Ghost type='button' onClick={() => addToken(dynamic)}>
+												{DYNAMIC_CONFIG[dynamic].addLabel}
+											</S.Ghost>
+										</S.Nav>
+									)}
+								</S.Section>
+							);
+						};
+
+						// NOTE • Consecutive sections sharing a groupTitle render inside a
+						// labelled cluster, so paired blocks (a type variant's Base + bp.xl)
+						// read as one unit
+						const clusters: { title?: string; sections: I.SectionDef[] }[] = [];
+						for (const section of step.sections) {
+							const last = clusters[clusters.length - 1];
+							if (section.groupTitle && last?.title === section.groupTitle) {
+								last.sections.push(section);
+							} else {
+								clusters.push({ title: section.groupTitle, sections: [section] });
+							}
+						}
+
+						return (
+							<S.Slide key={step.id}>
+								<S.StepTitle>{step.title}</S.StepTitle>
+								<S.Intro>{step.intro}</S.Intro>
+
+								<S.Content>
+									{step.hasFontUpload && (
+										<S.Upload>
+											<S.UploadTitle>Add a font</S.UploadTitle>
+											<S.Intro>
+												Drops the file into <code>src/theme/fonts/custom</code>, wires it up
+												with next/font and registers it in the theme under your name — it
+												appears in the role dropdowns alongside.
+											</S.Intro>
+
+											<S.UploadRow>
+												<S.Input
+													value={fontName}
+													onChange={event => setFontName(event.target.value)}
+													placeholder='Font name, e.g. myFont'
+													spellCheck={false}
+													aria-label='Font name'
+												/>
+												<S.FileInput
+													ref={fileRef}
+													accept='.woff2,.woff,.ttf,.otf'
+													aria-label='Font file'
+												/>
+												<S.Ghost type='button' onClick={uploadFont} disabled={isUploading}>
+													{isUploading ? 'Uploading…' : 'Upload'}
 												</S.Ghost>
-											</S.Nav>
-										)}
-									</S.Section>
-								))}
-							</S.Content>
-						</S.Slide>
-					))}
+											</S.UploadRow>
+
+											{uploadedFonts.map(font => (
+												<S.UploadHint key={font.cssVariable}>
+													✓ <code>{font.exportName}</code> added — pick it in the dropdowns
+													alongside
+												</S.UploadHint>
+											))}
+											{uploadError && <S.ErrorText role='alert'>{uploadError}</S.ErrorText>}
+										</S.Upload>
+									)}
+
+									{clusters.map((cluster, clusterIndex) =>
+										cluster.title ? (
+											<S.Cluster key={cluster.title}>
+												<S.ClusterTitle>{cluster.title}</S.ClusterTitle>
+												<S.ClusterRow>{cluster.sections.map(renderSection)}</S.ClusterRow>
+											</S.Cluster>
+										) : (
+											cluster.sections.map((section, sectionIndex) =>
+												renderSection(section, clusterIndex * 100 + sectionIndex)
+											)
+										)
+									)}
+								</S.Content>
+							</S.Slide>
+						);
+					})}
 
 					<S.Slide>
 						<S.StepTitle>Everything look right?</S.StepTitle>
@@ -519,8 +584,14 @@ const TacklSetup = () => {
 								</S.ReviewHeader>
 
 								{reviewStep.sections.map((section, sectionIndex) => (
-									<S.ReviewBlock key={section.title ?? sectionIndex}>
-										{section.title && <S.ReviewSection>{section.title}</S.ReviewSection>}
+									<S.ReviewBlock key={`${section.groupTitle ?? ''}-${section.title ?? sectionIndex}`}>
+										{section.title && (
+											<S.ReviewSection>
+												{section.groupTitle
+													? `${section.groupTitle} — ${section.title}`
+													: section.title}
+											</S.ReviewSection>
+										)}
 
 										<S.ReviewList>
 											{sectionRows(section).flatMap(row =>

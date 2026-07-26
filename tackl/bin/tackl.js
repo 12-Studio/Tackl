@@ -370,7 +370,7 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 		console.log(`  ${step++}) cp .env.example .env   # then fill in your values`);
 	}
 	if (!doInstall) console.log(`  ${step++}) bun install`);
-	console.log(`  ${step++}) bun run dev`);
+	console.log(`  ${step++}) bun run dev   # a first-run setup wizard walks you through your theme`);
 	if (cms === 'sanity') console.log(`  ${step}) open http://localhost:3000/studio to start editing content`);
 }
 

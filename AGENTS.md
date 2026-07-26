@@ -110,13 +110,13 @@ existing file, match the labels and order already there.
 ## Styling & theming
 
 - Style with styled-components in `styles.ts`. Prefer CSS custom properties for dynamic values.
-- **Design tokens are CSS variables on `:root`** (`--brand-bc1`, `--space-m`, `--gap-l`,
+- **Design tokens are CSS variables on `:root`** (`--brand-c1`, `--space-m`, `--gap-l`,
   `--br-m`, `--time-m`, `--easing-bezzy`, `--font-heading`). Theme getters resolve to
   `var()` references, so in plain CSS or Server Components you can use `var(--space-m)`
   directly. See [docs/Tackl/Theming.md](./docs/Tackl/Theming.md).
 - Getters: `getBrand`, `getGlobal`, `getFeedback`, `getSpace`, `getGap`, `getRadius`,
   `getEase`, `getTime`, `getFont`, `getFontWeight`.
-- **Translucent colors:** `alpha()` from `@tackl` — `alpha('--brand-bc1', 20)` or
+- **Translucent colors:** `alpha()` from `@tackl` — `alpha('--brand-c1', 20)` or
   `alpha(props.theme.colors.global.white, 15)` — wraps the color in `color-mix`.
 - **Breakpoints are NOT CSS variables** (media queries can't read them). Use `bp`/`bpd`
   from `@tackl`. **Mobile-first**: base styles are the mobile styles; `bp.m`, `bp.l`, …
@@ -132,7 +132,7 @@ export const Jacket = styled(Div).attrs({ as: 'section' })(
 	() => css`
 		display: flex;
 		padding: var(--gap-l);
-		background: ${alpha('--brand-bc3', 40)};
+		background: ${alpha('--brand-c3', 40)};
 		transition: background ${getTime('m')} ${getEase('bezzy')};
 
 		${bp.l` padding: var(--gap-xl); `}

@@ -18,7 +18,7 @@ export const Jacket = styled(Div)(
 		overflow: hidden;
 
 		background:
-			radial-gradient(60% 80% at 50% 110%, ${getBrand('bc1', 30)}, transparent),
+			radial-gradient(60% 80% at 50% 110%, ${getBrand('c1', 30)}, transparent),
 			${getGlobal('black')};
 	`
 );

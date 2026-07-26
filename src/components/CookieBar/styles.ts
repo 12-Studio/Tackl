@@ -44,7 +44,7 @@ export const Jacket = styled(Div).attrs({ as: 'aside' })(
 			${captionL}
 			padding: ${getGap('s')} ${getGap('l')};
 			border-radius: ${getRadius('round')};
-			background: ${getBrand('bc1')};
+			background: ${getBrand('c1')};
 			color: ${getGlobal('white')};
 			cursor: pointer;
 			transition: opacity ${getTime('s')} ${getEase('bezzy')};

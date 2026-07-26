@@ -72,8 +72,8 @@ const TYPE_SCALE_SPEC: GroupSpec = {
 };
 
 const GROUPS: Record<TokenGroup, GroupSpec> = {
-	// NOTE • Brand colours are flexible — any bc1…bc99 keys, at least one
-	brand: { required: [], dynamicKeys: /^bc\d{1,2}$/, kind: 'color' },
+	// NOTE • Brand colours are flexible — any c1…c99 keys, at least one
+	brand: { required: [], dynamicKeys: /^c\d{1,2}$/, kind: 'color' },
 	global: { required: ['white', 'black'], kind: 'color' },
 	feedback: { required: ['positive', 'negative', 'warning'], kind: 'color' },
 	fonts: { required: ['heading', 'body', 'mono', 'script'], kind: 'text' },

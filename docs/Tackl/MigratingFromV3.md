@@ -22,7 +22,7 @@ The complete list of source-level changes to apply across project components:
 | `styled(Section)(…)` in styles.ts | `styled(Div).attrs({ as: 'section' })(…)` |
 | `import { Waffl } from '@tackl'` / deep grid paths | `import Grid from '@waffl'` (default import) |
 | `import '@theme/tackl/waffl/WebComponent'` | Delete — no web component exists |
-| `theme.colors.brand.bc1[40]` / `.solid` / `[100]` | `getBrand('bc1', 40)` · `getBrand('bc1')` — or `alpha('--brand-bc1', 40)` |
+| `theme.colors.brand.c1[40]` / `.solid` / `[100]` | `getBrand('c1', 40)` · `getBrand('c1')` — or `alpha('--brand-c1', 40)` |
 | `theme.colors.global.white[80]` | `getGlobal('white', 80)` |
 | Hand-rolled `rgba(...)` from theme values | `alpha(color, opacity)` from `@tackl` |
 | `getEase('ease')` / `easing.ease` (`'0.3s ease-in-out'`) | `${getTime('m')} ${getEase('bezzy')}` — duration and curve are separate tokens |

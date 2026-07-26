@@ -97,7 +97,7 @@ const TacklSetup = () => {
 		brand: {
 			addLabel: '+ Add colour',
 			defaultValue: '#888888',
-			nextKey: keys => `bc${Math.max(0, ...keys.map(key => Number.parseInt(key.slice(2), 10) || 0)) + 1}`,
+			nextKey: keys => `c${Math.max(0, ...keys.map(key => Number.parseInt(key.slice(1), 10) || 0)) + 1}`,
 		},
 		time: {
 			addLabel: '+ Add timing',

@@ -113,11 +113,11 @@ export const TEXT_TRANSFORM_OPTIONS = ['', 'uppercase', 'lowercase', 'capitalize
 export const DEFAULT_AVAILABLE_FONTS = Object.keys(fontVariables);
 
 export const BRAND_LABELS: Record<string, string> = {
-	bc1: 'bc1 — primary',
-	bc2: 'bc2 — secondary',
-	bc3: 'bc3 — tertiary',
-	bc4: 'bc4 — light',
-	bc5: 'bc5 — muted',
+	c1: 'c1 — primary',
+	c2: 'c2 — secondary',
+	c3: 'c3 — tertiary',
+	c4: 'c4 — quaternary',
+	c5: 'c5 — quinary',
 };
 
 const breakpointRow = (group: I.TokenGroup, label: string, suffix: '' | 'M' | 'Xl'): I.RowDef => {

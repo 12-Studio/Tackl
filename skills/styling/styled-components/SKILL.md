@@ -56,7 +56,7 @@ export const Jacket = styled(Section)<StylesInterface>(
 	props => css`
 		display: flex;
 		padding: 1rem;
-		background: ${getBrand('bc1')};
+		background: ${getBrand('c1')};
 		opacity: ${props.$isActive ? 1 : 0.6};
 	`
 );

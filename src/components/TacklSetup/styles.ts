@@ -19,7 +19,7 @@ export const Jacket = styled(Div).attrs({ as: 'section' })(
 		overflow: hidden;
 
 		background:
-			radial-gradient(70% 90% at 50% 120%, ${getBrand('bc1', 25)}, transparent),
+			radial-gradient(70% 90% at 50% 120%, ${getBrand('c1', 25)}, transparent),
 			${getGlobal('black')};
 	`
 );
@@ -108,7 +108,7 @@ export const Kicker = styled(Div).attrs({ as: 'p' })(
 		${bodyS}
 		text-transform: uppercase;
 		letter-spacing: 0.2em;
-		color: ${getBrand('bc1')};
+		color: ${getBrand('c1')};
 	`
 );
 
@@ -208,7 +208,7 @@ export const SectionTitle = styled(Div).attrs({ as: 'legend' })(
 		margin-bottom: ${getGap('xs')};
 		text-transform: uppercase;
 		letter-spacing: 0.12em;
-		color: ${getBrand('bc1')};
+		color: ${getBrand('c1')};
 	`
 );
 
@@ -326,7 +326,7 @@ export const Input = styled.input<{ $hasError?: boolean }>(
 
 		&:focus {
 			outline: none;
-			border-color: ${getBrand('bc1')};
+			border-color: ${getBrand('c1')};
 		}
 	`
 );
@@ -345,7 +345,7 @@ export const Select = styled.select(
 
 		&:focus {
 			outline: none;
-			border-color: ${getBrand('bc1')};
+			border-color: ${getBrand('c1')};
 		}
 
 		option {
@@ -454,12 +454,12 @@ const buttonBase = css`
 export const Primary = styled.button(
 	() => css`
 		${buttonBase}
-		border: 1px solid ${getBrand('bc1')};
-		background: ${getBrand('bc1')};
+		border: 1px solid ${getBrand('c1')};
+		background: ${getBrand('c1')};
 		color: ${getGlobal('white')};
 
 		&:hover:not(:disabled) {
-			background: ${getBrand('bc1', 80)};
+			background: ${getBrand('c1', 80)};
 		}
 	`
 );
@@ -515,7 +515,7 @@ export const ReviewSection = styled(Div).attrs({ as: 'h4' })(
 		${bodyS}
 		text-transform: uppercase;
 		letter-spacing: 0.12em;
-		color: ${getBrand('bc1', 80)};
+		color: ${getBrand('c1', 80)};
 	`
 );
 

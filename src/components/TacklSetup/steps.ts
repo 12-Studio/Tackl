@@ -58,9 +58,10 @@ const flattenBreakpoint = (block: TypeScaleBreakpoint | undefined, suffix: strin
 		])
 	);
 
+// NOTE • The wizard surfaces base + bp.xl; an m block stays hand-editable in
+// src/theme/tackl/type and passes through setup untouched
 const typeDefaults = (entry: TypeScaleEntry): Record<string, string> => ({
 	...flattenBreakpoint(entry.base, ''),
-	...flattenBreakpoint(entry.m, 'M'),
 	...flattenBreakpoint(entry.xl, 'Xl'),
 });
 
@@ -157,17 +158,18 @@ const breakpointRow = (group: I.TokenGroup, label: string, suffix: '' | 'M' | 'X
 	};
 };
 
-// NOTE • One step per type style — the three breakpoint blocks sit side by
-// side as columns, so a whole style fits on one screen
-const typeScaleStep = (group: I.TokenGroup, description: string): I.StepDef => ({
-	id: `type-${group}`,
-	title: group,
-	intro: `${description} Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from the smaller breakpoint.`,
+// NOTE • One slide per type role, with the L and S variants side by side —
+// each variant shows its Base block and its bp.xl overrides as columns
+const typeScaleStep = (label: string, large: I.TokenGroup, small: I.TokenGroup, description: string): I.StepDef => ({
+	id: `type-${label.toLowerCase()}`,
+	title: label,
+	intro: `${description} Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from base.`,
 	kind: 'text',
 	sections: [
-		{ title: 'Base', rows: [breakpointRow(group, '', '')] },
-		{ title: 'From bp.m', rows: [breakpointRow(group, '', 'M')] },
-		{ title: 'From bp.xl', rows: [breakpointRow(group, '', 'Xl')] },
+		{ title: `${large} — Base`, rows: [breakpointRow(large, '', '')] },
+		{ title: `${large} — From bp.xl`, rows: [breakpointRow(large, '', 'Xl')] },
+		{ title: `${small} — Base`, rows: [breakpointRow(small, '', '')] },
+		{ title: `${small} — From bp.xl`, rows: [breakpointRow(small, '', 'Xl')] },
 	],
 });
 
@@ -181,42 +183,26 @@ export const stepFields = (step: I.StepDef): I.FieldDef[] =>
 // before the type-scale steps that build on them.
 export const steps: I.StepDef[] = [
 	{
-		id: 'brand',
-		title: 'Brand colours',
-		intro: 'The colours behind every getBrand() call and --brand-* variable. Add as many as the project needs, or remove the ones it doesn’t.',
-		kind: 'color',
-		sections: [{ dynamic: 'brand', rows: [] }],
-	},
-	{
-		id: 'system',
-		title: 'Global & feedback',
-		intro: 'Base white/black, plus the colours for success, error and warning states.',
+		id: 'colours',
+		title: 'Colours',
+		intro: 'Brand colours behind every getBrand() call (add or remove as many as the project needs), base white/black, and the feedback states.',
 		kind: 'color',
 		sections: [
+			{ title: 'Brand', dynamic: 'brand', rows: [] },
 			{ title: 'Global', rows: [{ fields: fieldsFrom('global', baseColors.global) }] },
 			{ title: 'Feedback', rows: [{ fields: fieldsFrom('feedback', baseColors.feedback) }] },
 		],
 	},
 	{
 		id: 'spacing',
-		title: 'Spacing',
-		intro: 'Section spacing (--space-*) — the vertical rhythm between page sections. Any CSS length works.',
+		title: 'Spacing & radius',
+		intro: 'Section spacing (--space-*), the gap scale (--gap-*) and corner radii (--br-*). Any CSS length works.',
 		kind: 'text',
-		sections: [{ rows: [{ fields: fieldsFrom('space', spaceValues) }] }],
-	},
-	{
-		id: 'gaps',
-		title: 'Gaps',
-		intro: 'The gap scale (--gap-*) — the small spacing used inside components and layouts.',
-		kind: 'text',
-		sections: [{ rows: [{ fields: fieldsFrom('gap', gapValues) }] }],
-	},
-	{
-		id: 'radius',
-		title: 'Radius',
-		intro: 'Corner radii (--br-*), from subtle rounding to fully round.',
-		kind: 'text',
-		sections: [{ rows: [{ fields: fieldsFrom('radius', borderRadiusValues) }] }],
+		sections: [
+			{ title: 'Section spacing', rows: [{ fields: fieldsFrom('space', spaceValues) }] },
+			{ title: 'Gaps', rows: [{ fields: fieldsFrom('gap', gapValues) }] },
+			{ title: 'Radius', rows: [{ fields: fieldsFrom('radius', borderRadiusValues) }] },
+		],
 	},
 	{
 		id: 'motion',
@@ -251,16 +237,11 @@ export const steps: I.StepDef[] = [
 		],
 		hasFontUpload: true,
 	},
-	typeScaleStep('displayL', 'The largest display text — hero moments.'),
-	typeScaleStep('displayS', 'Smaller display text.'),
-	typeScaleStep('headlineL', 'Large headlines.'),
-	typeScaleStep('headlineS', 'Small headlines.'),
-	typeScaleStep('titleL', 'Large section titles.'),
-	typeScaleStep('titleS', 'Small section titles.'),
-	typeScaleStep('bodyL', 'Large body copy.'),
-	typeScaleStep('bodyS', 'Standard body copy.'),
-	typeScaleStep('captionL', 'Large captions and supporting text.'),
-	typeScaleStep('captionS', 'The smallest supporting text.'),
+	typeScaleStep('Display', 'displayL', 'displayS', 'The largest text on the page — hero moments.'),
+	typeScaleStep('Headline', 'headlineL', 'headlineS', 'Headlines across the site.'),
+	typeScaleStep('Title', 'titleL', 'titleS', 'Section and card titles.'),
+	typeScaleStep('Body', 'bodyL', 'bodyS', 'Running copy.'),
+	typeScaleStep('Caption', 'captionL', 'captionS', 'The smallest supporting text.'),
 ];
 
 // Validation

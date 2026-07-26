@@ -20,13 +20,15 @@ the flow — with live previews as you type.
   downstream (`--brand-*` CSS variables, `getBrand()`, the theme object, the
   type styles) updates automatically because those objects are the single
   source of truth.
-- **The type scale is edited per breakpoint.** Each style (`displayL` …
-  `captionS`) has a Base block plus `bp.m` and `bp.xl` override blocks, each
-  with font family and weight (theme token keys resolved through the
-  getters), size, line-height, letter-spacing and text-transform. Empty
-  override fields simply inherit from the block below. **Sizes are entered
-  in px** and written as rem (px ÷ 10, matching the 10px html base); CSS
-  sizes like `clamp(…)` pass through as-is.
+- **The type scale is edited per breakpoint, one role per slide.** Each
+  role (Display, Headline, Title, Body, Caption) shows its L and S variants
+  side by side, each with a Base block and a `bp.xl` override block — font
+  family and weight (theme token keys resolved through the getters), size,
+  line-height, letter-spacing and text-transform. Empty override fields
+  simply inherit from base, and an optional `m` block stays hand-editable
+  in `src/theme/tackl/type`. **Sizes are entered in px** and written as rem
+  (px ÷ 10, matching the 10px html base); CSS sizes like `clamp(…)` pass
+  through as-is.
 - **Fonts are passed by name only.** The `fontVariables`
   registry in `src/theme/fonts` lists every available font (`inter` out of
   the box). Uploading a font drops the file in `src/theme/fonts/custom/`,

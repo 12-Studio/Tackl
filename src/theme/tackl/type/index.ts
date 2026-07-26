@@ -7,9 +7,10 @@ import { breakpointUp as bp } from '@/theme/tackl/breakpoints';
 
 // SECTION • Raw Type Scale
 // NOTE • Single source of truth for the type styles below — mobile-first:
-// `base` always applies, `m`/`xl` layer overrides from bp.m/bp.xl up. Every
-// property is optional per breakpoint (omitted = inherited); family/weight
-// resolve through the theme getters, so tokens stay the single source.
+// `base` always applies and `xl` layers overrides from bp.xl up (an optional
+// `m` block is supported for hand-tuning). Every property is optional per
+// breakpoint (omitted = inherited); family/weight resolve through the theme
+// getters, so tokens stay the single source.
 export type TypeScaleFamily = 'heading' | 'body' | 'mono' | 'script';
 export type TypeScaleWeight = 'light' | 'regular' | 'medium' | 'semi' | 'bold' | 'heavy' | 'black';
 
@@ -31,53 +32,52 @@ export type TypeScaleEntry = {
 export const typeScale = {
 	displayL: {
 		base: { family: 'heading', weight: 'regular', size: '4.8rem', lineHeight: '1.1', letterSpacing: '-1px' },
-		m: { size: '9.6rem', letterSpacing: '-2px' },
 		xl: { size: 'clamp(9.6rem, 8.333vw, 12rem)', letterSpacing: '-2px' },
 	},
 
 	displayS: {
 		base: { family: 'heading', weight: 'regular', size: '4rem', lineHeight: '1.1', letterSpacing: '-1px' },
-		m: { size: '7.2rem', letterSpacing: '-2px' },
+		xl: { size: '7.2rem', letterSpacing: '-2px' },
 	},
 
 	headlineL: {
 		base: { family: 'heading', weight: 'regular', size: '3.6rem', lineHeight: '1.15' },
-		m: { size: '6rem', letterSpacing: '-0.2rem' },
+		xl: { size: '6rem', letterSpacing: '-0.2rem' },
 	},
 
 	headlineS: {
 		base: { family: 'heading', weight: 'regular', size: '3rem', lineHeight: '1.2' },
-		m: { size: '4.8rem', letterSpacing: '-0.1rem' },
+		xl: { size: '4.8rem', letterSpacing: '-0.1rem' },
 	},
 
 	titleL: {
 		base: { family: 'heading', weight: 'regular', size: '2.6rem', lineHeight: '1.2' },
-		m: { size: '3.6rem' },
+		xl: { size: '3.6rem' },
 	},
 
 	titleS: {
 		base: { family: 'heading', weight: 'regular', size: '2.2rem', lineHeight: '1.25' },
-		m: { size: '2.8rem' },
+		xl: { size: '2.8rem' },
 	},
 
 	bodyL: {
 		base: { family: 'body', weight: 'regular', size: '2rem', lineHeight: '1.4' },
-		m: { size: '2.4rem' },
+		xl: { size: '2.4rem' },
 	},
 
 	bodyS: {
 		base: { family: 'body', weight: 'regular', size: '1.6rem', lineHeight: '1.4' },
-		m: { size: '1.8rem' },
+		xl: { size: '1.8rem' },
 	},
 
 	captionL: {
 		base: { family: 'body', weight: 'regular', size: '1.4rem', lineHeight: '1.5' },
-		m: { size: '1.6rem' },
+		xl: { size: '1.6rem' },
 	},
 
 	captionS: {
 		base: { family: 'body', weight: 'regular', size: '1.2rem', lineHeight: '1.5' },
-		m: { size: '1.3rem' },
+		xl: { size: '1.3rem' },
 	},
 } satisfies Record<string, TypeScaleEntry>;
 

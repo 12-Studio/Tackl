@@ -199,8 +199,8 @@ export const RowLabel = styled(Div).attrs({ as: 'p' })(
 	`
 );
 
-// NOTE • Fields stack one per line at every width — a linear form reads
-// faster than a grid of inputs
+// NOTE • Fields stack vertically inside their section; the sections sit side
+// by side on the fullscreen slide (see Content)
 export const Fields = styled(Div)(
 	() => css`
 		display: flex;

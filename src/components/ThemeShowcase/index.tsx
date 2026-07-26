@@ -2,7 +2,7 @@
 
 // Imports
 // ------------
-import { typeScale } from '@tackl/type';
+import { typeRoles, typeScale } from '@tackl/type';
 import { borderRadiusValues } from '@theme/borderRadius';
 import { baseColors } from '@theme/colors';
 import { easingValues } from '@theme/easing';
@@ -18,6 +18,15 @@ import * as S from './styles';
 // Constants
 // ------------
 const SPECIMEN = 'The quick brown fox jumps over the lazy dog';
+
+// NOTE • Type styles grouped by role so each pair sits under its descriptor
+const TYPE_ROLE_STYLES: { role: keyof typeof typeRoles; styles: (keyof typeof typeScale)[] }[] = [
+	{ role: 'display', styles: ['displayL', 'displayS'] },
+	{ role: 'headline', styles: ['headlineL', 'headlineS'] },
+	{ role: 'title', styles: ['titleL', 'titleS'] },
+	{ role: 'body', styles: ['bodyL', 'bodyS'] },
+	{ role: 'caption', styles: ['captionL', 'captionS'] },
+];
 
 // Component
 // ------------
@@ -75,19 +84,25 @@ const ThemeShowcase = () => {
 
 			<S.Block>
 				<S.BlockTitle>Type scale</S.BlockTitle>
-				{(Object.keys(typeScale) as (keyof typeof typeScale)[]).map(name => {
-					const entry = typeScale[name];
+				{TYPE_ROLE_STYLES.map(({ role, styles }) => (
+					<S.SwatchGroup key={role}>
+						<S.GroupLabel>{role}</S.GroupLabel>
+						<S.RoleNote>{typeRoles[role]}</S.RoleNote>
+						{styles.map(name => {
+							const entry = typeScale[name];
 
-					return (
-						<S.SpecimenRow key={name}>
-							<S.TokenValue>
-								{name} · {entry.base.family}/{entry.base.weight} · {entry.base.size}
-								{entry.xl?.size ? ` → ${entry.xl.size} (bp.xl)` : ''}
-							</S.TokenValue>
-							<S.Specimen $style={name}>{SPECIMEN}</S.Specimen>
-						</S.SpecimenRow>
-					);
-				})}
+							return (
+								<S.SpecimenRow key={name}>
+									<S.TokenValue>
+										{name} · {entry.base.family}/{entry.base.weight} · {entry.base.size}
+										{entry.xl?.size ? ` → ${entry.xl.size} (bp.xl)` : ''}
+									</S.TokenValue>
+									<S.Specimen $style={name}>{SPECIMEN}</S.Specimen>
+								</S.SpecimenRow>
+							);
+						})}
+					</S.SwatchGroup>
+				))}
 			</S.Block>
 
 			<S.Block>

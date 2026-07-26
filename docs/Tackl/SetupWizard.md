@@ -21,6 +21,10 @@ the flow — with live previews as you type.
   type styles) updates automatically because those objects are the single
   source of truth.
 - **The type scale is edited per breakpoint, one role per slide.** Each
+  slide opens with the role's descriptor — when to reach for Display vs
+  Headline vs Title etc. — sourced from the `typeRoles` export in
+  `src/theme/tackl/type` (also shown in the Storybook theme overview, and
+  kept after the wizard deletes itself). Each
   role (Display, Headline, Title, Body, Caption) shows its L and S variants
   side by side, each with a Base block and a `bp.xl` override block — font
   family and weight (theme token keys resolved through the getters), size,

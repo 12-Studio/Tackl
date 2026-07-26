@@ -81,6 +81,20 @@ export const typeScale = {
 	},
 } satisfies Record<string, TypeScaleEntry>;
 
+// SECTION • Role Descriptions
+// NOTE • When to reach for each role — shown in the setup wizard and the
+// Storybook theme overview, and worth keeping in mind when styling
+export const typeRoles = {
+	display:
+		'The largest and most prominent type style. Used for hero headlines, landing page banners, or key marketing moments where typography needs to make an impact. Typically reserved for one or two instances per page to avoid visual noise.',
+	headline:
+		'Primary section titles and major UI headings. Use to break up page content and establish hierarchy. Great for page headers, feature sections, or card headers when you want clear emphasis but less dominance than Display.',
+	title: 'Component-level titles: card titles, form section labels, modal titles, button text (when larger than body), navigation items. This is a versatile style used throughout the interface to label or name elements.',
+	body: 'The main paragraph and content text style. Use for all long-form content, descriptions, and supporting copy. Small (S) is helpful for secondary or supporting text, Large (L) for primary reading text.',
+	caption:
+		'The smallest text style. Use for meta information, image captions, legal disclaimers, timestamps, overlines, and other supporting microcopy. Avoid using below 12px for accessibility where possible.',
+} as const;
+
 // ANCHOR • Declarations for one breakpoint block — only set what's defined
 const breakpointStyles = (block: TypeScaleBreakpoint): RuleSet => css`
 	${block.family ? css`font-family: ${theme.font.family[block.family]};` : ''}

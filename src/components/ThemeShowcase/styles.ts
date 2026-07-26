@@ -71,6 +71,14 @@ export const GroupLabel = styled(Div).attrs({ as: 'h3' })(
 	`
 );
 
+export const RoleNote = styled(Div).attrs({ as: 'p' })(
+	() => css`
+		${bodyS}
+		max-width: 72rem;
+		color: ${getGlobal('white', 60)};
+	`
+);
+
 export const SwatchGroup = styled(Div)(
 	() => css`
 		display: flex;

@@ -7,7 +7,7 @@
 
 // Imports
 // ------------
-import { type TypeScaleBreakpoint, type TypeScaleEntry, typeScale } from '@tackl/type';
+import { type TypeScaleBreakpoint, type TypeScaleEntry, typeRoles, typeScale } from '@tackl/type';
 import { borderRadiusValues } from '@theme/borderRadius';
 import { baseColors } from '@theme/colors';
 import { easingValues } from '@theme/easing';
@@ -159,11 +159,13 @@ const breakpointRow = (group: I.TokenGroup, label: string, suffix: '' | 'M' | 'X
 };
 
 // NOTE • One slide per type role, with the L and S variants side by side —
-// each variant shows its Base block and its bp.xl overrides as columns
-const typeScaleStep = (label: string, large: I.TokenGroup, small: I.TokenGroup, description: string): I.StepDef => ({
-	id: `type-${label.toLowerCase()}`,
-	title: label,
-	intro: `${description} Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from base.`,
+// each variant shows its Base block and its bp.xl overrides as columns. The
+// intro is the role descriptor from @tackl/type, so wizard and Storybook
+// always describe each role the same way.
+const typeScaleStep = (label: keyof typeof typeRoles, large: I.TokenGroup, small: I.TokenGroup): I.StepDef => ({
+	id: `type-${label}`,
+	title: `${label.charAt(0).toUpperCase()}${label.slice(1)}`,
+	intro: `${typeRoles[label]} Sizes are in px (written as rem, px ÷ 10); empty override fields inherit from base.`,
 	kind: 'text',
 	sections: [
 		{ groupTitle: large, title: 'Base', rows: [breakpointRow(large, '', '')] },
@@ -237,11 +239,11 @@ export const steps: I.StepDef[] = [
 		],
 		hasFontUpload: true,
 	},
-	typeScaleStep('Display', 'displayL', 'displayS', 'The largest text on the page — hero moments.'),
-	typeScaleStep('Headline', 'headlineL', 'headlineS', 'Headlines across the site.'),
-	typeScaleStep('Title', 'titleL', 'titleS', 'Section and card titles.'),
-	typeScaleStep('Body', 'bodyL', 'bodyS', 'Running copy.'),
-	typeScaleStep('Caption', 'captionL', 'captionS', 'The smallest supporting text.'),
+	typeScaleStep('display', 'displayL', 'displayS'),
+	typeScaleStep('headline', 'headlineL', 'headlineS'),
+	typeScaleStep('title', 'titleL', 'titleS'),
+	typeScaleStep('body', 'bodyL', 'bodyS'),
+	typeScaleStep('caption', 'captionL', 'captionS'),
 ];
 
 // Validation

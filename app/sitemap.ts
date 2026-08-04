@@ -16,6 +16,12 @@ import { siteUrl } from '@/config';
 // 	lastModified: new Date(),
 // })),
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
+	// NOTE • With `cacheComponents` on, uncached I/O (`new Date()` here) makes a
+	// route dynamic. `use cache` keeps /sitemap.xml prerendered, pinning
+	// lastModified to build time — swap it for a CMS timestamp when you wire
+	// slugs in above, or drop the directive to regenerate per request.
+	'use cache';
+
 	return [
 		{
 			url: `${siteUrl}/`,

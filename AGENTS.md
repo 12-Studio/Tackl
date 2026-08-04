@@ -186,6 +186,15 @@ on unmount or when a matchMedia condition stops matching.
   page content passes through as `children` and stays server-rendered.
 - Fetch CMS data in Server Components with `fetchContent` from `@cms` — it returns `null`
   on failure (never throws), so an unconfigured CMS can't crash a route.
+- **`cacheComponents` is on** (`next.config.js`), so data fetching is dynamic by default.
+  Anything reading uncached I/O — a `fetchContent` call, `cookies()`, even `new Date()` —
+  makes its route dynamic unless you opt in with the `'use cache'` directive (see
+  `app/sitemap.ts`). Wrap dynamic subtrees in `Suspense` so the static shell still
+  prerenders and the rest streams in. `experimental.ppr` and `experimental_ppr` are gone —
+  Partial Prerendering is the default.
+- **Partial Prefetching is on**, so a `<Link>` fetches the route's shared App Shell rather
+  than a per-link payload. Only add `<Link prefetch={true}>` when the destination reads
+  `params`/`searchParams` and you need that resolved before the click.
 - Route transitions: `useTransitionRouter` from the view-transitions utils.
 - Dynamically load non-critical client components; wrap them in `Suspense` with a fallback.
 - Optimise images (WebP/AVIF, explicit width/height, lazy loading).
@@ -225,3 +234,13 @@ Wiring them to your tool:
 - **Claude Code** — symlink or copy into `.claude/skills/` (`ln -s ../../skills .claude/skills`).
 - **Cursor** — point Cursor's skills/plugins at the `skills/` directory.
 - **Other tools** — reference `skills/**/SKILL.md` however your agent loads context.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

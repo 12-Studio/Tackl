@@ -46,7 +46,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 ## 🎯 What's in the box
 
 - **First-run setup wizard** — an interactive, self-deleting overlay on first `bun dev` that fills in every theme token (brand colours, spacing, motion, font uploads, the per-breakpoint type scale) and writes them straight into `src/theme`
-- **Next.js 16 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds
+- **Next.js 16.3 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds, with Cache Components and Partial Prefetching on by default so routes prerender a static shell, stream the dynamic parts, and share one prefetched App Shell per route instead of one payload per `<Link>`
 - **TypeScript everywhere** — strict, with typed design tokens that derive from the values (add a token, the type follows)
 - **styled-components v6** — SSR wired via the registry; one polymorphic `Div` primitive instead of a component per HTML tag
 - **Tackl theming** — every design token is a CSS custom property on `:root`; runtime theming (dark mode, white-label) is a CSS override, not a re-render

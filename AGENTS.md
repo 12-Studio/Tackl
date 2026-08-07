@@ -209,6 +209,9 @@ on unmount or when a matchMedia condition stops matching.
 ## General code quality
 
 - **Strict TypeScript.** Never `any` — use `unknown` for dynamic data and narrow it.
+  The kit deliberately rides the native (Go-based) TypeScript 7 compiler, pinned to
+  its minor line (`~7.0.x`) — `next build` type-checks through the project-local `tsc`
+  (`useTypeScriptCli`), which is what makes that work. Don't downgrade to 6.x casually.
 - Prefer named constants over magic numbers; give them purpose-revealing names.
 - Small, single-responsibility functions. If a function needs a comment to explain
   *what* it does, split it. Comments explain *why*, not *what*.

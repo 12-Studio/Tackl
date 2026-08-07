@@ -66,11 +66,15 @@ button {
 	background: none;
 }
 
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
+/* Focus — invisible for pointer interactions, a clear ring for keyboard
+   navigation. :focus-visible must always produce a visible indicator. */
+:focus {
 	outline: none;
+}
+
+:focus-visible {
+	outline: 2px solid var(--brand-c1);
+	outline-offset: 2px;
 }
 
 /* Waffl Grid — direct children span the full grid by default.

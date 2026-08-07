@@ -29,7 +29,7 @@
 		"build-storybook": "storybook build",
 		"serve": "serve ./out",
 		"commit": "node .gitmessage.js",
-		"postinstall": "husky",
+		"prepare": "husky",
 		"test": "echo \"No tests specified\" && exit 0",
 		"lighthouse": "lhci autorun",
 		"outdated": "bunx npm-check-updates"
@@ -66,10 +66,5 @@
 		"husky": "^9.1.7",
 		"storybook": "^10.5.6",
 		"typescript": "7.0.2"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "bun run commit"
-		}
 	}
 }

@@ -152,5 +152,5 @@ Animate **wrappers** around CMS content, not PortableText nodes directly. Fetch 
 - `src/components/AnimationPlugins/index.tsx`
 - `src/utils/useAnimation.ts`
 - `docs/Motion.md`
-- `docs/GSAP/New.md`
+- `docs/GSAP/UseGsapHook.md`
 - `docs/GSAP/EntryExitAnimations.md`

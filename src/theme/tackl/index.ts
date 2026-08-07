@@ -35,7 +35,10 @@ export const bpd = breakpointDown;
 //        border-color: ${props => alpha(props.theme.colors.global.white, 15)};
 export const alpha = (color: string, opacity: number): string => {
 	const value = color.startsWith('--') ? `var(${color})` : color;
-	return opacity >= 100 ? value : `color-mix(in srgb, ${value} ${opacity}%, transparent)`;
+	// NOTE • Out-of-range or non-finite opacity would emit invalid color-mix —
+	// clamp to 0–100 and treat garbage as fully opaque
+	const clamped = Number.isFinite(opacity) ? Math.min(100, Math.max(0, opacity)) : 100;
+	return clamped >= 100 ? value : `color-mix(in srgb, ${value} ${clamped}%, transparent)`;
 };
 
 // SECTION • Theme Getters

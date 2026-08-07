@@ -4,8 +4,8 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	-webkit-font-smoothing: subpixel-antialiased; /* Enable subpixel antialiasing for better text rendering */
-	-moz-osx-font-smoothing: grayscale; /* Enable grayscale antialiasing for better text rendering */
+	-webkit-font-smoothing: antialiased; /* Matched pair with the -moz value below — consistent rendering across engines */
+	-moz-osx-font-smoothing: grayscale;
 }
 
 /* HTML5 Elements */

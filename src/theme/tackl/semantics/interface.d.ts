@@ -14,7 +14,6 @@ export interface SemanticProps extends GridProps {
 	$marBottom?: boolean;
 	$marTop?: boolean;
 	$mar?: boolean;
-	$mpad?: boolean;
 	$padBottom?: boolean;
 	$padTop?: boolean;
 	$pad?: boolean;

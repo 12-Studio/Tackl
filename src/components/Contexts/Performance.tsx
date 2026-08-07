@@ -8,7 +8,6 @@ import { createContext, useEffect, useMemo, useRef, useState } from 'react';
 // ------------
 export const PerformanceContext = createContext({
 	isReducedMotion: false,
-	isLowPowerMode: false,
 	devicePixelRatio: 1,
 });
 
@@ -17,7 +16,6 @@ export const PerformanceContext = createContext({
 export const PerformanceProvider = ({ children }: { children: React.ReactNode }) => {
 	const [performanceState, setPerformanceState] = useState({
 		isReducedMotion: false,
-		isLowPowerMode: false,
 		devicePixelRatio: 1,
 	});
 
@@ -39,8 +37,6 @@ export const PerformanceProvider = ({ children }: { children: React.ReactNode })
 
 			setPerformanceState({
 				isReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-				isLowPowerMode:
-					(typeof navigator !== 'undefined' && navigator?.userAgent?.includes('Low-Power')) || false,
 				devicePixelRatio: window.devicePixelRatio || 1,
 			});
 		};

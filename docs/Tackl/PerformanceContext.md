@@ -17,12 +17,6 @@ The context provides the following values:
 - Use case: Disable or reduce animations for accessibility
 - Built-in consumer: `SmoothScroll` skips Lenis entirely when this is true — the page uses native scrolling (see the reduced-motion overrides in `src/css/global.css`) and the constant rAF loop never starts
 
-### isLowPowerMode
-
-- Type: `boolean`
-- Description: Detects if the device is in low-power mode
-- Use case: Disable resource-intensive animations and effects when battery preservation is important
-
 ### devicePixelRatio
 
 - Type: `number`
@@ -36,14 +30,10 @@ import { useContext } from 'react';
 import { PerformanceContext } from '@parts/Contexts/PerformanceContext';
 
 const MyComponent = () => {
-	const { isReducedMotion, isLowPowerMode, devicePixelRatio } =
-		useContext(PerformanceContext);
+	const { isReducedMotion, devicePixelRatio } = useContext(PerformanceContext);
 
 	// Example: Adjust animation based on user preferences
 	const animationDuration = isReducedMotion ? '0s' : '0.3s';
-
-	// Example: Disable heavy effects in low-power mode
-	const particleCount = isLowPowerMode ? 0 : 100;
 
 	// Example: Choose appropriate image resolution
 	const imageQuality = devicePixelRatio > 1 ? 'high' : 'normal';

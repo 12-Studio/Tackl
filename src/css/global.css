@@ -29,6 +29,9 @@ html {
 	interpolate-size: allow-keywords; /* Allow keywords in interpolate-size – Not well supported yet in all browsers */
 }
 
+/* Locked viewport — deliberate (see AGENTS.md, Animation section): scrolling
+   happens in the nested Lenis wrapper, not the window, so the iOS toolbar
+   never collapses and page transitions / fullscreen loaders render cleanly */
 html,
 body {
 	height: 100%;

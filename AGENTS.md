@@ -174,6 +174,11 @@ on unmount or when a matchMedia condition stops matching.
   `matchMedia` listeners) or interaction-driven animations created outside the context.
 - Smooth scrolling shares one ticker via `SmoothScroll`; `prefers-reduced-motion` users
   skip Lenis entirely. Don't add a second rAF loop.
+- **The nested Lenis wrapper (locked `html`/`body`, scrolling `#page`) is deliberate —
+  do not "simplify" to window-mode Lenis.** On iOS, window scrolling collapses the
+  browser toolbar, and its transparency breaks page transitions and fullscreen loaders.
+  The nested wrapper keeps the viewport stable, which avoids this entirely; the cost
+  (the `scrollerProxy` bridge in `SmoothScroll`) is accepted.
 
 ---
 

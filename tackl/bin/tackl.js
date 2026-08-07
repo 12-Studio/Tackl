@@ -107,9 +107,22 @@ const stripDeps = (root, deps) => {
 	fs.writeFileSync(p, `${JSON.stringify(json, null, '\t')}\n`);
 };
 
-// NOTE • Everything that exists solely for the embedded Sanity Studio
-const SANITY_STUDIO_PATHS = ['app/(studio)', 'app/api/draft-mode', 'sanity.config.ts', 'sanity'];
+// NOTE • Everything that exists solely for the embedded Sanity Studio.
+// app/api/draft-mode is NOT here — the draft routes are CMS-agnostic
+// (they resolve through @cms/draft) and only go when no CMS is chosen.
+const SANITY_STUDIO_PATHS = ['app/(studio)', 'sanity.config.ts', 'sanity'];
 const SANITY_DEPS = ['next-sanity', 'sanity', '@sanity/vision'];
+
+// NOTE • The two files the CLI rewires to the chosen adapter
+const ADAPTER_ENTRIES = ['src/cms/index.ts', 'src/cms/draft.ts'];
+const rewireAdapter = (root, adapter) => {
+	for (const rel of ADAPTER_ENTRIES) {
+		const p = path.join(root, rel);
+		if (fs.existsSync(p)) {
+			fs.writeFileSync(p, fs.readFileSync(p, 'utf8').replaceAll(`'./dato`, `'./${adapter}`));
+		}
+	}
+};
 
 const CMS = {
 	dato: {
@@ -129,11 +142,7 @@ const CMS = {
 			rmrf(root, 'docs/DatoCMS');
 			stripDeps(root, ['@datocms/cda-client', 'react-datocms', 'graphql', 'graphql-tag']);
 			stripEnvBlock(root, '# CMS — DatoCMS');
-			// Rewire the adapter entry to the kept adapter
-			const entry = path.join(root, 'src/cms/index.ts');
-			if (fs.existsSync(entry)) {
-				fs.writeFileSync(entry, fs.readFileSync(entry, 'utf8').replace(`'./dato'`, `'./sanity'`));
-			}
+			rewireAdapter(root, 'sanity');
 		},
 	},
 	none: {
@@ -143,6 +152,7 @@ const CMS = {
 			rmrf(root, 'docs/Sanity');
 			rmrf(root, 'docs/DatoCMS');
 			rmrf(root, 'docs/CMS.md');
+			rmrf(root, 'app/api/draft-mode');
 			for (const p of SANITY_STUDIO_PATHS) rmrf(root, p);
 			stripDeps(root, [...SANITY_DEPS, '@datocms/cda-client', 'react-datocms', 'graphql', 'graphql-tag']);
 			stripEnvBlock(root, '# CMS — Sanity');

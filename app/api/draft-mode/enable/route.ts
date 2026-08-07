@@ -1,18 +1,9 @@
 // Draft Mode — Enable
 // ------------
-// NOTE • Lets Sanity's Presentation tool (and editors) turn on Next.js
-// draft mode so pages render draft content. Requires a viewer token in
-// SANITY_API_READ_TOKEN (server-only env, never NEXT_PUBLIC_) — without
-// one this route responds 503 and the site simply stays on published
-// content.
-
-// Imports
-// ------------
-import { client } from '@cms/sanity/client';
-import { defineEnableDraftMode } from 'next-sanity/draft-mode';
+// NOTE • Thin re-export — the actual handler lives in the CMS adapter
+// (src/cms/<adapter>/draft.ts) and is selected via '@cms/draft', so this
+// route works unchanged for DatoCMS and Sanity alike.
 
 // Exports
 // ------------
-export const { GET } = defineEnableDraftMode({
-	client: client.withConfig({ token: process.env.SANITY_API_READ_TOKEN }),
-});
+export { GET } from '@cms/draft';

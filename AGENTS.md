@@ -225,6 +225,8 @@ on unmount or when a matchMedia condition stops matching.
 
 - `bun run type-check` — must pass (strict, no emit).
 - `bun run lint` — Biome check.
+- `bun run test` — Playwright smoke test (builds and boots the production app; add
+  specs to `tests/` as features land).
 - For anything visual or interactive, verify against the running app (`bun run dev`), not
   just types — the pre-configured `chrome-devtools` MCP can drive the browser for you.
 

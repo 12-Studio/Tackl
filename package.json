@@ -30,7 +30,7 @@
 		"serve": "serve ./out",
 		"commit": "node .gitmessage.js",
 		"prepare": "husky",
-		"test": "echo \"No tests specified\" && exit 0",
+		"test": "playwright test",
 		"lighthouse": "lhci autorun",
 		"outdated": "bunx npm-check-updates"
 	},
@@ -53,6 +53,7 @@
 	},
 	"devDependencies": {
 		"@lhci/cli": "^0.15.1",
+		"@playwright/test": "^1.54.0",
 		"@storybook/addon-docs": "^10.5.6",
 		"@storybook/addon-links": "^10.5.6",
 		"@storybook/addon-onboarding": "^10.5.6",

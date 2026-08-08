@@ -57,10 +57,11 @@ const MyComponent = () => {
 
 ## Default Breakpoints
 
-The utility comes with these default breakpoints:
+The defaults are derived from `theme.grid.breakpoints` (`m` = tablet threshold, `l` = desktop threshold), so layout and animations can never desync — retune the theme and these follow:
 
--   `isDesktop`: `(min-width: 1024px)`
--   `isMobile`: `(max-width: 1023px)`
+-   `isMobile`: below `m` (default `(max-width: 699.98px)`)
+-   `isTablet`: `m` up to `l` (default `(min-width: 700px) and (max-width: 1023.98px)`)
+-   `isDesktop`: `l` and up (default `(min-width: 1024px)`)
 
 ## Custom Breakpoints
 

@@ -8,13 +8,15 @@ description: Implements and orchestrates GSAP in Tackl — useAnimation, useGSAP
 ## System overview
 
 ```
-Client.tsx
-  └── AnimationPlugins     # registers ScrollTrigger + useGSAP (+ SplitText) globally
+app/(site)/Providers.tsx
+  └── AnimationPlugins     # registers ScrollTrigger + useGSAP globally
   └── Contexts
-        └── PerformanceProvider   # isReducedMotion, isLowPowerMode
-        └── SmoothScroll (Lenis)
-              └── LenisGsapBridge # ScrollTrigger.scrollerProxy + ticker sync
-              └── {page children}
+        └── PerformanceProvider   # isReducedMotion, devicePixelRatio
+
+app/(site)/layout.tsx
+  └── SmoothScroll (Lenis)
+        └── {page children}
+        └── LenisGsapBridge # ScrollTrigger.scrollerProxy + ticker sync
 ```
 
 Animation is **client-side only**. Never run Lenis/GSAP in Server Components.
@@ -25,7 +27,7 @@ Animation is **client-side only**. Never run Lenis/GSAP in Server Components.
 - `ScrollTrigger` — registered in `src/components/AnimationPlugins/index.tsx`
 - Project hook: `useAnimation` in `src/utils/useAnimation.ts` (wraps `useGSAP` + `gsap.matchMedia`)
 
-Do not re-register plugins in every file. `AnimationPlugins` is mounted in `app/(site)/Client.tsx`.
+Do not re-register plugins in every file. `AnimationPlugins` is imported once in `app/(site)/Providers.tsx`.
 
 ## When to use what
 
@@ -45,7 +47,7 @@ Do not re-register plugins in every file. `AnimationPlugins` is mounted in `app/
 3. Prefer refs over class selectors when possible.
 4. Always scope cleanup — `useGSAP`/`useAnimation` handle this via `gsap.context()`.
 5. Interaction-driven animations (click, delayed) are **not** context-safe — manage and revert manually.
-6. Respect `PerformanceContext` — skip or simplify when `isReducedMotion` or `isLowPowerMode` is true.
+6. Respect `PerformanceContext` — skip or simplify when `isReducedMotion` is true.
 7. Animate `transform` and `opacity` first; avoid layout properties.
 
 ## Default breakpoints (`useAnimation`)
@@ -138,7 +140,7 @@ Animate **wrappers** around CMS content, not PortableText nodes directly. Fetch 
 - `position: sticky` fights with Lenis in some layouts — test carefully
 - Creating ScrollTriggers without a trigger element
 - Multiple `ScrollTrigger.refresh()` calls — one after layout settle is enough
-- Heavy particle/canvas effects without checking `isLowPowerMode`
+- Heavy particle/canvas effects without checking `isReducedMotion` (and scaling by `devicePixelRatio`)
 
 ## Related skills
 

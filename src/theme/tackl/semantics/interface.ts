@@ -1,6 +1,6 @@
 // Semantics Types / Interfaces
 // ------------
-import { Breakpoints } from '@theme/grid/interface';
+import type { Breakpoints } from '@theme/grid/interface';
 
 // Generate grid props from breakpoints
 type GridProps = {

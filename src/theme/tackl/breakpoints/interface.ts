@@ -1,7 +1,7 @@
 // Breakpoints Types / Interfaces
 // ------------
-import { theme } from '@theme';
-import { css } from 'styled-components';
+import type { theme } from '@theme';
+import type { css } from 'styled-components';
 import type { RuleSet } from 'styled-components/dist/types';
 
 // SECTION • Breakpoints

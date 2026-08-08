@@ -1,16 +1,16 @@
 // Theme Types / Interfaces
 // ------------
 
-import { BorderRadius } from './borderRadius/interface';
+import type { BorderRadius } from './borderRadius/interface';
 // Imports
 // ------------
-import { Colors } from './colors/interface';
-import { Easing } from './easing/interface';
-import { Fonts } from './fonts/interface';
-import { Gap } from './gap/interface';
-import { Grid } from './grid/interface';
-import { Space } from './space/interface';
-import { Time } from './time/interface';
+import type { Colors } from './colors/interface';
+import type { Easing } from './easing/interface';
+import type { Fonts } from './fonts/interface';
+import type { Gap } from './gap/interface';
+import type { Grid } from './grid/interface';
+import type { Space } from './space/interface';
+import type { Time } from './time/interface';
 
 // Exports
 // ------------

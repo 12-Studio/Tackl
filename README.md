@@ -167,7 +167,8 @@ flowchart TD
     │   │   ├── index.ts        # Adapter switch (the line the CLI rewires)
     │   │   ├── draft.ts        # Draft-mode switch (rewired alongside index.ts)
     │   │   ├── dato/           # DatoCMS adapter (GraphQL)
-    │   │   └── sanity/         # Sanity adapter (GROQ)
+    │   │   ├── sanity/         # Sanity adapter (GROQ)
+    │   │   └── none/           # No-CMS stub (same surface, returns null)
     │   ├── components/         # UI components (one folder each — see WritingComponents.md)
     │   ├── theme/              # Design tokens + the tackl toolkit
     │   │   ├── colors|space|gap|borderRadius|easing|time|fonts|grid/

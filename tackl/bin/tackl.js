@@ -129,6 +129,7 @@ const CMS = {
 		title: 'DatoCMS',
 		prune: root => {
 			rmrf(root, 'src/cms/sanity');
+			rmrf(root, 'src/cms/none');
 			rmrf(root, 'docs/Sanity');
 			for (const p of SANITY_STUDIO_PATHS) rmrf(root, p);
 			stripDeps(root, SANITY_DEPS);
@@ -139,6 +140,7 @@ const CMS = {
 		title: 'Sanity',
 		prune: root => {
 			rmrf(root, 'src/cms/dato');
+			rmrf(root, 'src/cms/none');
 			rmrf(root, 'docs/DatoCMS');
 			stripDeps(root, ['@datocms/cda-client', 'react-datocms', 'graphql', 'graphql-tag']);
 			stripEnvBlock(root, '# CMS — DatoCMS');
@@ -147,16 +149,22 @@ const CMS = {
 	},
 	none: {
 		title: 'No CMS',
+		// NOTE • Same shape as the other choices — the '@cms' seam survives,
+		// rewired to the stub adapter (src/cms/none), so app code and the
+		// tsconfig alias stay valid and a CMS can be wired up later. Only the
+		// CMS-specific files go: adapters, draft-mode routes, studio, docs.
 		prune: root => {
-			rmrf(root, 'src/cms');
+			rmrf(root, 'src/cms/dato');
+			rmrf(root, 'src/cms/sanity');
+			rmrf(root, 'src/cms/draft.ts');
 			rmrf(root, 'docs/Sanity');
 			rmrf(root, 'docs/DatoCMS');
-			rmrf(root, 'docs/CMS.md');
 			rmrf(root, 'app/api/draft-mode');
 			for (const p of SANITY_STUDIO_PATHS) rmrf(root, p);
 			stripDeps(root, [...SANITY_DEPS, '@datocms/cda-client', 'react-datocms', 'graphql', 'graphql-tag']);
 			stripEnvBlock(root, '# CMS — Sanity');
 			stripEnvBlock(root, '# CMS — DatoCMS');
+			rewireAdapter(root, 'none');
 		},
 	},
 };

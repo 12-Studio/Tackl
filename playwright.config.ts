@@ -10,6 +10,12 @@ export default defineConfig({
 	timeout: 60_000,
 	use: {
 		baseURL: 'http://localhost:3000',
+		// NOTE • Sandboxed environments (agent containers, locked-down CI) often
+		// ship a system Chromium instead of allowing downloads — point
+		// PLAYWRIGHT_CHROMIUM_PATH at it to skip `playwright install` entirely
+		...(process.env.PLAYWRIGHT_CHROMIUM_PATH && {
+			launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH },
+		}),
 	},
 	webServer: {
 		// CI builds in an earlier step; locally, build fresh so the test

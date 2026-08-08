@@ -164,7 +164,13 @@ const CMS = {
 // NOTE • Repo-only cargo that should never land in a scaffolded project.
 // .github is pruned file-by-file — the CI workflow (.github/workflows) ships
 // with every scaffold so quality gates run from the first push.
-const REPO_CARGO = ['tackl', '.github/FUNDING.yml', '.github/ISSUE_TEMPLATE.md', '.github/PULL_REQUEST_TEMPLATE.md', 'bun.lock'];
+const REPO_CARGO = [
+	'tackl',
+	'.github/FUNDING.yml',
+	'.github/ISSUE_TEMPLATE.md',
+	'.github/PULL_REQUEST_TEMPLATE.md',
+	'bun.lock',
+];
 
 async function main() {
 	const args = process.argv.slice(2);

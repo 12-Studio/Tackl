@@ -13,5 +13,8 @@ import { redirect } from 'next/navigation';
 export const GET = async (request: Request) => {
 	(await draftMode()).disable();
 	const url = new URL(request.url);
-	redirect(url.searchParams.get('redirect') || '/');
+
+	// NOTE • Relative paths only — never an open redirect
+	const target = url.searchParams.get('redirect') || '/';
+	redirect(target.startsWith('/') && !target.startsWith('//') ? target : '/');
 };

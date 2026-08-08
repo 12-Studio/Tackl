@@ -304,40 +304,20 @@ Render `SanityLive`/`VisualEditing` **outside** the main app shell (after `</mai
 
 ### 8. Draft mode API routes
 
-**`app/api/draft-mode/enable/route.ts`:**
+The routes under `app/api/draft-mode/` are thin, adapter-agnostic re-exports — `enable/route.ts` is just `export { GET } from '@cms/draft'`, which resolves through `src/cms/draft.ts` to the adapter's handler. The Sanity handler lives in **`src/cms/sanity/draft.ts`**:
 
 ```ts
 import { defineEnableDraftMode } from 'next-sanity/draft-mode'
-import { client } from '@sanity/lib/client'
+import { client } from './client'
 
-const readToken = process.env.SANITY_API_READ_TOKEN
-const { GET: enableDraftMode } = defineEnableDraftMode({
-  client: client.withConfig({ token: readToken ?? '' }),
+export const { GET } = defineEnableDraftMode({
+  client: client.withConfig({ token: process.env.SANITY_API_READ_TOKEN }),
 })
-
-export async function GET(request: Request) {
-  if (!readToken) {
-    return new Response(
-      'Draft preview is not configured. Set SANITY_API_READ_TOKEN, then redeploy.',
-      { status: 503 },
-    )
-  }
-  return enableDraftMode(request)
-}
 ```
 
-**`app/api/draft-mode/disable/route.ts`:**
+Extend it there (e.g. a 503 guard when `SANITY_API_READ_TOKEN` is unset) rather than in the route file, so the route stays CMS-agnostic.
 
-```ts
-import { draftMode } from 'next/headers'
-import { NextResponse } from 'next/server'
-import { previewOrigin } from '@sanity/env'
-
-export async function GET() {
-  ;(await draftMode()).disable()
-  return NextResponse.redirect(new URL('/', previewOrigin))
-}
-```
+**`app/api/draft-mode/disable/route.ts`** ships ready-made — it turns draft mode off and honours a `?redirect=` param (clamped to relative paths, so it can never be an open redirect). No changes needed.
 
 ### 9. Presentation resolve (route mapping)
 

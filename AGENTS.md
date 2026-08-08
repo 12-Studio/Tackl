@@ -52,11 +52,11 @@ Each component is a folder under `src/components/ComponentName/`:
 ```
 index.tsx          # the component — logic and markup only
 styles.ts          # ALL styled-components for this component
-interface.d.ts     # prop types
+interface.ts       # prop types
 Component.stories.tsx  # optional Storybook story
 ```
 
-- **Functional components only.** Type props from `./interface.d.ts`.
+- **Functional components only.** Type props from `./interface.ts`.
 - **No styled-components in `index.tsx`** — style in `styles.ts`, import as `import * as S from './styles'`.
 - The **outermost styled component is always `Jacket`**; inner ones get descriptive names (`Title`, `Content`, `Coat`).
 - No CSS modules, inline styles, SASS/LESS, or Tailwind.
@@ -174,6 +174,11 @@ on unmount or when a matchMedia condition stops matching.
   `matchMedia` listeners) or interaction-driven animations created outside the context.
 - Smooth scrolling shares one ticker via `SmoothScroll`; `prefers-reduced-motion` users
   skip Lenis entirely. Don't add a second rAF loop.
+- **The nested Lenis wrapper (locked `html`/`body`, scrolling `#page`) is deliberate —
+  do not "simplify" to window-mode Lenis.** On iOS, window scrolling collapses the
+  browser toolbar, and its transparency breaks page transitions and fullscreen loaders.
+  The nested wrapper keeps the viewport stable, which avoids this entirely; the cost
+  (the `scrollerProxy` bridge in `SmoothScroll`) is accepted.
 
 ---
 
@@ -204,6 +209,9 @@ on unmount or when a matchMedia condition stops matching.
 ## General code quality
 
 - **Strict TypeScript.** Never `any` — use `unknown` for dynamic data and narrow it.
+  The kit deliberately rides the native (Go-based) TypeScript 7 compiler, pinned to
+  its minor line (`~7.0.x`) — `next build` type-checks through the project-local `tsc`
+  (`useTypeScriptCli`), which is what makes that work. Don't downgrade to 6.x casually.
 - Prefer named constants over magic numbers; give them purpose-revealing names.
 - Small, single-responsibility functions. If a function needs a comment to explain
   *what* it does, split it. Comments explain *why*, not *what*.
@@ -217,6 +225,8 @@ on unmount or when a matchMedia condition stops matching.
 
 - `bun run type-check` — must pass (strict, no emit).
 - `bun run lint` — Biome check.
+- `bun run test` — Playwright smoke test (builds and boots the production app; add
+  specs to `tests/` as features land).
 - For anything visual or interactive, verify against the running app (`bun run dev`), not
   just types — the pre-configured `chrome-devtools` MCP can drive the browser for you.
 

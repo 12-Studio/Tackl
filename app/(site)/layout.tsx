@@ -5,7 +5,7 @@ import SmoothScroll from '@parts/SmoothScroll';
 import { inter } from '@theme/fonts';
 import { ViewTransitions } from '@utils/viewTransitions';
 import type { Metadata, Viewport } from 'next';
-import { siteUrl } from '@/config';
+import { isSiteUrlConfigured, siteUrl } from '@/config';
 import Providers from './Providers';
 
 // Styles
@@ -22,9 +22,11 @@ export const metadata: Metadata = {
 		template: '%s — Tackl',
 	},
 	description: 'The ultimate Next.js starter kit',
+	// NOTE • Indexing is gated on a real site URL — a deploy that forgot
+	// NEXT_PUBLIC_SITE_URL can't be indexed under the changeme.com fallback
 	robots: {
-		index: true,
-		follow: true,
+		index: isSiteUrlConfigured,
+		follow: isSiteUrlConfigured,
 	},
 	openGraph: {
 		type: 'website',

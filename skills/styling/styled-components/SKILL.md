@@ -13,7 +13,7 @@ Every component folder:
 ComponentName/
   index.tsx       # Logic + JSX only — no styled definitions
   styles.ts       # All styled-components
-  interface.d.ts  # Props types
+  interface.ts  # Props types
 ```
 
 Import styles as a namespace:

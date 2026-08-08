@@ -9,7 +9,7 @@ mkdir my-app && cd my-app   # or clone your empty repo and cd in
 bunx tackl                  # or: bun create tackl / npm create tackl@latest
 ```
 
-You'll be asked which CMS to use — **DatoCMS**, **Sanity**, or **None** — and the scaffold is pruned to match: only the chosen adapter, its dependencies, its docs, and its `.env.example` block survive.
+You'll be asked which CMS to use — **DatoCMS**, **Sanity**, or **None** — and the scaffold is pruned to match: only the chosen adapter, its dependencies, its docs, and its `.env.example` block survive. Draft preview ships with both CMS choices (the `app/api/draft-mode/` routes resolve through the adapter seam). **None** keeps the same shape as the others — the `@cms` seam stays, rewired to a stub adapter whose `fetchContent` returns `null` — so wiring up a CMS later never touches app code; only the draft-mode routes and CMS files are removed.
 
 Choosing **Sanity** sets the whole thing up: an embedded Studio at `/studio`, example schemas, and draft-mode preview routes ship in the scaffold, and the CLI offers to run `sanity init` for you — logging in, creating/linking a project, and writing your `.env`. Scaffold → `bun run dev` → `/studio` → start editing.
 

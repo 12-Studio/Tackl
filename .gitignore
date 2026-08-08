@@ -95,3 +95,8 @@ lh-output/
 # Ignore any temp files
 *.lhci-*
 storybook-static
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

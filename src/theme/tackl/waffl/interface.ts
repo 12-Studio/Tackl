@@ -1,7 +1,7 @@
 // Waffl Types / Interfaces
 // ------------
-import { Breakpoints } from '@theme/grid/interface';
-import { Theme } from '@theme/interface';
+import type { Breakpoints } from '@theme/grid/interface';
+import type { Theme } from '@theme/interface';
 
 // SECTION • Responsive Props
 // NOTE — Props for responsive grid spans with $ prefix

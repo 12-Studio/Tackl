@@ -2,7 +2,7 @@
 
 ✨ An animation-first Next.js starter kit for agencies: styled-components, a zero-JS grid system, CSS-variable design tokens, GSAP + Lenis, and a CMS-ready data layer — tuned so the out-of-the-box Lighthouse story is something you can show a client. ✨
 
-![Version Number](https://img.shields.io/badge/Version-4.0.0-8000FF)
+![Version Number](https://img.shields.io/badge/Version-4.2.0-8000FF)
 ![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
 
 > Full guides live in [`docs/`](./docs) — this README is the map.
@@ -38,10 +38,12 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 | `bun run type-check` | TypeScript, no emit |
 | `bun run lint` / `lint:fix` | Biome check / auto-fix |
 | `bun run format` | Biome format |
+| `bun run test` | Playwright smoke test against the production build |
 | `bun run storybook` | Storybook dev on :6006 |
 | `bun run build-storybook` | Static Storybook build |
 | `bun run lighthouse` | Lighthouse CI run |
-| `git commit` | Husky runs the guided commit-message prompt |
+| `bun run commit` | Optional guided commit-message prompt |
+| `git commit` | Husky pre-commit runs lint + type-check first |
 
 ## 🎯 What's in the box
 
@@ -54,8 +56,8 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 - **GSAP + ScrollTrigger + Lenis** — smooth scrolling and scroll animations, pre-wired to share one ticker, with `prefers-reduced-motion` users automatically getting native scroll and no rAF loop
 - **View Transitions** — page transitions via the View Transitions API with a typed `Link`/router wrapper
 - **Storybook 10** — token-aware (the preview renders the same `:root` variables as the app), with a live `Theme/Overview` story showing every current token — colours, fonts, the type scale with role descriptors, spacing, radii and motion — straight from the theme objects
-- **Biome + Husky** — linting, formatting, and a guided commit-message flow
-- **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time. Choosing Sanity sets up the full experience: embedded Studio at `/studio`, example schemas, draft-mode preview, and an offer to run `sanity init` for you
+- **Quality gates that actually run** — Biome + strict TypeScript enforced by the Husky pre-commit hook *and* a GitHub Actions workflow (lint → type-check → build → Playwright smoke test) that ships with every scaffold; the guided commit-message flow stays available as `bun run commit`
+- **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time. **Draft preview works with both**: Sanity via the Presentation tool (plus embedded Studio at `/studio`, example schemas, and an offer to run `sanity init`), Dato via a secret-gated toggle for the Web Previews plugin — `fetchContent` serves draft content automatically while draft mode is on
 - **SEO plumbing** — `metadata`/`viewport` exports, `sitemap.xml` and `robots.txt` (staging deploys auto-blocked from indexing), all driven by one `NEXT_PUBLIC_SITE_URL`
 - **AI-agent ready (vendor-neutral)** — [`AGENTS.md`](./AGENTS.md) teaches the Tackl conventions to any agent (Cursor, Claude Code, Copilot, Zed, Aider…); [`skills/`](./skills) holds deep-dive Agent Skills; and MCP servers ship pre-configured (`.mcp.json` + `.cursor/mcp.json`) — Next.js devtools plus Chrome DevTools, so agents can inspect builds and drive a real browser against your dev server (screencast tools need `ffmpeg` on PATH)
 
@@ -156,15 +158,17 @@ flowchart TD
     │   │   ├── Providers.tsx   # Client providers (styled-components, contexts)
     │   │   └── (home)/         # Home route group
     │   ├── (studio)/           # Embedded Sanity Studio at /studio (Sanity scaffolds)
-    │   ├── api/draft-mode/     # Sanity draft preview on/off (Sanity scaffolds)
+    │   ├── api/draft-mode/     # Draft preview on/off — adapter-agnostic via @cms/draft
     │   ├── sitemap.ts          # /sitemap.xml
     │   ├── robots.ts           # /robots.txt (blocks staging deploys)
     │   └── icon.svg            # Favicon
     ├── src/
     │   ├── cms/                # CMS seam — import from '@cms' only
     │   │   ├── index.ts        # Adapter switch (the line the CLI rewires)
+    │   │   ├── draft.ts        # Draft-mode switch (rewired alongside index.ts)
     │   │   ├── dato/           # DatoCMS adapter (GraphQL)
-    │   │   └── sanity/         # Sanity adapter (GROQ)
+    │   │   ├── sanity/         # Sanity adapter (GROQ)
+    │   │   └── none/           # No-CMS stub (same surface, returns null)
     │   ├── components/         # UI components (one folder each — see WritingComponents.md)
     │   ├── theme/              # Design tokens + the tackl toolkit
     │   │   ├── colors|space|gap|borderRadius|easing|time|fonts|grid/
@@ -173,7 +177,8 @@ flowchart TD
     │   ├── css/global.css      # Reset, waffl default rule, reduced-motion fallback
     │   ├── config.ts           # siteUrl (drives metadataBase, sitemap, robots)
     │   ├── utils/              # Hooks and helpers (incl. viewTransitions)
-    │   └── types/              # Ambient types (styled DefaultTheme, waffl-grid tag)
+    │   └── types/              # Shared + ambient types (styled DefaultTheme, waffl-grid tag)
+    ├── tests/                  # Playwright specs (smoke test included)
     ├── sanity/                 # Studio schemas (Sanity scaffolds; config: sanity.config.ts)
     ├── docs/                   # The full documentation set
     ├── skills/                 # Agent Skills (deep-dive SKILL.md playbooks)
@@ -195,7 +200,7 @@ flowchart TD
 | [WritingComponents](./docs/Tackl/WritingComponents.md) | File anatomy, comment style, imports, `Div`, grid spans, `bp` |
 | [Theming](./docs/Tackl/Theming.md) | Tokens, CSS variables, opacity, runtime theming |
 | [AppArchitecture](./docs/Tackl/AppArchitecture.md) | The app shell, Providers, data flow |
-| [WafflGridSystem](./docs/Tackl/WafflGridSystem.md) · [GridSystemProps](./docs/Tackl/GridSystemProps.md) | Grid internals and prop reference |
+| [WafflGrid](./docs/Tackl/WafflGrid.md) · [GridSystemProps](./docs/Tackl/GridSystemProps.md) | Grid internals and prop reference |
 | [SemanticComponents](./docs/Tackl/SemanticComponents.md) | The `Div` primitive in depth |
 | [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
 | [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
@@ -207,7 +212,7 @@ flowchart TD
 
 ## ✍️ Committing
 
-Husky runs a guided prompt on `git commit` — describe the change, pick a type, and it formats a consistent message for you.
+Husky's pre-commit hook runs the quality gates (`bun run lint` + `bun run type-check`) on every `git commit`, and the CI workflow repeats them — plus a production build and the Playwright smoke test — on every push and PR. Want a hand writing the message? `bun run commit` runs the guided prompt: describe the change, pick a type, and it formats a consistent message for you.
 
 ## 👥 Authors & Maintainers
 

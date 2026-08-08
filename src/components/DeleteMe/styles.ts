@@ -35,3 +35,9 @@ export const Hint = styled(Div).attrs({ as: 'p' })(
 		color: ${getGlobal('white', 60)};
 	`
 );
+
+export const Spacer = styled(Div)(
+	() => css`
+		height: 100svh;
+	`
+);

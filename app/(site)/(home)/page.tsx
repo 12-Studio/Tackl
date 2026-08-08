@@ -16,12 +16,7 @@ import DeleteMe from '@parts/DeleteMe';
 const Page = async () => {
 	// const data = await getHomeData();
 
-	return (
-		<>
-			<DeleteMe />
-			<div style={{ height: '1000px' }}></div>
-		</>
-	);
+	return <DeleteMe />;
 };
 
 // Exports

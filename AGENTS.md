@@ -52,11 +52,11 @@ Each component is a folder under `src/components/ComponentName/`:
 ```
 index.tsx          # the component — logic and markup only
 styles.ts          # ALL styled-components for this component
-interface.d.ts     # prop types
+interface.ts       # prop types
 Component.stories.tsx  # optional Storybook story
 ```
 
-- **Functional components only.** Type props from `./interface.d.ts`.
+- **Functional components only.** Type props from `./interface.ts`.
 - **No styled-components in `index.tsx`** — style in `styles.ts`, import as `import * as S from './styles'`.
 - The **outermost styled component is always `Jacket`**; inner ones get descriptive names (`Title`, `Content`, `Coat`).
 - No CSS modules, inline styles, SASS/LESS, or Tailwind.

@@ -10,13 +10,13 @@ Every component lives in its own folder under `src/components/`:
 src/components/Card/
 ├── index.tsx          # The component — logic and markup only
 ├── styles.ts          # ALL styled-components for this component
-├── interface.d.ts     # The component's prop types
+├── interface.ts       # The component's prop types
 └── Card.stories.tsx   # Storybook story (optional)
 ```
 
 ```mermaid
 flowchart LR
-    I[interface.d.ts\nCardProps] --> C[index.tsx\ncomponent logic]
+    I[interface.ts\nCardProps] --> C[index.tsx\ncomponent logic]
     S[styles.ts\nJacket, Title, ...] --> C
     C --> ST[Card.stories.tsx]
 ```
@@ -25,7 +25,7 @@ Rules:
 
 - **No styled-components in `index.tsx`.** Styling lives in `styles.ts`, imported as a namespace: `import * as S from './styles'`.
 - **The outermost styled component is always called `Jacket`.** Inner ones get descriptive names (`Title`, `Hint`, `Content`, `Coat`).
-- **Props are typed in `interface.d.ts`**, imported as `import type * as I from './interface'`.
+- **Props are typed in `interface.ts`**, imported as `import type * as I from './interface'`.
 
 ## The comment style
 
@@ -54,7 +54,7 @@ Inline annotations use bullet markers:
 
 ## A complete component
 
-**`src/components/Card/interface.d.ts`**
+**`src/components/Card/interface.ts`**
 
 ```tsx
 // Imports

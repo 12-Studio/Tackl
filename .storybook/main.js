@@ -1,7 +1,20 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// NOTE • Aliases are generated from tsconfig.json's paths — one source of
+// truth, nothing to keep in sync by hand. '@cms/*' and '@cms' both collapse
+// to the same webpack alias, which is exactly what webpack expects.
+const { paths } = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../tsconfig.json'), 'utf8')).compilerOptions;
+
+const aliases = Object.fromEntries(
+	Object.entries(paths).map(([key, [target]]) => [
+		key.replace(/\/\*$/, ''),
+		path.resolve(__dirname, '..', target.replace(/\/\*$/, '')),
+	])
+);
 
 const config = {
 	stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -11,18 +24,9 @@ const config = {
 		options: {},
 	},
 	webpackFinal: async config => {
-		// Mirror the path aliases from tsconfig.json — keep the two in sync
 		config.resolve.alias = {
 			...config.resolve.alias,
-			'@parts': path.resolve(__dirname, '../src/components'),
-			'@css': path.resolve(__dirname, '../src/css'),
-			'@cms': path.resolve(__dirname, '../src/cms'),
-			'@tackl': path.resolve(__dirname, '../src/theme/tackl'),
-			'@waffl': path.resolve(__dirname, '../src/theme/tackl/waffl'),
-			'@theme': path.resolve(__dirname, '../src/theme'),
-			'@utils': path.resolve(__dirname, '../src/utils'),
-			'@public': path.resolve(__dirname, '../public'),
-			'@': path.resolve(__dirname, '../src'),
+			...aliases,
 		};
 
 		return config;

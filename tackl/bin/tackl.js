@@ -107,15 +107,29 @@ const stripDeps = (root, deps) => {
 	fs.writeFileSync(p, `${JSON.stringify(json, null, '\t')}\n`);
 };
 
-// NOTE • Everything that exists solely for the embedded Sanity Studio
-const SANITY_STUDIO_PATHS = ['app/(studio)', 'app/api/draft-mode', 'sanity.config.ts', 'sanity'];
+// NOTE • Everything that exists solely for the embedded Sanity Studio.
+// app/api/draft-mode is NOT here — the draft routes are CMS-agnostic
+// (they resolve through @cms/draft) and only go when no CMS is chosen.
+const SANITY_STUDIO_PATHS = ['app/(studio)', 'sanity.config.ts', 'sanity'];
 const SANITY_DEPS = ['next-sanity', 'sanity', '@sanity/vision'];
+
+// NOTE • The two files the CLI rewires to the chosen adapter
+const ADAPTER_ENTRIES = ['src/cms/index.ts', 'src/cms/draft.ts'];
+const rewireAdapter = (root, adapter) => {
+	for (const rel of ADAPTER_ENTRIES) {
+		const p = path.join(root, rel);
+		if (fs.existsSync(p)) {
+			fs.writeFileSync(p, fs.readFileSync(p, 'utf8').replaceAll(`'./dato`, `'./${adapter}`));
+		}
+	}
+};
 
 const CMS = {
 	dato: {
 		title: 'DatoCMS',
 		prune: root => {
 			rmrf(root, 'src/cms/sanity');
+			rmrf(root, 'src/cms/none');
 			rmrf(root, 'docs/Sanity');
 			for (const p of SANITY_STUDIO_PATHS) rmrf(root, p);
 			stripDeps(root, SANITY_DEPS);
@@ -126,33 +140,45 @@ const CMS = {
 		title: 'Sanity',
 		prune: root => {
 			rmrf(root, 'src/cms/dato');
+			rmrf(root, 'src/cms/none');
 			rmrf(root, 'docs/DatoCMS');
 			stripDeps(root, ['@datocms/cda-client', 'react-datocms', 'graphql', 'graphql-tag']);
 			stripEnvBlock(root, '# CMS — DatoCMS');
-			// Rewire the adapter entry to the kept adapter
-			const entry = path.join(root, 'src/cms/index.ts');
-			if (fs.existsSync(entry)) {
-				fs.writeFileSync(entry, fs.readFileSync(entry, 'utf8').replace(`'./dato'`, `'./sanity'`));
-			}
+			rewireAdapter(root, 'sanity');
 		},
 	},
 	none: {
 		title: 'No CMS',
+		// NOTE • Same shape as the other choices — the '@cms' seam survives,
+		// rewired to the stub adapter (src/cms/none), so app code and the
+		// tsconfig alias stay valid and a CMS can be wired up later. Only the
+		// CMS-specific files go: adapters, draft-mode routes, studio, docs.
 		prune: root => {
-			rmrf(root, 'src/cms');
+			rmrf(root, 'src/cms/dato');
+			rmrf(root, 'src/cms/sanity');
+			rmrf(root, 'src/cms/draft.ts');
 			rmrf(root, 'docs/Sanity');
 			rmrf(root, 'docs/DatoCMS');
-			rmrf(root, 'docs/CMS.md');
+			rmrf(root, 'app/api/draft-mode');
 			for (const p of SANITY_STUDIO_PATHS) rmrf(root, p);
 			stripDeps(root, [...SANITY_DEPS, '@datocms/cda-client', 'react-datocms', 'graphql', 'graphql-tag']);
 			stripEnvBlock(root, '# CMS — Sanity');
 			stripEnvBlock(root, '# CMS — DatoCMS');
+			rewireAdapter(root, 'none');
 		},
 	},
 };
 
-// NOTE • Repo-only cargo that should never land in a scaffolded project
-const REPO_CARGO = ['tackl', '.github', 'bun.lock'];
+// NOTE • Repo-only cargo that should never land in a scaffolded project.
+// .github is pruned file-by-file — the CI workflow (.github/workflows) ships
+// with every scaffold so quality gates run from the first push.
+const REPO_CARGO = [
+	'tackl',
+	'.github/FUNDING.yml',
+	'.github/ISSUE_TEMPLATE.md',
+	'.github/PULL_REQUEST_TEMPLATE.md',
+	'bun.lock',
+];
 
 async function main() {
 	const args = process.argv.slice(2);

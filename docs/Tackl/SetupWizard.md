@@ -59,6 +59,8 @@ itself without touching the theme; edit `src/theme` by hand whenever you like.
 
 - The component only renders in development, and the API route returns 404
   outside development — even if a build somehow shipped it.
+- The route rejects cross-origin requests (`Sec-Fetch-Site` / Origin check),
+  so a website open in the same browser as your dev server can't drive it.
 - Submitted values are validated (hex colours, no code-breaking characters)
   before anything is written to disk.
 

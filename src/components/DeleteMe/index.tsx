@@ -13,10 +13,15 @@ import * as S from './styles';
 // in app/(home)/page.tsx) when you start building.
 const DeleteMe = () => {
 	return (
-		<S.Jacket>
-			<S.Title>Tackl</S.Title>
-			<S.Hint>You’re all set — delete this component and start building.</S.Hint>
-		</S.Jacket>
+		<>
+			<S.Jacket>
+				<S.Title>Tackl</S.Title>
+				<S.Hint>You’re all set — delete this component and start building.</S.Hint>
+			</S.Jacket>
+
+			{/* Scroll room so the smooth-scroll setup is feelable out of the box */}
+			<S.Spacer aria-hidden />
+		</>
 	);
 };
 

@@ -1,6 +1,6 @@
 // Semantics Types / Interfaces
 // ------------
-import { Breakpoints } from '@theme/grid/interface';
+import type { Breakpoints } from '@theme/grid/interface';
 
 // Generate grid props from breakpoints
 type GridProps = {
@@ -14,7 +14,6 @@ export interface SemanticProps extends GridProps {
 	$marBottom?: boolean;
 	$marTop?: boolean;
 	$mar?: boolean;
-	$mpad?: boolean;
 	$padBottom?: boolean;
 	$padTop?: boolean;
 	$pad?: boolean;

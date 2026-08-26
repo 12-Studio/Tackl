@@ -1,4 +1,5 @@
 import { useGSAP } from '@gsap/react';
+import { theme } from '@theme';
 import gsap from 'gsap';
 
 type Breakpoints = Record<string, string>;
@@ -12,10 +13,16 @@ type MatchMediaConditions = Record<string, boolean>;
  */
 type AnimationCallback = (conditions: MatchMediaConditions) => void;
 
+// NOTE • Derived from theme.grid.breakpoints so layout and animations can
+// never desync — m is the tablet threshold, l the desktop one. The 0.02px
+// subtraction keeps the ranges exclusive at exact breakpoint widths.
+const tablet = parseFloat(theme.grid.breakpoints.m);
+const desktop = parseFloat(theme.grid.breakpoints.l);
+
 const DEFAULT_BREAKPOINTS: Breakpoints = {
-	isDesktop: '(min-width: 1024px)',
-	isMobile: '(max-width: 699px)',
-	isTablet: '(min-width: 700px) and (max-width: 1023px)',
+	isDesktop: `(min-width: ${desktop}px)`,
+	isMobile: `(max-width: ${tablet - 0.02}px)`,
+	isTablet: `(min-width: ${tablet}px) and (max-width: ${desktop - 0.02}px)`,
 };
 
 /**

@@ -38,6 +38,8 @@
 	"include": [
 		"app/**/*",
 		"src/**/*",
+		"tests/**/*",
+		"playwright.config.ts",
 		"sanity.config.ts",
 		"sanity/**/*",
 		".next/types/**/*.ts",

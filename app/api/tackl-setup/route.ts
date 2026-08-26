@@ -434,11 +434,32 @@ const installFont = (name: string, fileName: string, data: string): { exportName
 	return { exportName: name, cssVariable };
 };
 
+// NOTE • Dev servers are reachable by any website open in the same browser —
+// a JSON body sent as text/plain skips CORS preflight entirely. This route
+// writes and deletes files, so only same-origin requests may use it.
+const isSameOrigin = (request: Request): boolean => {
+	const fetchSite = request.headers.get('sec-fetch-site');
+	if (fetchSite) return fetchSite === 'same-origin' || fetchSite === 'none';
+
+	// Fallback for clients without Fetch Metadata — compare Origin to Host
+	const origin = request.headers.get('origin');
+	if (!origin) return true;
+	try {
+		return new URL(origin).host === request.headers.get('host');
+	} catch {
+		return false;
+	}
+};
+
 // Handler
 // ------------
 export const POST = async (request: Request): Promise<NextResponse> => {
 	if (process.env.NODE_ENV !== 'development') {
 		return NextResponse.json({ error: 'Setup is only available in development' }, { status: 404 });
+	}
+
+	if (!isSameOrigin(request)) {
+		return NextResponse.json({ error: 'Cross-origin requests are not allowed' }, { status: 403 });
 	}
 
 	const body: unknown = await request.json().catch(() => null);

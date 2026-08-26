@@ -4,8 +4,8 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	-webkit-font-smoothing: subpixel-antialiased; /* Enable subpixel antialiasing for better text rendering */
-	-moz-osx-font-smoothing: grayscale; /* Enable grayscale antialiasing for better text rendering */
+	-webkit-font-smoothing: antialiased; /* Matched pair with the -moz value below — consistent rendering across engines */
+	-moz-osx-font-smoothing: grayscale;
 }
 
 /* HTML5 Elements */
@@ -29,6 +29,9 @@ html {
 	interpolate-size: allow-keywords; /* Allow keywords in interpolate-size – Not well supported yet in all browsers */
 }
 
+/* Locked viewport — deliberate (see AGENTS.md, Animation section): scrolling
+   happens in the nested Lenis wrapper, not the window, so the iOS toolbar
+   never collapses and page transitions / fullscreen loaders render cleanly */
 html,
 body {
 	height: 100%;
@@ -66,11 +69,15 @@ button {
 	background: none;
 }
 
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
+/* Focus — invisible for pointer interactions, a clear ring for keyboard
+   navigation. :focus-visible must always produce a visible indicator. */
+:focus {
 	outline: none;
+}
+
+:focus-visible {
+	outline: 2px solid var(--brand-c1);
+	outline-offset: 2px;
 }
 
 /* Waffl Grid — direct children span the full grid by default.

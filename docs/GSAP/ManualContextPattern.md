@@ -1,4 +1,8 @@
-# GSAP 3 with React: Best Practices & Performance
+# GSAP 3 with React: Manual Context Pattern (legacy)
+
+> **Note** — This is the pre-`useGSAP` pattern, kept for understanding older code. New
+> code should use the `useGSAP` hook (see [UseGsapHook.md](./UseGsapHook.md)) or, in
+> Tackl, the `useAnimation` wrapper.
 
 GSAP (GreenSock Animation Platform) is a professional-grade animation library that offers high-performance animations. This guide covers how to use GSAP 3 effectively with React components.
 

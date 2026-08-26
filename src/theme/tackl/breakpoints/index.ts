@@ -15,8 +15,10 @@ const upQueries: MediaQueries = keys.reduce((acc, label) => {
 	return acc;
 }, {} as MediaQueries);
 
+// NOTE • Down queries subtract 0.02px so bp.m and bpd.m never both match at
+// exactly the breakpoint width
 const downQueries: MediaQueries = keys.reduce((acc, label) => {
-	acc[label] = `@media (max-width: ${sizes[label]})`;
+	acc[label] = `@media (max-width: ${parseFloat(sizes[label]) - 0.02}px)`;
 	return acc;
 }, {} as MediaQueries);
 

@@ -21,6 +21,18 @@
 // Imports
 // ------------
 import { executeQuery } from '@datocms/cda-client';
+import { draftMode } from 'next/headers';
+
+// NOTE • Draft mode is a request API — outside a request scope (build-time
+// prerender, 'use cache' contexts) it throws, which simply means published
+// content. Callers can still force the flag via options.includeDrafts.
+const isDraftModeEnabled = async (): Promise<boolean> => {
+	try {
+		return (await draftMode()).isEnabled;
+	} catch {
+		return false;
+	}
+};
 
 // Exports
 // ------------
@@ -39,9 +51,11 @@ export const fetchContent = async <T = unknown>(
 		}
 
 		const queryResponse = await executeQuery(query, {
+			// NOTE • Draft mode (see app/api/draft-mode) switches every query to
+			// draft content automatically — explicit options still win
+			includeDrafts: await isDraftModeEnabled(),
 			...options,
 			token,
-			// environment: process.env.NODE_ENV,
 		});
 
 		return queryResponse as T;

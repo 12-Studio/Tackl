@@ -20,10 +20,6 @@ const nextConfig = {
 				protocol: 'https',
 				hostname: 'picsum.photos',
 			},
-			{
-				protocol: 'https',
-				hostname: 'placehold.it',
-			},
 		],
 	},
 	// React Strict Mode is a development-only feature that helps identify potential problems

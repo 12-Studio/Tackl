@@ -59,17 +59,14 @@ bunx npm-check-updates -u  # update package.json to latest, then run bun install
 
 ### Husky pre-commit
 
-So the pre-commit hook uses Bun to run the commit script:
+The hook lives in `.husky/pre-commit` (husky 9 — no `package.json` config block) and runs the quality gates with Bun:
 
-```json
-"husky": {
-  "hooks": {
-    "pre-commit": "bun run commit"
-  }
-}
+```sh
+bun run lint
+bun run type-check
 ```
 
-Replace any `npm run commit` or `pnpm run commit` with `bun run commit`.
+The interactive commit-message wizard is optional — run it with `bun run commit`. Husky is installed via the `prepare` script, which Bun runs automatically on `bun install`.
 
 ### Outdated packages: workaround for `bun outdated`
 
@@ -119,7 +116,7 @@ After the first `bun install`, you’ll have `bun.lock`. Add and commit it.
 
 4. **Update `package.json`:**
    - Set `engines.node` if you care about Node version.
-   - If you use Husky, set `"pre-commit": "bun run <your-commit-script>"` (e.g. `bun run commit`).
+   - If you use Husky, make `.husky/pre-commit` run your checks with Bun (e.g. `bun run lint`, `bun run type-check`).
    - Optionally add the `outdated` script (section 3).
 
 5. **Commit:**
@@ -206,7 +203,7 @@ In the other project you can add a short `docs/bun.md` (or similar) that points 
 - [ ] Bun installed (`bun --version` works).
 - [ ] Old lockfiles and `node_modules` removed (if migrating).
 - [ ] `bun install` run; `bun.lock` created.
-- [ ] `package.json`: `husky.hooks.pre-commit` uses `bun run <script>`.
+- [ ] `.husky/pre-commit` runs its commands with `bun run <script>`.
 - [ ] `package.json`: add `"outdated": "bunx npm-check-updates"` so you can run `bun run outdated` (since `bun outdated` is unreliable).
 - [ ] `bun.lock` committed.
 - [ ] CI/Netlify: build command = `bun run build`, install = `bun install` (and `NODE_VERSION` set if needed).

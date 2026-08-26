@@ -9,7 +9,7 @@ flowchart TD
     V["Raw values — the single source of truth\nsrc/theme/{colors,space,gap,borderRadius,easing,time,fonts}\nspaceValues = { m: '6rem' } · baseColors = { brand: { c1: '#8000FF' } }"]
     V -->|toVarDeclarations| R[":root via GlobalStyle\n--space-m: 6rem;\n--brand-c1: #8000FF;"]
     V -->|toVarRefs| T["theme object\ntheme.space.m = 'var(--space-m)'\ntheme.colors.brand.c1 = 'var(--brand-c1)'"]
-    V -->|keyof typeof| TY["TypeScript types\ninterface.d.ts derives — cannot drift"]
+    V -->|keyof typeof| TY["TypeScript types\ninterface.ts derives — cannot drift"]
     T --> SC["styled-components\n${getSpace('m')} · ${getBrand('c1')}"]
     R --> B["Browser resolves at paint\n(runtime overrides apply here)"]
     SC --> B
@@ -119,7 +119,7 @@ Toggle by stamping the attribute (e.g. `document.documentElement.dataset.theme =
 ## Adding or changing a token
 
 1. Edit the **raw values** object in the token's file — e.g. `spaceValues` in `src/theme/space/index.ts`, or `baseColors` in `src/theme/colors/index.ts`.
-2. Done. The `:root` declaration, the `var()` reference, and the TypeScript type are all derived from that same object (`toVarRefs` / `toVarDeclarations` in `src/theme/cssVariables`; each `interface.d.ts` derives from the values via `keyof typeof`), so none of them can drift and there is nothing else to update.
+2. Done. The `:root` declaration, the `var()` reference, and the TypeScript type are all derived from that same object (`toVarRefs` / `toVarDeclarations` in `src/theme/cssVariables`; each `interface.ts` derives from the values via `keyof typeof`), so none of them can drift and there is nothing else to update.
 
 ## What is NOT a CSS variable (and why)
 

@@ -12,6 +12,5 @@ const meta: Meta<typeof ThemeShowcase> = {
 export default meta;
 type Story = StoryObj<typeof ThemeShowcase>;
 
-// NOTE • Reads the live theme objects — always shows the current tokens,
-// whether they came from the setup wizard or hand edits
+// NOTE • Reads the live theme objects — always shows the current tokens
 export const Overview: Story = {};

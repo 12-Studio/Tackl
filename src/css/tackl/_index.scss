@@ -1,0 +1,10 @@
+// Tackl SCSS layer
+// ------------
+// NOTE • Injected into every .scss file via sassOptions.additionalData
+// (next.config.js), so modules use these with no imports. It must emit ZERO
+// CSS — mixins, functions and variables only — or every module duplicates it.
+@forward 'breakpoints';
+@forward 'grid';
+@forward 'helpers';
+@forward 'spacing';
+@forward 'type';

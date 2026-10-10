@@ -1,0 +1,134 @@
+// Typography
+// ------------
+// NOTE • The single home of every type style — written by hand from the
+// Figma file. Mobile-first: base declarations, then bp() steps as the design
+// needs. Families and weights come from the tokens (--font-*, --weight-*).
+
+// Each mixin is also exposed globally as a class (.t-displayL) and a data
+// attribute (data-type='displayL') — see src/css/utilities/_type.scss.
+// Add a style here, then add it to the $type-styles list at the bottom.
+@use 'breakpoints' as *;
+
+// SECTION • Display — hero headlines, one or two per page
+@mixin displayL {
+	font-family: var(--font-heading);
+	font-weight: var(--weight-regular);
+	font-size: 4.8rem;
+	line-height: 1.1;
+	letter-spacing: -1px;
+
+	@include bp(xl) {
+		font-size: clamp(9.6rem, 8.333vw, 12rem);
+		letter-spacing: -2px;
+	}
+}
+
+@mixin displayS {
+	font-family: var(--font-heading);
+	font-weight: var(--weight-regular);
+	font-size: 4rem;
+	line-height: 1.1;
+	letter-spacing: -1px;
+
+	@include bp(xl) {
+		font-size: 7.2rem;
+		letter-spacing: -2px;
+	}
+}
+
+// SECTION • Headline — section titles and major headings
+@mixin headlineL {
+	font-family: var(--font-heading);
+	font-weight: var(--weight-regular);
+	font-size: 3.6rem;
+	line-height: 1.15;
+
+	@include bp(xl) {
+		font-size: 6rem;
+		letter-spacing: -0.2rem;
+	}
+}
+
+@mixin headlineS {
+	font-family: var(--font-heading);
+	font-weight: var(--weight-regular);
+	font-size: 3rem;
+	line-height: 1.2;
+
+	@include bp(xl) {
+		font-size: 4.8rem;
+		letter-spacing: -0.1rem;
+	}
+}
+
+// SECTION • Title — component-level titles, labels, nav items
+@mixin titleL {
+	font-family: var(--font-heading);
+	font-weight: var(--weight-regular);
+	font-size: 2.6rem;
+	line-height: 1.2;
+
+	@include bp(xl) {
+		font-size: 3.6rem;
+	}
+}
+
+@mixin titleS {
+	font-family: var(--font-heading);
+	font-weight: var(--weight-regular);
+	font-size: 2.2rem;
+	line-height: 1.25;
+
+	@include bp(xl) {
+		font-size: 2.8rem;
+	}
+}
+
+// SECTION • Body — paragraphs and long-form copy
+@mixin bodyL {
+	font-family: var(--font-body);
+	font-weight: var(--weight-regular);
+	font-size: 2rem;
+	line-height: 1.4;
+
+	@include bp(xl) {
+		font-size: 2.4rem;
+	}
+}
+
+@mixin bodyS {
+	font-family: var(--font-body);
+	font-weight: var(--weight-regular);
+	font-size: 1.6rem;
+	line-height: 1.4;
+
+	@include bp(xl) {
+		font-size: 1.8rem;
+	}
+}
+
+// SECTION • Caption — meta, captions, legal, microcopy
+@mixin captionL {
+	font-family: var(--font-body);
+	font-weight: var(--weight-regular);
+	font-size: 1.4rem;
+	line-height: 1.5;
+
+	@include bp(xl) {
+		font-size: 1.6rem;
+	}
+}
+
+@mixin captionS {
+	font-family: var(--font-body);
+	font-weight: var(--weight-regular);
+	font-size: 1.2rem;
+	line-height: 1.5;
+
+	@include bp(xl) {
+		font-size: 1.3rem;
+	}
+}
+
+// Every style above, by name — drives the .t-* classes and [data-type] selectors
+$type-styles: 'displayL', 'displayS', 'headlineL', 'headlineS', 'titleL', 'titleS', 'bodyL', 'bodyS', 'captionL', 'captionS';

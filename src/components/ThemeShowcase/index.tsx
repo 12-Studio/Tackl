@@ -30,8 +30,8 @@ const TYPE_ROLE_STYLES: { role: keyof typeof typeRoles; styles: (keyof typeof ty
 
 // Component
 // ------------
-// NOTE • A live view of every theme token — it reads the same objects the
-// setup wizard writes, so it always shows the current theme in action.
+// NOTE • A live view of every theme token — it reads the token objects in
+// src/theme directly, so it always shows the current theme in action.
 const ThemeShowcase = () => {
 	// Render
 	return (

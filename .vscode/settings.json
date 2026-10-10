@@ -1,0 +1,16 @@
+{
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.codeActionsOnSave": {
+		"source.fixAll.biome": "explicit",
+		"source.fixAll.stylelint": "explicit"
+	},
+
+	"stylelint.validate": ["scss"],
+
+	"scss.validate": false,
+	"scss.implicitlyLabel": "(global)",
+	"scss.scannerExclude": ["**/.git", "**/node_modules", "**/.next", "**/storybook-static"],
+
+	"cssVariables.lookupFiles": ["src/css/tokens.css", "src/css/**/*.scss", "src/components/**/*.scss"],
+	"cssVariables.languages": ["css", "scss", "typescriptreact"]
+}

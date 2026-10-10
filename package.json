@@ -4,12 +4,16 @@
 	"private": true,
 	"description": "The ultimate Next.js starter kit!",
 	"license": "MIT",
+	"browserslist": [
+		"baseline widely available"
+	],
 	"engines": {
 		"node": ">=24.0.0"
 	},
 	"author": "joebentaylor1995",
 	"sideEffects": [
 		"*.css",
+		"*.scss",
 		"src/components/AnimationPlugins/**"
 	],
 	"repository": {
@@ -17,16 +21,17 @@
 		"url": "https://github.com/12-studio/tackl"
 	},
 	"scripts": {
-		"dev": "next dev --turbopack",
-		"build": "next build",
+		"dev": "bun run styles && next dev --turbopack",
+		"build": "bun run styles && next build",
 		"start": "next start",
-		"lint": "biome check .",
-		"lint:fix": "biome check --write .",
+		"lint": "biome check . && stylelint \"**/*.scss\"",
+		"lint:fix": "biome check --write . && stylelint \"**/*.scss\" --fix",
 		"format": "biome format --write .",
 		"format:check": "biome format .",
 		"type-check": "tsc --noEmit",
-		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build",
+		"styles": "bun scripts/build-styles.ts",
+		"storybook": "bun run styles && storybook dev -p 6006",
+		"build-storybook": "bun run styles && storybook build",
 		"serve": "serve ./out",
 		"commit": "node .gitmessage.js",
 		"prepare": "husky",
@@ -52,6 +57,7 @@
 		"styled-components": "^6.5.1"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^2.5.7",
 		"@lhci/cli": "^0.15.1",
 		"@playwright/test": "^1.62.1",
 		"@storybook/addon-docs": "^10.5.7",
@@ -61,11 +67,14 @@
 		"@storybook/nextjs": "^10.5.7",
 		"@types/node": "^26.2.0",
 		"@types/react": "^19.2.18",
-		"@biomejs/biome": "^2.5.7",
 		"ajv": "^8.20.0",
 		"ajv-keywords": "^5.1.0",
 		"husky": "^9.1.7",
+		"sass-embedded": "^1.105.1",
 		"storybook": "^10.5.7",
+		"stylelint": "^17.16.0",
+		"stylelint-config-standard-scss": "^17.0.0",
+		"stylelint-value-no-unknown-custom-properties": "^6.1.1",
 		"typescript": "~7.0.2"
 	}
 }

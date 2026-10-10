@@ -1,5 +1,17 @@
+const path = require('node:path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	// Sass — styles are SCSS CSS Modules (styles.module.scss) plus the global
+	// src/css/global.scss. `additionalData` prepends the Tackl SCSS layer
+	// (src/css/tackl) to every .scss file, so bp(), the type and spacing mixins,
+	// vw() and fade() work with no imports. That layer emits no CSS itself.
+	sassOptions: {
+		implementation: 'sass-embedded',
+		loadPaths: [path.join(__dirname, 'src/css')],
+		additionalData: `@use 'tackl' as *;`,
+	},
+
 	// Image loader settings
 	images: {
 		formats: ['image/avif', 'image/webp'],

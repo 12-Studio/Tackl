@@ -13,7 +13,7 @@ You'll be asked which CMS to use — **DatoCMS**, **Sanity**, or **None** — an
 
 Choosing **Sanity** sets the whole thing up: an embedded Studio at `/studio`, example schemas, and draft-mode preview routes ship in the scaffold, and the CLI offers to run `sanity init` for you — logging in, creating/linking a project, and writing your `.env`. Scaffold → `bun run dev` → `/studio` → start editing.
 
-On your first `bun run dev`, a **setup wizard** greets you in the browser: it walks through every theme token (colours, spacing, motion, fonts, the type scale), writes your answers into `src/theme`, then deletes itself — skip it to keep the starter defaults. The scaffold commit the CLI makes is your restore point if you ever want to run it again.
+Design tokens live in `src/theme` and type styles in `src/css/tackl/_type.scss` — set them from your Figma file before you start building.
 
 ## What it does
 

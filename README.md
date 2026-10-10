@@ -22,9 +22,9 @@ cd my-app && bun install && bun run dev
 
 The CLI keeps your existing `.git`/remote, prunes the CMS you didn't pick (code, dependencies, docs, env keys), and installs with bun. `bun create tackl` and `npm create tackl@latest` work too.
 
-Open [http://localhost:3000](http://localhost:3000). On the very first run a **setup wizard** greets you: a full-screen form that walks through every design token — colours, spacing, motion, fonts (with upload) and the full type scale — writes your answers into `src/theme`, then **deletes itself**. Skip it to keep the starter defaults. ➜ [docs/Tackl/SetupWizard.md](./docs/Tackl/SetupWizard.md)
+Open [http://localhost:3000](http://localhost:3000). Set your design tokens in `src/theme` (colours, spacing, motion, fonts) and your type styles in `src/css/tackl/_type.scss` — straight from the Figma file.
 
-After that, the placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(site)/(home)/page.tsx`) and start building.
+The placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(site)/(home)/page.tsx`) and start building.
 
 Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.). `.env` is gitignored; `.env.example` is the documented template.
 
@@ -47,7 +47,6 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 
 ## 🎯 What's in the box
 
-- **First-run setup wizard** — an interactive, self-deleting overlay on first `bun dev` that fills in every theme token (brand colours, spacing, motion, font uploads, the per-breakpoint type scale) and writes them straight into `src/theme`
 - **Next.js 16.3 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds, with Cache Components and Partial Prefetching on by default so routes prerender a static shell, stream the dynamic parts, and share one prefetched App Shell per route instead of one payload per `<Link>`
 - **TypeScript everywhere** — strict, with typed design tokens that derive from the values (add a token, the type follows)
 - **styled-components v6** — SSR wired via the registry; one polymorphic `Div` primitive instead of a component per HTML tag
@@ -196,7 +195,6 @@ flowchart TD
 
 | Guide | What it covers |
 | --- | --- |
-| [SetupWizard](./docs/Tackl/SetupWizard.md) | The first-run theme setup wizard and how it removes itself |
 | [WritingComponents](./docs/Tackl/WritingComponents.md) | File anatomy, comment style, imports, `Div`, grid spans, `bp` |
 | [Theming](./docs/Tackl/Theming.md) | Tokens, CSS variables, opacity, runtime theming |
 | [AppArchitecture](./docs/Tackl/AppArchitecture.md) | The app shell, Providers, data flow |

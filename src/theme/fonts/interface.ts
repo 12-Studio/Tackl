@@ -1,6 +1,6 @@
 // Fonts Types / Interfaces
 // ------------
-import type { fontFamilies, fontWeights } from './index';
+import type { fontFamilies, fontWeights } from './values';
 
 // SECTION • Fonts
 // NOTE — Derived from fontFamilies/fontWeights, so adding a stack or weight

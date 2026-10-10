@@ -1,0 +1,42 @@
+// Helpers
+// ------------
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:string';
+@use 'grid';
+
+// px → vw against a design width — the SCSS twin of getVw / getVwTablet / getVwMobile
+// Usage: font-size: vw(48);  margin: vw(24, mobile);
+@function vw($px, $design: desktop) {
+	@return math.div($px, map.get(grid.$design-widths, $design)) * 100vw;
+}
+
+// Translucent colour via color-mix — the SCSS twin of alpha() in @tackl.
+// Accepts a token name or any colour value.
+// NOTE • Not named alpha(): Sass ships a built-in alpha() colour function
+// Usage: background: fade(--brand-c1, 20);
+@function fade($color, $opacity) {
+	$value: $color;
+
+	@if meta.type-of($color) == 'string' and string.index($color, '--') == 1 {
+		$value: var(#{$color});
+	}
+
+	@if $opacity >= 100 {
+		@return $value;
+	}
+
+	@return color-mix(in srgb, #{$value} #{math.clamp(0, $opacity, 100) * 1%}, transparent);
+}
+
+// Hides scrollbars while keeping the element scrollable
+@mixin noscrollbars {
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+		background: transparent;
+	}
+}

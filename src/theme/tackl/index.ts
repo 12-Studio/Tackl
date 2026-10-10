@@ -1,5 +1,6 @@
 // Imports
 // -----------------
+import { theme } from '@theme';
 import type { Theme } from '@theme/interface';
 import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
 import styled, { css, type RuleSet } from 'styled-components';
@@ -24,6 +25,32 @@ export const Div = styled.div<SemanticProps>`
 // ------------
 export const bp = breakpointUp;
 export const bpd = breakpointDown;
+
+// SECTION • Grid Column
+// ------------
+export { default as Col } from './col';
+
+// SECTION • Breakpoints for JS
+// ------------
+// NOTE • The same values that generate the SCSS bp() / bpd() mixins — use
+// these in gsap.matchMedia, matchMedia listeners and the like:
+//   breakpoints.m → '700px'
+//   mq.up.m       → '(min-width: 700px)'
+//   mq.down.m     → '(max-width: 699.98px)' (0.02px under, so up/down never overlap)
+export const breakpoints = theme.grid.breakpoints;
+
+type BreakpointKey = keyof typeof breakpoints;
+
+const toQueries = (query: (size: number) => string) =>
+	Object.fromEntries(Object.entries(breakpoints).map(([key, size]) => [key, query(parseFloat(size))])) as Record<
+		BreakpointKey,
+		string
+	>;
+
+export const mq = {
+	up: toQueries(size => `(min-width: ${size}px)`),
+	down: toQueries(size => `(max-width: ${size - 0.02}px)`),
+};
 
 // SECTION • Color Utilities
 // ------------

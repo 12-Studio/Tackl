@@ -1,23 +1,15 @@
 // Waffl Types / Interfaces
 // ------------
-import type { Breakpoints } from '@theme/grid/interface';
-import type { Theme } from '@theme/interface';
-
-// SECTION • Responsive Props
-// NOTE — Props for responsive grid spans with $ prefix
-type ResponsiveProps = {
-	[K in keyof Breakpoints as `$${K}`]?: string;
-};
+import type { SpanProps } from '@tackl/col/interface';
+import type { HTMLAttributes } from 'react';
 
 // SECTION • Waffl
-// NOTE — The main waffl object structure
-export interface GridInterface extends ResponsiveProps {
-	theme?: Theme;
+// NOTE — Layout switches become data attributes on <waffl-grid> (styled in
+// src/css/global.scss). Span props let a grid sit inside another grid.
+export interface GridProps extends SpanProps, HTMLAttributes<HTMLElement> {
 	$noMargin?: boolean;
 	$isFixed?: boolean;
 	$isFullscreen?: boolean;
-	$isFullscreenTop?: boolean;
 	$isCenter?: boolean;
 	$noGutter?: boolean;
-	children?: React.ReactNode;
 }

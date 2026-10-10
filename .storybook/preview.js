@@ -7,7 +7,8 @@ import { ThemeProvider } from 'styled-components';
 
 // Styles
 // ------------
-import '@/css/global.css';
+import '@/css/tokens.css';
+import '@/css/global.scss';
 
 // import './fonts.css';
 

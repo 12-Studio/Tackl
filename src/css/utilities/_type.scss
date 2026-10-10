@@ -1,0 +1,17 @@
+// Type Utilities
+// ------------
+// NOTE • Every type mixin in src/css/tackl/_type.scss, exposed globally:
+//   <h1 className='t-displayL'>        → class
+//   <p data-type='captionL'>           → data attribute
+// In a module, use the mixin instead: @include captionL;
+@use 'sass:meta';
+@use 'tackl';
+
+@layer utilities {
+	@each $style in tackl.$type-styles {
+		.t-#{$style},
+		[data-type='#{$style}'] {
+			@include meta.apply(meta.get-mixin($style, 'tackl'));
+		}
+	}
+}

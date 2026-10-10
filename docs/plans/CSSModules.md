@@ -1,6 +1,6 @@
 # Plan: styled-components → CSS Modules (SCSS)
 
-Status: **proposal** · Branch: `css-modules` · Target release: **Tackl 5.0.0** (breaking)
+Status: **agreed** · Branch: `css-modules` · Target release: **Tackl 5.0.0** (breaking)
 
 ## Why
 
@@ -14,24 +14,43 @@ Performance. styled-components costs at three points:
   component that styles itself needs the client-side `ThemeProvider` context.
 
 CSS Modules compile to static `.css` files at build time. They need no runtime, are
-cached separately from JS, are split per route, and work in Server Components
-without a client boundary.
+cached separately from JS, are only shipped on routes that import them, and
+work in Server Components without a client boundary.
+
+## Decisions
+
+| Topic | Decision |
+| --- | --- |
+| Styling | SCSS CSS Modules (`styles.module.scss`), compiled by `sass-embedded` |
+| Mixins | Global via `sassOptions.additionalData`, so modules need no imports |
+| Tokens | Stay in TS. They **generate** `tokens.css` (`:root` variables) and feed the JS `theme` object. |
+| Breakpoints | Stay in TS (`theme.grid.breakpoints`). They generate the Sass `bp()` / `bpd()` mixins, and JS gets `breakpoints` + `mq` for GSAP and utils. |
+| Typography | **Hand-written** in one `_type.scss`, from Figma. `typeScale` (TS) is deleted. |
+| Type API | Mixins (`@include captionL;`), classes (`.t-captionL`) **and** data attributes (`data-type='captionL'`) |
+| Spacing API | Data attributes on any element (`data-pad`, `data-mar='top'`) **and** mixins (`@include pad(top);`). The `$pad`/`$mar` props go. |
+| Grid | `<Grid>` → `<waffl-grid>` with data attributes; `<Col>` replaces `Div` for grid spans |
+| Setup wizard | **Removed** entirely (component, API route, docs, README/CLI mentions) |
+| Linting | Biome stays for TS/JS/JSON/CSS. **Stylelint is added for `.scss` only.** Biome has no SCSS support: tested on 2.5.7 (pinned) and 2.5.15 (latest), and both skip `.scss` files. |
+| Editor | Recommended extensions for variable autocomplete with colour swatches, mixin IntelliSense and inline Stylelint |
+| Browser support | `"browserslist": ["baseline widely available"]`. Next uses it for JS compilation **and** CSS prefixing automatically. Today it resolves to Chrome/Edge 123+, Firefox 124+ and Safari/iOS 17.4+ (checked with browserslist 4.29.3). |
+| Unused CSS | **No purging for now.** Modules are already per-route; keep the global layer small and revisit only if measurements say so. |
+| Agent + skill files | AGENTS.md and `skills/styling/*` rewritten for SCSS Modules; styled-components skills deleted |
 
 ## Principles
 
-1. **One source of truth per token, in TS.** The token files in `src/theme/**`
-   stay the source, and the setup wizard keeps writing them. SCSS and CSS
-   are **generated** from them, never hand-edited.
+1. **One source of truth.** Tokens and breakpoints live in TS and are generated
+   into CSS/SCSS, never hand-copied. Typography lives in SCSS only.
 2. **Runtime values are CSS custom properties; build-time values are Sass.**
-   Colours, space, gap, radius, easing, time and fonts stay `var(--…)` on
-   `:root`, so runtime theming still works. Only things CSS can't express
-   with variables (media queries) become Sass.
-3. **The global SCSS layer emits zero CSS.** It contains mixins and functions only.
-   It's injected into every module, so any rule in it would be duplicated in
-   every file.
-4. **Dynamic values use data attributes and custom properties, never
-   class-toggling logic in JS.** `$isOpen` becomes `data-state='open'`, and
-   `$col={3}` becomes `style={{ '--col': 3 }}`.
+   Colours, space, gap, radius, easing, time and fonts are `var(--…)` on `:root`,
+   so they can be re-themed at runtime. Only media queries, which can't read
+   variables, use Sass values.
+3. **The injected SCSS layer emits zero CSS.** It contains mixins and functions
+   only. It's prepended to every `.scss` file, so any rule in it would be
+   duplicated in every file.
+4. **Global utilities live in `@layer utilities`.** Module CSS is unlayered, so it
+   always overrides a utility, with no specificity fights and no `!important`.
+5. **Dynamic values use data attributes and custom properties.** `$isOpen` becomes
+   `data-state='open'`, and `$col={3}` becomes `style={{ '--col': 3 }}`.
 
 ---
 
@@ -40,61 +59,69 @@ without a client boundary.
 ```
 src/
   theme/
-    grid/index.ts            ← breakpoints, columns, gutters (JS source of truth)
-    colors/ space/ gap/ …    ← raw token values (JS source of truth, wizard-written)
-    fonts/values.ts          ← NEW: raw font stacks/weights, split from next/font calls
-    index.ts                 ← `theme` object (var() refs) — kept for JS/GSAP
+    grid/index.ts            ← breakpoints, columns, gutters, design widths (source)
+    colors/ space/ gap/ …    ← raw token values (source)
+    fonts/values.ts          ← NEW: raw font stacks/weights (no next/font call — see §1)
+    fonts/index.ts           ← next/font instances only
+    index.ts                 ← `theme` object (var() refs) for JS/GSAP
     tackl/
-      index.ts               ← JS utils only: alpha(), breakpoints, mq, getVw
-      waffl/index.tsx        ← <Grid> (renders <waffl-grid> with data attributes)
-      col/index.tsx          ← NEW: <Col as=… $s $m $l…> (replaces Div)
-      type/index.ts          ← typeScale data + typeRoles (styles removed)
+      index.ts               ← JS utils: alpha(), breakpoints, mq, getVw*
+      waffl/index.tsx        ← <Grid>
+      col/index.tsx          ← NEW: <Col>
   css/
-    tackl/                   ← the global SCSS layer (zero output)
-      _index.scss            ← @forward everything below
-      _breakpoints.scss      ← GENERATED: $breakpoints map + bp()/bpd() mixins
-      _type.scss             ← GENERATED: displayL…captionS mixins
-      _functions.scss        ← vw(), fade() helpers (hand-written, read generated values)
-      _generated-grid.scss   ← GENERATED: $columns, $gutters, $design
+    tackl/                   ← INJECTED layer — zero CSS output
+      _index.scss            ← @forward all of the below
+      _breakpoints.scss      ← GENERATED: $breakpoints map, bp(), bpd()
+      _grid.scss             ← GENERATED: $columns, $gutters, $grid-max, $design-widths
+      _functions.scss        ← vw(), fade()
+      _spacing.scss          ← pad(), mar() mixins
+      _type.scss             ← HAND-WRITTEN: displayL … captionS mixins
     tokens.css               ← GENERATED: :root { --brand-c1: …; … }
-    global.scss              ← reset, body, waffl-grid rules, Lenis, view transitions
+    global.scss              ← @layer order, reset, body, waffl-grid + Col cascade,
+                               Lenis, view transitions
+    utilities/
+      _spacing.scss          ← [data-pad] / [data-mar] (in @layer utilities)
+      _type.scss             ← .t-* / [data-type] (in @layer utilities)
 scripts/
-  build-styles.ts            ← the generator (bun)
+  build-styles.ts            ← generator (bun)
+.stylelintrc.json
+.vscode/extensions.json, .vscode/settings.json
 ```
 
 ### Hierarchy
 
-Your hunch about the order is right, with one clarification about what each layer is:
-
 ```
-breakpoints (JS → Sass map + mixins, build-time)
-   ↓
-global tokens (JS → CSS custom properties on :root, runtime)
-   ↓
-typography mixins (use bp() for responsive steps and var(--font-*) for families)
-   ↓
-component modules (use all of the above, import nothing)
+breakpoints   TS → generated Sass map + bp()/bpd()        (build-time)
+     ↓
+tokens        TS → generated tokens.css (:root vars)      (runtime)
+     ↓
+type          hand-written mixins using bp() + var(--font-*)
+spacing       mixins using bp() + var(--space-*)
+     ↓
+utilities     global classes / data attributes built from those mixins
+     ↓
+components    styles.module.scss, using everything above with no imports
 ```
-
-Breakpoints are **not** CSS variables. Media queries can't read them, which is why
-they're Sass. Tokens **are** CSS variables, which is why they stay runtime-themeable.
 
 ---
 
-## 1. One source of truth: the generator
+## 1. The generator
 
-`scripts/build-styles.ts` imports the raw TS values and writes the generated
-files. It's plain TS run by Bun, which resolves the tsconfig `paths`.
+`scripts/build-styles.ts` imports the raw TS values and writes three files. Each
+one starts with a `GENERATED — do not edit` banner.
 
 ```ts
 // scripts/build-styles.ts (sketch)
 import { grid } from '@theme/grid';
 import { baseColors } from '@theme/colors';
-import { typeScale } from '@tackl/type';
-// …space/gap/br/easing/time/font values
+import { fontFamilies } from '@theme/fonts/values';
+// …space / gap / br / easing / time values
 
-writeGenerated('src/css/tackl/_breakpoints.scss', `
-$breakpoints: (${entries(grid.breakpoints).map(([k, v]) => `${k}: ${v}`).join(', ')});
+write('src/css/tokens.css', `:root {\n${declarations}\n}`);
+
+write('src/css/tackl/_breakpoints.scss', `
+@use 'sass:map';
+$breakpoints: (${pairs(grid.breakpoints)});
 
 @mixin bp($key) {
 	@media (min-width: map.get($breakpoints, $key)) { @content; }
@@ -106,60 +133,40 @@ $breakpoints: (${entries(grid.breakpoints).map(([k, v]) => `${k}: ${v}`).join(',
 }
 `);
 
-writeGenerated('src/css/tokens.css', `:root {\n${allTokenDeclarations}\n}`);
-writeGenerated('src/css/tackl/_type.scss', typeScaleToMixins(typeScale));
+write('src/css/tackl/_grid.scss', /* $columns, $gutters, $grid-max, $design-widths */);
 ```
 
-Generated typography output looks like this:
-
-```scss
-// src/css/tackl/_type.scss — GENERATED, do not edit
-@mixin captionL {
-	font-family: var(--font-body);
-	font-weight: 400;
-	font-size: 1.4rem;
-	line-height: 1.5;
-
-	@include bp(xl) { font-size: 1.6rem; }
-}
-```
-
-**On the JS side, nothing is duplicated.** `@tackl` exports the same data for
-GSAP and your utils:
+**JS side.** Same data, nothing duplicated:
 
 ```ts
 // src/theme/tackl/index.ts
-import { grid } from '@theme/grid';
-
-export const breakpoints = grid.breakpoints;                  // { s: '320px', m: '700px', … }
+export const breakpoints = grid.breakpoints;            // { s: '320px', m: '700px', … }
 export const mq = {
-	up: mapValues(breakpoints, v => `(min-width: ${v})`),      // mq.up.m → '(min-width: 700px)'
+	up: mapValues(breakpoints, v => `(min-width: ${v})`),
 	down: mapValues(breakpoints, v => `(max-width: ${parseFloat(v) - 0.02}px)`),
 };
 ```
 
-`useAnimation` then uses `mq.up.m` / `mq.up.l` directly in `gsap.matchMedia`
-instead of `parseFloat`-ing the theme by hand. `useResponsive` can do the same.
+`useAnimation` and `useResponsive` switch to `mq.up.m` / `mq.up.l` instead of
+`parseFloat`-ing the theme.
 
-**When the generator runs:**
+**When it runs:**
 
 | Trigger | How |
 | --- | --- |
-| `bun run dev` / `build` / `storybook` | Chained explicitly: `"dev": "bun run styles && next dev --turbopack"`. Explicit chaining rather than `pre*` scripts, so it can't silently skip. |
-| Setup wizard "finish" | `app/api/tackl-setup/route.ts` calls the generator after writing the token files |
+| `bun run dev` / `build` / `storybook` | Chained explicitly: `"dev": "bun run styles && next dev --turbopack"` |
 | Pre-commit (husky) | `bun run styles --check` fails if the generated files are stale |
 
-Generated files are **committed**. That way a fresh clone, an editor or Storybook
-works before any script runs, and token changes show up in PR diffs.
+Generated files are **committed**. A fresh clone, an editor or Storybook works
+before any script runs, and token changes show up in diffs.
 
-> ⚠️ `src/theme/fonts/index.ts` calls `Inter()` from `next/font/google`, which
-> only works inside Next's compiler. Split the raw stacks and weights into
-> `fonts/values.ts`, so the generator imports pure data. The wizard's
-> `FONTS_FILE` target moves with them.
+> `src/theme/fonts/index.ts` calls `Inter()` from `next/font/google`, which only
+> works inside Next's compiler. The raw stacks and weights move to
+> `fonts/values.ts` so the generator can import pure data.
 
 ---
 
-## 2. The global SCSS layer: setup and usage
+## 2. Global SCSS: setup and usage
 
 ### Setup (once, in `next.config.js`)
 
@@ -168,19 +175,19 @@ const path = require('node:path');
 
 const nextConfig = {
 	sassOptions: {
-		implementation: 'sass-embedded',                 // native Dart Sass — much faster compiles
+		implementation: 'sass-embedded',
 		loadPaths: [path.join(__dirname, 'src/css')],
-		additionalData: `@use 'tackl' as *;`,            // injected at the top of every .scss file
+		additionalData: `@use 'tackl' as *;`,
 	},
-	// …
 };
 ```
 
 ```scss
 // src/css/tackl/_index.scss
 @forward 'breakpoints';
-@forward 'generated-grid';
+@forward 'grid';
 @forward 'functions';
+@forward 'spacing';
 @forward 'type';
 ```
 
@@ -216,32 +223,18 @@ const nextConfig = {
 ```
 
 ```tsx
-// src/components/CookieBar/index.tsx
 import s from './styles.module.scss';
 
 return <aside className={s.jacket}>…</aside>;
 ```
 
-### If injection isn't wanted (or doesn't work under Turbopack)
+If `additionalData` doesn't work under Turbopack (verified in Phase 1), the
+fallback is one line per module, `@use 'tackl' as *;`. It costs nothing at runtime.
 
-The fallback is one line at the top of each module:
-
-```scss
-@use 'tackl' as *;
-```
-
-That's the whole cost. `loadPaths` keeps it short with no relative `../../`.
-Because it's `@use` and the layer emits no CSS, it's free at runtime either way.
-
-> **Editor note:** VS Code's SCSS IntelliSense doesn't read `additionalData`, so
-> autocomplete and go-to-definition for `bp()` / `captionL` won't work in a file
-> without the explicit `@use`. Compilation is unaffected. If that bothers you, the
-> explicit `@use` line fixes it and costs nothing.
-
-### Helpers in `_functions.scss`
+### Helpers (`_functions.scss`)
 
 ```scss
-// px → vw against a design width (mirrors getVw/getVwTablet/getVwMobile)
+// px → vw against a design width (mirrors getVw / getVwTablet / getVwMobile)
 @function vw($px, $design: desktop) {
 	@return math.div($px, map.get($design-widths, $design)) * 100vw;
 }
@@ -255,38 +248,121 @@ Because it's `@use` and the layer emits no CSS, it's free at runtime either way.
 
 ---
 
-## 3. Primitives: `Grid` and `Col`
+## 3. Typography: hand-written
+
+`src/css/tackl/_type.scss` is the only place type is defined. It's written by
+hand from Figma, and any breakpoint the design needs is fair game.
+
+```scss
+// src/css/tackl/_type.scss
+@mixin displayL {
+	font-family: var(--font-heading);
+	font-weight: 400;
+	font-size: 4.8rem;
+	line-height: 1.1;
+	letter-spacing: -1px;
+
+	@include bp(xl) {
+		font-size: clamp(9.6rem, 8.333vw, 12rem);
+		letter-spacing: -2px;
+	}
+}
+
+@mixin captionL {
+	font-family: var(--font-body);
+	font-weight: 400;
+	font-size: 1.4rem;
+	line-height: 1.5;
+
+	@include bp(xl) { font-size: 1.6rem; }
+}
+```
+
+Each mixin is exposed three ways from one definition:
+
+```scss
+// src/css/utilities/_type.scss — emitted once, from global.scss
+@layer utilities {
+	.t-displayL, [data-type='displayL'] { @include displayL; }
+	.t-captionL, [data-type='captionL'] { @include captionL; }
+	// …
+}
+```
+
+```tsx
+<h1 className='t-displayL'>…</h1>                        // class
+<p data-type='captionL'>…</p>                              // data attribute
+<h2 className={`${s.title} t-headlineL`}>…</h2>          // alongside a module class
+```
+
+```scss
+.title { @include headlineL; }                             // mixin
+```
+
+**Deleted:**
+- `typeScale` and its `RuleSet` exports in `src/theme/tackl/type/index.ts`.
+- `typeRoles` too. It's only used by the wizard and ThemeShowcase, and the role
+  descriptions move into the Storybook Typography page as prose.
+
+---
+
+## 4. Spacing: data attributes and mixins
+
+Same responsive scale as today's `$pad` / `$mar` (`--space-s` → `m` at `bp(m)` →
+`l` at `bp(l)`):
+
+```scss
+// src/css/tackl/_spacing.scss (injected, zero output)
+@mixin pad($side: block) {
+	padding-#{$side}: var(--space-s);
+	@include bp(m) { padding-#{$side}: var(--space-m); }
+	@include bp(l) { padding-#{$side}: var(--space-l); }
+}
+// mar() is the same with margin
+```
+
+```scss
+// src/css/utilities/_spacing.scss (emitted once)
+@layer utilities {
+	[data-pad=''], [data-pad='true'], [data-pad~='block'] { @include pad(block); }
+	[data-pad~='top'] { @include pad(top); }
+	[data-pad~='bottom'] { @include pad(bottom); }
+	// mar likewise
+}
+```
+
+```tsx
+<section data-pad>…</section>                  // top + bottom
+<section data-pad='top'>…</section>
+<section data-mar='top bottom'>…</section>     // ~= lets values combine
+```
+
+- **Why `''` and `'true'` both mean "block":** a bare `data-pad` renders as
+  `data-pad="true"` in React and `data-pad=""` in plain HTML.
+- **Component-owned spacing** uses the mixin instead: `.jacket { @include pad(top); }`.
+
+---
+
+## 5. Grid primitives
 
 ### `Grid` (`@waffl`)
 
-A Server Component that renders `<waffl-grid>`. Boolean props become data attributes:
+A Server Component that renders `<waffl-grid>`. Boolean props become data
+attributes:
 
 ```tsx
 <Grid $isFixed $noGutter>…</Grid>
 // → <waffl-grid data-fixed data-no-gutter>…</waffl-grid>
 ```
 
-Its styles live in **`global.scss`, not a module**. CSS Modules' pure mode
-rejects bare tag selectors, and the grid is a global primitive anyway. Columns
-and gutters are generated from `grid`:
-
-```scss
-waffl-grid {
-	--grid-columns: repeat(#{map.get($columns, s)}, 1fr);
-	display: grid;
-	grid-template-columns: var(--grid-columns);
-	// …
-	@include bp(m) { --grid-columns: repeat(#{map.get($columns, m)}, 1fr); }
-
-	&[data-fixed] { max-width: $grid-max-size; }
-	&[data-no-gutter] { column-gap: 0; }
-}
-```
+Styles go in `global.scss`, not a module. CSS Modules' pure mode rejects bare
+tag selectors, and the grid is global anyway. Columns, gutters and max width
+come from the generated `_grid.scss`.
 
 ### `Col` (replaces `Div`)
 
-Its only job is grid spans, so it stays tiny. It's polymorphic via `as` and sets
-`--col-*` custom properties:
+Its only job is grid spans. It's polymorphic via `as` and sets `--col-*`
+custom properties:
 
 ```tsx
 <Col as='article' $m='2/6' $l='3/9' className={s.card}>…</Col>
@@ -294,14 +370,14 @@ Its only job is grid spans, so it stays tiny. It's polymorphic via `as` and sets
 ```
 
 The cascade is generated once in `global.scss`. Each breakpoint falls back to
-the one below it, so `$l` alone still works on mobile:
+the one below, so `$l` alone still spans fully on mobile:
 
 ```scss
 waffl-grid > :where(*) {
 	--_c-s:  var(--col-s, 1 / -1);
 	--_c-sm: var(--col-sm, var(--_c-s));
 	--_c-m:  var(--col-m, var(--_c-sm));
-	// … through uber
+	// … through uber, generated with @each over $breakpoints
 	grid-column: var(--_c-s);
 
 	@include bp(sm) { grid-column: var(--_c-sm); }
@@ -310,155 +386,184 @@ waffl-grid > :where(*) {
 }
 ```
 
-- **Plain elements work too.** It still applies to every grid child with zero
-  specificity, so plain and server-rendered elements keep spanning full width,
-  as today.
-- **`Col` is a Server Component.** It's just a tag and a `style` object.
-- **It's the one sanctioned inline `style`.** AGENTS.md gets a carve-out for
-  `--col-*`.
-- **`style` needs a type for custom properties.** Add `--${string}` keys to
-  `React.CSSProperties` in a `.d.ts`, so `style={{ '--col-m': '2/6' }}` is typed
-  without casts.
-
-**Dropped:** the `$pad` / `$mar` / `$padTop`… spacing props. Section spacing
-becomes a mixin (`@include section-pad;`) or plain `var(--space-*)` in the module.
+- **Plain children still work.** Zero specificity via `:where()` means plain and
+  server-rendered children still span the full grid, as they do today.
+- **`Col` is a Server Component.**
+- **`--col-*` is the one sanctioned inline `style`.** A `.d.ts` adds `--${string}`
+  keys to `React.CSSProperties`, so it's typed without casts.
 
 ---
 
-## 4. Wrappers and config: reassessed
+## 6. Wrappers and config
 
 | File | Today | After |
 | --- | --- | --- |
 | `src/utils/registry.tsx` | `ServerStyleSheet` + `useServerInsertedHTML` | **Deleted** |
-| `app/(site)/Providers.tsx` | Registry → `ThemeProvider` → `GlobalStyle` → children | Keeps only what isn't styling (Contexts, CookieBar, dev tools). Still a client boundary for Contexts, but carries no style runtime. |
-| `app/(site)/layout.tsx` | Imports `global.css` | Imports `@css/tokens.css` then `@css/global.scss` (order matters: tokens first) |
-| `src/theme/index.ts` | `theme` + `GlobalStyle` (createGlobalStyle) | `theme` only. `:root` vars move to generated `tokens.css`, and `body` colours to `global.scss`. |
-| `next.config.js` | `compiler.styledComponents` | Removed. `sassOptions` added (above). `compiler.removeConsole` stays. |
-| `src/types/styles.d.ts` | `DefaultTheme` augmentation | **Deleted.** Next's own types already cover `*.module.scss`. |
-| `src/types/waffl.d.ts` | JSX typing for `<waffl-grid>` | Kept; add `data-*` attrs if wanted |
-| `.storybook/preview.js` | `ThemeProvider`, `GlobalStyle`, `withThemeFromJSXProvider` | Import `tokens.css` + `global.scss`. Swap to `withThemeByDataAttribute` for theme switching via `html[data-theme]`. |
-| `@tackl` getters (`getBrand`, `getSpace`, …) | styled-components prop functions | **Deleted.** Use `var(--brand-c1)` in SCSS and `theme.colors.brand.c1` in JS. |
-| `@tackl` `bp` / `bpd` (css-tagged) | styled-components helpers | Replaced by JS `breakpoints` / `mq` plus Sass `bp()` / `bpd()` |
-| `@tackl/type` | `RuleSet` exports | `typeScale` + `typeRoles` data only (mixins are generated) |
-| `semantics/` | `$pad`/`$mar`/span CSS | **Deleted** (spans move to `Col` + `global.scss`) |
+| `app/(site)/Providers.tsx` | Registry → `ThemeProvider` → `GlobalStyle` → wizard gate → children | Contexts, CookieBar, GridExposer only. Still a client boundary for Contexts, but carries no style runtime. |
+| `app/(site)/layout.tsx` | Imports `global.css` | Imports `@css/tokens.css`, then `@css/global.scss` |
+| `src/theme/index.ts` | `theme` + `GlobalStyle` | `theme` only. `:root` moves to `tokens.css`, and `body` colours to `global.scss`. |
+| `next.config.js` | `compiler.styledComponents` | Removed. `sassOptions` added. `removeConsole` stays. |
+| `package.json` | No `browserslist`; `styled-components` dep | `"browserslist": ["baseline widely available"]`. Remove `styled-components`; add `sass-embedded`, `stylelint`, `stylelint-config-standard-scss`. Add `styles` script; `lint` runs Biome **and** Stylelint. |
+| `src/types/styles.d.ts` | `DefaultTheme` augmentation | **Deleted** (Next already types `*.module.scss`) |
+| `src/types/waffl.d.ts` | JSX typing for `<waffl-grid>` | Kept, with the `data-*` attributes added |
+| `.storybook/preview.js` | `ThemeProvider`, `GlobalStyle`, `withThemeFromJSXProvider` | Import `tokens.css` + `global.scss`; `withThemeByDataAttribute` on `html[data-theme]` |
+| `@tackl` getters (`getBrand`, `getSpace`, …) | styled-components prop functions | **Deleted.** `var(--…)` in SCSS, `theme.*` in JS. |
+| `@tackl` `bp` / `bpd`, `noscrollbars` | styled-components `css` helpers | JS `breakpoints` / `mq`; Sass `bp()` / `bpd()`; `noscrollbars` becomes a mixin |
+| `semantics/` | `$pad` / `$mar` / span CSS | **Deleted** (spacing → §4, spans → §5) |
+| `.husky/pre-commit` | lint + type-check | Adds `bun run styles --check` |
 
-### Performance-related config to evaluate (measure, don't assume)
+## 7. Removing the setup wizard
 
-- `experimental.inlineCss`: inlines CSS into the HTML `<head>`. This removes a
-  render-blocking request on first load, at the cost of CSS caching between pages.
-  It's usually a win for a small kit stylesheet. A/B it with Lighthouse.
-- `experimental.cssChunking`: controls how CSS is merged per route.
-- `sass-embedded` vs `sass`: build and dev speed only, with no runtime effect.
+Delete:
 
----
+- `src/components/TacklSetup/` (incl. the 567-line `styles.ts`, so it needs no conversion)
+- `app/api/tackl-setup/route.ts`
+- The `tackl:setup-start` / `tackl:setup-end` blocks in `app/(site)/Providers.tsx`
+- `docs/Tackl/SetupWizard.md`
 
-## 5. Component conventions
+Update:
+
+- **`README.md`:** the first-run wizard paragraph, the feature bullet and the docs
+  table row.
+- **`tackl/README.md`:** the wizard paragraph.
+- **`tackl/bin/tackl.js`:** the "first-run setup wizard" next-steps line.
+- **`src/theme/fonts/index.ts`:** comments that mention the wizard. The
+  `fontVariables` registry stays if ThemeShowcase still uses it.
+- **ThemeShowcase:** remove its wizard references.
+
+## 8. Linting and editor
+
+**Stylelint, for `.scss` only.** Biome keeps everything else unchanged.
+
+```json
+// .stylelintrc.json
+{
+	"extends": ["stylelint-config-standard-scss"],
+	"ignoreFiles": ["src/css/tokens.css", "src/css/tackl/_breakpoints.scss", "src/css/tackl/_grid.scss"],
+	"rules": {
+		"selector-class-pattern": "^[a-z][a-zA-Z0-9]*$|^t-[a-zA-Z0-9]+$",
+		"selector-type-no-unknown": [true, { "ignore": ["custom-elements"] }]
+	}
+}
+```
+
+- **Scripts:** `"lint": "biome check . && stylelint \"**/*.scss\""`, plus a matching
+  `lint:fix`.
+- **Unknown variables:** a custom-properties check against `tokens.css` flags
+  `var(--brand-c11)`-style typos. This is the safety net the typed getters
+  provided. Plugin choice is confirmed in Phase 1.
+
+**Editor (`.vscode/extensions.json` recommendations, plus `.vscode/settings.json`):**
+
+- **CSS Variable Autocomplete:** `var(--…)` completion and colour swatches read
+  from `tokens.css`, plus go-to-definition.
+- **SCSS IntelliSense:** completion and go-to-definition for `bp()`, `captionL`,
+  `vw()` and the rest, including mixins it can't see imported (needed because of
+  the injected `@use`).
+- **Stylelint:** inline lint errors; Biome stays the formatter for TS.
+
+> Extension behaviour is from memory; confirm in Phase 1 and adjust settings.
+
+## 9. Component conventions
 
 | styled-components | SCSS modules |
 | --- | --- |
 | `styles.ts` | `styles.module.scss` |
 | `import * as S from './styles'` | `import s from './styles.module.scss'` |
-| `<S.Jacket>` | `<header className={s.jacket}>` (outermost class still `jacket`) |
-| `styled(Div).attrs({ as: 'h1' })` | Write the tag in JSX: `<h1 className={s.title}>` |
+| `<S.Jacket>` | `<header className={s.jacket}>` (outermost class is still `jacket`) |
+| `styled(Div).attrs({ as: 'h1' })` | Write the tag in JSX |
 | `$center`, `$hasError` | `data-center`, `aria-invalid` (where semantic) → `&[data-center]` |
 | `${props.$col}` | `style={{ '--col': col }}` → `grid-column: var(--col)` |
-| `${headlineL}` | `@include headlineL;` |
+| `${headlineL}` | `@include headlineL;` or the `t-headlineL` class |
 | `${bp.l`…`}` | `@include bp(l) { … }` |
 | `getVw(48)` | `vw(48)` |
 | `alpha('--brand-c1', 20)` | `fade(--brand-c1, 20)` |
+| `$pad` / `$mar` props | `data-pad` / `data-mar`, or `@include pad;` |
 
-Class names are camelCase (`.removeButton` → `s.removeButton`). Nesting
-under the local class is fine in pure mode (`.jacket p {}`). Top-level tag
-selectors go in `global.scss`.
+- **Class names are camelCase** (`.removeButton` → `s.removeButton`).
+- **Nesting is fine.** Nesting under the local class is allowed in pure mode (`.jacket p {}`).
+- **Top-level tag selectors go in `global.scss`.**
+
+## 10. Agent and skill files
+
+| File | Change |
+| --- | --- |
+| `AGENTS.md` | Rewrite **The one rule** (`Div` → `Col`, grid-only) and the **Imports & aliases** table (`@tackl` JS utils, no `@tackl/type` import). Rewrite **Writing a component** (`styles.module.scss`, `import s from …`, `.jacket`). Rewrite **Styling & theming**: injected mixins, `bp()`, type and spacing APIs, `@layer utilities`, `fade()` / `vw()`, data attributes for state. Ban list becomes: no Tailwind, LESS, CSS-in-JS or inline styles (except `--col-*` / dynamic custom properties). Waffl grid example uses `Col`. **Before you finish**: lint now runs Stylelint too, and generated files must not be hand-edited. |
+| `skills/styling/styled-components/` | **Deleted** |
+| `skills/styling/styled-components-helper/` | **Deleted** |
+| `skills/styling/scss-modules/SKILL.md` | **New.** Conventions, the injected layer, type/spacing APIs, Grid/Col, data-attribute state, common mistakes (rules in the injected layer, top-level tag selectors in modules, Sass `alpha()` clash, editing generated files) |
+| `CLAUDE.md` | No change (points at AGENTS.md) |
+
+Docs alongside: `docs/Tackl/` Theming, WritingComponents, SemanticComponents
+(→ Col), WafflGrid, GridSystemProps, AppArchitecture, ComponentHierarchy and
+Tackl; a new `MigratingFromV4.md`; `README.md` and `src/stories/*.mdx`.
 
 ---
 
-## 6. Migration phases
+## 11. Phases
 
-Each phase ends green: `type-check`, `lint`, `test`, plus a visual check in `bun run dev`.
+Each phase ends green (`type-check`, `lint`, `test`, plus a visual check in
+`bun run dev`) and is its own commit.
 
 ### Phase 0: Baseline
-- Install deps, then record `next build` route sizes (First Load JS), a Lighthouse
-  run (`bun run lighthouse`) and the smoke test.
-- Save the numbers in the PR description so the payoff is measured, not assumed.
+- Install deps, then record `next build` First Load JS per route, total CSS size,
+  a local production Lighthouse run (`bun run lighthouse`) and the smoke test.
+- Netlify preview Lighthouse isn't comparable (it already shows a −8
+  Best Practices on a docs-only change), so measure locally.
+- Numbers go in the PR description.
 
-### Phase 1: Foundation and spike (styled-components still installed)
-- `bun add -d sass-embedded`.
-- Split `fonts/values.ts`, and write `scripts/build-styles.ts` and the generated files.
-- Add `sassOptions` to `next.config.js` and import `tokens.css` in the layout
-  (`GlobalStyle` still runs alongside, emitting the same vars).
-- Convert **CookieBar** only, then verify:
-  - [ ] `additionalData` works under Turbopack (dev and build)
-  - [ ] Editing `_type.scss` / `_breakpoints.scss` hot-reloads modules that use it
-  - [ ] Storybook picks up `sassOptions` from `next.config.js`
-  - [ ] Production CSS has no duplicated mixin or partial output
-- **Go/no-go checkpoint.** If injection fails under Turbopack, switch to the
-  explicit `@use 'tackl' as *;` line per file and continue.
+### Phase 1: Wizard removal and foundation (styled-components still installed)
+- Remove the wizard (§7).
+- Add `browserslist`, `sass-embedded`, Stylelint, and the `.vscode` recommendations.
+- Split `fonts/values.ts`; write `scripts/build-styles.ts` and the generated files.
+- Add `sassOptions`; import `tokens.css` in the layout. `GlobalStyle` still runs
+  alongside, emitting the same variables.
+- Write `_functions.scss`, `_spacing.scss` and a hand-written `_type.scss` (ported
+  from today's values).
+- **Spike:** convert CookieBar, then verify:
+  - [ ] `additionalData`, `loadPaths` and `implementation` work under Turbopack (dev and build)
+  - [ ] Editing an injected partial hot-reloads modules that use it
+  - [ ] Storybook (`@storybook/nextjs`) honours `sassOptions`
+  - [ ] Production CSS has no duplicated output from the injected layer
+  - [ ] Prefixing follows `browserslist`
+  - [ ] Stylelint and the editor extensions behave as described
+- **Go/no-go.** If injection fails, switch to an explicit `@use 'tackl' as *;` per file.
 
-### Phase 2: Primitives
-- `global.scss` (port `global.css`, add `body`, `waffl-grid` and the `Col` cascade).
-- `Grid` → data attributes; `Col` replaces `Div`; add `CSSProperties` typing.
-- JS `breakpoints` / `mq`, and update `useAnimation`, `useResponsive` and `getVw`.
+### Phase 2: Global layer and primitives
+- `global.scss`: `@layer` order, the reset ported from `global.css`, `body`,
+  `waffl-grid`, the `Col` cascade, and utilities (spacing + type).
+- `Grid` → data attributes; `Col` replaces `Div`; `CSSProperties` typing.
+- JS `breakpoints` / `mq`; update `useAnimation`, `useResponsive` and `getVw`.
 
-### Phase 3: Components (smallest first)
-Header → Footer → Icon → DeleteMe → GridExposer (data attrs + `--col`) →
-ThemeShowcase → TacklSetup (567 lines; also hook the generator into its route).
+### Phase 3: Components
+Header → Footer → Icon → DeleteMe → GridExposer (data attributes + `--col`) → ThemeShowcase.
 
 ### Phase 4: Teardown
 - Remove the registry, `ThemeProvider`, `GlobalStyle`, getters, `semantics/`,
-  `styles.d.ts` and `compiler.styledComponents`.
+  `typeScale` / `typeRoles`, `styles.d.ts` and `compiler.styledComponents`.
 - `bun remove styled-components`.
-- `grep -r styled-components` returns nothing.
+- `grep -r styled-components` returns nothing outside the changelog / migration doc.
 
-### Phase 5: Docs, agents, skills
-- **AGENTS.md:** rewrite the Styling and Writing-a-component sections and the
-  `Div` → `Col` rule. Ban list becomes: no Tailwind, LESS or inline styles
-  (except `--col-*` / dynamic custom properties).
-- **docs/Tackl:** Theming, WritingComponents, SemanticComponents (→ Col),
-  WafflGrid, GridSystemProps, AppArchitecture, ComponentHierarchy, Tackl, and a
-  new `MigratingFromV4.md`.
-- **skills/styling:** replace `styled-components*` with an `scss-modules` skill.
-- **README** and `src/stories/*.mdx`.
-- Bump to **5.0.0**.
+### Phase 5: Agents, skills, docs
+- §10, and bump to **5.0.0**.
 
 ### Phase 6: Verify
-- Re-run the Phase 0 measurements and compare.
-- Visual pass on every component at s/m/l/xl via chrome-devtools.
+- Re-run the Phase 0 measurements and compare in the PR.
+- Visual pass on every component at s / m / l / xl via chrome-devtools.
 
----
+## 12. To verify against the installed Next docs (Phase 1)
 
-## 7. Tooling
+`node_modules/next/dist/docs` wasn't readable when this was written (deps not installed).
 
-- **Biome.** `files.includes` lists `*.css` only, so `.scss` is currently
-  unchecked. Decide between Biome's SCSS support (check its state for the pinned
-  2.5.x) and Stylelint with `stylelint-config-standard-scss` (one extra dev dep).
-  Either way, exclude generated files.
-- **Type safety on tokens.** A mistyped `var(--brand-c11)` won't error like
-  `getBrand('c11')` did. The generator can also emit a list of known custom
-  properties for Stylelint's `no-unknown-custom-properties`, which brings the
-  check back.
-- **GSAP easing.** Easing tokens are CSS `cubic-bezier()` strings. If GSAP needs
-  them, the generator can also emit a JS map for `CustomEase` (optional, later).
+- Turbopack support for `sassOptions.additionalData` / `loadPaths` / `implementation`
+- That Next honours `browserslist` from `package.json` for CSS prefixing under Turbopack
+- CSS ordering between `tokens.css`, `global.scss` and modules in production
+- `@storybook/nextjs` reading `sassOptions` from `next.config.js`
 
-## 8. Risks / to verify against the installed Next docs
+## 13. Revisit later
 
-`node_modules/next/dist/docs` couldn't be read when this was written (deps not installed).
-Confirm these before Phase 1:
-
-- Turbopack support for `sassOptions.additionalData`, `loadPaths` and
-  `implementation` (`sassOptions.functions` is known to be unsupported and isn't used).
-- That `experimental.inlineCss` / `cssChunking` still exist in 16.3, and their current names.
-- `@storybook/nextjs` honouring `sassOptions`.
-- CSS ordering between `tokens.css`, `global.scss` and modules in production.
-
-## 9. Open decisions
-
-1. **Typography: generated or hand-written `_type.scss`?** Generated is
-   recommended, because the wizard and Storybook's Typography page already
-   read `typeScale`. Hand-written means changing the wizard to write SCSS.
-2. **Spacing props.** Drop `$pad` / `$mar` entirely, or ship equivalent mixins
-   (`section-pad`, `section-mar`)?
-3. **Type styles for heavy reuse.** Mixins copy declarations into each use.
-   gzip makes that close to free, but global `.t-captionL` utility classes are
-   an option if the CSS grows.
-4. **SCSS linting.** Biome or Stylelint.
+- **Purging unused CSS.** Off by design. Revisit only if Phase 6 shows the
+  global CSS is heavy, and then for `global.scss` only, with a safelist.
+- **GSAP easing.** If GSAP needs the easing tokens, the generator can emit a JS map for `CustomEase`.
+- **`experimental.inlineCss` / `cssChunking`.** A/B test them once the migration is
+  done; measure, don't assume.

@@ -28,11 +28,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/12-studio/tackl.git"
+		"url": "git+https://github.com/12-Studio/Tackl.git"
 	},
-	"homepage": "https://github.com/12-studio/tackl",
+	"homepage": "https://github.com/12-Studio/Tackl",
 	"bugs": {
-		"url": "https://github.com/12-studio/tackl/issues"
+		"url": "https://github.com/12-Studio/Tackl/issues"
 	},
 	"files": [
 		"bin/",

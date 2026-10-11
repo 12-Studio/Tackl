@@ -7,6 +7,7 @@
 	gap: var(--gap-xxs);
 	width: max-content;
 	max-width: calc(100% - var(--gap-l) * 2);
+	min-inline-size: 0; // NOTE • Fieldsets default to min-content, which would stop it shrinking
 	margin: 0;
 	padding: var(--gap-xxs);
 	overflow-x: auto;

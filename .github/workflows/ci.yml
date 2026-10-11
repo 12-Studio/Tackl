@@ -8,6 +8,10 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    env:
+      # A real site URL so robots and canonical metadata render as in
+      # production — without one the site is deliberately noindex
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
     steps:
       - uses: actions/checkout@v4
 
@@ -37,3 +41,7 @@ jobs:
 
       - name: Smoke test
         run: bun run test
+
+      # Fails unless every category scores 100 — see lighthouserc.js
+      - name: Lighthouse
+        run: bunx lhci autorun

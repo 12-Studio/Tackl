@@ -1,6 +1,6 @@
 {
 	"name": "tackl",
-	"version": "5.1.0",
+	"version": "5.2.0",
 	"private": true,
 	"description": "The ultimate Next.js starter kit!",
 	"license": "MIT",
@@ -36,7 +36,7 @@
 		"commit": "node .gitmessage.js",
 		"prepare": "husky",
 		"test": "playwright test",
-		"lighthouse": "lhci autorun",
+		"lighthouse": "bun run build && lhci autorun",
 		"outdated": "bunx npm-check-updates"
 	},
 	"dependencies": {

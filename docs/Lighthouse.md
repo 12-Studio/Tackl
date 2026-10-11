@@ -1,44 +1,33 @@
-# Lighthouse Auditing
+# Lighthouse
 
-This project uses [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) to automate performance, accessibility, best practices, and SEO audits.
+A barebones Tackl site scores **100 in every Lighthouse category**. CI holds it there: every push and PR runs [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) against the production build, and the build fails if any category drops below 100. A regression shows up in the PR that caused it.
 
-## How to Run Lighthouse Locally
+## Run it locally
 
-To run Lighthouse against your local build, use the following command:
-
-```
-bun run lighthouse
+```bash
+NEXT_PUBLIC_SITE_URL=http://localhost:3000 bun run lighthouse
 ```
 
-## Understanding Pass/Fail Criteria
+This builds the app, serves it, audits `/` three times on the desktop preset, and fails if the best run scores below 100 in any category.
 
-Lighthouse CI is configured to enforce certain quality thresholds. Your build will **pass** or **fail** based on the following criteria (see `lighthouserc.js` for details):
+- **Why set `NEXT_PUBLIC_SITE_URL`?** Without it the site is deliberately `noindex` (see `src/config.ts`), so the SEO check fails. That's exactly why deploy previews show SEO 63, and it's expected there.
+- **Report links** are printed at the end of the run. They point to temporary public storage and expire after 7 days.
 
-### Pass/Fail Rules
+## The rules
 
--   **Performance**:
-    -   _Warning_ if the score is below **0.8** (80%).
--   **Accessibility**:
-    -   _Error_ (build fails) if the score is below **0.9** (90%).
--   **Best Practices**:
-    -   _Warning_ if the score is below **0.8** (80%).
--   **SEO**:
-    -   _Warning_ if the score is below **0.8** (80%).
+They live in [`lighthouserc.js`](../lighthouserc.js):
 
-### What Causes a Build to Fail?
+| Category | Rule |
+| --- | --- |
+| Performance | error below 100 |
+| Accessibility | error below 100 |
+| Best Practices | error below 100 |
+| SEO | error below 100 |
 
--   The build will **fail** if the **Accessibility** score is below 0.9.  
-    (This is enforced as an "error" in the config.)
--   The build will **not fail** for low Performance, Best Practices, or SEO scores, but you will see warnings in the output.
+- **Best of three runs:** CI runners are noisy, so a single slow run doesn't fail the build. A real regression fails all three.
+- **Desktop preset:** the mobile preset's throttling on shared runners swings a point or two from run to run.
+- **Loosening a rule:** lower its `minScore`, or switch `'error'` to `'warn'`. Do it on purpose, per project, when a real feature (a WebGL scene, a heavy embed) earns the cost.
 
-### What Causes a Build to Pass?
+## Why not Netlify's Lighthouse plugin?
 
--   The build will **pass** if the Accessibility score is **0.9 or higher**.
--   Warnings for other categories (Performance, Best Practices, SEO) will not block the build, but you should address them for optimal site quality.
-
-### Where to Adjust Thresholds
-
-You can change these thresholds in the [`lighthouserc.js`](../lighthouserc.js) file under the `assert.assertions` section.
-
-**Tip:**  
-If you want to enforce stricter or looser requirements, edit the `minScore` values or change `"warn"` to `"error"` as needed.
+Netlify's plugin audits the build output as a plain static folder, without the Next.js server. Its scores don't match the deployed site: it reported Best Practices 92 for a site that scores 100 when audited directly. Lighthouse CI audits the real `next start` server instead.

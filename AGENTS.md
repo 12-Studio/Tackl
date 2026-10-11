@@ -297,7 +297,7 @@ on unmount or when a matchMedia condition stops matching.
   fails on stale generated files).
 - `bun run test` — Playwright specs (builds and boots the production app; add
   specs to `tests/` as features land).
-- CI also runs Lighthouse 13 (`lighthouserc.js`, desktop) and **fails below Performance 90,
+- CI also runs Lighthouse 13 (`lighthouserc.js`, desktop) and **fails below Performance 80,
   Best Practices 90, SEO 100, or any failing Agentic Browsing check** — don't loosen a
   threshold to get green without saying why. Keep `app/llms.txt/route.ts` in step with the
   site's pages.

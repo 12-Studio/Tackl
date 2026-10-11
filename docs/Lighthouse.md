@@ -1,6 +1,6 @@
 # Lighthouse
 
-Every push and PR runs [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) (Lighthouse 13, desktop) against the production build. The build fails if the site drops below the floor a real, built site should hold. A barebones Tackl site scores 100 everywhere, which leaves headroom for real content, imagery and motion.
+Every push and PR runs [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) (Lighthouse 13) on desktop against the production build. The build fails if the site drops below the floor a real, built site should hold. A barebones Tackl site scores 100 everywhere, which leaves headroom for real content, imagery and motion.
 
 ## The thresholds
 
@@ -8,7 +8,7 @@ They live in [`lighthouserc.js`](../lighthouserc.js):
 
 | Category | Rule |
 | --- | --- |
-| Performance | fails below **90** |
+| Performance | fails below **80** |
 | Best Practices | fails below **90** |
 | SEO | fails below **100** |
 | Agentic Browsing | fails unless **every applicable check passes**. Lighthouse shows this as a fraction, e.g. **3/3**. |
@@ -35,7 +35,7 @@ The WebMCP checks apply only once a site registers agent tools or has forms, and
 NEXT_PUBLIC_SITE_URL=http://localhost:3000 bun run lighthouse
 ```
 
-This builds the app, serves it, and audits `/` three times.
+This builds the app, serves it, and audits `/` three times on desktop.
 
 - **Why set `NEXT_PUBLIC_SITE_URL`?** Without it the site is deliberately `noindex` (see `src/config.ts`), so SEO fails. That's also why deploy previews show SEO 63, and it's expected there.
 - **Report links** are printed at the end of the run. They point to temporary public storage and expire after 7 days.

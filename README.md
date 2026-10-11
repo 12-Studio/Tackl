@@ -42,7 +42,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 | `bun run test` | Playwright specs against the production build |
 | `bun run storybook` | Storybook dev on :6006 |
 | `bun run build-storybook` | Static Storybook build |
-| `bun run lighthouse` | Lighthouse CI — Performance/Best Practices 90+, SEO 100, Agentic Browsing all passing (also runs in CI) |
+| `bun run lighthouse` | Lighthouse CI (desktop) — Performance 80, Best Practices 90, SEO 100, Agentic Browsing all passing (also runs in CI) |
 | `bun run commit` | Optional guided commit-message prompt |
 | `git commit` | Husky pre-commit checks generated styles, then runs lint + type-check |
 

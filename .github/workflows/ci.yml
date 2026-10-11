@@ -42,7 +42,7 @@ jobs:
       - name: Smoke test
         run: bun run test
 
-      # Fails below the floor in lighthouserc.js (Performance and Best Practices
-      # 90+, SEO 100, every Agentic Browsing check passing)
+      # Fails below the floor in lighthouserc.js (desktop) — Performance 80,
+      # Best Practices 90, SEO 100, every Agentic Browsing check passing
       - name: Lighthouse
         run: bunx lhci autorun

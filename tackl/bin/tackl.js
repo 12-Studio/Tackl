@@ -55,18 +55,44 @@ const dirIsScaffoldable = dir => {
 // SECTION • Template ref resolution
 // NOTE • Prefer the latest GitHub release so every scaffold is a tested,
 // reproducible snapshot; fall back to main (with a warning) when no
-// release exists. --ref overrides both.
+// release can be resolved. --ref overrides both.
+// The REST API allows only 60 unauthenticated requests/hour per IP — shared
+// IPs (offices, CI) hit that — so a GITHUB_TOKEN is used when present, and
+// the github.com /releases/latest redirect (not rate-limited) is tried next.
+const RELEASE_TAG_PATTERN = /\/releases\/tag\/([^/?#]+)/;
+
+const latestReleaseFromApi = async () => {
+	const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+	const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/releases/latest`, {
+		headers: {
+			accept: 'application/vnd.github+json',
+			'user-agent': 'tackl-cli',
+			...(token && { authorization: `Bearer ${token}` }),
+		},
+	});
+	if (!res.ok) return null;
+	const json = await res.json();
+	return json?.tag_name ?? null;
+};
+
+const latestReleaseFromRedirect = async () => {
+	const res = await fetch(`https://github.com/${OWNER}/${REPO}/releases/latest`, {
+		method: 'HEAD',
+		redirect: 'manual',
+		headers: { 'user-agent': 'tackl-cli' },
+	});
+	const match = res.headers.get('location')?.match(RELEASE_TAG_PATTERN);
+	return match ? decodeURIComponent(match[1]) : null;
+};
+
 const resolveRef = async explicitRef => {
 	if (explicitRef) return { ref: explicitRef, source: 'flag' };
-	try {
-		const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/releases/latest`, {
-			headers: { accept: 'application/vnd.github+json' },
-		});
-		if (res.ok) {
-			const json = await res.json();
-			if (json?.tag_name) return { ref: json.tag_name, source: 'release' };
-		}
-	} catch {}
+	for (const lookup of [latestReleaseFromApi, latestReleaseFromRedirect]) {
+		try {
+			const tag = await lookup();
+			if (tag) return { ref: tag, source: 'release' };
+		} catch {}
+	}
 	return { ref: FALLBACK_REF, source: 'fallback' };
 };
 

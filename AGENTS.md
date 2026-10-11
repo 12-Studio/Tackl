@@ -34,6 +34,8 @@ import { Col } from '@tackl';
 ```
 
 Children that don't need a narrower span don't need `Col` at all (see the grid section).
+Span props only take effect when the `Col` is a **direct child of a `<Grid>`**; `Col` is a `div`
+by default, so `as='div'` is never needed.
 
 ---
 
@@ -145,6 +147,9 @@ existing file, match the labels and order already there.
 - **Type** is hand-written in `src/css/tackl/_type.scss` (from Figma). Use a style as a
   mixin (`@include captionL;`), a global class (`className='t-captionL'`) or a data
   attribute (`data-type='captionL'`). New style → write the mixin and add it to `$type-styles`.
+  `data-type` takes the **bare** name (never `t-captionL`), module classes only ever go in
+  `className={s.x}` (never `data-type`, never quoted), and an unknown name (`bodyM`) silently
+  matches nothing.
 - **Section spacing** on the `--space-*` scale: `data-pad` / `data-mar` on any element
   (`data-pad`, `data-pad='top'`, `data-mar='top bottom'`), or `@include pad(top);` / `mar()`.
 - **State goes in data attributes**, not class toggling: `data-state='open'` → `&[data-state='open']`.

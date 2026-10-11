@@ -144,3 +144,8 @@ import Grid from '@waffl';
 - Hard-coding breakpoint pixels in JS — use `mq` / `breakpoints` from `@tackl`.
 - Editing `tokens.css` or the generated `_breakpoints.scss` / `_grid.scss` by hand.
 - Toggling classes for state instead of `data-*` attributes.
+- `data-type='t-headlineS'` — `data-type` takes the bare name (`headlineS`); `t-` is only the class prefix (`className='t-headlineS'`).
+- `data-type={s.body}` / `data-type='s.body'` / `className='s.body'` — module classes always go in `className={s.body}` (braces, no quotes).
+- Inventing a type name (`bodyM`) — only styles listed in `$type-styles` in `_type.scss` exist; anything else silently matches nothing.
+- Expecting `Col` spans outside a grid — `$m` / `$l` only apply to a direct child of `<Grid>`.
+- Destructuring props (`isFeatured`, `className`) and never using them — wire them up (`cx(s.jacket, className)`, `data-featured={isFeatured || undefined}`) or drop them.

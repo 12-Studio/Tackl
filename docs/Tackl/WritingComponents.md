@@ -215,6 +215,21 @@ Type styles are hand-written mixins in `src/css/tackl/_type.scss`: `displayL`, `
 
 Use the mixin when the element already has a module class; use the class or attribute for one-off text that doesn't need its own rule. To add a style, write the mixin in `_type.scss`, then add its name to the `$type-styles` list at the bottom of that file — the `.t-*` class and `data-type` selector are generated from that list.
 
+#### Classes vs. attributes — getting it right
+
+Each attribute takes one kind of value. Mixing them up doesn't throw an error — the element just silently gets no style, so it's worth learning the pattern:
+
+| You want | Write | Not |
+| --- | --- | --- |
+| A type style as a class | `className='t-headlineS'` | `className='headlineS'` |
+| A type style as an attribute | `data-type='headlineS'` | `data-type='t-headlineS'` |
+| Your module's own class | `className={s.body}` | `className='s.body'`, `data-type={s.body}`, `data-type='s.body'` |
+| A module class **and** a type class | `className={cx(s.title, 't-headlineS')}` | two `className` props |
+
+- `t-` is the class prefix only — `data-type` takes the bare style name.
+- `s.something` is a JavaScript value: it goes in `className={…}` with braces and no quotes, never in `data-type`.
+- Only names that exist in `_type.scss` work (`displayL`, `displayS`, `headlineL`, `headlineS`, `titleL`, `titleS`, `bodyL`, `bodyS`, `captionL`, `captionS`). A made-up name like `bodyM` matches nothing until you add the mixin and list it in `$type-styles`.
+
 ### Spacing
 
 Section spacing comes from the `--space-*` tokens and steps up responsively: `--space-s` on mobile, `--space-m` from `bp(m)`, `--space-l` from `bp(l)`. Apply it from the HTML or from a module:
@@ -253,6 +268,18 @@ Dynamic **state** goes on a `data-*` attribute and is styled with an attribute s
 ```
 
 `style` objects accept `--*` keys with full typing (`src/types/css.d.ts`), so no casts are needed.
+
+### Spans need a grid
+
+`Col`'s span props (`$m='1/4'`, `$l='1/7'`) only take effect when the `Col` is a **direct child of a `<Grid>`** — the span rules live on `waffl-grid > *`. A `Card` that renders a `Col` must itself be placed straight inside a grid:
+
+```tsx
+<Grid>
+	<Card title='…' />   {/* Card renders <Col $m='1/4'> → spans work */}
+</Grid>
+```
+
+Anywhere else the span props are simply ignored. `Col` renders a `div` by default, so `as='div'` is never needed.
 
 ### Combining classes with `cx()`
 

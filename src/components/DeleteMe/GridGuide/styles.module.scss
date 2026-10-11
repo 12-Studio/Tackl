@@ -1,10 +1,15 @@
-@use '../swiss' as *;
+@use '../keynote' as *;
 
 // SECTION • Viewport readout
 // NOTE • Only the line for the current breakpoint shows
 .viewport {
-	padding-left: var(--gap-m);
-	border-left: 1px solid var(--global-black);
+	@include captionL;
+
+	align-self: center;
+	padding: var(--gap-xs) var(--gap-m);
+	border-radius: var(--br-round);
+	background: alpha(--global-white, 8);
+	color: var(--global-white);
 }
 
 .breakpoint {
@@ -39,48 +44,42 @@
 .plain {
 	@include bodyS;
 
-	font-weight: var(--weight-light);
-
 	display: grid;
 	place-items: center;
 	min-height: 8rem;
 	padding: var(--gap-m);
+	border-radius: 1.2rem;
 	text-align: center;
-	border: 1px solid alpha(--global-black, 40);
-	background: alpha(--global-black, 6);
+	background: alpha(--global-white, 10);
 }
 
 .nested {
 	row-gap: var(--gap-s);
-	outline: 1px dashed alpha(--global-black, 40);
+	outline: 1px dashed alpha(--global-white, 30);
 	outline-offset: 6px;
+	border-radius: 1.2rem;
 }
 
 // SECTION • Playground
 .playground {
-	row-gap: var(--gap-l);
-	padding-bottom: var(--gap-xl);
+	margin-bottom: var(--gap-m);
 
 	@include bp(l) {
-		padding-bottom: var(--gap-huge);
+		margin-bottom: var(--gap-l);
 	}
 }
 
 .playgroundCopy {
-	@include bodyS;
+	@include body;
 
 	display: flex;
 	flex-direction: column;
-	gap: var(--gap-sm);
-	padding-top: var(--gap-sm);
-	font-weight: var(--weight-light);
-	color: alpha(--global-black, 75);
-
-	@include hairline(top);
+	gap: var(--gap-s);
+	max-width: 64rem;
 }
 
 .playgroundTitle {
-	@include mediumLight;
+	@include tileTitle;
 
-	color: var(--global-black);
+	color: var(--global-white);
 }

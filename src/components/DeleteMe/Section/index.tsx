@@ -10,16 +10,13 @@ import s from './styles.module.scss';
 
 // Component
 // ------------
-// NOTE • The Swiss section shell: an ink rule, a numbered label in the
-// left columns, and a big light title with its intro to the right
-const Section = ({ id, index, eyebrow, title, intro, children, className }: I.SectionProps) => (
+// NOTE • A keynote "slide": a centred eyebrow, headline and intro, then the
+// section's bento tiles on the grid
+const Section = ({ id, eyebrow, title, intro, children, className }: I.SectionProps) => (
 	<section id={id} className={cx(s.jacket, className)} aria-labelledby={id && `${id}-title`} data-pad>
-		<Grid $isFixed className={s.header}>
-			<Col $m='1/3' $l='1/4' className={s.label}>
-				<span className={s.index}>{index}</span>
-				<span>{eyebrow}</span>
-			</Col>
-			<Col $m='3/7' $l='4/13' className={s.lead}>
+		<Grid $isFixed>
+			<Col $m='2/6' $l='3/11' className={s.header}>
+				<p className={s.eyebrow}>{eyebrow}</p>
 				<h2 id={id && `${id}-title`} className={s.title}>
 					{title}
 				</h2>

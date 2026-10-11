@@ -1,10 +1,11 @@
 // Imports
 // ------------
-import Grid, { Col } from '@waffl';
+import Grid from '@waffl';
 import AlphaPlayground from '../AlphaPlayground';
 import BreakpointReadout from '../BreakpointReadout';
 import Code from '../Code';
 import Section from '../Section';
+import Tile from '../Tile';
 import TypeTester from '../TypeTester';
 
 // Styles
@@ -15,10 +16,9 @@ import s from './styles.module.scss';
 // ------------
 const Styling = () => (
 	<Section
-		index='04'
 		id='styling'
 		eyebrow='Styling'
-		title='Tokens, type and spacing — live'
+		title='Design tokens. Zero runtime.'
 		intro={
 			<p>
 				Every demo here runs on the kit's own tokens, classes and helpers. Change a value in{' '}
@@ -27,25 +27,25 @@ const Styling = () => (
 		}
 	>
 		<Grid $isFixed className={s.blocks}>
-			<Col $l='1/7' className={s.block}>
+			<Tile $l='1/7'>
 				<h3 className={s.title}>Colour and opacity</h3>
 				<p className={s.text}>
 					Colours are CSS variables. <code>alpha()</code> makes any of them translucent — same name and
 					arguments in SCSS and JavaScript.
 				</p>
 				<AlphaPlayground />
-			</Col>
+			</Tile>
 
-			<Col $l='7/13' className={s.block}>
+			<Tile $l='7/13'>
 				<h3 className={s.title}>Type styles</h3>
 				<p className={s.text}>
 					Hand-written from the Figma file in one SCSS file, then usable three ways. Sizes step up with the
 					viewport — resize to see.
 				</p>
 				<TypeTester />
-			</Col>
+			</Tile>
 
-			<Col $l='1/7' className={s.block}>
+			<Tile $l='1/7'>
 				<h3 className={s.title}>Breakpoints</h3>
 				<p className={s.text}>
 					Mobile-first <code>min-width</code> queries from the grid tokens — <code>bp()</code> in SCSS,{' '}
@@ -67,9 +67,9 @@ const Styling = () => (
 import { mq } from '@tackl';
 mq.up.l; // '(min-width: 1024px)'`}
 				/>
-			</Col>
+			</Tile>
 
-			<Col $l='7/13' className={s.block}>
+			<Tile $l='7/13'>
 				<h3 className={s.title}>Section spacing</h3>
 				<p className={s.text}>
 					Vertical rhythm on the <code>--space-*</code> scale, stepping up at <code>m</code> and{' '}
@@ -85,7 +85,7 @@ mq.up.l; // '(min-width: 1024px)'`}
 
 .hero { @include pad(top); }`}
 				/>
-			</Col>
+			</Tile>
 		</Grid>
 	</Section>
 );

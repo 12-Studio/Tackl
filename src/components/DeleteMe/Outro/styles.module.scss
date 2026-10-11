@@ -1,56 +1,63 @@
-@use '../swiss' as *;
+@use '../keynote' as *;
 
 .jacket {
-	color: var(--brand-c4);
-	background: var(--global-black);
+	overflow: hidden;
+	background: radial-gradient(60% 50% at 50% 100%, alpha(--brand-c1, 35), transparent 70%);
+}
 
-	waffl-grid {
-		row-gap: var(--gap-xl);
-	}
+.inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--gap-m);
+	text-align: center;
 }
 
 .title {
-	font-family: var(--font-heading);
-	font-weight: var(--weight-light);
+	@include headline;
+
 	font-size: 22vw;
-	line-height: 0.8;
+	line-height: 0.9;
 	letter-spacing: -0.06em;
-	margin-left: -0.05em;
 
 	@include bp(l) {
-		font-size: min(18vw, 26rem);
+		font-size: min(16vw, 22rem);
 	}
 }
 
-.text {
-	@include bodyS;
+.tagline {
+	@include bodyL;
+	@include secondary;
 
-	font-weight: var(--weight-light);
-	color: alpha(--brand-c4, 70);
+	margin-bottom: var(--gap-m);
+	font-weight: var(--weight-medium);
+}
+
+.footer {
+	@include captionL;
+	@include secondary;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+	margin-top: var(--gap-uber);
+	padding-top: var(--gap-m);
+	border-top: 1px solid alpha(--global-white, 10);
+
+	@include bp(l) {
+		flex-direction: row;
+		justify-content: space-between;
+	}
 
 	code {
 		@include mono;
 
-		color: var(--brand-c4);
+		color: var(--global-white);
 	}
-}
-
-.meta {
-	@include label;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	gap: var(--gap-xs);
-	color: alpha(--brand-c4, 60);
 
 	a {
-		color: var(--brand-c4);
+		color: var(--global-white);
 		text-decoration: underline;
-		text-underline-offset: 0.3em;
-	}
-
-	@include bp(m) {
-		text-align: right;
+		text-underline-offset: 0.2em;
 	}
 }

@@ -1,3 +1,5 @@
+@use '../keynote' as *;
+
 .jacket {
 	display: flex;
 	flex-direction: column;
@@ -6,24 +8,25 @@
 
 .swatches {
 	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-s);
 	margin: 0;
 	padding: 0;
 	border: 0;
-	flex-wrap: wrap;
-	gap: var(--gap-s);
 }
 
 .swatch {
 	--swatch: transparent;
 
-	width: 4rem;
-	height: 4rem;
+	width: 3.6rem;
+	height: 3.6rem;
+	border-radius: 50%;
 	background: var(--swatch);
-	border: 1px solid alpha(--global-black, 25);
+	border: 1px solid alpha(--global-white, 20);
 	cursor: pointer;
 
 	&[aria-pressed='true'] {
-		outline: 2px solid var(--global-black);
+		outline: 2px solid var(--global-white);
 		outline-offset: 3px;
 	}
 }
@@ -36,9 +39,10 @@
 	gap: var(--gap-s);
 
 	output {
-		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-		color: var(--brand-c1);
-			}
+		@include mono;
+
+		color: accent(55);
+	}
 
 	input {
 		width: 100%;
@@ -49,8 +53,9 @@
 // NOTE • A checkerboard behind the paint shows the transparency
 .preview {
 	height: 12rem;
-	border: 1px solid alpha(--global-black, 15);
-	background: repeating-conic-gradient(alpha(--global-black, 14) 0 25%, transparent 0 50%) 0 0 / 2.4rem 2.4rem;
+	overflow: hidden;
+	border-radius: 1.6rem;
+	background: repeating-conic-gradient(alpha(--global-white, 14) 0 25%, transparent 0 50%) 0 0 / 2.4rem 2.4rem;
 }
 
 .paint {

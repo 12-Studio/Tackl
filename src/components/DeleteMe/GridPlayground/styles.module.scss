@@ -1,19 +1,13 @@
-@use '../swiss' as *;
+@use '../keynote' as *;
 
 .jacket {
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-m);
-	padding: var(--gap-m);
-	border: 1px solid var(--global-black);
-
-	@include bp(l) {
-		padding: var(--gap-l);
-	}
 }
 
 .muted {
-	color: alpha(--global-black, 62);
+	color: alpha(--global-white, 62);
 }
 
 // SECTION • Toolbar
@@ -25,37 +19,38 @@
 	gap: var(--gap-sm);
 }
 
+// NOTE • An iOS-style segmented control
 .tabs {
 	display: flex;
 	margin: 0;
-	padding: 0;
-	border: 1px solid alpha(--global-black, 20);
+	padding: var(--gap-xxs);
+	border: 0;
+	border-radius: var(--br-round);
+	background: alpha(--global-white, 8);
 }
 
 .tab {
 	@include captionL;
 
-	padding: var(--gap-s) var(--gap-m);
-	color: alpha(--global-black, 70);
+	padding: var(--gap-xs) var(--gap-m);
+	border-radius: var(--br-round);
+	font-weight: var(--weight-medium);
+	color: alpha(--global-white, 75);
 	cursor: pointer;
 	transition:
 		background var(--time-s) var(--easing-bezzy),
 		color var(--time-s) var(--easing-bezzy);
 
-	& + & {
-		border-left: 1px solid alpha(--global-black, 20);
-	}
-
 	&:hover {
-		color: var(--global-black);
+		color: var(--global-white);
 	}
 
 	&[aria-pressed='true'] {
-		color: var(--global-white);
-		background: var(--global-black);
+		color: var(--global-black);
+		background: var(--global-white);
 
 		.muted {
-			color: alpha(--global-white, 60);
+			color: alpha(--global-black, 60);
 		}
 	}
 }
@@ -77,8 +72,7 @@
 }
 
 // SECTION • Preview
-// NOTE • The frame narrows to each device's design width so the preview
-// reads like the real thing
+// NOTE • The frame narrows to each device's design width
 .frame {
 	margin-inline: auto;
 	width: 100%;
@@ -108,8 +102,9 @@
 	gap: var(--gap-s) var(--gutter);
 	padding: var(--gutter);
 	min-height: 24rem;
-	border: 1px solid alpha(--global-black, 15);
-	background: var(--brand-c4);
+	border-radius: 2rem;
+	background: alpha(--global-black, 60);
+	border: 1px solid alpha(--global-white, 10);
 }
 
 .overlay {
@@ -122,8 +117,7 @@
 	pointer-events: none;
 
 	span {
-		background: alpha(--global-black, 3);
-		border-inline: 1px solid alpha(--global-black, 10);
+		background: alpha(--brand-c1, 10);
 	}
 }
 
@@ -135,21 +129,24 @@
 	justify-content: center;
 	gap: var(--gap-xxs);
 	min-width: 0;
-	color: var(--brand-c4);
-	background: var(--global-black);
+	border-radius: 1.2rem;
+	color: var(--global-white);
+	background: alpha(--global-white, 14);
 	cursor: pointer;
 	transition: background var(--time-s) var(--easing-bezzy);
 
+	&:hover {
+		background: alpha(--global-white, 22);
+	}
+
 	&[data-inherited] {
-		color: var(--global-black);
-		background: var(--brand-c4);
-		outline: 1px dashed var(--global-black);
+		background: transparent;
+		outline: 1px dashed alpha(--global-white, 40);
 		outline-offset: -1px;
 	}
 
 	&[aria-pressed='true'] {
-		color: var(--global-white);
-		background: var(--brand-c1);
+		background: linear-gradient(135deg, var(--brand-c1), var(--brand-c2));
 		outline: none;
 	}
 }
@@ -157,7 +154,7 @@
 .itemLabel {
 	@include titleS;
 
-	font-weight: var(--weight-light);
+	font-weight: var(--weight-semi);
 }
 
 .itemValue {
@@ -171,7 +168,7 @@
 .controls {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
+	align-items: flex-end;
 	gap: var(--gap-m) var(--gap-l);
 }
 
@@ -181,8 +178,9 @@
 	flex-basis: 100%;
 
 	code {
-		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-		color: var(--brand-c1);
+		@include mono;
+
+		color: accent(55);
 	}
 }
 
@@ -200,28 +198,31 @@
 .stepperLabel {
 	@include captionS;
 
-	color: alpha(--global-black, 60);
+	color: alpha(--global-white, 62);
 }
 
 .stepperControls {
 	display: flex;
 	align-items: stretch;
-	border: 1px solid alpha(--global-black, 25);
+	padding: var(--gap-xxs);
+	border-radius: var(--br-round);
+	background: alpha(--global-white, 8);
 
 	button {
 		@include captionL;
 
-		width: 4rem;
-		height: 4rem;
-		color: var(--global-black);
+		width: 3.6rem;
+		height: 3.6rem;
+		border-radius: 50%;
+		color: var(--global-white);
 		cursor: pointer;
 
 		&:hover:not(:disabled) {
-			background: alpha(--global-black, 10);
+			background: alpha(--global-white, 12);
 		}
 
 		&:disabled {
-			color: alpha(--global-black, 25);
+			color: alpha(--global-white, 25);
 			cursor: not-allowed;
 		}
 	}
@@ -231,9 +232,8 @@
 
 		display: grid;
 		place-items: center;
-		min-width: 4.4rem;
+		min-width: 4rem;
 		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-		border-inline: 1px solid alpha(--global-black, 25);
 	}
 }
 
@@ -244,20 +244,11 @@
 }
 
 .action {
-	@include captionL;
-
-	padding: var(--gap-s) var(--gap-m);
-	border: 1px solid alpha(--global-black, 30);
-	color: var(--global-black);
-	cursor: pointer;
-
-	&:hover:not(:disabled) {
-		background: alpha(--global-black, 10);
-	}
+	@include pillGhost;
 
 	&:disabled {
-		color: alpha(--global-black, 30);
-		border-color: alpha(--global-black, 12);
+		color: alpha(--global-white, 35);
+		background: alpha(--global-white, 5);
 		cursor: not-allowed;
 	}
 }
@@ -267,6 +258,10 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-s);
+
+	> :last-child {
+		align-self: flex-start;
+	}
 }
 
 // NOTE • Names the group for screen readers; the buttons label themselves visually

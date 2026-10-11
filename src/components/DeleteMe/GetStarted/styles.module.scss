@@ -1,37 +1,32 @@
-@use '../swiss' as *;
+@use '../keynote' as *;
 
 .steps {
-	row-gap: var(--gap-xxl);
-}
+	row-gap: var(--gap-m);
 
-.step {
-	display: flex;
-	flex-direction: column;
-	gap: var(--gap-sm);
-	min-width: 0;
-	padding-top: var(--gap-sm);
-
-	@include hairline(top);
+	@include bp(l) {
+		row-gap: var(--gap-l);
+	}
 }
 
 .index {
-	@include bigLight;
+	@include stat;
 
-	line-height: 0.9;
+	font-size: 7.2rem;
+
+	@include bp(l) {
+		font-size: 9.6rem;
+	}
 }
 
 .title {
-	@include mediumLight;
+	@include tileTitle;
 }
 
 .text {
-	@include bodyS;
-
-	font-weight: var(--weight-light);
-	color: alpha(--global-black, 75);
+	@include body;
 
 	@include bp(l) {
-		min-height: 10rem;
+		min-height: 7.5em;
 	}
 }
 
@@ -40,23 +35,17 @@
 }
 
 .cta {
-	margin-top: var(--gap-uber);
+	margin-top: var(--gap-xxl);
 }
 
 .ctaInner {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: var(--gap-m);
+	justify-content: center;
+	gap: var(--gap-m) var(--gap-l);
 }
 
 .link {
-	@include label;
-
-	text-decoration: underline;
-	text-underline-offset: 0.4em;
-
-	&:hover {
-		color: var(--brand-c1);
-	}
+	@include chevronLink;
 }

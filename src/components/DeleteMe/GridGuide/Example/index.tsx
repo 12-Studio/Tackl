@@ -1,7 +1,8 @@
 // Imports
 // ------------
-import Grid, { Col } from '@waffl';
+import Grid from '@waffl';
 import Code from '../../Code';
+import Tile from '../../Tile';
 
 // Styles + Interfaces
 // ------------
@@ -10,26 +11,21 @@ import s from './styles.module.scss';
 
 // Component
 // ------------
-// NOTE • One grid feature: what it does, a live demo, and the code behind it
+// NOTE • One grid feature as a bento tile: what it does, a live demo (a
+// grid nested in the tile, with its own column overlay) and the code
 const Example = ({ id, title, children, demo, code, label = 'tsx' }: I.ExampleProps) => (
-	<article className={s.jacket} aria-labelledby={id}>
-		<Grid $isFixed>
-			<Col $m='1/6' $l='1/7' className={s.copy}>
+	<Grid $isFixed className={s.jacket}>
+		<Tile aria-labelledby={id}>
+			<div className={s.copy}>
 				<h3 id={id} className={s.title}>
 					{title}
 				</h3>
 				<div className={s.text}>{children}</div>
-			</Col>
-		</Grid>
-
-		{demo}
-
-		<Grid $isFixed>
-			<Col $l='1/9'>
-				<Code label={label} code={code} />
-			</Col>
-		</Grid>
-	</article>
+			</div>
+			{demo}
+			<Code label={label} code={code} />
+		</Tile>
+	</Grid>
 );
 
 // Exports

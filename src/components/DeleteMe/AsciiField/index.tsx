@@ -12,8 +12,8 @@ import s from './styles.module.scss';
 
 // Constants
 // ------------
-const GLYPHS = ' .:-+=*#%@';
-const CELL_PX = 12;
+const GLYPHS = ' .,:-=+*#%@';
+const CELL_PX = 9;
 const MAX_DPR = 1.5;
 
 // NOTE • Software renderers draw on the CPU — every frame would block the
@@ -67,8 +67,9 @@ const compile = (gl: WebGL2RenderingContext, type: number, source: string) => {
 
 // Component
 // ------------
-// NOTE • A dithered ASCII field behind the hero, with a wave rising through
-// the real grid columns (measured from the DOM, so it always lines up).
+// NOTE • A dithered ASCII glow behind the hero headline, with light rising
+// through the real grid columns (measured from the DOM, so it always lines
+// up).
 // Renders on GSAP's ticker — the one shared loop — once the visitor has
 // interacted and only while on screen. Reduced-motion users, software
 // renderers and devices that can't hold ~20fps get a still frame; without
@@ -110,8 +111,9 @@ const AsciiField = ({ columnsRef, className }: I.AsciiFieldProps) => {
 		const uColumnCount = uniform('uColumnCount');
 
 		gl.uniform1f(uniform('uGlyphs'), GLYPHS.length);
-		gl.uniform3fv(uniform('uInk'), readColour('--global-black', [0, 0, 0]));
+		gl.uniform3fv(uniform('uDeep'), readColour('--brand-c2', [0.22, 0.01, 0.47]));
 		gl.uniform3fv(uniform('uAccent'), readColour('--brand-c1', [0.5, 0, 1]));
+		gl.uniform3fv(uniform('uLight'), readColour('--global-white', [1, 1, 1]));
 		gl.enable(gl.BLEND);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 

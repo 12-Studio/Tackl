@@ -1,45 +1,26 @@
-@use '../swiss' as *;
+@use '../keynote' as *;
 
-.steps {
-	row-gap: var(--gap-uber);
-}
-
-.step {
-	display: flex;
-	flex-direction: column;
-	gap: var(--gap-m);
-	padding-top: var(--gap-sm);
-
-	@include hairline(top);
-}
-
-.copy {
-	display: flex;
-	flex-direction: column;
-	gap: var(--gap-sm);
+.bento {
+	row-gap: var(--gap-m);
 
 	@include bp(l) {
-		min-height: 18rem;
+		row-gap: var(--gap-l);
 	}
 }
 
 .index {
-	@include label;
-
-	color: alpha(--global-black, 62);
+	@include eyebrow;
 }
 
 .title {
-	@include mediumLight;
+	@include tileTitle;
 }
 
 .text {
-	@include bodyS;
-
-	font-weight: var(--weight-light);
-	color: alpha(--global-black, 75);
+	@include body;
 }
 
 .code {
 	flex: 1;
+	margin-top: var(--gap-s);
 }

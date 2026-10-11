@@ -1,15 +1,20 @@
+@use '../keynote' as *;
+
 .jacket {
 	display: inline-flex;
-	align-items: stretch;
+	align-items: center;
+	gap: var(--gap-s);
 	max-width: 100%;
-	border: 1px solid alpha(--global-black, 30);
+	padding: var(--gap-xxs);
+	padding-left: var(--gap-m);
+	border-radius: var(--br-round);
+	background: alpha(--global-white, 10);
 }
 
 .command {
 	display: flex;
 	align-items: center;
 	gap: var(--gap-s);
-	padding: var(--gap-sm) var(--gap-m);
 	overflow-x: auto;
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 	font-size: 1.5rem;
@@ -17,28 +22,20 @@
 }
 
 .prompt {
-	color: var(--brand-c1);
+	color: accent(55);
 }
 
 .button {
-	@include captionL;
+	@include pill;
 
-	padding: var(--gap-sm) var(--gap-m);
-	border-left: 1px solid alpha(--global-black, 30);
-	color: var(--global-white);
-	background: var(--global-black);
-	cursor: pointer;
-	transition: background var(--time-s) var(--easing-bezzy);
-
-	&:hover {
-		background: alpha(--global-black, 85);
-	}
+	padding: var(--gap-xs) var(--gap-m);
 }
 
 .solo {
-	align-self: flex-start;
+	padding: 0;
+	background: none;
 
 	.button {
-		border-left: 0;
+		padding: var(--gap-s) var(--gap-l);
 	}
 }

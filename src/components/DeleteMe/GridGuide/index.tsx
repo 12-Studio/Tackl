@@ -1,9 +1,10 @@
 // Imports
 // ------------
-import Grid, { Col } from '@waffl';
+import Grid from '@waffl';
 import Demo, { Cell } from '../Demo';
 import GridPlayground from '../GridPlayground';
 import Section from '../Section';
+import Tile from '../Tile';
 import Example from './Example';
 
 // Styles
@@ -19,10 +20,9 @@ const COLUMNS = Array.from({ length: 12 }, (_, index) => index + 1);
 // ------------
 const GridGuide = () => (
 	<Section
-		index='03'
 		id='grid'
 		eyebrow='The grid'
-		title='A 12-column grid on CSS grid'
+		title='A grid that thinks in columns.'
 		intro={
 			<>
 				<p>
@@ -46,15 +46,16 @@ const GridGuide = () => (
 		}
 	>
 		<Grid $isFixed className={s.playground}>
-			<Col $m='1/6' $l='1/7' className={s.playgroundCopy}>
-				<h3 className={s.playgroundTitle}>Try it</h3>
-				<p>
-					Pick a device, click a block and move it. The preview uses the real column counts and gutters,
-					blocks without their own value inherit from the breakpoint below (dashed), and the code is yours to
-					copy.
-				</p>
-			</Col>
-			<GridPlayground />
+			<Tile tone='glow'>
+				<div className={s.playgroundCopy}>
+					<h3 className={s.playgroundTitle}>Try it.</h3>
+					<p>
+						Pick a device, tap a block and move it. The preview uses the real column counts and gutters,
+						blocks without their own value inherit from the breakpoint below, and the code is yours to copy.
+					</p>
+				</div>
+				<GridPlayground />
+			</Tile>
 		</Grid>
 
 		<Example
@@ -126,7 +127,7 @@ import Grid from '@waffl';
 				</Demo>
 			}
 			code={`
-import Grid, { Col } from '@waffl';
+import Grid from '@waffl';
 
 <Grid $isFixed>
   <Col $m='1/4' $l='1/7'>Half</Col>

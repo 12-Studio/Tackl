@@ -1,114 +1,70 @@
-@use '../swiss' as *;
+@use '../keynote' as *;
 
 .jacket {
 	position: relative;
-	padding-block: var(--gap-l);
+	display: flex;
+	align-items: center;
+	min-height: 100svh;
+	padding-block: var(--gap-uber);
 	overflow: hidden;
 }
 
-// NOTE • A poster: the meta line at the top, the title filling the space,
-// then the tagline and stats — all inside one screen
 .content {
 	position: relative;
-	grid-template-rows: auto 1fr;
-	row-gap: var(--gap-l);
-	min-height: calc(100svh - var(--gap-l) * 2);
 }
 
-// SECTION • Meta row — the top line of the poster
-.meta,
-.metaEnd {
-	@include label;
-
-	align-self: start;
-	padding-top: var(--gap-s);
-
-	@include hairline(top);
+.inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
-.metaEnd {
-	display: none;
+.eyebrow {
+	@include eyebrow;
+	@include bodyS;
 
-	@include bp(l) {
-		display: block;
-		text-align: right;
-	}
+	font-weight: var(--weight-semi);
 }
 
-.meta + .meta {
-	display: none;
-
-	@include bp(m) {
-		display: block;
-	}
-}
-
-// SECTION • Title
 .title {
-	align-self: end;
+	margin-block: var(--gap-s) var(--gap-m);
 	font-family: var(--font-heading);
-	font-weight: var(--weight-light);
-	font-size: 34vw;
-	line-height: 0.78;
+	font-weight: var(--weight-semi);
+	font-size: 26vw;
+	line-height: 0.9;
 	letter-spacing: -0.06em;
-
-	// NOTE • Optical alignment — at this size the T's built-in side bearing
-	// pushes its stroke right of the column line
-	margin-left: -0.05em;
+	background: linear-gradient(180deg, var(--global-white) 35%, alpha(--global-white, 55));
+	background-clip: text;
+	color: transparent;
 
 	@include bp(l) {
-		font-size: min(24vw, 34rem);
+		font-size: min(19vw, 27.2rem);
 	}
 }
 
 .tagline {
 	@include bodyL;
+	@include secondary;
 
-	align-self: end;
-	max-width: 30ch;
-	font-weight: var(--weight-light);
-	text-shadow: 0 0 1.2rem var(--brand-c4);
+	max-width: 28ch;
+	font-weight: var(--weight-medium);
+	text-wrap: balance;
+
+	@include bp(l) {
+		font-size: 2.8rem;
+	}
 }
 
 .actions {
-	align-self: end;
 	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: var(--gap-sm);
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: var(--gap-m) var(--gap-l);
+	margin-top: var(--gap-xl);
 }
 
 .link {
-	@include label;
-
-	text-decoration: underline;
-	text-underline-offset: 0.4em;
-
-	&:hover {
-		color: var(--brand-c1);
-	}
-}
-
-// SECTION • Stats
-.stat {
-	display: flex;
-	flex-direction: column;
-	gap: var(--gap-xs);
-	padding-top: var(--gap-sm);
-
-	@include hairline(top);
-}
-
-.value {
-	@include mediumLight;
-
-	@include bp(l) {
-		font-size: 4.8rem;
-	}
-}
-
-.label {
-	@include label;
-
-	color: alpha(--global-black, 62);
+	@include chevronLink;
 }

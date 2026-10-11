@@ -7,12 +7,13 @@ void main() {
 	gl_Position = vec4(aPosition, 0.0, 1.0);
 }`;
 
-// NOTE • Every cell of the screen picks one glyph from the atlas by
-// brightness. Brightness = a soft noise field everywhere, plus a wave that
-// rises through the grid columns (each column a little out of phase), run
-// through a 4×4 Bayer matrix so the glyph steps dither instead of banding.
 export const MAX_COLUMNS = 12;
 
+// NOTE • Every cell of the screen picks one glyph from the atlas by
+// brightness. Brightness = a soft glow drifting behind the headline, plus
+// bands of light rising through the grid columns, run through a 4×4 Bayer
+// matrix so the glyph steps dither instead of banding. Colour follows
+// brightness: deep brand → brand → near-white at the hottest point.
 export const FRAGMENT = /* glsl */ `#version 300 es
 precision highp float;
 
@@ -23,8 +24,9 @@ uniform vec2 uColumns[${MAX_COLUMNS}];
 uniform int uColumnCount;
 uniform sampler2D uAtlas;
 uniform float uGlyphs;
-uniform vec3 uInk;
+uniform vec3 uDeep;
 uniform vec3 uAccent;
+uniform vec3 uLight;
 
 out vec4 outColor;
 
@@ -50,7 +52,8 @@ void main() {
 	vec2 cell = floor(gl_FragCoord.xy / uCell);
 	vec2 centre = (cell + 0.5) * uCell;
 	vec2 local = fract(gl_FragCoord.xy / uCell);
-	float y = centre.y / uResolution.y; // 0 at the bottom, 1 at the top
+	vec2 uv = centre / uResolution;
+	float aspect = uResolution.x / uResolution.y;
 
 	// Which column (if any) this cell sits in
 	float inColumn = 0.0;
@@ -63,24 +66,32 @@ void main() {
 		}
 	}
 
-	// A long wave travelling upwards, each column a step behind the last
-	float phase = y * 1.6 - uTime * 0.22 + column * 0.06;
-	float wave = pow(0.5 + 0.5 * sin(phase * 6.2831), 2.0);
-	// Grain inside the wave so it breaks into glyphs rather than a solid band
-	float grain = noise(centre / (uCell * 2.5) + vec2(column * 3.1, -uTime * 0.6));
+	// The glow — an ellipse behind the headline, breathing and drifting
+	vec2 drift = vec2(sin(uTime * 0.13), cos(uTime * 0.11)) * 0.04;
+	vec2 offset = (uv - vec2(0.5, 0.42) - drift) * vec2(aspect, 1.0);
+	float wobble = noise(uv * 3.0 + uTime * 0.07) * 0.35;
+	// NOTE • Portrait screens put the headline across the whole glow, so it
+	// tightens and dims there to keep the text legible
+	float portrait = smoothstep(1.0, 0.55, aspect);
+	float spread = (3.2 + wobble * 2.5) * mix(1.0, 2.2, portrait);
+	float glow = exp(-dot(offset, offset) * spread) * mix(1.25, 0.6, portrait);
+	glow *= 0.85 + 0.15 * sin(uTime * 0.6);
 
-	float field = noise(centre / (uCell * 10.0) + vec2(0.0, -uTime * 0.05));
-	float rise = smoothstep(1.1, 0.15, y); // stronger towards the bottom
+	// Light rising through the columns, each a step behind the last
+	float phase = uv.y * 2.2 - uTime * 0.28 + column * 0.09;
+	float band = pow(0.5 + 0.5 * sin(phase * 6.2831), 6.0);
+	float rise = inColumn * band * smoothstep(1.0, 0.1, uv.y) * mix(0.85, 0.55, portrait);
 
-	float brightness = inColumn * wave * (0.55 + 0.45 * grain) + (1.0 - inColumn) * field * 0.18;
-	brightness *= 0.35 + 0.65 * rise;
-	brightness += (bayer4(cell) - 0.5) * 0.2;
+	float grain = noise(centre / (uCell * 3.0) + vec2(0.0, -uTime * 0.4));
+	float brightness = glow * (0.7 + 0.3 * grain) + rise * (0.6 + 0.4 * grain);
+	brightness += (bayer4(cell) - 0.5) * 0.18;
 	brightness = clamp(brightness, 0.0, 1.0);
 
 	float glyph = floor(brightness * (uGlyphs - 1.0) + 0.5);
 	vec2 atlasUv = vec2((glyph + local.x) / uGlyphs, 1.0 - local.y);
 	float ink = texture(uAtlas, atlasUv).a;
 
-	vec3 colour = mix(uInk, uAccent, inColumn * smoothstep(0.35, 0.9, wave));
-	outColor = vec4(colour, ink * (0.1 + 0.75 * brightness));
+	vec3 colour = mix(uDeep, uAccent, smoothstep(0.05, 0.5, brightness));
+	colour = mix(colour, uLight, smoothstep(0.55, 1.0, brightness));
+	outColor = vec4(colour, ink * smoothstep(0.0, 0.22, brightness));
 }`;

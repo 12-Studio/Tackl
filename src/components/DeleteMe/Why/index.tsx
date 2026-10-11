@@ -1,61 +1,78 @@
 // Imports
 // ------------
-import Grid, { Col } from '@waffl';
+import Grid from '@waffl';
 import Section from '../Section';
+import Tile from '../Tile';
 
 // Styles
 // ------------
 import s from './styles.module.scss';
 
-// Constants
-// ------------
-const REASONS = [
-	{
-		title: 'Day one is for design',
-		text: 'Every agency build used to start with the same week: a grid, breakpoints, type, a CMS, cookie consent, SEO, error pages. Tackl is that week, done once and done properly.',
-	},
-	{
-		title: 'Fast by default',
-		text: 'Static CSS with no styling runtime, server components by default and Partial Prerendering. A fresh site scores 100 on Lighthouse, and CI fails the build if a real one slips below the floor.',
-	},
-	{
-		title: 'Built for motion',
-		text: 'GSAP and Lenis are wired in from the start, with page transitions on React’s own <ViewTransition>. Animation is the point of the sites we build, so it isn’t an afterthought here.',
-	},
-	{
-		title: 'Ready for agents',
-		text: 'AGENTS.md and a library of skills teach AI coding agents the conventions, so Claude, Cursor or Copilot write code that looks like yours — and the site itself passes Lighthouse’s Agentic Browsing checks.',
-	},
-];
-
 // Component
 // ------------
 const Why = () => (
 	<Section
-		index='01'
 		id='why'
 		eyebrow='Why Tackl'
-		title='Why it exists'
+		title='Everything you need. Nothing you don’t.'
 		intro={
 			<p>
-				Tackl grew out of years of building marketing sites at 12 Studio — the conventions, tooling and defaults
-				we kept rebuilding, gathered into one starter kit for modern Next.js.
+				Years of building marketing sites at 12 Studio, distilled into one starter kit. The grid, the type, the
+				motion, the CMS and every production default — done once, done properly.
 			</p>
 		}
 	>
-		<Grid $isFixed className={s.list}>
-			{REASONS.map(({ title, text }, index) => (
-				<Col
-					key={title}
-					$m={index % 2 ? '4/7' : '1/4'}
-					$l={`${(index % 4) * 3 + 1}/span 3`}
-					className={s.reason}
-				>
-					<span className={s.index}>0{index + 1}</span>
-					<h3 className={s.title}>{title}</h3>
-					<p className={s.text}>{text}</p>
-				</Col>
-			))}
+		<Grid $isFixed className={s.bento}>
+			<Tile $m='1/7' $l='1/9' tone='glow' className={s.hero}>
+				<p className={s.kicker}>Performance</p>
+				<p className={s.stat}>100</p>
+				<h3 className={s.title}>Lighthouse. Out of the box.</h3>
+				<p className={s.text}>
+					Static CSS, Server Components and Partial Prerendering. And CI fails the build if a real site slips
+					below the floor.
+				</p>
+			</Tile>
+
+			<Tile $m='1/4' $l='9/13'>
+				<p className={s.kicker}>Styling runtime</p>
+				<p className={s.stat}>0 KB</p>
+				<p className={s.text}>SCSS modules, compiled at build time. No CSS-in-JS in the browser.</p>
+			</Tile>
+
+			<Tile $m='4/7' $l='1/5'>
+				<p className={s.kicker}>Grid</p>
+				<p className={s.stat}>12</p>
+				<p className={s.text}>Columns, on CSS grid. 6 on tablets, 2 on phones.</p>
+			</Tile>
+
+			<Tile $m='1/4' $l='5/9'>
+				<p className={s.kicker}>CMS</p>
+				<p className={s.stat}>3</p>
+				<p className={s.text}>DatoCMS, Sanity with an embedded Studio, or none — picked at scaffold.</p>
+			</Tile>
+
+			<Tile $m='4/7' $l='9/13'>
+				<h3 className={s.title}>Built for motion.</h3>
+				<p className={s.text}>
+					GSAP and Lenis on one shared ticker, and page transitions on React’s own &lt;ViewTransition&gt;.
+				</p>
+			</Tile>
+
+			<Tile $m='1/7' $l='1/7'>
+				<h3 className={s.title}>Day one is for design.</h3>
+				<p className={s.text}>
+					A grid, breakpoints, type, cookie consent, SEO and error pages are already here. You start on the
+					first page, not the plumbing.
+				</p>
+			</Tile>
+
+			<Tile $m='1/7' $l='7/13'>
+				<h3 className={s.title}>Ready for agents.</h3>
+				<p className={s.text}>
+					AGENTS.md and a library of skills teach Claude, Cursor and Copilot the conventions — and the site
+					passes Lighthouse’s Agentic Browsing checks.
+				</p>
+			</Tile>
 		</Grid>
 	</Section>
 );

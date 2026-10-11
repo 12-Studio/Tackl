@@ -1,3 +1,5 @@
+@use '../keynote' as *;
+
 .jacket {
 	position: relative;
 	display: flex;
@@ -20,8 +22,8 @@
 .column {
 	display: none;
 	grid-column: auto;
-	background: alpha(--global-black, 3);
-	border-inline: 1px solid alpha(--global-black, 10);
+	border-radius: 0.6rem;
+	background: alpha(--brand-c1, 9);
 
 	&:nth-child(-n + 2) {
 		display: block;
@@ -57,26 +59,20 @@
 	place-items: center;
 	min-height: 6.4rem;
 	padding: var(--gap-xs);
+	border-radius: 1.2rem;
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 	font-size: 1.2rem;
 	text-align: center;
-	color: var(--brand-c4);
-	background: var(--global-black);
+	color: var(--global-white);
+	background: linear-gradient(135deg, var(--brand-c1), var(--brand-c2));
 
 	&[data-tone='soft'] {
-		color: var(--global-black);
-		background: transparent;
-		outline: 1px solid var(--global-black);
-		outline-offset: -1px;
-	}
-
-	@include bp(l) {
-		font-size: 1.3rem;
+		background: alpha(--global-white, 10);
 	}
 }
 
 .caption {
 	@include captionS;
 
-	color: alpha(--global-black, 60);
+	color: alpha(--global-white, 62);
 }

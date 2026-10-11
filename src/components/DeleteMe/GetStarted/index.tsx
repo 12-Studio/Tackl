@@ -4,6 +4,7 @@ import Grid, { Col } from '@waffl';
 import Code from '../Code';
 import CopyButton from '../CopyButton';
 import Section from '../Section';
+import Tile from '../Tile';
 
 // Styles
 // ------------
@@ -53,10 +54,9 @@ rm -r src/components/DeleteMe`,
 // ------------
 const GetStarted = () => (
 	<Section
-		index='06'
 		id='start'
 		eyebrow='Get started'
-		title='Three steps to a new site'
+		title='Up and running in three steps.'
 		intro={
 			<p>
 				You need <a href='https://bun.sh'>Bun</a> and an empty folder. Everything else — dependencies, git, the
@@ -66,17 +66,17 @@ const GetStarted = () => (
 	>
 		<Grid $isFixed className={s.steps}>
 			{STEPS.map(({ title, text, label, code }, index) => (
-				<Col as='article' key={title} $l={`${index * 4 + 1}/span 4`} className={s.step}>
+				<Tile key={title} $l={`${index * 4 + 1}/span 4`}>
 					<span className={s.index}>{index + 1}</span>
 					<h3 className={s.title}>{title}</h3>
 					<p className={s.text}>{text}</p>
 					<Code label={label} code={code} className={s.code} />
-				</Col>
+				</Tile>
 			))}
 		</Grid>
 
 		<Grid $isFixed className={s.cta}>
-			<Col $m='1/7' $l='1/13' className={s.ctaInner}>
+			<Col className={s.ctaInner}>
 				<CopyButton text='bunx tackl' />
 				<a className={s.link} href={DOCS_URL}>
 					Read the docs

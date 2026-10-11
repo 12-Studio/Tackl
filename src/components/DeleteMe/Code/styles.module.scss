@@ -1,19 +1,22 @@
-@use '../swiss' as *;
+@use '../keynote' as *;
 
 .jacket {
 	display: flex;
 	flex-direction: column;
 	min-width: 0;
-	background: alpha(--global-black, 4);
-	border: 1px solid alpha(--global-black, 12);
+	overflow: hidden;
+	border-radius: 1.6rem;
+	background: alpha(--global-black, 55);
+	border: 1px solid alpha(--global-white, 8);
 }
 
 .label {
-	@include label;
+	@include captionS;
 
 	padding: var(--gap-s) var(--gap-m);
-	border-bottom: 1px solid alpha(--global-black, 12);
-	color: alpha(--global-black, 62);
+	border-bottom: 1px solid alpha(--global-white, 8);
+	font-weight: var(--weight-medium);
+	color: alpha(--global-white, 62);
 }
 
 .pre {
@@ -22,11 +25,6 @@
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 	font-size: 1.3rem;
 	line-height: 1.7;
-	color: var(--global-black);
+	color: alpha(--global-white, 88);
 	tab-size: 2;
-
-	@include bp(l) {
-		padding: var(--gap-l);
-		font-size: 1.35rem;
-	}
 }

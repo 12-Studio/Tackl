@@ -1,32 +1,23 @@
-@use '../swiss' as *;
+@use '../keynote' as *;
 
 .blocks {
-	row-gap: var(--gap-uber);
-}
+	row-gap: var(--gap-m);
 
-.block {
-	display: flex;
-	flex-direction: column;
-	gap: var(--gap-m);
-	min-width: 0;
-	padding-top: var(--gap-sm);
-
-	@include hairline(top);
+	@include bp(l) {
+		row-gap: var(--gap-l);
+	}
 }
 
 .title {
-	@include mediumLight;
+	@include tileTitle;
 }
 
 .text {
-	@include bodyS;
-
-	font-weight: var(--weight-light);
-	color: alpha(--global-black, 75);
+	@include body;
 
 	code {
 		@include mono;
 
-		color: var(--global-black);
+		color: var(--global-white);
 	}
 }

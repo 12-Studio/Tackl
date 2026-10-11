@@ -2,6 +2,9 @@
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
+
+	// NOTE • Fade the field out at the bottom into the page
+	mask-image: linear-gradient(to bottom, black 70%, transparent);
 }
 
 .grid {
@@ -14,8 +17,8 @@
 
 	display: none;
 	grid-column: auto;
-	border-inline: 1px solid alpha(--global-black, 8);
-	transform-origin: top;
+	border-inline: 1px solid alpha(--global-white, 5);
+	transform-origin: bottom;
 	animation: column-draw var(--time-l) var(--easing-bezzy) both;
 	animation-delay: calc(var(--index) * 40ms);
 

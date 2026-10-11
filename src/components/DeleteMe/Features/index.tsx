@@ -1,8 +1,9 @@
 // Imports
 // ------------
-import Grid, { Col } from '@waffl';
+import Grid from '@waffl';
 import ConsentDemo from '../ConsentDemo';
 import Section from '../Section';
+import Tile from '../Tile';
 
 // Styles
 // ------------
@@ -77,10 +78,9 @@ const FEATURES = [
 // ------------
 const Features = () => (
 	<Section
-		index='05'
 		id='features'
 		eyebrow='Batteries included'
-		title='Everything a real site needs'
+		title='Batteries included.'
 		intro={
 			<p>
 				The unglamorous parts every production site needs, done properly and documented, so you don't rebuild
@@ -90,25 +90,25 @@ const Features = () => (
 	>
 		<Grid $isFixed className={s.list}>
 			{FEATURES.map(({ title, text, where }) => (
-				<Col as='article' key={title} $m='span 3' $l='span 4' className={s.feature}>
+				<Tile key={title} $m='span 3' $l='span 4'>
 					<h3 className={s.title}>{title}</h3>
 					<p className={s.text}>{text}</p>
 					<code className={s.where}>{where}</code>
-				</Col>
+				</Tile>
 			))}
 		</Grid>
 
 		<Grid $isFixed className={s.demo}>
-			<Col $m='1/6' $l='1/5' className={s.demoCopy}>
-				<h3 className={s.demoTitle}>Try the consent manager</h3>
-				<p>
-					This is the real cookie banner. Open the settings, change your choice, and watch the state and the
-					gated box update — no reload.
-				</p>
-			</Col>
-			<Col $l='5/13'>
+			<Tile tone='glow' className={s.demoTile}>
+				<div className={s.demoCopy}>
+					<h3 className={s.demoTitle}>Try the consent manager.</h3>
+					<p>
+						This is the real cookie banner. Open the settings, change your choice, and watch the state and
+						the gated box update — no reload.
+					</p>
+				</div>
 				<ConsentDemo />
-			</Col>
+			</Tile>
 		</Grid>
 	</Section>
 );

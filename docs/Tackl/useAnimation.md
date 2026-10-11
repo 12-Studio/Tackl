@@ -32,29 +32,6 @@ const MyComponent = () => {
 };
 ```
 
-### Function-based approach
-
-```jsx
-import { createGSAPMatchMedia } from '@utils/useAnimation';
-import gsap from 'gsap';
-
-const MyComponent = () => {
-    const elementRef = useRef(null);
-
-    useEffect(() => {
-        const cleanup = createGSAPMatchMedia(({ isDesktop, isMobile }) => {
-            gsap.from(elementRef.current, {
-                y: isDesktop ? '2rem' : '1rem',
-            });
-        });
-
-        return cleanup;
-    }, []);
-
-    return <div ref={elementRef}>Content</div>;
-};
-```
-
 ## Default Breakpoints
 
 The defaults are built from `mq` in `@tackl` (`m` = tablet threshold, `l` = desktop threshold) — the same breakpoint tokens (`src/theme/grid/index.ts`) that generate the SCSS `bp()` / `bpd()` mixins, so layout and animations can never desync. Retune the tokens and these follow:

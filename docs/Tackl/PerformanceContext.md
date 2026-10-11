@@ -27,7 +27,7 @@ The context provides the following values:
 
 ```jsx
 import { useContext } from 'react';
-import { PerformanceContext } from '@parts/Contexts/PerformanceContext';
+import { PerformanceContext } from '@parts/Contexts/Performance';
 
 const MyComponent = () => {
 	const { isReducedMotion, devicePixelRatio } = useContext(PerformanceContext);

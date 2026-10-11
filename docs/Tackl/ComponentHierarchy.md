@@ -20,7 +20,7 @@ RootLayout (app/(site)/layout.tsx)
 │               └── main#page
 │                   └── SmoothScroll
 │                       └── Page Components
-│                           └── Content Components
+│                           └── Your Components (e.g. DeleteMe placeholder)
 ```
 
 ## Detailed Component Breakdown
@@ -106,9 +106,11 @@ const Page = async () => {
     // Page-specific data fetching
     // const data = await getHomeData();
 
-    return <Content data={{ page: null }} />;
+    return <DeleteMe />;
 };
 ```
+
+The kit ships with the `DeleteMe` placeholder here. Replace it with your own components, passing server-fetched data down as props.
 
 **Key Features**:
 
@@ -117,18 +119,22 @@ const Page = async () => {
 - **SEO Metadata**: Page-specific meta tags
 - **Performance**: Static generation
 
-### 4. Content Components (`app/(site)/(home)/Content.tsx`)
+### 4. Your Components (`src/components/`)
 
 **Position**: Fourth level
-**Type**: Client Component (`'use client'`)
-**Purpose**: Interactive content and user interactions
+**Type**: Server Component by default; Client Component (`'use client'`) when it needs hooks, state or event handlers
+**Purpose**: Page content and user interactions. The kit doesn't ship a content component — the home page renders the `DeleteMe` placeholder. The examples below call an interactive component `Content`; create it (e.g. `src/components/HomeContent/`) when you need one.
 
 ```typescript
-const Content = ({ data }: HomeProps) => {
+'use client';
+
+const Content = ({ data }: I.ContentProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
-        <>
-            <DeleteMe />
-        </>
+        <section className={s.jacket} data-state={isOpen ? 'open' : 'closed'}>
+            {/* Interactive content */}
+        </section>
     );
 };
 ```
@@ -159,7 +165,7 @@ const data = await getGlobalData();
 // Page Component (page.tsx)
 return <Content data={data} />;
 
-// Content Component (Content.tsx)
+// Content Component (your client component, e.g. src/components/HomeContent)
 const Content = ({ data }: HomeProps) => {
     // Use data here
 };

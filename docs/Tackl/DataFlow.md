@@ -4,6 +4,8 @@
 
 This document explains how data flows through the Tackl application architecture, from server-side data fetching to client-side state management and user interactions.
 
+The examples use `Content` for a client component a page renders and passes data to. The kit doesn't ship one (the home page renders the `DeleteMe` placeholder) — create it in `src/components/` (e.g. `src/components/HomeContent/`) when a page needs interactivity.
+
 ## Data Flow Architecture
 
 ```
@@ -107,7 +109,7 @@ const Content = ({ data }: HomeProps) => {
 **Benefits**: Responsive user experience
 
 ```typescript
-// Content Component (app/(site)/(home)/Content.tsx)
+// Content Component (your client component, e.g. src/components/HomeContent)
 const Content = ({ data }: HomeProps) => {
     const [state, setState] = useState(data);
 

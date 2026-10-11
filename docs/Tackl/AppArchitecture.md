@@ -19,7 +19,7 @@ The app has **two root layouts** via route groups (route groups don't affect URL
 │  │  │  ┌─────────────────────────────────────────────┐ │  │ │
 │  │  │  │            Page Components                 │ │  │ │
 │  │  │  │  ┌─────────────────────────────────────┐   │ │  │ │
-│  │  │  │  │         Content Components         │   │ │  │ │
+│  │  │  │  │   Your Components (server/client)  │   │ │  │ │
 │  │  │  │  └─────────────────────────────────────┘   │ │  │ │
 │  │  │  └─────────────────────────────────────────────┘ │  │ │
 │  │  └─────────────────────────────────────────────────┘  │ │
@@ -150,9 +150,11 @@ const Page = async () => {
     // Page-specific data fetching
     // const data = await getHomeData();
 
-    return <Content data={{ page: null }} />;
+    return <DeleteMe />;
 };
 ```
+
+The kit ships with the `DeleteMe` placeholder here. Replace it with your own components, passing server-fetched data down as props.
 
 **Key Features**:
 
@@ -161,9 +163,9 @@ const Page = async () => {
 - ✅ SEO metadata generation
 - ✅ Route handling
 
-### 4. Content Components (`app/(site)/(home)/Content.tsx`)
+### 4. Interactive Components (your own, e.g. `src/components/HomeContent/`)
 
-**Purpose**: Client-side interactive content components.
+**Purpose**: Client-side interactive components rendered by a page. The kit doesn't ship one — create them in `src/components/` when a page needs hooks, state or event handlers, and pass the page's server-fetched data in as props.
 
 **Type**: Client Component (`'use client'`)
 
@@ -177,11 +179,14 @@ const Page = async () => {
 ```typescript
 'use client';
 
-const Content = ({ data }: HomeProps) => {
+// src/components/HomeContent/index.tsx
+const HomeContent = ({ data }: I.HomeContentProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
-        <>
-            <DeleteMe />
-        </>
+        <section className={s.jacket} data-state={isOpen ? 'open' : 'closed'}>
+            <button type='button' onClick={() => setIsOpen(!isOpen)}>{data?.title}</button>
+        </section>
     );
 };
 ```
@@ -221,7 +226,7 @@ See [Tackl.md](./Tackl.md) and [Theming.md](./Theming.md) for the details.
 ### 1. Server-Side Data Flow
 
 ```
-Build Time → Root Layout → Page Component → Content Component
+Build Time → Root Layout → Page Component → Your Components
      ↓            ↓              ↓                ↓
 Data Fetching → Static Content → Page Content → Interactive Content
 ```
@@ -229,7 +234,7 @@ Data Fetching → Static Content → Page Content → Interactive Content
 ### 2. Client-Side Data Flow
 
 ```
-User Interaction → Content Component → Providers → Root Layout
+User Interaction → Client Component → Providers → Root Layout
         ↓                ↓                ↓            ↓
    State Update → Re-render → Context Update → Data Refresh
 ```

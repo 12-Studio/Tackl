@@ -313,7 +313,7 @@ useAnimation(
 
 ## Example Implementation
 
-See `src/components/Test/index.tsx` for a complete working example of the animation system.
+The component and `styles.module.scss` examples above form a complete, working implementation — copy them into a new folder under `src/components/` to start from.
 
 ## Dependencies
 
@@ -324,5 +324,4 @@ See `src/components/Test/index.tsx` for a complete working example of the animat
 ## Related Files
 
 -   `src/utils/useAnimation.ts` - Core animation hook
--   `src/components/Test/index.tsx` - Example implementation
--   `src/components/Test/styles.module.scss` - Example styles
+-   `src/theme/tackl/index.ts` - `mq` / `breakpoints` used for the hook's default breakpoints

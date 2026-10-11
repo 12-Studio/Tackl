@@ -28,6 +28,6 @@ They live in [`lighthouserc.js`](../lighthouserc.js):
 - **Desktop preset:** the mobile preset's throttling on shared runners swings a point or two from run to run.
 - **Loosening a rule:** lower its `minScore`, or switch `'error'` to `'warn'`. Do it on purpose, per project, when a real feature (a WebGL scene, a heavy embed) earns the cost.
 
-## Why not Netlify's Lighthouse plugin?
+## Netlify's Lighthouse plugin
 
-Netlify's plugin audits the build output as a plain static folder, without the Next.js server. Its scores don't match the deployed site: it reported Best Practices 92 for a site that scores 100 when audited directly. Lighthouse CI audits the real `next start` server instead.
+Netlify's plugin still runs on every deploy and posts scores on the PR. Treat them as informational. The plugin audits the build output as static files rather than the running Next.js server, so its numbers can differ from the real site: it reported Best Practices 92 for a site that scores 100 when audited directly. The scores that count are Lighthouse CI's in GitHub Actions, and direct audits of the deployed URL.

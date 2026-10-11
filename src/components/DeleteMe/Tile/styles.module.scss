@@ -6,6 +6,49 @@
 	&[data-tone='glow'] {
 		background:
 			radial-gradient(80% 70% at 50% 120%, alpha(--brand-c1, 45), transparent 70%),
-			alpha(--global-white, 6);
+			alpha(--global-white, 10);
+	}
+
+	// SECTION • Photo tiles
+	// NOTE • Text sits at the bottom, over a scrim that fades the photo to
+	// black; the photos are composed with empty space there for it
+	&[data-image] {
+		justify-content: flex-end;
+		background: var(--global-black);
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+			background: linear-gradient(
+				to top,
+				var(--global-black) 0%,
+				alpha(--global-black, 72) 32%,
+				transparent 64%
+			);
+			pointer-events: none;
+		}
+
+		> :not(.image) {
+			position: relative;
+			z-index: 2;
+		}
+	}
+}
+
+.image {
+	position: absolute;
+	inset: 0 0 auto;
+	width: 100%;
+	height: 62%;
+	mask-image: linear-gradient(to bottom, black 55%, transparent);
+
+	// NOTE • On phones the photo is a band across the top that fades into
+	// the tile; from tablets up it fills the tile behind the text
+	@include bp(m) {
+		inset: 0;
+		height: 100%;
+		mask-image: none;
 	}
 }

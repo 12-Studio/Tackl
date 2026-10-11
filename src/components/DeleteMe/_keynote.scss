@@ -11,6 +11,13 @@
 	@return color-mix(in srgb, var(--brand-c1) #{$amount * 1%}, var(--global-white));
 }
 
+// NOTE • Surfaces nested inside a tile's padding (code, previews, demos)
+// use $inner-radius. Tiles keep a modest radius rather than inner + padding:
+// with padding this deep a concentric corner would be 3.6–4.4rem, and the
+// nested surfaces sit far enough in that the mismatch doesn't read.
+$inner-radius: var(--br-s);
+$tile-radius: var(--br-l);
+
 // Bento tile — the page's building block
 @mixin tile {
 	position: relative;
@@ -20,9 +27,13 @@
 	min-width: 0;
 	padding: var(--gap-l);
 	overflow: hidden;
-	border-radius: 2.8rem;
-	background: alpha(--global-white, 6);
-	border: 1px solid alpha(--global-white, 8);
+	border-radius: $tile-radius;
+	background: alpha(--global-white, 10);
+
+	// NOTE • Depth from a hairline ring and a top highlight, not a border
+	box-shadow:
+		0 0 0 1px alpha(--global-white, 12),
+		inset 0 1px 0 alpha(--global-white, 10);
 
 	@include bp(l) {
 		padding: var(--gap-xl);
@@ -36,16 +47,14 @@
 	color: accent(55);
 }
 
-// Big headline — semibold, tight, with a soft white-to-grey fade
+// Big headline — semibold, tight, solid white (only the hero gets a fade)
 @mixin headline {
 	font-family: var(--font-heading);
 	font-weight: var(--weight-semi);
 	font-size: 4rem;
 	line-height: 1.05;
 	letter-spacing: -0.035em;
-	background: linear-gradient(180deg, var(--global-white) 40%, alpha(--global-white, 60));
-	background-clip: text;
-	color: transparent;
+	color: var(--global-white);
 
 	@include bp(m) {
 		font-size: 5.6rem;
@@ -76,9 +85,7 @@
 	font-size: 7.2rem;
 	line-height: 0.95;
 	letter-spacing: -0.05em;
-	background: linear-gradient(120deg, var(--global-white) 20%, accent(70));
-	background-clip: text;
-	color: transparent;
+	color: var(--global-white);
 
 	@include bp(l) {
 		font-size: clamp(8.8rem, 9vw, 14.4rem);
@@ -116,12 +123,17 @@
 	color: var(--global-black);
 	background: var(--global-white);
 	cursor: pointer;
-	transition:
-		background var(--time-s) var(--easing-bezzy),
-		color var(--time-s) var(--easing-bezzy);
+	transition-property: background, color, scale;
+	transition-duration: var(--time-s);
+	transition-timing-function: var(--easing-bezzy);
 
 	&:hover {
 		background: alpha(--global-white, 85);
+	}
+
+	// NOTE • A small press for tactile feedback
+	&:active:not(:disabled) {
+		scale: 0.96;
 	}
 }
 

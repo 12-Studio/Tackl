@@ -1,0 +1,64 @@
+@use '../keynote' as *;
+
+// NOTE • Each glyph sits in a slot taller than the (tight) line, so its
+// neighbours on the wheel can't peek into view; negative margins give the
+// extra height back, so the number still takes one line
+$slot: 1.3em;
+
+.jacket {
+	display: inline-flex;
+	font-variant-numeric: tabular-nums;
+}
+
+// NOTE • The real value for screen readers; the wheels are aria-hidden
+.label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.digits {
+	display: inline-flex;
+}
+
+.static {
+	white-space: pre;
+}
+
+.column {
+	display: inline-block;
+	height: $slot;
+	margin-block: calc((1lh - #{$slot}) / 2);
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.glyph {
+	display: block;
+	height: $slot;
+	line-height: $slot;
+	text-align: center;
+}
+
+// NOTE • At rest the wheel shows its last glyph (the real value); armed, it
+// jumps back to 0 off screen; rolling, it eases forward to the value, the
+// columns staggered from the right
+.wheel {
+	--steps: 0;
+	--column: 0;
+
+	display: block;
+	translate: 0 calc(var(--steps) * -#{$slot});
+
+	[data-state='armed'] & {
+		translate: 0 0;
+	}
+
+	[data-state='rolling'] & {
+		transition: translate 2.2s cubic-bezier(0.2, 0, 0, 1);
+		transition-delay: calc(var(--column) * 120ms);
+	}
+}

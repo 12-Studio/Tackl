@@ -15,42 +15,26 @@ import s from './styles.module.scss';
 // Component
 // ------------
 const Styling = () => (
-	<Section
-		id='styling'
-		eyebrow='Styling'
-		title='Design tokens. Zero runtime.'
-		intro={
-			<p>
-				Every demo here runs on the kit's own tokens, classes and helpers. Change a value in{' '}
-				<code>src/theme</code> and this page changes with it.
-			</p>
-		}
-	>
+	<Section id='styling' title='Design tokens. Zero runtime.' intro={<p>Every demo runs on the kit's own tokens.</p>}>
 		<Grid $isFixed>
 			<Tile $l='1/7'>
 				<h3 className={s.title}>Colour and opacity</h3>
 				<p className={s.text}>
-					Colours are CSS variables. <code>alpha()</code> makes any of them translucent — same name and
-					arguments in SCSS and JavaScript.
+					<code>alpha()</code> makes any colour translucent, in SCSS or JS.
 				</p>
 				<AlphaPlayground />
 			</Tile>
 
 			<Tile $l='7/13'>
 				<h3 className={s.title}>Type styles</h3>
-				<p className={s.text}>
-					Hand-written from the Figma file in one SCSS file, then usable three ways. Sizes step up with the
-					viewport — resize to see.
-				</p>
+				<p className={s.text}>Written once, used three ways. Resize to see it scale.</p>
 				<TypeTester />
 			</Tile>
 
 			<Tile $l='1/7'>
 				<h3 className={s.title}>Breakpoints</h3>
 				<p className={s.text}>
-					Mobile-first <code>min-width</code> queries from the grid tokens — <code>bp()</code> in SCSS,{' '}
-					<code>mq</code> in JavaScript for GSAP's <code>matchMedia</code>. This readout is <code>mq</code>,
-					live:
+					Mobile-first: <code>bp()</code> in SCSS, <code>mq</code> in JS. Live:
 				</p>
 				<BreakpointReadout />
 				<Code
@@ -71,11 +55,7 @@ mq.up.l; // '(min-width: 1024px)'`}
 
 			<Tile $l='7/13'>
 				<h3 className={s.title}>Section spacing</h3>
-				<p className={s.text}>
-					Vertical rhythm on the <code>--space-*</code> scale, stepping up at <code>m</code> and{' '}
-					<code>l</code> — from the HTML with data attributes, or in a module with mixins. Every section on
-					this page uses <code>data-pad</code>.
-				</p>
+				<p className={s.text}>One vertical rhythm, from a data attribute or a mixin.</p>
 				<Code
 					label='HTML or SCSS'
 					code={`

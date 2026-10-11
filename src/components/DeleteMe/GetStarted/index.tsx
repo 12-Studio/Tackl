@@ -17,7 +17,7 @@ const DOCS_URL = 'https://github.com/12-Studio/Tackl#readme';
 const STEPS = [
 	{
 		title: 'Scaffold',
-		text: 'In an empty folder (or a freshly cloned, empty repo), run the CLI. It downloads the latest release, asks which CMS you want and installs everything.',
+		text: 'Run the CLI in an empty folder. Pick a CMS.',
 		label: 'Terminal',
 		code: `
 mkdir my-site && cd my-site
@@ -25,7 +25,7 @@ bunx tackl          # or: bunx tackl --cms sanity`,
 	},
 	{
 		title: 'Set your design',
-		text: 'Put the Figma values into the tokens in src/theme and write the type styles in src/css/tackl/_type.scss. The CSS variables regenerate on the next dev run.',
+		text: 'Add your Figma values to the tokens.',
 		label: 'src/theme · src/css/tackl/_type.scss',
 		code: `
 // src/theme/colors/index.ts
@@ -39,7 +39,7 @@ brand: { c1: '#8000FF', … }
 	},
 	{
 		title: 'Build',
-		text: 'Start the dev server, delete this landing page, and build your first page on the grid.',
+		text: 'Start the dev server and delete this page.',
 		label: 'Terminal',
 		code: `
 bun run dev
@@ -55,12 +55,10 @@ rm -r src/components/DeleteMe`,
 const GetStarted = () => (
 	<Section
 		id='start'
-		eyebrow='Get started'
 		title='Up and running in three steps.'
 		intro={
 			<p>
-				You need <a href='https://bun.sh'>Bun</a> and an empty folder. Everything else — dependencies, git, the
-				CMS of your choice — the CLI sets up for you.
+				All you need is <a href='https://bun.sh'>Bun</a>.
 			</p>
 		}
 	>

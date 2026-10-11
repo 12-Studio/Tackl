@@ -20,13 +20,16 @@ import Why from './Why';
 const DeleteMe = () => (
 	<div className={s.jacket}>
 		<Hero />
-		<Why />
-		<HowItWorks />
-		<GridGuide />
-		<Styling />
-		<Features />
-		<GetStarted />
-		<Outro />
+		{/* NOTE • Scrolls over the sticky hero, which shows through */}
+		<div className={s.content}>
+			<Why />
+			<HowItWorks />
+			<GridGuide />
+			<Styling />
+			<Features />
+			<GetStarted />
+			<Outro />
+		</div>
 	</div>
 );
 

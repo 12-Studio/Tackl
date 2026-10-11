@@ -1,0 +1,24 @@
+// NOTE • The jacket is sized and positioned by its parent (via className);
+// the canvas and the photo both fill it
+.jacket {
+	overflow: hidden;
+}
+
+.canvas,
+.fallback {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.fallback {
+	object-fit: cover;
+	object-position: top right;
+	transition: opacity var(--time-l) var(--easing-bezzy);
+}
+
+// NOTE • Once the particles draw, the photo steps aside
+.canvas[data-ready] + .fallback {
+	opacity: 0;
+}

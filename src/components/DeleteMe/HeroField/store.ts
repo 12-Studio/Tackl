@@ -32,3 +32,24 @@ export const heroSettings = {
 		emit({ ...state, colours: { ...state.colours, [key]: value } }),
 	reset: () => emit({ values: { ...DEFAULTS }, colours: { ...COLOUR_DEFAULTS } }),
 };
+
+// Scroll
+// ------------
+// NOTE • How far the page has scrolled over the hero, 0 → 1 — set by the
+// Hero's ScrollTrigger, read by the field to lift and grow the torch
+let scrollProgress = 0;
+const scrollListeners = new Set<() => void>();
+
+export const heroScroll = {
+	get: () => scrollProgress,
+	set: (progress: number) => {
+		scrollProgress = progress;
+		for (const listener of scrollListeners) listener();
+	},
+	subscribe: (listener: () => void) => {
+		scrollListeners.add(listener);
+		return () => {
+			scrollListeners.delete(listener);
+		};
+	},
+};

@@ -194,8 +194,10 @@
 			height: 100%;
 		}
 
+		// NOTE • Vertical only — centring horizontally too (place-items) would
+		// shrink each child to its content instead of its columns
 		&[data-center] {
-			place-items: center;
+			align-items: center;
 		}
 
 		&[data-fixed] {

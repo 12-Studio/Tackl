@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react';
 import type * as I from './interface';
 import { COLOURS, type ColourKey, UNIFORM_SETTINGS, uniformName } from './settings';
 import { FRAGMENT, MAX_COLUMNS, MAX_PULSES, VERTEX } from './shaders';
-import { heroSettings } from './store';
+import { heroScroll, heroSettings } from './store';
 import s from './styles.module.scss';
 
 // Constants
@@ -27,6 +27,12 @@ const WATCHDOG_FRAMES = 30;
 const SLOW_FRAME_MS = 50;
 
 const INTERACTIONS = ['pointermove', 'pointerdown', 'wheel', 'touchstart', 'keydown'] as const;
+
+// NOTE • As the page scrolls over the hero, the torch rises out through the
+// top: it grows to (1 + TORCH_GROWTH) times its radius, and travels until
+// it's TORCH_EXIT_RADII radii past the top edge — far enough to be gone
+const TORCH_GROWTH = 1.5;
+const TORCH_EXIT_RADII = 2.2;
 
 // NOTE • Pointer events from inside this (the tweak panel) leave the
 // field alone — no torch movement, no pulse
@@ -178,10 +184,15 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 
 		const draw = (time: number) => {
 			const { values } = heroSettings.get();
-			// NOTE • The torch sits at a fixed height — on the bottom edge by
-			// default, so only its top half shows; the pointer only moves it sideways
-			pointer.y = canvas.height * values.torchHeight;
+			// NOTE • The torch rests at a fixed height — on the bottom edge by
+			// default, so only its top half shows; the pointer only moves it
+			// sideways. Scrolling lifts it up and out, growing as it goes.
+			const progress = heroScroll.get();
+			const radius = values.torchRadius * (1 + progress * TORCH_GROWTH);
+			const exitHeight = 1 + radius * TORCH_EXIT_RADII;
+			pointer.y = canvas.height * (values.torchHeight + (exitHeight - values.torchHeight) * progress);
 			for (const key of UNIFORM_SETTINGS) gl.uniform1f(uniforms[uniformName(key)] ?? null, values[key]);
+			gl.uniform1f(uniforms.uTorchRadius ?? null, radius);
 			gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
 			gl.uniform1f(uniforms.uDpr, dpr);
 			gl.uniform1f(uniforms.uTime, time + values.timeOffset);
@@ -252,6 +263,10 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 		};
 
 		function tick(time: number, deltaTime: number) {
+			// NOTE • The field sits fixed behind the whole page; once the torch
+			// has risen out of view, hold the last frame rather than redraw a
+			// full-screen shader under everything
+			if (heroScroll.get() >= 1) return;
 			followPointer(time, deltaTime);
 			draw(time);
 			if (frames >= WATCHDOG_FRAMES) return;
@@ -303,9 +318,15 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 			draw(gsap.ticker.time);
 		});
 
+		// NOTE • Scrolling moves the torch even on a still frame
+		const unsubscribeScroll = heroScroll.subscribe(() => {
+			if (!isTicking) draw(gsap.ticker.time);
+		});
+
 		return () => {
 			stop();
 			unsubscribe();
+			unsubscribeScroll();
 			window.removeEventListener('pointermove', handlePointer);
 			window.removeEventListener('pointerdown', handleClick);
 			for (const type of INTERACTIONS) window.removeEventListener(type, handleInteraction);

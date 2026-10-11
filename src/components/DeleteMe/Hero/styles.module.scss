@@ -1,7 +1,11 @@
 @use '../keynote' as *;
 
+// NOTE • Sticky: the hero stays put while the page content (a later
+// sibling, stacked above it) slides up over it
 .jacket {
-	position: relative;
+	position: sticky;
+	top: 0;
+	z-index: 0;
 	display: flex;
 	align-items: center;
 	min-height: 100svh;

@@ -42,7 +42,7 @@
 	padding: var(--gap-s);
 	overflow-y: auto;
 	overscroll-behavior: contain;
-	border-radius: 2rem;
+	border-radius: $tile-radius;
 	background: alpha(--global-black, 78);
 	border: 1px solid alpha(--global-white, 12);
 	backdrop-filter: blur(2rem);
@@ -79,7 +79,7 @@
 
 // SECTION • Groups
 .group {
-	border-radius: 1.2rem;
+	border-radius: $inner-radius;
 	background: alpha(--global-white, 5);
 
 	&[open] {

@@ -37,12 +37,16 @@
 	font-weight: var(--weight-medium);
 	color: alpha(--global-white, 75);
 	cursor: pointer;
-	transition:
-		background var(--time-s) var(--easing-bezzy),
-		color var(--time-s) var(--easing-bezzy);
+	transition-property: background, color, scale;
+	transition-duration: var(--time-s);
+	transition-timing-function: var(--easing-bezzy);
 
 	&:hover {
 		color: var(--global-white);
+	}
+
+	&:active:not(:disabled) {
+		scale: 0.96;
 	}
 
 	&[aria-pressed='true'] {
@@ -86,7 +90,7 @@
 	gap: var(--gutter);
 	padding: var(--gutter);
 	min-height: 24rem;
-	border-radius: 2rem;
+	border-radius: $inner-radius;
 	background: alpha(--global-black, 60);
 	border: 1px solid alpha(--global-white, 10);
 }
@@ -113,7 +117,7 @@
 	justify-content: center;
 	gap: var(--gap-xxs);
 	min-width: 0;
-	border-radius: 1.2rem;
+	border-radius: $inner-radius;
 	color: var(--global-white);
 	background: alpha(--global-white, 14);
 	cursor: pointer;

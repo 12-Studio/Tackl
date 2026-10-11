@@ -25,6 +25,9 @@
 	color: alpha(--global-white, 75);
 	background: alpha(--global-white, 8);
 	cursor: pointer;
+	transition-property: background, color, scale;
+	transition-duration: var(--time-s);
+	transition-timing-function: var(--easing-bezzy);
 
 	&:hover {
 		color: var(--global-white);
@@ -33,6 +36,10 @@
 	&[aria-pressed='true'] {
 		color: var(--global-black);
 		background: var(--global-white);
+	}
+
+	&:active:not(:disabled) {
+		scale: 0.96;
 	}
 }
 
@@ -48,7 +55,7 @@
 		@include bodyS;
 
 		padding: var(--gap-s) var(--gap-m);
-		border-radius: 1.2rem;
+		border-radius: $inner-radius;
 		color: var(--global-white);
 		background: alpha(--global-white, 8);
 
@@ -62,7 +69,7 @@
 	min-height: 12rem;
 	padding: var(--gap-m);
 	overflow-wrap: anywhere;
-	border-radius: 1.6rem;
+	border-radius: $inner-radius;
 	background: alpha(--global-black, 55);
 }
 

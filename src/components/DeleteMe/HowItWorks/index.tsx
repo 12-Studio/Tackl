@@ -14,7 +14,7 @@ import s from './styles.module.scss';
 const STEPS = [
 	{
 		title: 'Tokens live in TypeScript.',
-		text: 'Colours, spacing, motion, fonts and breakpoints — one source of truth for CSS and JS alike.',
+		text: 'One source of truth for CSS and JS.',
 		label: 'src/theme/colors/index.ts',
 		code: `
 export const baseColors = {
@@ -26,7 +26,7 @@ export const baseColors = {
 	},
 	{
 		title: 'They become CSS variables.',
-		text: 'Generated for you before dev, build and Storybook. CI fails if they ever drift.',
+		text: 'Generated before every dev and build.',
 		label: 'src/css/tokens.css — generated',
 		code: `
 :root {
@@ -37,7 +37,7 @@ export const baseColors = {
 	},
 	{
 		title: 'SCSS with nothing to import.',
-		text: 'Breakpoints, type and spacing mixins, vw() and alpha() — injected into every file, compiled away.',
+		text: 'Mixins, vw() and alpha(), injected everywhere.',
 		label: 'Card/styles.module.scss',
 		code: `
 .jacket {
@@ -51,7 +51,7 @@ export const baseColors = {
 	},
 	{
 		title: 'Components stay plain JSX.',
-		text: 'Real tags, a CSS module and the grid. Server Components by default — no provider, no runtime.',
+		text: 'Real tags, a CSS module and the grid.',
 		label: 'Card/index.tsx',
 		code: `
 <section data-pad>
@@ -67,12 +67,7 @@ export const baseColors = {
 // Component
 // ------------
 const HowItWorks = () => (
-	<Section
-		id='how'
-		eyebrow='How it works'
-		title='Tokens in. Static CSS out.'
-		intro={<p>Styling is SCSS CSS Modules, compiled at build time. A Server Component can be styled directly.</p>}
-	>
+	<Section id='how' title='Tokens in. Static CSS out.' intro={<p>SCSS modules, compiled at build time.</p>}>
 		<Grid $isFixed>
 			{STEPS.map(({ title, text, label, code }, index) => (
 				<Tile key={title} $l={index % 2 ? '7/13' : '1/7'}>

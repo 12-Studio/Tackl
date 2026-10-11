@@ -54,7 +54,7 @@
 .preview {
 	height: 12rem;
 	overflow: hidden;
-	border-radius: 1.6rem;
+	border-radius: $inner-radius;
 	background: repeating-conic-gradient(alpha(--global-white, 14) 0 25%, transparent 0 50%) 0 0 / 2.4rem 2.4rem;
 }
 

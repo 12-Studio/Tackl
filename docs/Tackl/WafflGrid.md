@@ -48,7 +48,7 @@ Boolean props become data attributes on the `<waffl-grid>`:
 | `$noGutter` | `data-no-gutter` | `gap: 0` — no space between columns or rows |
 | `$noMargin` | `data-no-margin` | `padding-inline: 0` — no side margins |
 | `$isFullscreen` | `data-fullscreen` | `height: 100%` |
-| `$isCenter` | `data-center` | `place-items: center` |
+| `$isCenter` | `data-center` | `align-items: center` — centres children vertically; they keep their column widths |
 
 ```tsx
 <Grid $isFixed $noGutter>…</Grid>

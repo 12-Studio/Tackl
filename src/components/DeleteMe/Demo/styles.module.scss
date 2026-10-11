@@ -45,7 +45,7 @@
 	place-items: center;
 	min-height: 6.4rem;
 	padding: var(--gap-xs);
-	border-radius: 1.2rem;
+	border-radius: $inner-radius;
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 	font-size: 1.2rem;
 	text-align: center;

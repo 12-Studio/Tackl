@@ -2,10 +2,23 @@
 
 .hero {
 	justify-content: flex-end;
-	min-height: 36rem;
+	min-height: 48rem;
 
 	@include bp(l) {
 		min-height: 52rem;
+	}
+}
+
+// NOTE • Photo tiles need height for the picture above their text
+.photo {
+	min-height: 40rem;
+}
+
+.wide {
+	min-height: 32rem;
+
+	@include bp(l) {
+		min-height: 40rem;
 	}
 }
 

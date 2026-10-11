@@ -10,13 +10,12 @@ import s from './styles.module.scss';
 
 // Component
 // ------------
-// NOTE • A keynote "slide": a centred eyebrow, headline and intro, then the
+// NOTE • A keynote "slide": a centred headline and intro, then the
 // section's bento tiles on the grid
-const Section = ({ id, eyebrow, title, intro, children, className }: I.SectionProps) => (
+const Section = ({ id, title, intro, children, className }: I.SectionProps) => (
 	<section id={id} className={cx(s.jacket, className)} aria-labelledby={id && `${id}-title`} data-pad>
 		<Grid $isFixed>
 			<Col $m='2/6' $l='3/11' className={s.header}>
-				<p className={s.eyebrow}>{eyebrow}</p>
 				<h2 id={id && `${id}-title`} className={s.title}>
 					{title}
 				</h2>

@@ -7,6 +7,7 @@
 
 	align-self: center;
 	padding: var(--gap-xs) var(--gap-m);
+	white-space: nowrap;
 	border-radius: var(--br-round);
 	background: alpha(--global-white, 8);
 	color: var(--global-white);
@@ -48,7 +49,7 @@
 	place-items: center;
 	min-height: 8rem;
 	padding: var(--gap-m);
-	border-radius: 1.2rem;
+	border-radius: $inner-radius;
 	text-align: center;
 	background: alpha(--global-white, 10);
 }
@@ -56,7 +57,7 @@
 .nested {
 	outline: 1px dashed alpha(--global-white, 30);
 	outline-offset: 6px;
-	border-radius: 1.2rem;
+	border-radius: $inner-radius;
 }
 
 // SECTION • Playground

@@ -28,8 +28,16 @@
 		color: var(--global-white);
 		cursor: pointer;
 
+		transition-property: background, scale;
+		transition-duration: var(--time-s);
+		transition-timing-function: var(--easing-bezzy);
+
 		&:hover:not(:disabled) {
 			background: alpha(--global-white, 12);
+		}
+
+		&:active:not(:disabled) {
+			scale: 0.96;
 		}
 
 		&:disabled {

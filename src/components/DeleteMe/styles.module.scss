@@ -5,3 +5,12 @@
 	color: var(--global-white);
 	background: var(--global-black);
 }
+
+// NOTE • Stacked above the sticky hero but transparent, so the hero's
+// WebGL field shows through as the page's backdrop. It starts a viewport
+// below the hero: that first viewport of scroll is the hero's zoom.
+.content {
+	position: relative;
+	z-index: 1;
+	margin-top: 100svh;
+}

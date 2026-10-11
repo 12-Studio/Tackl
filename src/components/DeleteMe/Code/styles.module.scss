@@ -5,7 +5,7 @@
 	flex-direction: column;
 	min-width: 0;
 	overflow: hidden;
-	border-radius: 1.6rem;
+	border-radius: $inner-radius;
 	background: alpha(--global-black, 55);
 	border: 1px solid alpha(--global-white, 8);
 }

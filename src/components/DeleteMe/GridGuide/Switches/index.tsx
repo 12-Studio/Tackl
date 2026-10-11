@@ -20,7 +20,7 @@ const SWITCHES: { prop: Switch; comment: string }[] = [
 	{ prop: '$isFixed', comment: 'max-width 1440px, centred' },
 	{ prop: '$noGutter', comment: 'no gap between columns or rows' },
 	{ prop: '$noMargin', comment: 'no margin at the sides' },
-	{ prop: '$isCenter', comment: 'centre items both ways' },
+	{ prop: '$isCenter', comment: 'centre items vertically' },
 	{ prop: '$isFullscreen', comment: 'fill the parent’s height' },
 ];
 
@@ -44,7 +44,8 @@ const Switches = () => {
 	// Derived
 	const active = SWITCHES.filter(({ prop }) => switches[prop]);
 	const gridProps: GridProps = Object.fromEntries(active.map(({ prop }) => [prop, true]));
-	// NOTE • The overlay only mirrors the columns — centring would collapse them
+	// NOTE • The overlay only mirrors the columns — centring would collapse
+	// them to zero height
 	const { $isCenter: _, ...overlayProps } = gridProps;
 	const code = [
 		`<Grid${active.map(({ prop }) => ` ${prop}`).join('')}>`,

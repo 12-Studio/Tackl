@@ -53,7 +53,7 @@
 	@include secondary;
 
 	padding: var(--gap-l);
-	border-radius: 1.6rem;
+	border-radius: $inner-radius;
 	text-align: center;
 	border: 1px dashed alpha(--global-white, 25);
 

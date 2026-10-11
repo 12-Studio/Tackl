@@ -20,7 +20,7 @@
 .frame {
 	position: relative;
 	height: 24rem;
-	border-radius: 2rem;
+	border-radius: $inner-radius;
 	background: alpha(--global-black, 60);
 	border: 1px solid alpha(--global-white, 10);
 	overflow: hidden;

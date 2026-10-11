@@ -58,12 +58,12 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
 - Exports site-wide `metadata` and `viewport`
 - Imports `@css/tokens.css` (generated design tokens) then `@css/global.scss`
-- Provides the `html`/`body` structure (Inter font variable, view transitions)
+- Provides the `html`/`body` structure (Inter font variable)
 - Renders `Header` before `main#page` for correct landmark semantics
 - Fetches global/site-wide CMS data (server component, so it's async-capable)
 - Wraps page content in `SmoothScroll` inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
-**Note**: `main#page` gets `view-transition-name: page` from `src/css/global.scss` — there is no inline style.
+**Note**: page transitions are opted into per page with `PageTransition` — see [PageTransitions.md](./PageTransitions.md).
 
 ### 2. Providers (`app/(site)/Providers.tsx`)
 
@@ -79,7 +79,7 @@ import '@parts/AnimationPlugins';
 const Providers = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
-			{process.env.NODE_ENV === 'development' && <GridExposer />}
+			{GridExposer && <GridExposer />}
 			{process.env.NODE_ENV === 'production' && <CookieBar />}
 			<Contexts>{children}</Contexts>
 		</>
@@ -216,9 +216,10 @@ Design tokens are not React context — they are CSS custom properties on `:root
 ### Development Environment
 
 ```typescript
-{process.env.NODE_ENV === 'development' && (
-    <GridExposer />
-)}
+// Lazy, dev-only — neither its JS nor its CSS ships in production
+const GridExposer = process.env.NODE_ENV === 'development' ? dynamic(() => import('@parts/GridExposer')) : null;
+
+{GridExposer && <GridExposer />}
 ```
 
 **Features**:
@@ -236,7 +237,7 @@ Design tokens are not React context — they are CSS custom properties on `:root
 
 **Features**:
 
-- **CookieBar**: GDPR compliance
+- **CookieBar**: a cookie consent manager (Accept All / Accept Necessary / per-category choices) — see [CookieConsent.md](./CookieConsent.md). It's server-rendered so it paints with the page instead of popping in after hydration (which would make it a late LCP element); an inline `<head>` script (`src/components/CookieBar/consent.ts`) marks `<html data-cookie-consent>` for returning visitors before first paint, so it never flashes for them
 - **Performance**: Optimized builds
 - **Security**: Production-ready
 - **Analytics**: User tracking

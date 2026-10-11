@@ -10,6 +10,7 @@ scripts/build-styles.ts      generator (`bun run styles`, runs before dev/build/
 src/css/tokens.css           GENERATED :root custom properties
 src/css/tackl/               the injected SCSS layer (mixins/functions only, zero CSS output)
 src/css/global.scss          the only global stylesheet (reset, base, grid, utilities layers)
+src/css/_page-transitions.scss  ::view-transition-* animations, loaded by global.scss
 src/theme/tackl/index.ts     `@tackl` — breakpoints, mq, alpha, getVw…
 src/theme/tackl/waffl/       `Grid` + `Col` — `import Grid, { Col } from '@waffl'`
 ```
@@ -18,7 +19,7 @@ src/theme/tackl/waffl/       `Grid` + `Col` — `import Grid, { Col } from '@waf
 
 Token values live in `src/theme/<group>/index.ts` (colors, space, gap, borderRadius, easing, time, fonts, grid). The generator turns them into CSS custom properties on `:root` in `src/css/tokens.css`:
 
-`--brand-c1…c5`, `--global-white|black`, `--feedback-positive|negative|warning`, `--space-s|m|l|xl|col`, `--gap-xxs…uber`, `--br-xs|s|m|l|round`, `--easing-bezzy|bezzy2|bezzy3`, `--time-s|m|l`, `--font-heading|body|mono|script`, `--weight-light…black`.
+`--brand-c1…c5`, `--global-white|black`, `--feedback-positive|negative|warning`, `--space-s|m|l|xl|col`, `--gap-xxs…uber`, `--br-xs|s|m|l|round`, `--easing-bezzy|bezzy2|bezzy3`, `--time-s|m|l`, `--font-heading|body|mono|script|serif`, `--weight-light…black`.
 
 - Use them anywhere as `var(--space-m)` — modules, `global.scss`, inline styles.
 - To change a value, edit the token file and run `bun run styles` (or just `bun run dev`). Never hand-edit the generated files (`tokens.css`, `_breakpoints.scss`, `_grid.scss`) — the pre-commit hook runs `bun run styles --check`.

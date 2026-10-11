@@ -2,6 +2,7 @@
 // ------------
 // import { fetchContent, GET_HOME } from '@cms';
 import DeleteMe from '@parts/DeleteMe';
+import PageTransition from '@parts/PageTransition';
 
 // Data fetching at build time
 // ------------
@@ -16,7 +17,11 @@ import DeleteMe from '@parts/DeleteMe';
 const Page = async () => {
 	// const data = await getHomeData();
 
-	return <DeleteMe />;
+	return (
+		<PageTransition>
+			<DeleteMe />
+		</PageTransition>
+	);
 };
 
 // Exports

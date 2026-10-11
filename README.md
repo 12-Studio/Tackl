@@ -2,7 +2,7 @@
 
 ✨ An animation-first Next.js starter kit for agencies: zero-runtime SCSS CSS Modules, a zero-JS grid system, CSS-variable design tokens, GSAP + Lenis, and a CMS-ready data layer — tuned so the out-of-the-box Lighthouse story is something you can show a client. ✨
 
-![Version Number](https://img.shields.io/badge/Version-5.0.0-8000FF)
+![Version Number](https://img.shields.io/badge/Version-5.1.0-8000FF)
 ![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
 
 > Full guides live in [`docs/`](./docs) — this README is the map.
@@ -58,7 +58,7 @@ Open the repo in VS Code or Cursor and accept the recommended extensions (`.vsco
 
 ## 🎯 What's in the box
 
-- **Next.js 16.3 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds, with Cache Components and Partial Prefetching on by default so routes prerender a static shell, stream the dynamic parts, and share one prefetched App Shell per route instead of one payload per `<Link>`
+- **Next.js 16.4 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds, with Cache Components and Partial Prefetching on by default so routes prerender a static shell, stream the dynamic parts, and share one prefetched App Shell per route instead of one payload per `<Link>`
 - **TypeScript everywhere** — strict, with typed design tokens that derive from the values (add a token, the type follows)
 - **SCSS CSS Modules, zero runtime** — static, per-route CSS; a globally injected SCSS layer (breakpoint, type and spacing mixins) so modules need no imports; Stylelint catches unknown tokens
 - **Tackl theming** — every design token is a CSS custom property on `:root`; runtime theming (dark mode, white-label) is a CSS override, not a re-render
@@ -199,7 +199,7 @@ flowchart TD
     │   │   ├── tokens.css      # GENERATED :root design tokens
     │   │   └── global.scss     # Layers, reset, grid rules, reduced-motion fallback
     │   ├── config.ts           # siteUrl (drives metadataBase, sitemap, robots)
-    │   ├── utils/              # Hooks and helpers (incl. viewTransitions)
+    │   ├── utils/              # Hooks and helpers
     │   └── types/              # Shared + ambient types (CSS custom props, waffl-grid tag)
     ├── tests/                  # Playwright specs (smoke test included)
     ├── sanity/                 # Studio schemas (Sanity scaffolds; config: sanity.config.ts)
@@ -226,6 +226,8 @@ flowchart TD
 | [AppArchitecture](./docs/Tackl/AppArchitecture.md) | The app shell, Providers, data flow |
 | [WafflGrid](./docs/Tackl/WafflGrid.md) · [GridSystemProps](./docs/Tackl/GridSystemProps.md) | Grid internals and prop reference |
 | [SemanticComponents](./docs/Tackl/SemanticComponents.md) | `Col` and the spacing attributes in depth |
+| [PageTransitions](./docs/Tackl/PageTransitions.md) | Route transitions with React's `<ViewTransition>` |
+| [CookieConsent](./docs/Tackl/CookieConsent.md) | The consent manager, gating scripts by category |
 | [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
 | [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
 | [CMS](./docs/CMS.md) | The `@cms` adapter seam and choosing Dato/Sanity |
@@ -243,10 +245,10 @@ Husky's pre-commit hook runs the quality gates (`bun run styles --check` + `bun 
 
 Developed and maintained by the 12 Studio team:
 
-- **Joe Taylor** (joe@12studio.agency)
-- **Adam Roberts** (adam@12studio.agency)
+- **Joe Taylor** (joe@12.studio)
+- **Adam Roberts** (adam@12.studio)
 
-Contributions welcome — check existing GitHub issues first, or reach the team at hello+tackl@12studio.agency.
+Contributions welcome — check existing GitHub issues first, or reach the team at hello+tackl@12.studio.
 
 ### License
 

@@ -18,7 +18,7 @@ Design tokens live in `src/theme` and type styles in `src/css/tackl/_type.scss` 
 ## What it does
 
 1. Verifies the directory is empty (an existing `.git`, `.gitignore`, `README.md` or `LICENSE` is fine — your repo's `.git` and remote are kept)
-2. Downloads the latest tagged release of the template (falls back to `main` if none)
+2. Downloads the latest GitHub release of the template (falls back to `main` if none can be resolved). The lookup uses `GITHUB_TOKEN` / `GH_TOKEN` when set, and otherwise falls back to github.com's non-rate-limited release redirect — so shared IPs (offices, CI) still get the release
 3. Prunes repo-only cargo (the CLI itself, `.github` templates, internal `docs/plans`) and the unused CMS adapter
 4. Sets your package name, initialises git if needed, and runs `bun install`
 

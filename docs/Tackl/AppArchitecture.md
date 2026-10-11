@@ -90,7 +90,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 - ✅ Site-wide `metadata` and `viewport` exports
 - ✅ Imports `@css/tokens.css` then `@css/global.scss` — styles are static CSS, no runtime
 - ✅ Header rendered as a sibling before `main` (landmark semantics)
-- ✅ `main#page` picks up `view-transition-name: page` from `src/css/global.scss`
+- ✅ No view-transition wrapper — pages opt in with `PageTransition` (React's `<ViewTransition>`), see [PageTransitions.md](./PageTransitions.md)
 - ✅ SmoothScroll wraps page content inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
 ### 2. Providers (`app/(site)/Providers.tsx`)
@@ -115,7 +115,7 @@ import '@parts/AnimationPlugins';
 const Providers = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
-			{process.env.NODE_ENV === 'development' && <GridExposer />}
+			{GridExposer && <GridExposer />}
 			{process.env.NODE_ENV === 'production' && <CookieBar />}
 			<Contexts>{children}</Contexts>
 		</>
@@ -268,9 +268,10 @@ User Interaction → Client Component → Providers → Root Layout
 ### Development Environment
 
 ```typescript
-{process.env.NODE_ENV === 'development' && (
-    <GridExposer />
-)}
+// Lazy, dev-only — neither its JS nor its CSS ships in production
+const GridExposer = process.env.NODE_ENV === 'development' ? dynamic(() => import('@parts/GridExposer')) : null;
+
+{GridExposer && <GridExposer />}
 ```
 
 - **GridExposer**: Visual grid overlay for development
@@ -283,7 +284,7 @@ User Interaction → Client Component → Providers → Root Layout
 {process.env.NODE_ENV === 'production' && <CookieBar />}
 ```
 
-- **CookieBar**: GDPR compliance
+- **CookieBar**: a cookie consent manager (Accept All / Accept Necessary / per-category choices) — see [CookieConsent.md](./CookieConsent.md). It's server-rendered so it paints with the page instead of popping in after hydration (which would make it a late LCP element); an inline `<head>` script (`src/components/CookieBar/consent.ts`) marks `<html data-cookie-consent>` for returning visitors before first paint, so it never flashes for them
 - **Performance**: Optimized builds
 - **Security**: Production-ready security measures
 

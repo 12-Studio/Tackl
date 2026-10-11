@@ -37,7 +37,7 @@ Do not re-register plugins in every file. `AnimationPlugins` is imported once in
 | Scroll-linked reveal/scrub | GSAP ScrollTrigger via `useAnimation` |
 | Responsive breakpoints | `useAnimation` matchMedia (`isDesktop`, `isMobile`, `isTablet`) |
 | Simple mount tween (no breakpoints) | `useGSAP` |
-| Route transitions | `ViewTransitions` in `app/(site)/Client.tsx` + `@utils/viewTransitions` |
+| Route transitions | React `<ViewTransition>` via `@parts/PageTransition` + `transitionTypes` on `next/link` |
 | Reduced motion fallback | `PerformanceContext.isReducedMotion` |
 
 ## Rules
@@ -126,7 +126,9 @@ useGSAP(
 
 ## Page transitions
 
-View transitions are enabled in `Client.tsx` via `ViewTransitions`. Link helpers live in `src/utils/viewTransitions/`. Use those utilities for navigations that should participate in transitions.
+Route transitions are React's built-in `<ViewTransition>` — Next.js navigations are already transitions, so there is no provider or custom router. Wrap each page's content in `PageTransition` (`@parts/PageTransition`) and tag direction with `transitionTypes={[NAV_FORWARD]}` / `[NAV_BACK]` on a plain `next/link` (or `router.push(href, { transitionTypes })`). Untyped navigations crossfade.
+
+The animations are CSS keyframes on `::view-transition-old/new(.pageFade|.navForward|.navBack)` in `src/css/_page-transitions.scss` — not GSAP. Don't drive page transitions with GSAP tweens on the pseudo-elements; it fights React's timing. Use GSAP for in-page motion once the new page has mounted.
 
 ## Sanity / CMS content
 

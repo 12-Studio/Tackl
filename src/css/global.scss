@@ -89,7 +89,6 @@
 	#page {
 		height: 100%;
 		overflow: hidden;
-		view-transition-name: page;
 	}
 
 	// Focus — invisible for pointer interactions, a clear ring for keyboard
@@ -126,29 +125,6 @@
 		}
 	}
 
-	// Page transitions — the View Transitions API
-	::view-transition-old(root),
-	::view-transition-new(root) {
-		animation: none !important; // must override the UA's default view-transition animation
-	}
-
-	::view-transition-group(root) {
-		z-index: auto !important; // must override the UA's default view-transition stacking
-	}
-
-	::view-transition-image-pair(root) {
-		isolation: isolate;
-		will-change: transform, opacity, clip-path; // NOTE • Change to whatever property you want to animate
-		z-index: 1;
-	}
-
-	::view-transition-new(root) {
-		z-index: 2;
-	}
-
-	::view-transition-old(root) {
-		z-index: 1;
-	}
 }
 
 // SECTION • Waffl Grid
@@ -250,6 +226,11 @@
 		}
 	}
 }
+
+// SECTION • Page transitions
+// NOTE • The ::view-transition-* animations behind @parts/PageTransition —
+// see src/css/_page-transitions.scss.
+@include meta.load-css('page-transitions');
 
 // SECTION • Utilities
 // NOTE • Loaded last so the layers above are declared first. Spacing

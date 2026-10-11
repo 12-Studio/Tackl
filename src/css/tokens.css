@@ -42,6 +42,7 @@
 	--font-body: var(--inter), Arial, sans-serif;
 	--font-mono: var(--inter), Arial, sans-serif;
 	--font-script: var(--inter), Arial, sans-serif;
+	--font-serif: Georgia, 'Times New Roman', serif;
 	--weight-light: 300;
 	--weight-regular: 400;
 	--weight-medium: 500;

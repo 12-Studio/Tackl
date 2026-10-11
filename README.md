@@ -58,7 +58,7 @@ Open the repo in VS Code or Cursor and accept the recommended extensions (`.vsco
 
 ## 🎯 What's in the box
 
-- **Next.js 16.3 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds, with Cache Components and Partial Prefetching on by default so routes prerender a static shell, stream the dynamic parts, and share one prefetched App Shell per route instead of one payload per `<Link>`
+- **Next.js 16.4 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds, with Cache Components and Partial Prefetching on by default so routes prerender a static shell, stream the dynamic parts, and share one prefetched App Shell per route instead of one payload per `<Link>`
 - **TypeScript everywhere** — strict, with typed design tokens that derive from the values (add a token, the type follows)
 - **SCSS CSS Modules, zero runtime** — static, per-route CSS; a globally injected SCSS layer (breakpoint, type and spacing mixins) so modules need no imports; Stylelint catches unknown tokens
 - **Tackl theming** — every design token is a CSS custom property on `:root`; runtime theming (dark mode, white-label) is a CSS override, not a re-render
@@ -243,10 +243,10 @@ Husky's pre-commit hook runs the quality gates (`bun run styles --check` + `bun 
 
 Developed and maintained by the 12 Studio team:
 
-- **Joe Taylor** (joe@12studio.agency)
-- **Adam Roberts** (adam@12studio.agency)
+- **Joe Taylor** (joe@12.studio)
+- **Adam Roberts** (adam@12.studio)
 
-Contributions welcome — check existing GitHub issues first, or reach the team at hello+tackl@12studio.agency.
+Contributions welcome — check existing GitHub issues first, or reach the team at hello+tackl@12.studio.
 
 ### License
 

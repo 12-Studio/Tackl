@@ -76,7 +76,7 @@ src/
       _index.scss            ← @forward all of the below
       _breakpoints.scss      ← GENERATED: $breakpoints map, bp(), bpd()
       _grid.scss             ← GENERATED: $columns, $gutters, $grid-max, $design-widths
-      _helpers.scss          ← vw(), trans(), noscrollbars
+      _helpers.scss          ← vw(), alpha(), noscrollbars
       _spacing.scss          ← pad(), mar() mixins
       _type.scss             ← HAND-WRITTEN: displayL … captionS mixins
     tokens.css               ← GENERATED: :root { --brand-c1: …; … }
@@ -220,7 +220,7 @@ const nextConfig = {
 		background: var(--brand-c1);
 		transition: opacity var(--time-s) var(--easing-bezzy);
 
-		&:hover { background: trans(--brand-c1, 85); }
+		&:hover { background: alpha(--brand-c1, 85); }
 	}
 }
 ```
@@ -243,8 +243,8 @@ fallback is one line per module, `@use 'tackl' as *;`. It costs nothing at runti
 }
 
 // Translucent token, the SCSS twin of alpha() in @tackl
-// NOTE • Not named alpha(): Sass ships a built-in alpha() colour function
-@function trans($token, $opacity) {
+// NOTE • Originally fade(); renamed to alpha() during review (see §14)
+@function alpha($token, $opacity) {
 	@return color-mix(in srgb, var(#{$token}) #{$opacity * 1%}, transparent);
 }
 ```
@@ -480,7 +480,7 @@ Update:
 | `${headlineL}` | `@include headlineL;` or the `t-headlineL` class |
 | `${bp.l`…`}` | `@include bp(l) { … }` |
 | `getVw(48)` | `vw(48)` |
-| `alpha('--brand-c1', 20)` | `trans(--brand-c1, 20)` |
+| `alpha('--brand-c1', 20)` | `alpha(--brand-c1, 20)` |
 | `$pad` / `$mar` props | `data-pad` / `data-mar`, or `@include pad;` |
 
 - **Class names are camelCase** (`.removeButton` → `s.removeButton`).
@@ -491,10 +491,10 @@ Update:
 
 | File | Change |
 | --- | --- |
-| `AGENTS.md` | Rewrite **The one rule** (`Div` → `Col`, grid-only) and the **Imports & aliases** table (`@tackl` JS utils, no `@tackl/type` import). Rewrite **Writing a component** (`styles.module.scss`, `import s from …`, `.jacket`). Rewrite **Styling & theming**: injected mixins, `bp()`, type and spacing APIs, `@layer utilities`, `trans()` / `vw()`, data attributes for state. Ban list becomes: no Tailwind, LESS, CSS-in-JS or inline styles (except `--col-*` / dynamic custom properties). Waffl grid example uses `Col`. **Before you finish**: lint now runs Stylelint too, and generated files must not be hand-edited. |
+| `AGENTS.md` | Rewrite **The one rule** (`Div` → `Col`, grid-only) and the **Imports & aliases** table (`@tackl` JS utils, no `@tackl/type` import). Rewrite **Writing a component** (`styles.module.scss`, `import s from …`, `.jacket`). Rewrite **Styling & theming**: injected mixins, `bp()`, type and spacing APIs, `@layer utilities`, `alpha()` / `vw()`, data attributes for state. Ban list becomes: no Tailwind, LESS, CSS-in-JS or inline styles (except `--col-*` / dynamic custom properties). Waffl grid example uses `Col`. **Before you finish**: lint now runs Stylelint too, and generated files must not be hand-edited. |
 | `skills/styling/styled-components/` | **Deleted** |
 | `skills/styling/styled-components-helper/` | **Deleted** |
-| `skills/styling/scss-modules/SKILL.md` | **New.** Conventions, the injected layer, type/spacing APIs, Grid/Col, data-attribute state, common mistakes (rules in the injected layer, top-level tag selectors in modules, Sass `alpha()` clash, editing generated files) |
+| `skills/styling/scss-modules/SKILL.md` | **New.** Conventions, the injected layer, type/spacing APIs, Grid/Col, data-attribute state, common mistakes (rules in the injected layer, top-level tag selectors in modules, hand-rolled rgba, editing generated files) |
 | `CLAUDE.md` | No change (points at AGENTS.md) |
 
 Docs alongside: `docs/Tackl/` Theming, WritingComponents, SemanticComponents
@@ -576,6 +576,9 @@ Header → Footer → Icon → DeleteMe → GridExposer (data attributes + `--co
 What changed from the plan while building it:
 
 - **`_functions.scss` → `_helpers.scss`**: it also holds the `noscrollbars` mixin.
+- **`fade()` → `alpha()`**: the SCSS translucency helper shares its name with the JS
+  `alpha()`. It shadows Sass's legacy global `alpha($color)` with no warnings (verified
+  with sass-embedded); `color.channel()` covers reading an alpha channel.
 - **Font weights are tokens too**: `--weight-light … --weight-black` are generated
   alongside `--font-*`, so the hand-written type mixins use `var(--weight-regular)`.
 - **`typeRoles` lives in ThemeShowcase** (the only place that shows the role notes),

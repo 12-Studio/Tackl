@@ -48,7 +48,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 
 ### Editor setup
 
-Open the repo in VS Code or Cursor and accept the recommended extensions (`.vscode/extensions.json`): **Biome** (TS/JS formatting + lint), **Stylelint** (SCSS lint), **CSS Variable Autocomplete** (token autocomplete with colour swatches, read from `tokens.css`) and **SCSS IntelliSense** (completion for `bp()`, the type mixins, `vw()`, `trans()`). The shared `.vscode/settings.json` wires them up.
+Open the repo in VS Code or Cursor and accept the recommended extensions (`.vscode/extensions.json`): **Biome** (TS/JS formatting + lint), **Stylelint** (SCSS lint), **CSS Variable Autocomplete** (token autocomplete with colour swatches, read from `tokens.css`) and **SCSS IntelliSense** (completion for `bp()`, the type mixins, `vw()`, `alpha()`). The shared `.vscode/settings.json` wires them up.
 
 ### Working with styles
 
@@ -79,7 +79,7 @@ The kit ships **~190 KB of gzipped JS** on first load. That budget is spent deli
 
 ### 1. SCSS modules, nothing to import
 
-Every component styles itself from a `styles.module.scss` next to it. The Tackl SCSS layer — breakpoint, type and spacing mixins, `vw()`, `trans()` — is injected into every `.scss` file, so modules start writing immediately:
+Every component styles itself from a `styles.module.scss` next to it. The Tackl SCSS layer — breakpoint, type and spacing mixins, `vw()`, `alpha()` — is injected into every `.scss` file, so modules start writing immediately:
 
 ```tsx
 import s from './styles.module.scss';
@@ -91,7 +91,7 @@ import s from './styles.module.scss';
 
 ```scss
 .jacket {
-	background: trans(--brand-c1, 20);
+	background: alpha(--brand-c1, 20);
 
 	@include bp(l) {
 		padding-inline: var(--gap-xl);
@@ -110,7 +110,7 @@ Raw values live once in `src/theme/*`; `bun run styles` generates them onto `:ro
 ```scss
 .card {
 	padding: var(--space-m);
-	border-color: trans(--brand-c1, 20);  /* → color-mix(in srgb, var(--brand-c1) 20%, transparent) */
+	border-color: alpha(--brand-c1, 20);  /* → color-mix(in srgb, var(--brand-c1) 20%, transparent) */
 }
 ```
 
@@ -195,7 +195,7 @@ flowchart TD
     │   │   ├── cssVariables/   # toVarRefs / toVarDeclarations helpers
     │   │   └── tackl/          # Col, Waffl Grid, breakpoints/mq, alpha, getVw
     │   ├── css/
-    │   │   ├── tackl/          # Injected SCSS layer: bp(), type + spacing mixins, vw(), trans()
+    │   │   ├── tackl/          # Injected SCSS layer: bp(), type + spacing mixins, vw(), alpha()
     │   │   ├── utilities/      # Global type (t-*) and spacing (data-pad/mar) utilities
     │   │   ├── tokens.css      # GENERATED :root design tokens
     │   │   └── global.scss     # Layers, reset, grid rules, reduced-motion fallback

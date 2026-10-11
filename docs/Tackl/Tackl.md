@@ -35,7 +35,7 @@ See [Theming.md](./Theming.md) for the full guide.
 | --- | --- |
 | `bp($key)` | `@include bp(m) { … }` — mobile-first `min-width` query |
 | `bpd($key)` | `@include bpd(m) { … }` — the rare `max-width` case (0.02px under) |
-| `trans($color, $opacity)` | `background: trans(--brand-c1, 20);` — translucent color via `color-mix` |
+| `alpha($color, $opacity)` | `background: alpha(--brand-c1, 20);` — translucent color via `color-mix` |
 | `vw($px, $design: desktop)` | `font-size: vw(48);` · `margin: vw(24, mobile);` |
 | `noscrollbars` | `@include noscrollbars;` |
 | `pad($side)` / `mar($side)` | `@include pad;` · `@include pad(top);` · `@include mar(bottom);` — sides: `block` (default), `top`, `bottom` |
@@ -63,7 +63,7 @@ const Example = ({ isOpen, className }: I.ExampleProps) => (
 // src/components/Example/styles.module.scss
 .jacket {
 	display: flex;
-	background: trans(--brand-c3, 40);
+	background: alpha(--brand-c3, 40);
 	transition: background var(--time-m) var(--easing-bezzy);
 
 	@include bp(l) {
@@ -141,7 +141,7 @@ Tokens in `src/theme/grid/index.ts`: `s` 320, `sm` 390, `m` 700, `l` 1024, `xl` 
 | --- | --- |
 | `Col` | Grid child with responsive spans |
 | `breakpoints`, `mq` | Breakpoint values and media query strings |
-| `alpha(color, opacity)` | JS twin of `trans()`: `alpha('--brand-c1', 20)` → `color-mix(in srgb, var(--brand-c1) 20%, transparent)` |
+| `alpha(color, opacity)` | Same as the SCSS `alpha()`: `alpha('--brand-c1', 20)` → `color-mix(in srgb, var(--brand-c1) 20%, transparent)` |
 | `getVw(px)`, `getVwTablet(px)`, `getVwMobile(px)` | px → vw against the design widths (JS twins of `vw()`) |
 
 ## 9. Cascade Layers

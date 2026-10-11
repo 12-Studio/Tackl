@@ -11,7 +11,7 @@ flowchart TD
     V -->|bun run styles| S["src/css/tackl/_breakpoints.scss + _grid.scss (generated)\n$breakpoints, bp(), bpd(), $columns, $gutters"]
     V -->|toVarRefs| T["theme object (@theme)\ntheme.colors.brand.c1 = 'var(--brand-c1)'"]
     R --> B["Browser resolves at paint\n(runtime overrides apply here)"]
-    M["SCSS modules\nvar(--space-m) · trans(--brand-c1, 20)"] --> B
+    M["SCSS modules\nvar(--space-m) · alpha(--brand-c1, 20)"] --> B
     T --> J["JS / GSAP\ngsap.to(el, { color: theme.colors.brand.c1 })"] --> B
 ```
 
@@ -71,14 +71,14 @@ gsap.to(el, { color: theme.colors.brand.c1 });
 
 Because the values are `var()` references, the browser resolves them — JS-driven styles follow runtime theme overrides too. `theme.font.weight` and `theme.grid` are the exceptions: they hold literal values (see [below](#what-is-not-a-runtime-variable)).
 
-### Opacity — `trans()` and `alpha()`
+### Opacity — `alpha()` and `alpha()`
 
 Color tokens are single values; opacity is applied at the point of use with `color-mix()`. There's a twin helper on each side:
 
 ```scss
 // SCSS (injected — no import)
-background: trans(--brand-c1, 20);
-border-color: trans(#ffffff, 15);
+background: alpha(--brand-c1, 20);
+border-color: alpha(#ffffff, 15);
 ```
 
 ```tsx
@@ -92,11 +92,11 @@ gsap.to(el, { backgroundColor: alpha('--brand-c1', 20) });
 Both emit the same CSS:
 
 ```
-trans(--brand-c1, 20)   →  color-mix(in srgb, var(--brand-c1) 20%, transparent)
+alpha(--brand-c1, 20)   →  color-mix(in srgb, var(--brand-c1) 20%, transparent)
 alpha('--brand-c1', 20) → color-mix(in srgb, var(--brand-c1) 20%, transparent)
 ```
 
-They accept a token name (`--brand-c1`) or any colour value (`alpha()` also takes a theme token, which is already a `var()` reference). Opacity is clamped to 0–100; at 100 the colour is returned unchanged. The browser does the mixing, so translucent colours follow runtime overrides. (The SCSS helper is called `trans` because Sass already has a built-in `alpha()`.)
+They accept a token name (`--brand-c1`) or any colour value (`alpha()` also takes a theme token, which is already a `var()` reference). Opacity is clamped to 0–100; at 100 the colour is returned unchanged. The browser does the mixing, so translucent colours follow runtime overrides. The SCSS and JS helpers share the name `alpha` and the same arguments. (The SCSS one replaces Sass's legacy global `alpha($color)`; use `color.channel()` from `sass:color` if you ever need to read a colour's alpha channel.)
 
 ## Runtime theming
 

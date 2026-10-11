@@ -31,7 +31,7 @@ Work on a dedicated branch, one phase per commit. Coming from v3? Do [MigratingF
 | `$padTop` / `$padBottom` / `$marTop` / `$marBottom` | `data-pad='top'` / `data-pad='bottom'` / `data-mar='top'` / `data-mar='bottom'` (values combine: `data-mar='top bottom'`) |
 | Spacing in a styled block | `@include pad;` · `@include pad(top);` · `@include mar(bottom);` |
 | `getBrand('c1')` | `var(--brand-c1)` |
-| `getBrand('c1', 20)` · `getGlobal('white', 80)` | `trans(--brand-c1, 20)` · `trans(--global-white, 80)` in SCSS — `alpha('--brand-c1', 20)` in JS |
+| `getBrand('c1', 20)` · `getGlobal('white', 80)` | `alpha(--brand-c1, 20)` · `alpha(--global-white, 80)` in SCSS — `alpha('--brand-c1', 20)` in JS |
 | `getFeedback('negative')` | `var(--feedback-negative)` |
 | `getSpace('m')` · `getGap('m')` · `getRadius('m')` | `var(--space-m)` · `var(--gap-m)` · `var(--br-m)` |
 | `${getTime('m')} ${getEase('bezzy')}` | `var(--time-m) var(--easing-bezzy)` |
@@ -81,7 +81,7 @@ export const Title = styled(Div).attrs({ as: 'h2' })(
 .jacket {
 	display: flex;
 	padding: var(--gap-l);
-	background: trans(--brand-c3, 40);
+	background: alpha(--brand-c3, 40);
 	transition: background var(--time-m) var(--easing-bezzy);
 
 	@include bp(l) {
@@ -125,7 +125,7 @@ Copy these from the Tackl 5 template rather than editing by hand:
 	},
 	```
 
-	This injects the Tackl SCSS layer (`src/css/tackl` — `bp`, `bpd`, `vw`, `trans`, `noscrollbars`, `pad`, `mar`, type mixins; no CSS output) into every `.scss` file.
+	This injects the Tackl SCSS layer (`src/css/tackl` — `bp`, `bpd`, `vw`, `alpha`, `noscrollbars`, `pad`, `mar`, type mixins; no CSS output) into every `.scss` file.
 - **Dependencies** — remove `styled-components`; add `sass-embedded`, `stylelint`, `stylelint-config-standard-scss` and `stylelint-value-no-unknown-custom-properties`.
 - **Generator** — `scripts/build-styles.ts` (`bun run styles`) writes `src/css/tokens.css`, `src/css/tackl/_breakpoints.scss` and `src/css/tackl/_grid.scss` from the TS tokens. `dev`, `build`, `storybook` and `build-storybook` run it first. The generated files are committed; never hand-edit them.
 - **Linting** — `bun run lint` is now `biome check . && stylelint "**/*.scss"` (Biome can't parse SCSS). `.stylelintrc.json` enforces camelCase classes and mixins, and checks every `var(--…)` against `tokens.css`, so token typos fail lint.

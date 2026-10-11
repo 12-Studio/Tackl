@@ -49,7 +49,7 @@ Children that don't need a narrower span don't need `Col` at all (see the grid s
 | `import { fetchContent, GET_HOME } from '@cms'` | CMS data | importing a CMS adapter folder directly |
 
 SCSS needs **no imports**: the Tackl layer (`bp()`, type and spacing mixins, `vw()`,
-`trans()`) is injected into every `.scss` file via `sassOptions.additionalData`.
+`alpha()`) is injected into every `.scss` file via `sassOptions.additionalData`.
 
 When editing existing files, normalise any legacy imports to the forms above.
 
@@ -136,8 +136,8 @@ existing file, match the labels and order already there.
   See [docs/Tackl/Theming.md](./docs/Tackl/Theming.md).
 - **Use tokens with `var()`** in SCSS. In JS, `theme` from `@theme` holds the same `var()`
   references (`theme.colors.brand.c1`).
-- **Translucent colors:** `trans(--brand-c1, 20)` in SCSS, `alpha('--brand-c1', 20)` in JS —
-  both emit `color-mix`. (`trans`, not `alpha`, in SCSS: Sass has a built-in `alpha()`.)
+- **Translucent colors:** `alpha(--brand-c1, 20)` in SCSS, `alpha('--brand-c1', 20)` in JS —
+  both emit `color-mix`. Same name and signature in both languages.
 - **Breakpoints are NOT CSS variables** (media queries can't read them). **Mobile-first**:
   base styles are mobile; `@include bp(m) { … }`, `bp(l)`, … layer changes upward with
   `min-width`. `@include bpd(m) { … }` is the rare `max-width` case. In JS use
@@ -158,7 +158,7 @@ existing file, match the labels and order already there.
 .jacket {
 	display: flex;
 	padding: var(--gap-l);
-	background: trans(--brand-c3, 40);
+	background: alpha(--brand-c3, 40);
 	transition: background var(--time-m) var(--easing-bezzy);
 
 	@include bp(l) {

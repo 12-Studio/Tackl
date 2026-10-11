@@ -84,7 +84,7 @@ export interface CardProps {
 	gap: var(--gap-m);
 	padding: var(--gap-l);
 
-	background: trans(--brand-c3, 40);
+	background: alpha(--brand-c3, 40);
 	border-radius: var(--br-m);
 	transition: background var(--time-m) var(--easing-bezzy);
 
@@ -104,7 +104,7 @@ export interface CardProps {
 
 .body {
 	@include bodyS;
-	color: trans(--global-white, 80);
+	color: alpha(--global-white, 80);
 }
 ```
 
@@ -152,7 +152,7 @@ Every `.scss` file gets `@use 'tackl' as *;` prepended automatically (`sassOptio
 | --- | --- | --- |
 | `bp($key)` | mixin — `min-width` query | `@include bp(m) { … }` |
 | `bpd($key)` | mixin — `max-width` query (rare) | `@include bpd(m) { … }` |
-| `trans($color, $opacity)` | function — translucent colour | `background: trans(--brand-c1, 20);` |
+| `alpha($color, $opacity)` | function — translucent colour | `background: alpha(--brand-c1, 20);` |
 | `vw($px, $design: desktop)` | function — px → vw against a design width | `font-size: vw(48);` `margin: vw(24, mobile);` |
 | `pad($side)` / `mar($side)` | mixins — section spacing | `@include pad;` `@include mar(bottom);` |
 | `noscrollbars` | mixin — hide scrollbars, keep scrolling | `@include noscrollbars;` |
@@ -307,7 +307,7 @@ Each span falls back to the breakpoint below it, so `$l` alone stays full-width 
 | Name the outermost class `.jacket`, camelCase the rest | Kebab-case classes you then have to read as `s['remove-button']` |
 | Base styles = mobile, `@include bp(m)` upwards | Desktop styles first, `bpd()` everywhere |
 | `var(--brand-c1)` | Hard-coded hex values |
-| `trans(--brand-c1, 20)` for translucency | Hand-rolled rgba strings |
+| `alpha(--brand-c1, 20)` for translucency | Hand-rolled rgba strings |
 | `transition: x var(--time-m) var(--easing-bezzy)` | Magic duration numbers |
 | `&[data-state='open']` for state | Toggling one-off global classes |
 | Let grid children default to full width | `<Col $s='1/-1'>` on everything |

@@ -12,11 +12,12 @@
 	@return math.div($px, map.get(grid.$design-widths, $design)) * 100vw;
 }
 
-// Translucent colour via color-mix — the SCSS twin of alpha() in @tackl.
-// Accepts a token name or any colour value.
-// NOTE • Not named alpha(): Sass ships a built-in alpha() colour function
-// Usage: background: trans(--brand-c1, 20);
-@function trans($color, $opacity) {
+// Translucent colour via color-mix — same name and signature as alpha() in
+// @tackl (JS). Accepts a token name or any colour value.
+// NOTE • Deliberately shadows Sass's legacy global alpha($color) — for reading
+// a colour's alpha channel, use color.channel() from sass:color instead.
+// Usage: background: alpha(--brand-c1, 20);
+@function alpha($color, $opacity) {
 	$value: $color;
 
 	@if meta.type-of($color) == 'string' and string.index($color, '--') == 1 {

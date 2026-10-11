@@ -35,7 +35,7 @@ const Example = ({ isOpen, className }: I.ExampleProps) => (
 .jacket {
 	display: grid;
 	gap: var(--gap-m);
-	background: trans(--brand-c3, 40);
+	background: alpha(--brand-c3, 40);
 	transition: background var(--time-m) var(--easing-bezzy);
 
 	@include bp(l) {
@@ -75,7 +75,7 @@ const Example = ({ isOpen, className }: I.ExampleProps) => (
 | Breakpoint up / down | `@include bp(m) { … }` · `@include bpd(m) { … }` |
 | Type style | `@include displayL;` … `@include captionS;` |
 | Section spacing | `@include pad;` `@include pad(top);` `@include mar(bottom);` |
-| Translucent colour | `trans(--brand-c1, 20)` (not `alpha` — Sass has a built-in `alpha()`) |
+| Translucent colour | `alpha(--brand-c1, 20)` (same as `alpha()` in JS) |
 | px → vw | `vw(48)` (desktop 1440) · `vw(24, mobile)` · `vw(32, tablet)` |
 | Hide scrollbars | `@include noscrollbars;` |
 | Grid values | `$breakpoints`, `$columns`, `$gutters`, `$grid-max`, `$design-widths` |
@@ -140,7 +140,7 @@ import Grid from '@waffl';
 
 - Importing `styled`, `Div`, `getBrand`, `bp`, `headlineL` from old Tackl APIs — they're gone.
 - Adding rules (not just mixins) to `src/css/tackl/*` — duplicates CSS everywhere.
-- Using Sass `alpha()` for translucency — it's Sass's colour function; use `trans()`.
+- Hand-rolling `rgba()` / hex-with-alpha instead of `alpha(--token, n)` — it breaks runtime theming.
 - Hard-coding breakpoint pixels in JS — use `mq` / `breakpoints` from `@tackl`.
 - Editing `tokens.css` or the generated `_breakpoints.scss` / `_grid.scss` by hand.
 - Toggling classes for state instead of `data-*` attributes.

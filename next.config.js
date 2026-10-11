@@ -5,7 +5,7 @@ const nextConfig = {
 	// Sass — styles are SCSS CSS Modules (styles.module.scss) plus the global
 	// src/css/global.scss. `additionalData` prepends the Tackl SCSS layer
 	// (src/css/tackl) to every .scss file, so bp(), the type and spacing mixins,
-	// vw() and trans() work with no imports. That layer emits no CSS itself.
+	// vw() and alpha() work with no imports. That layer emits no CSS itself.
 	sassOptions: {
 		implementation: 'sass-embedded',
 		loadPaths: [path.join(__dirname, 'src/css')],

@@ -3,6 +3,7 @@
 import Grid, { Col } from '@waffl';
 import CopyButton from '../CopyButton';
 import HeroBackdrop from '../HeroBackdrop';
+import HeroTweaks from '../HeroTweaks';
 
 // Styles
 // ------------
@@ -17,6 +18,7 @@ const REPO_URL = 'https://github.com/12-Studio/Tackl';
 const Hero = () => (
 	<header className={s.jacket}>
 		<HeroBackdrop />
+		<HeroTweaks />
 
 		<Grid $isFixed className={s.content}>
 			<Col $m='2/6' $l='3/11' className={s.inner}>

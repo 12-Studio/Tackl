@@ -7,16 +7,13 @@ import { useEffect, useRef } from 'react';
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
+import { COLOURS, type ColourKey, UNIFORM_SETTINGS, uniformName } from './settings';
 import { FRAGMENT, MAX_COLUMNS, MAX_PULSES, VERTEX } from './shaders';
+import { heroSettings } from './store';
 import s from './styles.module.scss';
 
 // Constants
 // ------------
-const MAX_DPR = 1.5;
-
-// NOTE • Starts a few seconds in, so the still frame shows it mid-flow
-const TIME_OFFSET = 8;
-
 // NOTE • The age of an unused pulse slot — far past the end of a pulse
 const NO_CLICK = 1000;
 
@@ -31,10 +28,9 @@ const SLOW_FRAME_MS = 50;
 
 const INTERACTIONS = ['pointermove', 'pointerdown', 'wheel', 'touchstart', 'keydown'] as const;
 
-// NOTE • After this long without pointer movement the pointer wanders on
-// its own; POINTER_EASE_MS is how quickly it catches up with its target
-const IDLE_MS = 2500;
-const POINTER_EASE_MS = 250;
+// NOTE • Pointer events from inside this (the tweak panel) leave the
+// field alone — no torch movement, no pulse
+const IGNORE = '[data-hero-ignore]';
 
 const UNIFORMS = [
 	'uResolution',
@@ -47,9 +43,8 @@ const UNIFORMS = [
 	'uDeep',
 	'uAccent',
 	'uLight',
-] as const;
-
-type Uniform = (typeof UNIFORMS)[number];
+	...UNIFORM_SETTINGS.map(uniformName),
+];
 
 // NOTE • Releasing the GPU context waits a tick: StrictMode (and Fast
 // Refresh) unmount and remount straight away, and a lost context can't be
@@ -59,11 +54,20 @@ type Colour = [number, number, number];
 
 // Helpers
 // ------------
-const readColour = (token: string, fallback: Colour): Colour => {
-	const value = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
-	const hex = value.match(/^#([\da-f]{6})$/i)?.[1];
-	if (!hex) return fallback;
+const WHITE: Colour = [1, 1, 1];
+
+const parseHex = (value: string): Colour | null => {
+	const hex = value.trim().match(/^#([\da-f]{6})$/i)?.[1];
+	if (!hex) return null;
 	return [0, 2, 4].map(offset => Number.parseInt(hex.slice(offset, offset + 2), 16) / 255) as Colour;
+};
+
+// NOTE • An override from the tweak panel, else the brand token
+const readColour = (key: ColourKey): Colour => {
+	const override = heroSettings.get().colours[key];
+	const token = COLOURS.find(colour => colour.key === key)?.token ?? '';
+	const value = override ?? getComputedStyle(document.documentElement).getPropertyValue(token);
+	return parseHex(value) ?? WHITE;
 };
 
 const compile = (gl: WebGL2RenderingContext, type: number, source: string) => {
@@ -86,10 +90,9 @@ const link = (gl: WebGL2RenderingContext) => {
 	gl.bindAttribLocation(program, 0, 'aPosition');
 	gl.linkProgram(program);
 	if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
-	const uniforms = Object.fromEntries(UNIFORMS.map(name => [name, gl.getUniformLocation(program, name)])) as Record<
-		Uniform,
-		WebGLUniformLocation | null
-	>;
+	const uniforms: Record<string, WebGLUniformLocation | null> = Object.fromEntries(
+		UNIFORMS.map(name => [name, gl.getUniformLocation(program, name)])
+	);
 	return { program, uniforms };
 };
 
@@ -129,11 +132,12 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 		// biome-ignore lint/correctness/useHookAtTopLevel: WebGL's useProgram, not a React hook
 		gl.useProgram(program);
 
-		const colours = {
-			uDeep: readColour('--brand-c2', [0.22, 0.01, 0.47]),
-			uAccent: readColour('--brand-c1', [0.5, 0, 1]),
-			uLight: readColour('--global-white', [1, 1, 1]),
-		};
+		const readColours = () => ({
+			uDeep: readColour('deep'),
+			uAccent: readColour('accent'),
+			uLight: readColour('light'),
+		});
+		let colours = readColours();
 
 		let dpr = 1;
 		let columns = new Float32Array(MAX_COLUMNS * 2);
@@ -150,7 +154,7 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 		// NOTE • Size the canvas and re-measure the columns (they move at
 		// every breakpoint)
 		const measure = () => {
-			dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+			dpr = Math.min(window.devicePixelRatio || 1, heroSettings.get().values.maxDpr);
 			const bounds = canvas.getBoundingClientRect();
 			canvas.width = Math.round(bounds.width * dpr);
 			canvas.height = Math.round(bounds.height * dpr);
@@ -169,16 +173,18 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 			columns.set(measured.flat());
 			columnCount = measured.length;
 
-			// NOTE • The torch sits on the bottom edge, so only its top half shows —
-			// the pointer only moves it sideways
-			pointer.y = 0;
 			if (lastMove === Number.NEGATIVE_INFINITY) pointer.x = target.x = canvas.width * 0.5;
 		};
 
 		const draw = (time: number) => {
+			const { values } = heroSettings.get();
+			// NOTE • The torch sits at a fixed height — on the bottom edge by
+			// default, so only its top half shows; the pointer only moves it sideways
+			pointer.y = canvas.height * values.torchHeight;
+			for (const key of UNIFORM_SETTINGS) gl.uniform1f(uniforms[uniformName(key)] ?? null, values[key]);
 			gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
 			gl.uniform1f(uniforms.uDpr, dpr);
-			gl.uniform1f(uniforms.uTime, time + TIME_OFFSET);
+			gl.uniform1f(uniforms.uTime, time + values.timeOffset);
 			gl.uniform2fv(uniforms.uColumns, columns);
 			gl.uniform1i(uniforms.uColumnCount, columnCount);
 			gl.uniform2f(uniforms.uPointer, pointer.x, pointer.y);
@@ -197,12 +203,16 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 		// NOTE • Ease sideways towards the real pointer; when idle, sway
 		// slowly from side to side so the torch still shows itself
 		const followPointer = (time: number, deltaTime: number) => {
-			if (performance.now() - lastMove > IDLE_MS) target.x = canvas.width * (0.5 + 0.3 * Math.sin(time * 0.31));
-			const ease = 1 - Math.exp(-deltaTime / POINTER_EASE_MS);
+			const { idleDelay, swayAmount, swaySpeed, followEase } = heroSettings.get().values;
+			if (performance.now() - lastMove > idleDelay) {
+				target.x = canvas.width * (0.5 + swayAmount * Math.sin(time * swaySpeed));
+			}
+			const ease = followEase > 0 ? 1 - Math.exp(-deltaTime / followEase) : 1;
 			pointer.x += (target.x - pointer.x) * ease;
 		};
 
 		const handlePointer = (event: PointerEvent) => {
+			if (event.target instanceof Element && event.target.closest(IGNORE)) return;
 			const bounds = canvas.getBoundingClientRect();
 			target.x = (event.clientX - bounds.left) * dpr;
 			lastMove = performance.now();
@@ -213,6 +223,7 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 		const handleClick = (event: PointerEvent) => {
 			const bounds = canvas.getBoundingClientRect();
 			if (event.clientY < bounds.top || event.clientY > bounds.bottom) return;
+			if (event.target instanceof Element && event.target.closest(IGNORE)) return;
 			handlePointer(event);
 			const oldest = pulses.reduce((a, b) => (b.at < a.at ? b : a));
 			oldest.x = target.x;
@@ -284,8 +295,17 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 		});
 		visibility.observe(canvas);
 
+		// NOTE • A tweak re-reads the colours and redraws straight away, so
+		// changes show even on a still frame
+		const unsubscribe = heroSettings.subscribe(() => {
+			colours = readColours();
+			measure();
+			draw(gsap.ticker.time);
+		});
+
 		return () => {
 			stop();
+			unsubscribe();
 			window.removeEventListener('pointermove', handlePointer);
 			window.removeEventListener('pointerdown', handleClick);
 			for (const type of INTERACTIONS) window.removeEventListener(type, handleInteraction);

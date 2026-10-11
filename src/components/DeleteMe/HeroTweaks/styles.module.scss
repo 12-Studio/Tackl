@@ -1,0 +1,171 @@
+@use '../keynote' as *;
+
+// NOTE • Pinned to the hero's top-right corner, above the field
+.jacket {
+	position: absolute;
+	top: var(--gap-m);
+	right: var(--gap-m);
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: var(--gap-s);
+	width: min(34rem, calc(100% - var(--gap-m) * 2));
+}
+
+.toggle {
+	@include pillGhost;
+
+	backdrop-filter: blur(1.2rem);
+}
+
+.badge {
+	@include captionS;
+
+	display: grid;
+	place-items: center;
+	min-width: 2rem;
+	height: 2rem;
+	padding-inline: var(--gap-xxs);
+	border-radius: var(--br-round);
+	color: var(--global-white);
+	background: var(--brand-c1);
+}
+
+// SECTION • Panel
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+	width: 100%;
+	max-height: calc(100svh - 12rem);
+	padding: var(--gap-s);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	border-radius: 2rem;
+	background: alpha(--global-black, 78);
+	border: 1px solid alpha(--global-white, 12);
+	backdrop-filter: blur(2rem);
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-s);
+	padding: var(--gap-xs);
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-xs);
+}
+
+.reset {
+	@include pillGhost;
+
+	&:disabled {
+		color: alpha(--global-white, 35);
+		cursor: not-allowed;
+	}
+}
+
+.hint {
+	@include captionS;
+
+	padding-inline: var(--gap-xs);
+	color: alpha(--global-white, 62);
+}
+
+// SECTION • Groups
+.group {
+	border-radius: 1.2rem;
+	background: alpha(--global-white, 5);
+
+	&[open] {
+		padding-bottom: var(--gap-xs);
+	}
+}
+
+.summary {
+	@include captionL;
+
+	padding: var(--gap-s) var(--gap-sm);
+	font-weight: var(--weight-medium);
+	color: var(--global-white);
+	cursor: pointer;
+}
+
+.row {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xxs);
+	padding: var(--gap-xxs) var(--gap-sm);
+
+	input[type='range'] {
+		width: 100%;
+		accent-color: var(--brand-c1);
+		cursor: pointer;
+	}
+
+	// NOTE • A changed value gets a brand-coloured readout
+	&[data-changed] output {
+		color: var(--brand-c1);
+	}
+}
+
+// Colour rows sit on one line
+.row:has(input[type='color']) {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.label {
+	@include captionS;
+
+	display: flex;
+	justify-content: space-between;
+	gap: var(--gap-s);
+	color: alpha(--global-white, 75);
+}
+
+.value {
+	@include mono;
+
+	color: var(--global-white);
+}
+
+.colourLabel {
+	@include captionS;
+
+	display: flex;
+	align-items: center;
+	gap: var(--gap-s);
+	color: alpha(--global-white, 75);
+
+	input {
+		width: 3.2rem;
+		height: 2.4rem;
+		padding: 0;
+		border: 0;
+		background: none;
+		cursor: pointer;
+	}
+}
+
+.tokenButton {
+	@include captionS;
+	@include mono;
+
+	color: alpha(--global-white, 62);
+	cursor: pointer;
+
+	&:not(:disabled):hover {
+		color: var(--global-white);
+	}
+
+	&:disabled {
+		cursor: default;
+	}
+}

@@ -1,0 +1,78 @@
+@use '../keynote' as *;
+
+.jacket {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	margin-bottom: var(--gap-l);
+}
+
+// SECTION • Column overlay
+.overlay {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+
+	waffl-grid {
+		height: 100%;
+	}
+}
+
+.column {
+	display: none;
+	grid-column: auto;
+	border-radius: 0.6rem;
+	background: alpha(--brand-c1, 9);
+
+	&:nth-child(-n + 2) {
+		display: block;
+	}
+
+	@include bp(m) {
+		&:nth-child(-n + 6) {
+			display: block;
+		}
+	}
+
+	@include bp(l) {
+		display: block;
+	}
+}
+
+// SECTION • Stage
+.stage {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-s);
+	padding-block: var(--gap-m);
+
+	// NOTE • Cells that stack on smaller grids need a little air between rows
+	waffl-grid {
+		row-gap: var(--gap-s);
+	}
+}
+
+.cell {
+	display: grid;
+	place-items: center;
+	min-height: 6.4rem;
+	padding: var(--gap-xs);
+	border-radius: 1.2rem;
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-size: 1.2rem;
+	text-align: center;
+	color: var(--global-white);
+	background: linear-gradient(135deg, var(--brand-c1), var(--brand-c2));
+
+	&[data-tone='soft'] {
+		background: alpha(--global-white, 10);
+	}
+}
+
+.caption {
+	@include captionS;
+
+	color: alpha(--global-white, 62);
+}

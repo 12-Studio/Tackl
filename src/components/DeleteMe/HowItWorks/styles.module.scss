@@ -1,0 +1,26 @@
+@use '../keynote' as *;
+
+.bento {
+	row-gap: var(--gap-m);
+
+	@include bp(l) {
+		row-gap: var(--gap-l);
+	}
+}
+
+.index {
+	@include eyebrow;
+}
+
+.title {
+	@include tileTitle;
+}
+
+.text {
+	@include body;
+}
+
+.code {
+	flex: 1;
+	margin-top: var(--gap-s);
+}

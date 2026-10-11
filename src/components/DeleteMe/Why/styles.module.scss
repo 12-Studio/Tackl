@@ -1,0 +1,36 @@
+@use '../keynote' as *;
+
+.bento {
+	row-gap: var(--gap-m);
+
+	@include bp(l) {
+		row-gap: var(--gap-l);
+	}
+}
+
+.hero {
+	justify-content: flex-end;
+	min-height: 36rem;
+
+	@include bp(l) {
+		min-height: 52rem;
+	}
+}
+
+.kicker {
+	@include eyebrow;
+}
+
+.stat {
+	@include stat;
+}
+
+.title {
+	@include tileTitle;
+}
+
+.text {
+	@include body;
+
+	max-width: 44ch;
+}

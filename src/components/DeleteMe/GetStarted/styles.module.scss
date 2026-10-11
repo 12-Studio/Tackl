@@ -1,0 +1,51 @@
+@use '../keynote' as *;
+
+.steps {
+	row-gap: var(--gap-m);
+
+	@include bp(l) {
+		row-gap: var(--gap-l);
+	}
+}
+
+.index {
+	@include stat;
+
+	font-size: 7.2rem;
+
+	@include bp(l) {
+		font-size: 9.6rem;
+	}
+}
+
+.title {
+	@include tileTitle;
+}
+
+.text {
+	@include body;
+
+	@include bp(l) {
+		min-height: 7.5em;
+	}
+}
+
+.code {
+	flex: 1;
+}
+
+.cta {
+	margin-top: var(--gap-xxl);
+}
+
+.ctaInner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: var(--gap-m) var(--gap-l);
+}
+
+.link {
+	@include chevronLink;
+}

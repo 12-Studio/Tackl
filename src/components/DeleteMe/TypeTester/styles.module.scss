@@ -1,0 +1,77 @@
+@use '../keynote' as *;
+
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	min-width: 0;
+}
+
+.styles {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-xs);
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.style {
+	@include captionS;
+
+	padding: var(--gap-xs) var(--gap-sm);
+	border-radius: var(--br-round);
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	color: alpha(--global-white, 75);
+	background: alpha(--global-white, 8);
+	cursor: pointer;
+
+	&:hover {
+		color: var(--global-white);
+	}
+
+	&[aria-pressed='true'] {
+		color: var(--global-black);
+		background: var(--global-white);
+	}
+}
+
+.field {
+	@include captionL;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+	color: alpha(--global-white, 62);
+
+	input {
+		@include bodyS;
+
+		padding: var(--gap-s) var(--gap-m);
+		border-radius: 1.2rem;
+		color: var(--global-white);
+		background: alpha(--global-white, 8);
+
+		&:focus-visible {
+			outline: 2px solid var(--brand-c1);
+		}
+	}
+}
+
+.preview {
+	min-height: 12rem;
+	padding: var(--gap-m);
+	overflow-wrap: anywhere;
+	border-radius: 1.6rem;
+	background: alpha(--global-black, 55);
+}
+
+// NOTE • Names the group for screen readers; the buttons label themselves visually
+.legend {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}

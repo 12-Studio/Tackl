@@ -1,0 +1,65 @@
+@use '../keynote' as *;
+
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	min-width: 0;
+}
+
+.state {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-s);
+
+	li {
+		@include captionL;
+
+		padding: var(--gap-xxs) var(--gap-sm);
+		border-radius: var(--br-round);
+		color: alpha(--global-white, 62);
+		background: alpha(--global-white, 8);
+
+		&::before {
+			content: '✕ ';
+		}
+
+		&[data-granted] {
+			color: var(--global-white);
+			background: alpha(--feedback-positive, 22);
+
+			&::before {
+				content: '✓ ';
+				color: var(--feedback-positive);
+			}
+		}
+	}
+}
+
+.button {
+	@include pill;
+
+	align-self: flex-start;
+}
+
+.note {
+	@include captionS;
+
+	color: var(--feedback-warning);
+}
+
+.gate {
+	@include captionL;
+	@include secondary;
+
+	padding: var(--gap-l);
+	border-radius: 1.6rem;
+	text-align: center;
+	border: 1px dashed alpha(--global-white, 25);
+
+	&[data-open] {
+		color: var(--global-white);
+		border: 1px solid var(--feedback-positive);
+		background: alpha(--feedback-positive, 12);
+	}
+}

@@ -1,0 +1,70 @@
+@use '../keynote' as *;
+
+.jacket {
+	position: relative;
+	display: flex;
+	align-items: center;
+	min-height: 100svh;
+	padding-block: var(--gap-uber);
+	overflow: hidden;
+}
+
+.content {
+	position: relative;
+}
+
+.inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.eyebrow {
+	@include eyebrow;
+	@include bodyS;
+
+	font-weight: var(--weight-semi);
+}
+
+.title {
+	margin-block: var(--gap-s) var(--gap-m);
+	font-family: var(--font-heading);
+	font-weight: var(--weight-semi);
+	font-size: 26vw;
+	line-height: 0.9;
+	letter-spacing: -0.06em;
+	background: linear-gradient(180deg, var(--global-white) 35%, alpha(--global-white, 55));
+	background-clip: text;
+	color: transparent;
+
+	@include bp(l) {
+		font-size: min(19vw, 27.2rem);
+	}
+}
+
+.tagline {
+	@include bodyL;
+	@include secondary;
+
+	max-width: 28ch;
+	font-weight: var(--weight-medium);
+	text-wrap: balance;
+
+	@include bp(l) {
+		font-size: 2.8rem;
+	}
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: var(--gap-m) var(--gap-l);
+	margin-top: var(--gap-xl);
+}
+
+.link {
+	@include chevronLink;
+}

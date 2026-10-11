@@ -1,0 +1,85 @@
+@use '../keynote' as *;
+
+// SECTION • Viewport readout
+// NOTE • Only the line for the current breakpoint shows
+.viewport {
+	@include captionL;
+
+	align-self: center;
+	padding: var(--gap-xs) var(--gap-m);
+	border-radius: var(--br-round);
+	background: alpha(--global-white, 8);
+	color: var(--global-white);
+}
+
+.breakpoint {
+	display: none;
+
+	&[data-bp='s'] {
+		display: inline;
+
+		@include bp(m) {
+			display: none;
+		}
+	}
+
+	&[data-bp='m'] {
+		@include bp(m) {
+			display: inline;
+		}
+
+		@include bp(l) {
+			display: none;
+		}
+	}
+
+	&[data-bp='l'] {
+		@include bp(l) {
+			display: inline;
+		}
+	}
+}
+
+// SECTION • Demos
+.plain {
+	@include bodyS;
+
+	display: grid;
+	place-items: center;
+	min-height: 8rem;
+	padding: var(--gap-m);
+	border-radius: 1.2rem;
+	text-align: center;
+	background: alpha(--global-white, 10);
+}
+
+.nested {
+	row-gap: var(--gap-s);
+	outline: 1px dashed alpha(--global-white, 30);
+	outline-offset: 6px;
+	border-radius: 1.2rem;
+}
+
+// SECTION • Playground
+.playground {
+	margin-bottom: var(--gap-m);
+
+	@include bp(l) {
+		margin-bottom: var(--gap-l);
+	}
+}
+
+.playgroundCopy {
+	@include body;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-s);
+	max-width: 64rem;
+}
+
+.playgroundTitle {
+	@include tileTitle;
+
+	color: var(--global-white);
+}

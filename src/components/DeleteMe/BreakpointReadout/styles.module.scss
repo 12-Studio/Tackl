@@ -1,0 +1,42 @@
+@use '../keynote' as *;
+
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+}
+
+.scale {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-xs);
+}
+
+.key {
+	@include captionL;
+
+	padding: var(--gap-xxs) var(--gap-sm);
+	border-radius: var(--br-round);
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	color: alpha(--global-white, 62);
+	background: alpha(--global-white, 8);
+	transition:
+		background var(--time-s) var(--easing-bezzy),
+		color var(--time-s) var(--easing-bezzy);
+
+	&[data-active] {
+		color: var(--global-white);
+		background: var(--brand-c1);
+	}
+}
+
+.status {
+	@include captionL;
+	@include secondary;
+
+	code {
+		@include mono;
+
+		color: var(--global-white);
+	}
+}

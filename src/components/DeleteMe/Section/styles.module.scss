@@ -1,0 +1,51 @@
+@use '../keynote' as *;
+
+.jacket {
+	position: relative;
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--gap-m);
+	margin-bottom: var(--gap-xxl);
+	text-align: center;
+
+	@include bp(l) {
+		margin-bottom: var(--gap-uber);
+	}
+}
+
+.eyebrow {
+	@include eyebrow;
+}
+
+.title {
+	@include headline;
+
+	text-wrap: balance;
+}
+
+.intro {
+	@include bodyL;
+	@include secondary;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+	max-width: 40ch;
+	text-wrap: pretty;
+
+	code {
+		@include mono;
+
+		color: var(--global-white);
+	}
+
+	a {
+		color: var(--global-white);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+}

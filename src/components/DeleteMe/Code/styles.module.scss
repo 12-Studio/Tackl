@@ -1,0 +1,30 @@
+@use '../keynote' as *;
+
+.jacket {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	overflow: hidden;
+	border-radius: 1.6rem;
+	background: alpha(--global-black, 55);
+	border: 1px solid alpha(--global-white, 8);
+}
+
+.label {
+	@include captionS;
+
+	padding: var(--gap-s) var(--gap-m);
+	border-bottom: 1px solid alpha(--global-white, 8);
+	font-weight: var(--weight-medium);
+	color: alpha(--global-white, 62);
+}
+
+.pre {
+	padding: var(--gap-m);
+	overflow-x: auto;
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-size: 1.3rem;
+	line-height: 1.7;
+	color: alpha(--global-white, 88);
+	tab-size: 2;
+}

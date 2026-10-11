@@ -1,0 +1,11 @@
+@use '../keynote' as *;
+
+.jacket {
+	@include tile;
+
+	&[data-tone='glow'] {
+		background:
+			radial-gradient(80% 70% at 50% 120%, alpha(--brand-c1, 45), transparent 70%),
+			alpha(--global-white, 6);
+	}
+}

@@ -1,0 +1,63 @@
+@use '../keynote' as *;
+
+.jacket {
+	overflow: hidden;
+	background: radial-gradient(60% 50% at 50% 100%, alpha(--brand-c1, 35), transparent 70%);
+}
+
+.inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--gap-m);
+	text-align: center;
+}
+
+.title {
+	@include headline;
+
+	font-size: 22vw;
+	line-height: 0.9;
+	letter-spacing: -0.06em;
+
+	@include bp(l) {
+		font-size: min(16vw, 22rem);
+	}
+}
+
+.tagline {
+	@include bodyL;
+	@include secondary;
+
+	margin-bottom: var(--gap-m);
+	font-weight: var(--weight-medium);
+}
+
+.footer {
+	@include captionL;
+	@include secondary;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+	margin-top: var(--gap-uber);
+	padding-top: var(--gap-m);
+	border-top: 1px solid alpha(--global-white, 10);
+
+	@include bp(l) {
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	code {
+		@include mono;
+
+		color: var(--global-white);
+	}
+
+	a {
+		color: var(--global-white);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+}

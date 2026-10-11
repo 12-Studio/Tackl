@@ -1,0 +1,23 @@
+@use '../keynote' as *;
+
+.blocks {
+	row-gap: var(--gap-m);
+
+	@include bp(l) {
+		row-gap: var(--gap-l);
+	}
+}
+
+.title {
+	@include tileTitle;
+}
+
+.text {
+	@include body;
+
+	code {
+		@include mono;
+
+		color: var(--global-white);
+	}
+}

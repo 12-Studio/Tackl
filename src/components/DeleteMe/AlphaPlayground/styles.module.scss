@@ -1,0 +1,78 @@
+@use '../keynote' as *;
+
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+}
+
+.swatches {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-s);
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.swatch {
+	--swatch: transparent;
+
+	width: 3.6rem;
+	height: 3.6rem;
+	border-radius: 50%;
+	background: var(--swatch);
+	border: 1px solid alpha(--global-white, 20);
+	cursor: pointer;
+
+	&[aria-pressed='true'] {
+		outline: 2px solid var(--global-white);
+		outline-offset: 3px;
+	}
+}
+
+.slider {
+	@include captionL;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-s);
+
+	output {
+		@include mono;
+
+		color: accent(55);
+	}
+
+	input {
+		width: 100%;
+		accent-color: var(--brand-c1);
+	}
+}
+
+// NOTE • A checkerboard behind the paint shows the transparency
+.preview {
+	height: 12rem;
+	overflow: hidden;
+	border-radius: 1.6rem;
+	background: repeating-conic-gradient(alpha(--global-white, 14) 0 25%, transparent 0 50%) 0 0 / 2.4rem 2.4rem;
+}
+
+.paint {
+	--paint: transparent;
+
+	display: block;
+	height: 100%;
+	background: var(--paint);
+	transition: background var(--time-s) linear;
+}
+
+// NOTE • Names the group for screen readers; the buttons label themselves visually
+.legend {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}

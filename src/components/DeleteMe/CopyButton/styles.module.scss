@@ -1,0 +1,41 @@
+@use '../keynote' as *;
+
+.jacket {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--gap-s);
+	max-width: 100%;
+	padding: var(--gap-xxs);
+	padding-left: var(--gap-m);
+	border-radius: var(--br-round);
+	background: alpha(--global-white, 10);
+}
+
+.command {
+	display: flex;
+	align-items: center;
+	gap: var(--gap-s);
+	overflow-x: auto;
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-size: 1.5rem;
+	white-space: nowrap;
+}
+
+.prompt {
+	color: accent(55);
+}
+
+.button {
+	@include pill;
+
+	padding: var(--gap-xs) var(--gap-m);
+}
+
+.solo {
+	padding: 0;
+	background: none;
+
+	.button {
+		padding: var(--gap-s) var(--gap-l);
+	}
+}

@@ -1,0 +1,83 @@
+.jacket {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	margin-bottom: var(--gap-l);
+}
+
+// SECTION • Column overlay
+.overlay {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+
+	waffl-grid {
+		height: 100%;
+	}
+}
+
+.column {
+	display: none;
+	grid-column: auto;
+	background: alpha(--brand-c1, 8);
+	border-inline: 1px dashed alpha(--brand-c1, 30);
+
+	&:nth-child(-n + 2) {
+		display: block;
+	}
+
+	@include bp(m) {
+		&:nth-child(-n + 6) {
+			display: block;
+		}
+	}
+
+	@include bp(l) {
+		display: block;
+	}
+}
+
+// SECTION • Stage
+.stage {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-s);
+	padding-block: var(--gap-m);
+
+	// NOTE • Cells that stack on smaller grids need a little air between rows
+	waffl-grid {
+		row-gap: var(--gap-s);
+	}
+}
+
+.cell {
+	@include captionL;
+
+	display: grid;
+	place-items: center;
+	min-height: 5.6rem;
+	padding: var(--gap-xs);
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-size: 1.2rem;
+	text-align: center;
+	color: var(--global-white);
+	background: alpha(--brand-c1, 35);
+	border: 1px solid var(--brand-c1);
+
+	&[data-tone='soft'] {
+		background: alpha(--global-white, 8);
+		border-color: alpha(--global-white, 40);
+	}
+
+	@include bp(l) {
+		font-size: 1.3rem;
+	}
+}
+
+.caption {
+	@include captionS;
+
+	color: alpha(--global-white, 60);
+}

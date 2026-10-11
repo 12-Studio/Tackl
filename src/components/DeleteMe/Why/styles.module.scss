@@ -1,0 +1,28 @@
+.list {
+	row-gap: var(--gap-xl);
+}
+
+.reason {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+	padding-top: var(--gap-m);
+	border-top: 1px solid alpha(--global-white, 20);
+}
+
+.index {
+	@include captionS;
+
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	color: var(--brand-c1);
+}
+
+.title {
+	@include titleS;
+}
+
+.text {
+	@include captionL;
+
+	color: alpha(--global-white, 70);
+}

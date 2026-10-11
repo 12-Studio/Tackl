@@ -1,0 +1,48 @@
+.jacket {
+	border-top: 1px solid alpha(--global-white, 10);
+	background:
+		radial-gradient(60% 80% at 50% 120%, alpha(--brand-c1, 30), transparent),
+		var(--global-black);
+
+	waffl-grid {
+		row-gap: var(--gap-xl);
+	}
+}
+
+.title {
+	@include headlineL;
+
+	margin-bottom: var(--gap-m);
+}
+
+.text {
+	@include bodyS;
+
+	color: alpha(--global-white, 70);
+
+	code {
+		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+		font-size: 0.9em;
+		color: var(--global-white);
+	}
+}
+
+.meta {
+	@include captionL;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	gap: var(--gap-xs);
+	color: alpha(--global-white, 60);
+
+	a {
+		color: var(--global-white);
+		text-decoration: underline;
+		text-underline-offset: 0.3em;
+	}
+
+	@include bp(m) {
+		text-align: right;
+	}
+}

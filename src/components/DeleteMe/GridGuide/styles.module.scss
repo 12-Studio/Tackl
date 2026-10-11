@@ -1,0 +1,54 @@
+// SECTION • Viewport readout
+// NOTE • Only the line for the current breakpoint shows
+.viewport {
+	padding: var(--gap-sm) var(--gap-m);
+	border-left: 3px solid var(--brand-c1);
+	background: alpha(--brand-c1, 10);
+}
+
+.breakpoint {
+	display: none;
+
+	&[data-bp='s'] {
+		display: inline;
+
+		@include bp(m) {
+			display: none;
+		}
+	}
+
+	&[data-bp='m'] {
+		@include bp(m) {
+			display: inline;
+		}
+
+		@include bp(l) {
+			display: none;
+		}
+	}
+
+	&[data-bp='l'] {
+		@include bp(l) {
+			display: inline;
+		}
+	}
+}
+
+// SECTION • Demos
+.plain {
+	@include captionL;
+
+	display: grid;
+	place-items: center;
+	min-height: 8rem;
+	padding: var(--gap-m);
+	text-align: center;
+	border: 1px solid alpha(--global-white, 40);
+	background: alpha(--global-white, 6);
+}
+
+.nested {
+	row-gap: var(--gap-s);
+	outline: 1px dashed alpha(--global-white, 40);
+	outline-offset: 6px;
+}

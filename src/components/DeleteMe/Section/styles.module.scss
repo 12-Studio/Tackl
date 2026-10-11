@@ -1,0 +1,42 @@
+.jacket {
+	position: relative;
+	border-top: 1px solid alpha(--global-white, 10);
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	margin-bottom: var(--gap-xl);
+
+	@include bp(l) {
+		margin-bottom: var(--gap-huge);
+	}
+}
+
+.eyebrow {
+	@include captionL;
+
+	color: var(--brand-c1);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.title {
+	@include headlineL;
+}
+
+.intro {
+	@include bodyS;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+	color: alpha(--global-white, 70);
+
+	code {
+		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+		font-size: 0.9em;
+		color: var(--global-white);
+	}
+}

@@ -1,0 +1,36 @@
+.jacket {
+	display: inline-flex;
+	align-items: stretch;
+	max-width: 100%;
+	border: 1px solid alpha(--global-white, 30);
+}
+
+.command {
+	display: flex;
+	align-items: center;
+	gap: var(--gap-s);
+	padding: var(--gap-sm) var(--gap-m);
+	overflow-x: auto;
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-size: 1.5rem;
+	white-space: nowrap;
+}
+
+.prompt {
+	color: var(--brand-c1);
+}
+
+.button {
+	@include captionL;
+
+	padding: var(--gap-sm) var(--gap-m);
+	border-left: 1px solid alpha(--global-white, 30);
+	color: var(--global-black);
+	background: var(--global-white);
+	cursor: pointer;
+	transition: background var(--time-s) var(--easing-bezzy);
+
+	&:hover {
+		background: alpha(--global-white, 85);
+	}
+}

@@ -1,0 +1,147 @@
+.jacket {
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	min-height: 100svh;
+	padding-block: var(--gap-uber) var(--gap-xl);
+	overflow: hidden;
+	background:
+		radial-gradient(70% 60% at 50% 115%, alpha(--brand-c1, 35), transparent),
+		var(--global-black);
+
+	@include bp(l) {
+		padding-bottom: var(--gap-huge);
+	}
+}
+
+// SECTION • Backdrop
+.backdrop {
+	position: absolute;
+	inset: 0;
+
+	waffl-grid {
+		height: 100%;
+	}
+}
+
+.column {
+	--index: 0; // set per column inline, for the staggered rise
+
+	display: none;
+	grid-column: auto;
+	border-inline: 1px solid alpha(--global-white, 6);
+	background: linear-gradient(to top, alpha(--brand-c1, 12), transparent 70%);
+	transform-origin: bottom;
+	animation: column-rise var(--time-l) var(--easing-bezzy) both;
+	animation-delay: calc(var(--index) * 40ms);
+
+	&:nth-child(-n + 2) {
+		display: block;
+	}
+
+	@include bp(m) {
+		&:nth-child(-n + 6) {
+			display: block;
+		}
+	}
+
+	@include bp(l) {
+		display: block;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		animation: none;
+	}
+}
+
+@keyframes column-rise {
+	from {
+		transform: scaleY(0);
+	}
+}
+
+// SECTION • Content
+.content {
+	position: relative;
+	row-gap: var(--gap-xl);
+}
+
+.eyebrow {
+	@include captionL;
+
+	color: var(--brand-c1);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.title {
+	@include displayL;
+
+	margin-block: var(--gap-s) var(--gap-m);
+	font-weight: var(--weight-medium);
+
+	@include bp(l) {
+		font-size: clamp(9.6rem, 14vw, 20rem);
+		line-height: 0.9;
+		letter-spacing: -0.04em;
+	}
+}
+
+.tagline {
+	@include bodyL;
+
+	max-width: 32ch;
+	color: alpha(--global-white, 75);
+
+	@include bp(l) {
+		max-width: 40ch;
+	}
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--gap-m);
+	margin-top: var(--gap-xl);
+}
+
+.link {
+	@include captionL;
+
+	text-decoration: underline;
+	text-underline-offset: 0.3em;
+
+	&:hover {
+		color: var(--brand-c1);
+	}
+}
+
+// SECTION • Stats
+.stats {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--gap-l) var(--gap-m);
+	padding-top: var(--gap-l);
+	border-top: 1px solid alpha(--global-white, 15);
+
+	@include bp(m) {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+.stat {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+}
+
+.value {
+	@include titleL;
+}
+
+.label {
+	@include captionS;
+
+	color: alpha(--global-white, 60);
+}

@@ -1,0 +1,86 @@
+.blocks {
+	row-gap: var(--gap-xxl);
+}
+
+.block {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	min-width: 0;
+}
+
+.title {
+	@include titleS;
+}
+
+.text {
+	@include captionL;
+
+	color: alpha(--global-white, 70);
+
+	code {
+		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+		font-size: 0.9em;
+		color: var(--global-white);
+	}
+}
+
+.token {
+	@include captionS;
+
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	color: alpha(--global-white, 60);
+}
+
+// SECTION • Swatches
+.swatches {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--gap-sm);
+
+	@include bp(m) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.swatch {
+	--swatch: transparent;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+}
+
+.chip {
+	height: 5.6rem;
+	background: var(--swatch);
+	border: 1px solid alpha(--global-white, 20);
+}
+
+.value {
+	@include captionS;
+
+	color: alpha(--global-white, 50);
+}
+
+// SECTION • Type scale
+.types {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+}
+
+.type {
+	display: grid;
+	grid-template-columns: 9rem 1fr;
+	align-items: baseline;
+	gap: var(--gap-m);
+	padding-bottom: var(--gap-sm);
+	border-bottom: 1px solid alpha(--global-white, 8);
+}
+
+.sample {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

@@ -1,0 +1,37 @@
+.jacket {
+	padding-block: var(--gap-xl);
+
+	@include bp(l) {
+		padding-block: var(--gap-huge);
+	}
+
+	& + & {
+		border-top: 1px dashed alpha(--global-white, 12);
+	}
+}
+
+.copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+	margin-bottom: var(--gap-l);
+}
+
+.title {
+	@include titleL;
+}
+
+.text {
+	@include captionL;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-s);
+	color: alpha(--global-white, 70);
+
+	code {
+		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+		font-size: 0.9em;
+		color: var(--global-white);
+	}
+}

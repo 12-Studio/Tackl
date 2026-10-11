@@ -3,14 +3,14 @@
 
 // NOTE • This file exports the easing object, the easing object is used to store all the easing values for the application.
 
-// REVIEW — Usage: ${getEase('bezzy3')}
+// REVIEW — Usage: transition-timing-function: var(--easing-bezzy3);
 
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
 
 // SECTION • Raw Easing Values
-// NOTE • Emitted as --easing-{key} on :root by GlobalStyle (@theme).
+// NOTE • Emitted as --easing-{key} on :root in the generated src/css/tokens.css.
 // Pure curves only — durations live in @theme/time (--time-{key})
 export const easingValues = {
 	bezzy: 'cubic-bezier(0.8, 0, 0, 1)',

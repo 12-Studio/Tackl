@@ -2,10 +2,10 @@
 // ------------
 
 // NOTE • This file exports the helpers that turn raw token values into CSS
-// custom properties. Raw values are emitted once on :root (see GlobalStyle in
-// @theme), and the theme object exposes var() references to them — so the same
-// tokens work in styled-components, plain CSS and Server Components, and can
-// be overridden at runtime (e.g. html[data-theme='dark']).
+// custom properties. Raw values are generated once onto :root in
+// src/css/tokens.css (scripts/build-styles.ts), and the theme object exposes
+// var() references to them — so the same tokens work in SCSS, JS and Server
+// Components, and can be overridden at runtime (e.g. html[data-theme='dark']).
 
 // Exports
 // ------------

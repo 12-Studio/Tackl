@@ -148,16 +148,9 @@ const nextConfig = {
 	// source. Concatenated with the NEXT_HASH_SALT env var when both are set.
 	// outputHashSalt: 'tackl',
 
-	// Styled Components settings
+	// Compiler settings
 	compiler: {
-		// styledComponents: true,
 		removeConsole: process.env.NODE_ENV === 'production',
-
-		styledComponents: {
-			displayName: process.env.NODE_ENV === 'development',
-			ssr: true,
-			minify: true,
-		},
 	},
 };
 

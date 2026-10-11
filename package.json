@@ -53,8 +53,7 @@
 		"react": "^19.2.8",
 		"react-datocms": "^8.1.0",
 		"react-dom": "^19.2.8",
-		"sanity": "^6.9.1",
-		"styled-components": "^6.5.1"
+		"sanity": "^6.9.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.7",

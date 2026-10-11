@@ -3,14 +3,14 @@
 
 // NOTE • This file exports the gap object, the gap object is used to store all the gap values for the application.
 
-// REVIEW — Usage: ${getGap('s')}
+// REVIEW — Usage: gap: var(--gap-s);
 
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
 
 // SECTION • Raw Gap Values
-// NOTE • Emitted as --gap-{key} on :root by GlobalStyle (@theme)
+// NOTE • Emitted as --gap-{key} on :root in the generated src/css/tokens.css
 export const gapValues = {
 	xxs: '0.3rem',
 	xs: '0.4rem',

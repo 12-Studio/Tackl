@@ -12,7 +12,8 @@
 		"starter",
 		"template",
 		"create",
-		"styled-components",
+		"scss",
+		"css-modules",
 		"typescript"
 	],
 	"author": "joebentaylor1995",

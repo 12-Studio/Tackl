@@ -3,14 +3,14 @@
 
 // NOTE • This file exports the borderRadius object, the borderRadius object is used to store all the borderRadius values for the application.
 
-// REVIEW — Usage: ${getRadius('s')}
+// REVIEW — Usage: border-radius: var(--br-s);
 
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
 
 // SECTION • Raw Border Radius Values
-// NOTE • Emitted as --br-{key} on :root by GlobalStyle (@theme)
+// NOTE • Emitted as --br-{key} on :root in the generated src/css/tokens.css
 export const borderRadiusValues = {
 	xs: '0.3rem',
 	s: '0.6rem',

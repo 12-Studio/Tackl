@@ -3,7 +3,7 @@
 
 // NOTE • This file exports the colors object, the colors object is used to store all the colors for the application.
 
-// REVIEW — Usage: ${props => props.theme.colors.brand.c1} or ${getBrand('c1', 50)} for opacity
+// REVIEW — Usage: color: var(--brand-c1);  or  fade(--brand-c1, 50) for opacity (SCSS)
 
 // Imports
 // ------------
@@ -11,7 +11,7 @@ import { toVarRefs } from '@theme/cssVariables';
 
 // SECTION • Raw Color Values
 // NOTE • The single source of truth — emitted as CSS custom properties on
-// :root by GlobalStyle (@theme), named --{group}-{name} (e.g. --brand-c1).
+// :root in the generated src/css/tokens.css, named --{group}-{name} (e.g. --brand-c1).
 // Override any of them at runtime (e.g. html[data-theme='dark']) to retheme.
 export const baseColors = {
 	brand: {
@@ -38,8 +38,8 @@ export const baseColors = {
 // ------------
 // SECTION • Color Tokens
 // NOTE • Each color is a plain var() reference resolved by the browser.
-// Need opacity? Use the getters — getBrand('c1', 50) — or color-mix
-// directly in CSS: color-mix(in srgb, var(--brand-c1) 50%, transparent)
+// Need opacity? fade(--brand-c1, 50) in SCSS, alpha('--brand-c1', 50) in JS —
+// both emit color-mix(in srgb, var(--brand-c1) 50%, transparent)
 export const colors = {
 	brand: toVarRefs('brand', baseColors.brand),
 	global: toVarRefs('global', baseColors.global),

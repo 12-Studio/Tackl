@@ -1,6 +1,6 @@
 # Writing Components — The Tackl House Style
 
-How components are structured, commented, and wired into the theme and grid. Follow this and every component in the project reads the same way.
+How components are structured, commented, and wired into the tokens and grid. Follow this and every component in the project reads the same way.
 
 ## Component anatomy
 
@@ -8,30 +8,34 @@ Every component lives in its own folder under `src/components/`:
 
 ```
 src/components/Card/
-├── index.tsx          # The component — logic and markup only
-├── styles.ts          # ALL styled-components for this component
-├── interface.ts       # The component's prop types
-└── Card.stories.tsx   # Storybook story (optional)
+├── index.tsx            # The component — logic and markup only
+├── styles.module.scss   # ALL styles for this component (a CSS Module)
+├── interface.ts         # The component's prop types
+└── Card.stories.tsx     # Storybook story (optional)
 ```
 
 ```mermaid
 flowchart LR
-    I[interface.ts\nCardProps] --> C[index.tsx\ncomponent logic]
-    S[styles.ts\nJacket, Title, ...] --> C
+    I[interface.ts\nCardProps] --> C[index.tsx\ncomponent logic + markup]
+    S[styles.module.scss\n.jacket, .title, ...] --> C
     C --> ST[Card.stories.tsx]
 ```
 
 Rules:
 
-- **No styled-components in `index.tsx`.** Styling lives in `styles.ts`, imported as a namespace: `import * as S from './styles'`.
-- **The outermost styled component is always called `Jacket`.** Inner ones get descriptive names (`Title`, `Hint`, `Content`, `Coat`).
+- **Styles live in `styles.module.scss`**, imported as `import s from './styles.module.scss'`. No inline style objects for static styling, no global classes invented per component.
+- **The outermost class is always `.jacket`.** Inner classes get descriptive camelCase names (`.title`, `.content`, `.removeButton`) so they read as `s.title`, `s.removeButton`.
+- **Tags are written in JSX.** `<section className={s.jacket}>` — the markup says what the element is.
 - **Props are typed in `interface.ts`**, imported as `import type * as I from './interface'`.
+- **`'use client'` only when the component needs it** (hooks, event handlers, browser APIs). Styling never requires it — a Server Component can be styled with a module directly.
 
 ## The comment style
 
-Files are organised with comment banners — every file, same order:
+Files are organised with titled blocks, each underlined with 12 dashes — every file, same order:
 
 ```tsx
+'use client'; // only when needed
+
 // Imports
 // ------------
 
@@ -44,6 +48,8 @@ Files are organised with comment banners — every file, same order:
 // Exports
 // ------------
 ```
+
+Inside the component body, prefix each logical group with a single-line label — only those that apply, never empty placeholders: `// Context`, `// Refs`, `// State`, `// Derived`, `// Handlers`, `// Effects`, `// Animations`, `// Render`. The `// ------------` underlines stay at file level, not inside the body.
 
 Inline annotations use bullet markers:
 
@@ -52,65 +58,54 @@ Inline annotations use bullet markers:
 - `// ANCHOR •` — an important function or entry point
 - `// REVIEW —` — usage example worth reading
 
+The same markers work in `.scss` files (`// SECTION • Hover state`).
+
 ## A complete component
 
 **`src/components/Card/interface.ts`**
 
 ```tsx
-// Imports
-// ------------
-
 // Exports
 // ------------
 export interface CardProps {
 	title: string;
-	href?: string;
+	body: string;
+	isActive?: boolean;
+	className?: string;
 }
 ```
 
-**`src/components/Card/styles.ts`**
+**`src/components/Card/styles.module.scss`**
 
-```tsx
-// Imports
-// ------------
-import styled, { css } from 'styled-components';
-import { alpha, bp, Div, getBrand, getEase, getRadius, getTime } from '@tackl';
-import { bodyS, titleS } from '@tackl/type';
+```scss
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	padding: var(--gap-l);
 
-// Exports
-// ------------
-export const Jacket = styled(Div).attrs({ as: 'article' })(
-	() => css`
-		display: flex;
-		flex-direction: column;
-		gap: var(--gap-m);
-		padding: var(--gap-l);
+	background: alpha(--brand-c3, 40);
+	border-radius: var(--br-m);
+	transition: background var(--time-m) var(--easing-bezzy);
 
-		background: ${alpha('--brand-c3', 40)};
-		border-radius: ${getRadius('m')};
-		transition: background ${getTime('m')} ${getEase('bezzy')};
+	&:hover,
+	&[data-state='active'] {
+		background: var(--brand-c3);
+	}
 
-		&:hover {
-			background: ${getBrand('c3')};
-		}
+	@include bp(l) {
+		padding: var(--gap-xl);
+	}
+}
 
-		${bp.l`
-			padding: var(--gap-xl);
-		`}
-	`
-);
+.title {
+	@include titleS;
+}
 
-export const Title = styled(Div).attrs({ as: 'h3' })(
-	() => css`
-		${titleS}
-	`
-);
-
-export const Body = styled(Div).attrs({ as: 'p' })(
-	() => css`
-		${bodyS}
-	`
-);
+.body {
+	@include bodyS;
+	color: alpha(--global-white, 80);
+}
 ```
 
 **`src/components/Card/index.tsx`**
@@ -118,20 +113,22 @@ export const Body = styled(Div).attrs({ as: 'p' })(
 ```tsx
 // Imports
 // ------------
+import { cx } from '@utils/cx';
 
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import * as S from './styles';
+import s from './styles.module.scss';
 
 // Component
 // ------------
-const Card = ({ title, href }: I.CardProps) => {
+const Card = ({ title, body, isActive, className }: I.CardProps) => {
+	// Render
 	return (
-		<S.Jacket>
-			<S.Title>{title}</S.Title>
-			<S.Body>…</S.Body>
-		</S.Jacket>
+		<article className={cx(s.jacket, className)} data-state={isActive ? 'active' : undefined}>
+			<h3 className={s.title}>{title}</h3>
+			<p className={s.body}>{body}</p>
+		</article>
 	);
 };
 
@@ -141,79 +138,34 @@ Card.displayName = 'Card';
 export default Card;
 ```
 
-## Import cheat sheet
+## Styling with modules
 
-| Import | Gives you | Use for |
+- **Tokens are CSS variables** — `var(--brand-c1)`, `var(--gap-l)`, `var(--time-m)`, `var(--easing-bezzy)`. Never hard-code hex values or durations. The full list and how they're generated is in [Theming](./Theming.md).
+- **Nesting under a local class is fine** (`.jacket p { … }`, `.jacket:hover .title { … }`). Bare tag selectors at the top level of a module are not allowed (CSS Modules pure mode) — anything genuinely global belongs in `src/css/global.scss`.
+- **Modules always win.** Global styles sit in cascade layers (`reset`, `base`, `grid`, `utilities`); component modules are unlayered, so a module rule beats any of them without specificity games or `!important`.
+
+### The injected SCSS layer
+
+Every `.scss` file gets `@use 'tackl' as *;` prepended automatically (`sassOptions.additionalData` in `next.config.js`), so the following are available in any module **with no imports**:
+
+| Helper | Kind | Example |
 | --- | --- | --- |
-| `@tackl` | `Div`, `bp`, `bpd`, `alpha`, `noscrollbars`, getters (`getBrand`, `getGlobal`, `getFeedback`, `getSpace`, `getGap`, `getRadius`, `getEase`, `getTime`, `getFont`, `getFontWeight`) | Everything you style with |
-| `@tackl/type` | `displayL`/`displayS`, `headlineL`/`headlineS`, `titleL`/`titleS`, `bodyL`/`bodyS`, `captionL`/`captionS` | Global text styles, composed into styled blocks |
-| `@waffl` | `Grid` (default export) | The grid container |
-| `@theme` | `theme`, `GlobalStyle` | Rarely needed directly — the getters wrap it |
-| `@parts/*` | `src/components/*` | Other components |
-| `@utils/*` | `src/utils/*` | Hooks and helpers |
-| `@cms` | `fetchContent`, query strings | Data fetching (adapter-agnostic — see docs/CMS.md) |
-| `@css/*`, `@public/*` | Global CSS, static assets | |
+| `bp($key)` | mixin — `min-width` query | `@include bp(m) { … }` |
+| `bpd($key)` | mixin — `max-width` query (rare) | `@include bpd(m) { … }` |
+| `alpha($color, $opacity)` | function — translucent colour | `background: alpha(--brand-c1, 20);` |
+| `vw($px, $design: desktop)` | function — px → vw against a design width | `font-size: vw(48);` `margin: vw(24, mobile);` |
+| `pad($side)` / `mar($side)` | mixins — section spacing | `@include pad;` `@include mar(bottom);` |
+| `noscrollbars` | mixin — hide scrollbars, keep scrolling | `@include noscrollbars;` |
+| Type mixins | mixins — text styles | `@include headlineL;` |
+| `$breakpoints`, `$columns`, `$gutters`, `$grid-max`, `$design-widths` | maps / values | `map.get($columns, l)` |
 
-Per-tag components (`Section`, `H1`, `P`…) **do not exist** — there is one `Div`, and the tag is chosen with `as`.
+The layer lives in `src/css/tackl/` and emits zero CSS on its own — it's mixins, functions and variables only. If an editor needs it for IntelliSense, adding `@use 'tackl' as *;` at the top of a file is harmless.
 
-## `Div` — the one primitive
+### Breakpoints — mobile-first
 
-`Div` is a fully-typed `styled.div` carrying three prop families:
+Base styles **are** the mobile styles; `bp()` layers changes on top as the viewport grows.
 
-| Family | Props | What they do |
-| --- | --- | --- |
-| Tag | `as='section'` etc. | Renders any HTML tag with the same powers |
-| Spacing | `$mar`, `$marTop`, `$marBottom`, `$pad`, `$padTop`, `$padBottom` | Responsive section spacing from the space tokens (small on mobile → large on desktop, automatically) |
-| Grid spans | `$s`, `$sm`, `$m`, `$l`, `$xl`, `$xxl`, `$huge`, `$uber` | `grid-column` per breakpoint, when inside a `Grid` |
-
-Plus every normal HTML attribute (`id`, `style`, `aria-*`, events) with full typing.
-
-In JSX, choose the tag inline; in `styles.ts`, fix it with `.attrs`:
-
-```tsx
-<Div as='nav' $padTop>…</Div>                       // inline
-export const Jacket = styled(Div).attrs({ as: 'nav' })(…)  // fixed in styles
-```
-
-## How `Div` hooks into the Waffl grid
-
-The grid does the defaulting; `Div` does the opting-in.
-
-```mermaid
-flowchart TD
-    G["Grid from @waffl\nrenders &lt;waffl-grid&gt; — display:grid, 2/6/12 columns"]
-    G --> A["&lt;Div $m='2/6' $l='1/7'&gt;\nspan props emit grid-column per breakpoint"]
-    G --> B["&lt;figure&gt; (plain element)\nno props needed"]
-    R["global.css\nwaffl-grid &gt; :where(*) { grid-column: 1/-1 }"] -.full-width default.-> B
-    R -.overridden by span props.-> A
-```
-
-Three things make this work:
-
-1. **`Grid` renders a plain `<waffl-grid>` tag** — a named element with no JavaScript behind it. All styling comes from the styled component: `display: grid`, responsive column counts (2 on mobile, 6 on tablet, 12 on desktop), and gutters as `--grid-*` variables.
-2. **A zero-specificity global rule makes every direct child full-width by default:** `waffl-grid > :where(*) { grid-column: 1 / -1; }`. Because `:where()` has zero specificity, *any* class or span prop on a child wins. This is why plain elements — including Server Components with no styled-components at all — are first-class grid children.
-3. **Span props narrow from there.** `$m='2/6'` emits `grid-column: 2/6` inside the `m` media query. Values are raw `grid-column` syntax: `'2/6'` (line 2 to line 6), `'span 4'`, `'1/-1'`.
-
-```tsx
-import Grid from '@waffl';
-import { Div } from '@tackl';
-
-<Grid $isFixed>
-	{/* 2 cols on mobile (full), half the 6-col tablet grid, cols 1-7 of 12 on desktop */}
-	<Div as='article' $m='1/4' $l='1/7'>…</Div>
-
-	{/* full width at every breakpoint — no props, no styled-components */}
-	<figure>…</figure>
-</Grid>
-```
-
-Grid container props: `$isFixed` (max-width 1440px), `$noGutter`, `$noMargin`, `$isFullscreen`, `$isCenter` — plus the same spacing props as `Div`.
-
-## `bp` — mobile-first breakpoints
-
-`bp` (from `@tackl`) is a map of **`min-width` media query helpers**. The mental model: **your base styles ARE the mobile styles**; each `bp.{key}` layers changes on top as the viewport grows. You never write mobile overrides — you start there.
-
-| Key | Fires at | Grid columns |
+| Key | `bp()` fires at | Grid columns |
 | --- | --- | --- |
 | `s` | ≥ 320px | 2 |
 | `sm` | ≥ 390px | 2 |
@@ -224,48 +176,165 @@ Grid container props: `$isFixed` (max-width 1440px), `$noGutter`, `$noMargin`, `
 | `huge` | ≥ 1600px | 12 |
 | `uber` | ≥ 1800px | 12 |
 
+```scss
+.jacket {
+	// Mobile — no wrapper needed
+	flex-direction: column;
+	gap: var(--gap-m);
+
+	@include bp(m) {
+		flex-direction: row; // ≥ 700px
+	}
+
+	@include bp(l) {
+		gap: var(--gap-xl); // ≥ 1024px
+	}
+}
+```
+
+`bpd(m)` is the `max-width` counterpart (`max-width: 699.98px`, so `bp` and `bpd` never overlap at the boundary). Reach for it sparingly — if you use it often, the base styles are probably desktop-first. For breakpoints in JS (`breakpoints`, `mq`), see [Theming](./Theming.md#breakpoints).
+
+### Type
+
+Type styles are hand-written mixins in `src/css/tackl/_type.scss`: `displayL`, `displayS`, `headlineL`, `headlineS`, `titleL`, `titleS`, `bodyL`, `bodyS`, `captionL`, `captionS`. Each one is available three ways:
+
+```scss
+// 1. Mixin, inside a module
+.title {
+	@include headlineL;
+}
+```
+
 ```tsx
-import { bp } from '@tackl';
+// 2. Global class
+<h2 className='t-headlineL'>…</h2>
 
-export const Jacket = styled(Div)(
-	() => css`
-		/* Mobile — no wrapper needed */
-		flex-direction: column;
-		gap: var(--gap-m);
-
-		${bp.m`
-			/* ≥ 700px */
-			flex-direction: row;
-		`}
-
-		${bp.l`
-			/* ≥ 1024px */
-			gap: var(--gap-xl);
-		`}
-	`
-);
+// 3. Data attribute
+<p data-type='captionL'>…</p>
 ```
 
-…compiles to:
+Use the mixin when the element already has a module class; use the class or attribute for one-off text that doesn't need its own rule. To add a style, write the mixin in `_type.scss`, then add its name to the `$type-styles` list at the bottom of that file — the `.t-*` class and `data-type` selector are generated from that list.
 
-```css
-.Jacket { flex-direction: column; gap: var(--gap-m); }
-@media (min-width: 700px)  { .Jacket { flex-direction: row; } }
-@media (min-width: 1024px) { .Jacket { gap: var(--gap-xl); } }
+#### Classes vs. attributes — getting it right
+
+Each attribute takes one kind of value. Mixing them up doesn't throw an error — the element just silently gets no style, so it's worth learning the pattern:
+
+| You want | Write | Not |
+| --- | --- | --- |
+| A type style as a class | `className='t-headlineS'` | `className='headlineS'` |
+| A type style as an attribute | `data-type='headlineS'` | `data-type='t-headlineS'` |
+| Your module's own class | `className={s.body}` | `className='s.body'`, `data-type={s.body}`, `data-type='s.body'` |
+| A module class **and** a type class | `className={cx(s.title, 't-headlineS')}` | two `className` props |
+
+- `t-` is the class prefix only — `data-type` takes the bare style name.
+- `s.something` is a JavaScript value: it goes in `className={…}` with braces and no quotes, never in `data-type`.
+- Only names that exist in `_type.scss` work (`displayL`, `displayS`, `headlineL`, `headlineS`, `titleL`, `titleS`, `bodyL`, `bodyS`, `captionL`, `captionS`). A made-up name like `bodyM` matches nothing until you add the mixin and list it in `$type-styles`.
+
+### Spacing
+
+Section spacing comes from the `--space-*` tokens and steps up responsively: `--space-s` on mobile, `--space-m` from `bp(m)`, `--space-l` from `bp(l)`. Apply it from the HTML or from a module:
+
+```tsx
+<section data-pad>…</section>              // padding top + bottom
+<section data-pad='top'>…</section>        // padding top only
+<div data-mar='top bottom'>…</div>         // values combine
 ```
 
-`bpd` is the descending (`max-width`) counterpart for the rare "only below this size" case — reach for it sparingly; if you're using `bpd` often, the base styles are probably written desktop-first.
+```scss
+.jacket {
+	@include pad;          // top + bottom
+	@include mar(bottom);  // margin-bottom only
+}
+```
 
-The same scale drives the `Div`/`Grid` span props (`$m`, `$l`, …) and derives from `theme.grid.breakpoints` — add a breakpoint there and `bp`, `bpd`, and the span-prop types all update automatically.
+Sides are `block` (the default — top and bottom), `top` and `bottom`. More in [Col & spacing attributes](./SemanticComponents.md).
+
+### State → data attributes, values → custom properties
+
+Dynamic **state** goes on a `data-*` attribute and is styled with an attribute selector; dynamic **values** go in a CSS custom property via `style`.
+
+```tsx
+<div className={s.jacket} data-state={isOpen ? 'open' : 'closed'} style={{ '--progress': progress }}>
+```
+
+```scss
+.jacket {
+	transform: scaleX(var(--progress, 0));
+
+	&[data-state='open'] {
+		background: var(--brand-c1);
+	}
+}
+```
+
+`style` objects accept `--*` keys with full typing (`src/types/css.d.ts`), so no casts are needed.
+
+### Spans need a grid
+
+`Col`'s span props (`$m='1/4'`, `$l='1/7'`) only take effect when the `Col` is a **direct child of a `<Grid>`** — the span rules live on `waffl-grid > *`. A `Card` that renders a `Col` must itself be placed straight inside a grid:
+
+```tsx
+<Grid>
+	<Card title='…' />   {/* Card renders <Col $m='1/4'> → spans work */}
+</Grid>
+```
+
+Anywhere else the span props are simply ignored. `Col` renders a `div` by default, so `as='div'` is never needed.
+
+### Combining classes with `cx()`
+
+`cx()` from `@utils/cx` joins class names and skips falsy values — use it to combine module classes, global utility classes and an optional `className` prop:
+
+```tsx
+import { cx } from '@utils/cx';
+
+<h2 className={cx(s.title, 't-headlineL', isActive && s.active, className)} />
+```
+
+Prefer a `data-*` attribute over a conditional class when the change is a state of the same element.
+
+## Using the grid
+
+`Grid` (from `@waffl`) renders a plain `<waffl-grid>`. Every direct child spans the full width by default; reach for `<Col>` (also from `@waffl`) only when a child needs a narrower span:
+
+```tsx
+import Grid, { Col } from '@waffl';
+
+<Grid $isFixed>
+	{/* full on mobile, cols 2–6 of 6 on tablet, cols 3–9 of 12 on desktop */}
+	<Col as='article' className={s.content} $m='2/6' $l='3/9'>…</Col>
+
+	{/* full width at every breakpoint — no props, no component */}
+	<figure className={s.media}>…</figure>
+</Grid>
+```
+
+Each span falls back to the breakpoint below it, so `$l` alone stays full-width below `l`. Details in [Waffl Grid](./WafflGrid.md) and [Grid span props](./GridSystemProps.md).
+
+## Import cheat sheet
+
+| Import | Gives you | Use for |
+| --- | --- | --- |
+| `./styles.module.scss` | `s` — the module's class names | Every component's styles |
+| `@tackl` | `breakpoints`, `mq`, `alpha`, `getVw`, `getVwTablet`, `getVwMobile` | Breakpoints and colour/viewport helpers in JS |
+| `@waffl` | `Grid` (default export) | The grid container |
+| `@theme` | `theme` — tokens as `var()` references | JS that needs a token (GSAP, inline styles) |
+| `@utils/cx` | `cx` | Joining class names |
+| `@utils/*` | `src/utils/*` | Hooks and helpers |
+| `@parts/*` | `src/components/*` | Other components |
+| `@cms` | `fetchContent`, query strings | Data fetching (adapter-agnostic — see docs/CMS.md) |
+| `@css/*`, `@public/*` | Global stylesheets, static assets | |
 
 ## Do / Don't
 
 | ✅ Do | ❌ Don't |
 | --- | --- |
-| `<Div as='section' $pad>` | Import `Section` / `H1` / `P` — they don't exist |
-| Style in `styles.ts`, name the wrapper `Jacket` | Inline styled-components in `index.tsx` |
-| Base styles = mobile, `bp.m`+ upwards | Desktop styles first, `bpd` everywhere |
-| `${getBrand('c1')}` / `var(--brand-c1)` | Hard-coded hex values |
-| `${alpha('--brand-c1', 20)}` for translucency | Hand-rolled rgba strings |
-| Let grid children default to full width | `$s='1/-1'` on everything |
-| `transition: x ${getTime('m')} ${getEase('bezzy')}` | Magic duration numbers |
+| `<section className={s.jacket} data-pad>` | Wrap tags in a component just to pick the element |
+| Name the outermost class `.jacket`, camelCase the rest | Kebab-case classes you then have to read as `s['remove-button']` |
+| Base styles = mobile, `@include bp(m)` upwards | Desktop styles first, `bpd()` everywhere |
+| `var(--brand-c1)` | Hard-coded hex values |
+| `alpha(--brand-c1, 20)` for translucency | Hand-rolled rgba strings |
+| `transition: x var(--time-m) var(--easing-bezzy)` | Magic duration numbers |
+| `&[data-state='open']` for state | Toggling one-off global classes |
+| Let grid children default to full width | `<Col $s='1/-1'>` on everything |
+| Bare tag selectors in `global.scss` | Bare tag selectors at the top level of a module |

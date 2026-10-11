@@ -1,22 +1,17 @@
-'use client';
-
-// Imports
-// ------------
-
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import * as S from './styles';
+import s from './styles.module.scss';
 
 // Component
 // ------------
 const Footer = (_props: I.FooterProps) => {
 	return (
-		<S.Jacket>
+		<footer className={s.jacket}>
 			{/*  */}
 			{/*  */}
 			{/*  */}
-		</S.Jacket>
+		</footer>
 	);
 };
 

@@ -1,4 +1,5 @@
 # Quality gates — fast, non-interactive, no way to forget them.
 # The commit-message wizard is still available as the optional `bun run commit`.
+bun run styles --check
 bun run lint
 bun run type-check

@@ -2,7 +2,7 @@
  * React hooks for responsive design: detect if the viewport is mobile or desktop.
  *
  * @remarks
- * - Uses a single breakpoint (default: 1024px) to distinguish mobile from desktop.
+ * - Uses the `l` grid breakpoint (the desktop threshold) to distinguish mobile from desktop.
  * - Debounces resize events for performance.
  * - SSR-safe: returns `false` for both `isMobile` and `isDesktop` until mounted.
  *
@@ -17,9 +17,11 @@
  * const isDesktop = useIsDesktop();
  */
 
+import { breakpoints } from '@tackl';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const DESKTOP_BREAKPOINT = 1024;
+// NOTE • Same token as bp(l) in SCSS and mq.up.l in JS
+const DESKTOP_BREAKPOINT = parseFloat(breakpoints.l);
 
 /**
  * Object returned by {@link useResponsive}.

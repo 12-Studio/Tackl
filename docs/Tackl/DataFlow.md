@@ -4,6 +4,8 @@
 
 This document explains how data flows through the Tackl application architecture, from server-side data fetching to client-side state management and user interactions.
 
+The examples use `Content` for a client component a page renders and passes data to. The kit doesn't ship one (the home page renders the `DeleteMe` placeholder) — create it in `src/components/` (e.g. `src/components/HomeContent/`) when a page needs interactivity.
+
 ## Data Flow Architecture
 
 ```
@@ -21,7 +23,7 @@ This document explains how data flows through the Tackl application architecture
 │  ┌─────────────────────────────────────────────────────────┐ │
 │  │  User Interaction → Content Component → Providers       │ │
 │  │       ↓                    ↓                ↓          │ │
-│  │  State Update → Re-render → Theme Update              │ │
+│  │  State Update → Re-render → Context Update            │ │
 │  └─────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -107,7 +109,7 @@ const Content = ({ data }: HomeProps) => {
 **Benefits**: Responsive user experience
 
 ```typescript
-// Content Component (app/(site)/(home)/Content.tsx)
+// Content Component (your client component, e.g. src/components/HomeContent)
 const Content = ({ data }: HomeProps) => {
     const [state, setState] = useState(data);
 
@@ -133,14 +135,11 @@ const Content = ({ data }: HomeProps) => {
 **Benefits**: Avoid prop drilling and centralize state
 
 ```typescript
-// Providers (app/(site)/Providers.tsx)
-<ThemeProvider theme={theme}>
-    <Contexts>
-        <Page>
-            <Content /> {/* Has access to theme context */}
-        </Page>
-    </Contexts>
-</ThemeProvider>
+// Providers (app/(site)/Providers.tsx) wraps the tree in Contexts
+<Contexts>{children}</Contexts>
+
+// Any client component below reads it
+const { menuOpen, setMenuOpen } = use(GlobalContext);
 ```
 
 ### 3. Animation Data Flow
@@ -219,9 +218,9 @@ const Content = ({ data }) => {
 };
 
 // 2. Providers (app/(site)/Providers.tsx) provides context
-<ThemeProvider theme={theme}>
+<Contexts>
     <Content />
-</ThemeProvider>
+</Contexts>
 
 // 3. Server component receives updated data
 const Page = ({ data }) => {
@@ -233,29 +232,22 @@ const Page = ({ data }) => {
 ### 3. Context Data Flow
 
 ```
-ThemeProvider → All Child Components
-       ↓
-   Theme Context
+Contexts → All Client Components
+    ↓
+GlobalContext (lenisRef, menuOpen) + PerformanceContext
 ```
 
 **Implementation**:
 
 ```typescript
-// 1. ThemeProvider (in app/(site)/Providers.tsx) provides theme context
-<ThemeProvider theme={theme}>
-    <Contexts>
-        <Page>
-            <Content /> {/* Has access to theme */}
-        </Page>
-    </Contexts>
-</ThemeProvider>
+// 1. Contexts (rendered by app/(site)/Providers.tsx) provides shared client state
+<Contexts>{children}</Contexts>
 
-// 2. Any component can access theme
-const StyledComponent = styled.div`
-    color: ${props => props.theme.colors.primary};
-    font-family: ${props => props.theme.font.family.body};
-`;
+// 2. Any client component reads it
+const { lenisRef } = use(GlobalContext);
 ```
+
+Design tokens don't flow through React context: they are CSS custom properties on `:root` (generated into `src/css/tokens.css`), so any component — server or client — uses them in its `styles.module.scss` as `var(--brand-c1)`, and JS reads the same `var()` references from `theme` in `@theme`.
 
 ## Data Flow Best Practices
 

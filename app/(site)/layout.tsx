@@ -10,7 +10,8 @@ import Providers from './Providers';
 
 // Styles
 // ------------
-import '@css/global.css';
+import '@css/tokens.css';
+import '@css/global.scss';
 
 // SEO
 // ------------

@@ -72,7 +72,7 @@ const SmoothScroll = ({ children }: I.SmoothScrollProps) => {
 	const { isReducedMotion } = use(PerformanceContext);
 
 	// NOTE • prefers-reduced-motion: skip Lenis entirely — native scrolling
-	// takes over (see the reduced-motion overrides in src/css/global.css) and
+	// takes over (see the reduced-motion overrides in src/css/global.scss) and
 	// the constant rAF loop never starts. ScrollTrigger falls back to the
 	// default window scroller.
 	if (isReducedMotion) return children;

@@ -1,0 +1,41 @@
+// Spacing Utilities
+// ------------
+// NOTE • Section spacing applied straight from the HTML, on any element:
+//   <section data-pad>                 → padding top + bottom
+//   <section data-pad='top'>           → padding top only
+//   <div data-mar='top bottom'>        → values combine (~= matches a word)
+// A bare data-pad renders as "true" in React and "" in plain HTML — both
+// mean top + bottom. The same rules are available as @include pad / mar.
+// NOTE • Loaded via meta.load-css, which additionalData doesn't reach —
+// hence the explicit @use.
+@use 'tackl' as *;
+
+@layer utilities {
+	[data-pad=''],
+	[data-pad='true'],
+	[data-pad~='block'] {
+		@include pad(block);
+	}
+
+	[data-pad~='top'] {
+		@include pad(top);
+	}
+
+	[data-pad~='bottom'] {
+		@include pad(bottom);
+	}
+
+	[data-mar=''],
+	[data-mar='true'],
+	[data-mar~='block'] {
+		@include mar(block);
+	}
+
+	[data-mar~='top'] {
+		@include mar(top);
+	}
+
+	[data-mar~='bottom'] {
+		@include mar(bottom);
+	}
+}

@@ -1,6 +1,5 @@
 import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
-import { useTheme, ThemeProvider } from 'styled-components';
-import { theme } from '@theme';
+import { baseColors } from '@theme/colors';
 
 <Meta title="Colors" />
 
@@ -13,7 +12,7 @@ import { theme } from '@theme';
 #
 
 export const ColorPaletteComponent = () => {
-    const theme = useTheme();
+    const theme = { colors: baseColors };
 
     return (
         <>
@@ -60,7 +59,5 @@ export const ColorPaletteComponent = () => {
     );
 };
 
-<ThemeProvider theme={theme}>
-    <ColorPaletteComponent />
-</ThemeProvider>
+<ColorPaletteComponent />
 

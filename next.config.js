@@ -1,5 +1,17 @@
+const path = require('node:path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	// Sass — styles are SCSS CSS Modules (styles.module.scss) plus the global
+	// src/css/global.scss. `additionalData` prepends the Tackl SCSS layer
+	// (src/css/tackl) to every .scss file, so bp(), the type and spacing mixins,
+	// vw() and alpha() work with no imports. That layer emits no CSS itself.
+	sassOptions: {
+		implementation: 'sass-embedded',
+		loadPaths: [path.join(__dirname, 'src/css')],
+		additionalData: `@use 'tackl' as *;`,
+	},
+
 	// Image loader settings
 	images: {
 		formats: ['image/avif', 'image/webp'],
@@ -136,16 +148,9 @@ const nextConfig = {
 	// source. Concatenated with the NEXT_HASH_SALT env var when both are set.
 	// outputHashSalt: 'tackl',
 
-	// Styled Components settings
+	// Compiler settings
 	compiler: {
-		// styledComponents: true,
 		removeConsole: process.env.NODE_ENV === 'production',
-
-		styledComponents: {
-			displayName: process.env.NODE_ENV === 'development',
-			ssr: true,
-			minify: true,
-		},
 	},
 };
 

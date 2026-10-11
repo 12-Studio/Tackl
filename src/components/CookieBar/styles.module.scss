@@ -1,0 +1,45 @@
+.jacket {
+	position: fixed;
+	inset: auto var(--gap-l) var(--gap-l);
+	z-index: 12;
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	padding: var(--gap-l);
+	background: var(--global-white);
+	color: var(--global-black);
+	border-radius: var(--br-l);
+
+	@include bp(m) {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	p {
+		@include captionL;
+	}
+
+	> div {
+		display: flex;
+		align-items: center;
+		gap: var(--gap-s);
+	}
+
+	// NOTE • Accept and Decline share one style on purpose — equal
+	// prominence keeps the choice genuinely free
+	button {
+		@include captionL;
+
+		padding: var(--gap-s) var(--gap-l);
+		border-radius: var(--br-round);
+		background: var(--brand-c1);
+		color: var(--global-white);
+		cursor: pointer;
+		transition: opacity var(--time-s) var(--easing-bezzy);
+
+		&:hover {
+			opacity: 0.85;
+		}
+	}
+}

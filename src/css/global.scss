@@ -1,0 +1,258 @@
+// Global Styles
+// ------------
+// NOTE • The only global stylesheet (imported once in app/(site)/layout.tsx,
+// after tokens.css). Everything here sits in a cascade layer, and component
+// modules are unlayered — so a module always beats anything below, with no
+// specificity fights or !important.
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+
+// SECTION • Layer order — lowest priority first
+@layer reset, base, grid, utilities;
+
+// SECTION • Reset
+@layer reset {
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		-webkit-font-smoothing: antialiased; // Matched pair with the -moz value below — consistent rendering across engines
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	article,
+	aside,
+	details,
+	figcaption,
+	figure,
+	footer,
+	header,
+	hgroup,
+	menu,
+	nav,
+	section {
+		display: block;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	ol,
+	ul {
+		list-style: none;
+	}
+
+	input,
+	select,
+	textarea,
+	button {
+		border: none;
+		border-radius: 0;
+		background: none;
+	}
+
+	// Hide scrollbars everywhere — scrolling is driven by Lenis
+	* {
+		scrollbar-width: none;
+	}
+
+	*::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+// SECTION • Base
+@layer base {
+	html {
+		font-size: 62.5%; // 10px base font size for easier rem calculations
+		interpolate-size: allow-keywords;
+	}
+
+	// Locked viewport — deliberate (see AGENTS.md, Animation section): scrolling
+	// happens in the nested Lenis wrapper, not the window, so the iOS toolbar
+	// never collapses and page transitions / fullscreen loaders render cleanly
+	html,
+	body {
+		height: 100%;
+		overflow: hidden;
+	}
+
+	body {
+		line-height: 1;
+		background: var(--global-black);
+		color: var(--global-white);
+	}
+
+	#page {
+		height: 100%;
+		overflow: hidden;
+		view-transition-name: page;
+	}
+
+	// Focus — invisible for pointer interactions, a clear ring for keyboard
+	// navigation. :focus-visible must always produce a visible indicator.
+	:focus {
+		outline: none;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--brand-c1);
+		outline-offset: 2px;
+	}
+
+	// Nested Lenis — wrapper is the viewport; content scrolls via transform (not overflow-y)
+	.lenis {
+		position: relative;
+		width: 100%;
+		height: 100dvh;
+		overflow: hidden;
+	}
+
+	// Reduced motion — SmoothScroll skips Lenis entirely (no rAF loop), so the
+	// locked-viewport layout above must hand scrolling back to the browser
+	@media (prefers-reduced-motion: reduce) {
+		html,
+		body {
+			height: auto;
+			overflow: auto;
+		}
+
+		#page {
+			height: auto;
+			overflow: visible;
+		}
+	}
+
+	// Page transitions — the View Transitions API
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation: none !important; // must override the UA's default view-transition animation
+	}
+
+	::view-transition-group(root) {
+		z-index: auto !important; // must override the UA's default view-transition stacking
+	}
+
+	::view-transition-image-pair(root) {
+		isolation: isolate;
+		will-change: transform, opacity, clip-path; // NOTE • Change to whatever property you want to animate
+		z-index: 1;
+	}
+
+	::view-transition-new(root) {
+		z-index: 2;
+	}
+
+	::view-transition-old(root) {
+		z-index: 1;
+	}
+}
+
+// SECTION • Waffl Grid
+// NOTE • <Grid> (@waffl) renders a plain <waffl-grid> tag — all of its
+// styling lives here. Columns, gutters and max width come from the grid
+// tokens (src/theme/grid → generated _grid.scss).
+// NOTE • Span variables must not inherit — otherwise a grid nested inside a
+// spanned column would pass the parent's spans to its own children.
+// Registered here; the --col-* reset on waffl-grid covers browsers without
+// @property support.
+@each $key, $size in $breakpoints {
+	@property --col-#{$key} {
+		syntax: '*';
+		inherits: false;
+	}
+}
+
+@layer grid {
+	waffl-grid {
+		@each $key, $size in $breakpoints {
+			--col-#{$key}: initial;
+		}
+
+		--grid-columns: repeat(#{map.get($columns, s)}, 1fr);
+		--grid-gutter: #{map.get($gutters, s)};
+		--grid-margin: #{map.get($gutters, s)};
+
+		display: grid;
+		contain: layout;
+		grid-template-columns: var(--grid-columns);
+		column-gap: var(--grid-gutter);
+		padding-inline: var(--grid-margin);
+		margin: 0 auto;
+		width: 100%;
+
+		@include bp(m) {
+			--grid-columns: repeat(#{map.get($columns, m)}, 1fr);
+			--grid-gutter: #{map.get($gutters, m)};
+			--grid-margin: calc(var(--grid-gutter) / 2);
+		}
+
+		@include bp(l) {
+			--grid-columns: repeat(#{map.get($columns, l)}, 1fr);
+			--grid-gutter: #{map.get($gutters, l)};
+			--grid-margin: calc(var(--grid-gutter) / 2);
+		}
+
+		&[data-no-gutter] {
+			column-gap: 0;
+		}
+
+		&[data-no-margin] {
+			padding-inline: 0;
+		}
+
+		&[data-fullscreen] {
+			height: 100%;
+		}
+
+		&[data-center] {
+			place-items: center;
+		}
+
+		&[data-fixed] {
+			max-width: $grid-max;
+		}
+	}
+
+	// Column spans — every direct child spans the full grid unless a
+	// --col-{breakpoint} variable says otherwise (set by <Col $m='2/6'>, or by
+	// hand). Each breakpoint falls back to the one below it, so $l alone still
+	// spans fully on mobile. :where() keeps specificity at zero, so plain and
+	// server-rendered children work with no component at all.
+	waffl-grid > :where(*) {
+		$previous: null;
+
+		@each $key, $size in $breakpoints {
+			@if $previous {
+				// stylelint-disable-next-line csstools/value-no-unknown-custom-properties -- names are generated in this loop
+				--_col-#{$key}: var(--col-#{$key}, var(--_col-#{$previous}));
+			} @else {
+				--_col-#{$key}: var(--col-#{$key}, 1 / -1);
+			}
+
+			$previous: $key;
+		}
+
+		$first: list.nth(map.keys($breakpoints), 1);
+
+		// stylelint-disable-next-line csstools/value-no-unknown-custom-properties -- declared by the loop above
+		grid-column: var(--_col-#{$first});
+
+		@each $key, $size in $breakpoints {
+			@if $key != $first {
+				@include bp($key) {
+					grid-column: var(--_col-#{$key});
+				}
+			}
+		}
+	}
+}
+
+// SECTION • Utilities
+// NOTE • Loaded last so the layers above are declared first. Spacing
+// (data-pad / data-mar) and type (.t-* / data-type) — see src/css/utilities.
+@include meta.load-css('utilities/spacing');
+@include meta.load-css('utilities/type');

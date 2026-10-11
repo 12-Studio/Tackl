@@ -1,0 +1,70 @@
+// NOTE • The overlay drops in from the top when toggled (Ctrl + G)
+.jacket {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	width: 100%;
+	height: 0%;
+	pointer-events: none;
+	transition: all 1s var(--easing-bezzy);
+
+	&[data-visible] {
+		height: 100%;
+	}
+
+	waffl-grid {
+		height: 100%;
+	}
+}
+
+// NOTE • Columns past the current breakpoint's count stay hidden, so the
+// overlay always matches the real grid (2 / 6 / 12 columns)
+.col {
+	display: none;
+	height: 100%;
+
+	&[data-mobile] {
+		display: block;
+	}
+
+	@include bp(m) {
+		&[data-tablet] {
+			display: block;
+		}
+	}
+
+	@include bp(l) {
+		display: block;
+	}
+
+	span {
+		--max: 100%;
+
+		display: block;
+		width: var(--max);
+		height: var(--max);
+		border-inline: 0 dashed var(--feedback-negative);
+		transition: all 0.25s linear;
+
+		&::after {
+			content: '';
+			display: block;
+			width: var(--max);
+			height: var(--max);
+			opacity: 0.5;
+			background-color: var(--feedback-negative);
+			transition: all 0.25s linear;
+		}
+	}
+
+	// Alternate scheme (Ctrl + F): dashed outlines instead of filled columns
+	[data-alt] & span {
+		border-inline-width: 1px;
+
+		&::after {
+			opacity: 0.2;
+			background-color: transparent;
+		}
+	}
+}

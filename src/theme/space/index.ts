@@ -1,16 +1,16 @@
 // Property Documentation
 // ------------
 
-// NOTE • This file exports the space object, the space object is used primarily for margin/padding values between sections. $pad and $mar are used to set the margin/padding values for the section automatically throughout the application.
+// NOTE • This file exports the space object, the space object is used primarily for margin/padding values between sections. The data-pad / data-mar attributes (and the pad / mar mixins) apply it responsively.
 
-// REVIEW — Usage: ${getSpace('m')}
+// REVIEW — Usage: padding-top: var(--space-m);  or  <section data-pad>
 
 // Imports
 // ------------
 import { toVarRefs } from '@theme/cssVariables';
 
 // SECTION • Raw Space Values
-// NOTE • Emitted as --space-{key} on :root by GlobalStyle (@theme)
+// NOTE • Emitted as --space-{key} on :root in the generated src/css/tokens.css
 export const spaceValues = {
 	s: '4.8rem',
 	m: '6rem',

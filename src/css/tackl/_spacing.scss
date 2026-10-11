@@ -1,0 +1,29 @@
+// Spacing
+// ------------
+// NOTE • Section spacing on the --space-* scale, stepping up at m and l.
+// Applied in HTML via data-pad / data-mar (src/css/utilities/_spacing.scss)
+// or in a module with the mixins below.
+// Sides: block (top + bottom), top, bottom.
+@use 'breakpoints' as *;
+
+@mixin _space($property, $side) {
+	#{$property}-#{$side}: var(--space-s);
+
+	@include bp(m) {
+		#{$property}-#{$side}: var(--space-m);
+	}
+
+	@include bp(l) {
+		#{$property}-#{$side}: var(--space-l);
+	}
+}
+
+// Usage: @include pad;  @include pad(top);
+@mixin pad($side: block) {
+	@include _space(padding, $side);
+}
+
+// Usage: @include mar;  @include mar(bottom);
+@mixin mar($side: block) {
+	@include _space(margin, $side);
+}

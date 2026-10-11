@@ -83,4 +83,4 @@ export const PerformanceProvider = ({ children }: { children: React.ReactNode })
 	return <PerformanceContext.Provider value={value}>{children}</PerformanceContext.Provider>;
 };
 
-// For documentation, see `docs/PerformanceContext.md`
+// For documentation, see `docs/Tackl/PerformanceContext.md`

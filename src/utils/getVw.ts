@@ -12,11 +12,8 @@
  * getVw(100) // Returns "6.94vw"
  * getVw(200) // Returns "13.89vw"
  *
- * @example Usage in styled-components
- * const StyledComponent = styled.div`
- *   font-size: ${getVw(48)}; // Responsive font size
- *   margin: ${getVw(24)};    // Responsive margin
- * `;
+ * @example Inline style (in SCSS, use the vw() function instead)
+ * <div style={{ fontSize: getVw(48) }} />
  */
 
 import { theme } from '@theme';

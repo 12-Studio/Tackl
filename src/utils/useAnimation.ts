@@ -1,5 +1,5 @@
 import { useGSAP } from '@gsap/react';
-import { theme } from '@theme';
+import { mq } from '@tackl';
 import gsap from 'gsap';
 
 type Breakpoints = Record<string, string>;
@@ -13,16 +13,13 @@ type MatchMediaConditions = Record<string, boolean>;
  */
 type AnimationCallback = (conditions: MatchMediaConditions) => void;
 
-// NOTE • Derived from theme.grid.breakpoints so layout and animations can
-// never desync — m is the tablet threshold, l the desktop one. The 0.02px
-// subtraction keeps the ranges exclusive at exact breakpoint widths.
-const tablet = parseFloat(theme.grid.breakpoints.m);
-const desktop = parseFloat(theme.grid.breakpoints.l);
-
+// NOTE • Built from the same breakpoint tokens as the SCSS bp() mixins, so
+// layout and animations can never desync — m is the tablet threshold, l the
+// desktop one. mq.down sits 0.02px under, keeping the ranges exclusive.
 const DEFAULT_BREAKPOINTS: Breakpoints = {
-	isDesktop: `(min-width: ${desktop}px)`,
-	isMobile: `(max-width: ${tablet - 0.02}px)`,
-	isTablet: `(min-width: ${tablet}px) and (max-width: ${desktop - 0.02}px)`,
+	isDesktop: mq.up.l,
+	isMobile: mq.down.m,
+	isTablet: `${mq.up.m} and ${mq.down.l}`,
 };
 
 /**

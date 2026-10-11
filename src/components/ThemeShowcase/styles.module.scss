@@ -1,0 +1,136 @@
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-uber);
+	min-height: 100vh;
+	padding: var(--gap-huge);
+	background: var(--global-black);
+	color: var(--global-white);
+}
+
+.block {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-l);
+}
+
+.blockTitle {
+	@include headlineS;
+
+	padding-bottom: var(--gap-s);
+	border-bottom: 1px solid alpha(--global-white, 10);
+}
+
+.groupLabel {
+	@include captionL;
+
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--brand-c1);
+}
+
+.roleNote {
+	@include bodyS;
+
+	max-width: 72rem;
+	color: alpha(--global-white, 60);
+}
+
+.swatchGroup {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-s);
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-m);
+}
+
+.swatchCard {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+	width: 12rem;
+}
+
+.swatchChip {
+	height: 6rem;
+	border: 1px solid alpha(--global-white, 10);
+	border-radius: var(--br-s);
+}
+
+.tokenName {
+	@include captionL;
+}
+
+.tokenValue {
+	@include captionS;
+
+	font-family: var(--font-mono);
+	color: alpha(--global-white, 50);
+	overflow-wrap: anywhere;
+}
+
+.fontRow {
+	@include titleL;
+}
+
+.specimenRow {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+	padding-bottom: var(--gap-m);
+	border-bottom: 1px dashed alpha(--global-white, 8);
+}
+
+.bar {
+	height: 1.6rem;
+	max-width: 100%;
+	border-radius: var(--br-xs);
+	background: alpha(--brand-c1, 60);
+}
+
+.barRow {
+	display: flex;
+	align-items: center;
+	gap: var(--gap-m);
+
+	> p {
+		width: 8rem;
+		flex-shrink: 0;
+	}
+}
+
+.radiusBox {
+	width: 10rem;
+	height: 10rem;
+	border: 1px solid var(--brand-c1);
+	background: alpha(--brand-c1, 15);
+}
+
+// NOTE • Hover a chip to feel the timing/easing — duration and curve come in
+// via inline style from the token values
+.motionChip {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+	width: 16rem;
+	padding: var(--gap-s);
+	border: 1px solid alpha(--global-white, 10);
+	border-radius: var(--br-m);
+
+	&:hover > span {
+		transform: translateX(10rem);
+	}
+
+	> span {
+		display: block;
+		width: 2.4rem;
+		height: 2.4rem;
+		border-radius: var(--br-xs);
+		background: var(--brand-c1);
+		transition-property: transform;
+	}
+}

@@ -1,0 +1,46 @@
+{
+	"extends": ["stylelint-config-standard-scss"],
+	"plugins": ["stylelint-value-no-unknown-custom-properties"],
+	"ignoreFiles": [
+		"**/node_modules/**",
+		".next/**",
+		"out/**",
+		"storybook-static/**",
+		"src/css/tackl/_breakpoints.scss",
+		"src/css/tackl/_grid.scss"
+	],
+	"rules": {
+		"selector-class-pattern": [
+			"^([a-z][a-zA-Z0-9]*|t-[a-zA-Z0-9]+)$",
+			{
+				"message": "Classes are camelCase (module) or t-* (global type utilities)"
+			}
+		],
+		"scss/at-mixin-pattern": [
+			"^_?[a-z][a-zA-Z0-9]*$",
+			{
+				"message": "Mixins are camelCase (e.g. captionL, noscrollbars)"
+			}
+		],
+		"scss/dollar-variable-pattern": [
+			"^[a-z][a-z0-9-]*$",
+			{
+				"message": "Sass variables are kebab-case"
+			}
+		],
+		"selector-type-no-unknown": [
+			true,
+			{
+				"ignore": ["custom-elements"]
+			}
+		],
+		"declaration-empty-line-before": null,
+		"scss/double-slash-comment-empty-line-before": null,
+		"csstools/value-no-unknown-custom-properties": [
+			true,
+			{
+				"importFrom": ["src/css/tokens.css"]
+			}
+		]
+	}
+}

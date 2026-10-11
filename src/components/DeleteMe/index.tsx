@@ -1,11 +1,6 @@
-'use client';
-
-// Imports
+// Styles
 // ------------
-
-// Styles + Interfaces
-// ------------
-import * as S from './styles';
+import s from './styles.module.scss';
 
 // Component
 // ------------
@@ -14,13 +9,13 @@ import * as S from './styles';
 const DeleteMe = () => {
 	return (
 		<>
-			<S.Jacket>
-				<S.Title>Tackl</S.Title>
-				<S.Hint>You’re all set — delete this component and start building.</S.Hint>
-			</S.Jacket>
+			<div className={s.jacket}>
+				<h1 className={s.title}>Tackl</h1>
+				<p className={s.hint}>You’re all set — delete this component and start building.</p>
+			</div>
 
 			{/* Scroll room so the smooth-scroll setup is feelable out of the box */}
-			<S.Spacer aria-hidden />
+			<div className={s.spacer} aria-hidden />
 		</>
 	);
 };

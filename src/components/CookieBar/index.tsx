@@ -25,6 +25,7 @@
 
 // Imports
 // ------------
+import { cx } from '@utils/cx';
 import { isDocument } from '@utils/isDocument';
 import { storage } from '@utils/useLocalStorage';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -32,7 +33,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import { Jacket } from './styles';
+import s from './styles.module.scss';
 
 // Constants
 // ------------
@@ -148,7 +149,7 @@ const CookieBar = ({
 	if (!isVisible) return null;
 
 	return (
-		<Jacket className={className} aria-label='Cookie consent'>
+		<aside className={cx(s.jacket, className)} aria-label='Cookie consent'>
 			<p>{message}</p>
 			<div>
 				<button type='button' onClick={handleAccept}>
@@ -158,7 +159,7 @@ const CookieBar = ({
 					{declineButtonText}
 				</button>
 			</div>
-		</Jacket>
+		</aside>
 	);
 };
 

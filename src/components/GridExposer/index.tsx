@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * GridExposer Component
  * ====================
@@ -21,15 +23,15 @@
  *   always matches the real Waffl grid (same tokens drive both)
  */
 
-import { theme } from '@theme';
 // Imports
 // ------
-import Grid from '@waffl';
+import { theme } from '@theme';
+import Grid, { Col } from '@waffl';
 import { useCallback, useEffect, useState } from 'react';
 
 // Styles
 // ------
-import { Col, Jacket } from './styles';
+import s from './styles.module.scss';
 
 // Constants
 // ------
@@ -78,19 +80,19 @@ const GridExposer = () => {
 		<Col
 			// biome-ignore lint/suspicious/noArrayIndexKey: static fixed-length column list — the index is the column's identity
 			key={`col-${i}`}
-			$isMobile={i < MOBILE_COLUMNS}
-			$isTablet={i < TABLET_COLUMNS}
-			$altColor={useAltColor}
-			$col={i + 1}
+			className={s.col}
+			data-mobile={i < MOBILE_COLUMNS || undefined}
+			data-tablet={i < TABLET_COLUMNS || undefined}
+			$s={`${i + 1}`}
 		>
 			<span />
 		</Col>
 	));
 
 	return (
-		<Jacket $showGrid={isGridVisible} $altColor={useAltColor}>
+		<aside className={s.jacket} data-visible={isGridVisible || undefined} data-alt={useAltColor || undefined}>
 			<Grid>{gridColumns}</Grid>
-		</Jacket>
+		</aside>
 	);
 };
 

@@ -1,12 +1,13 @@
 // Imports
 // ------
+import { cx } from '@utils/cx';
 import { memo } from 'react';
 // Interfaces
 // ------------
 import type { IconProps } from './interface';
 // Styles
 // ------
-import { Jacket } from './styles';
+import s from './styles.module.scss';
 
 /**
  * Icon Component
@@ -69,12 +70,17 @@ const Icon = memo(({ type, className, onClick }: IconProps) => {
 		width: '24',
 		height: '24',
 		xmlns: 'http://www.w3.org/2000/svg',
-		className,
+		className: cx(s.jacket, className),
 		onClick,
 		viewBox: iconConfig.viewBox,
 	};
 
-	return <Jacket {...defaultProps}>{iconConfig.path}</Jacket>;
+	// NOTE • Decorative — label the surrounding button/link instead
+	return (
+		<svg aria-hidden='true' {...defaultProps}>
+			{iconConfig.path}
+		</svg>
+	);
 });
 
 // Exports

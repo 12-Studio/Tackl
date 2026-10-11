@@ -174,6 +174,7 @@ const CMS = {
 // with every scaffold so quality gates run from the first push.
 const REPO_CARGO = [
 	'tackl',
+	'docs/plans',
 	'.github/FUNDING.yml',
 	'.github/ISSUE_TEMPLATE.md',
 	'.github/PULL_REQUEST_TEMPLATE.md',
@@ -396,7 +397,7 @@ ${pc.bold('Repository:')} https://github.com/${OWNER}/${REPO}
 		console.log(`  ${step++}) cp .env.example .env   # then fill in your values`);
 	}
 	if (!doInstall) console.log(`  ${step++}) bun install`);
-	console.log(`  ${step++}) bun run dev   # a first-run setup wizard walks you through your theme`);
+	console.log(`  ${step++}) bun run dev   # then set your tokens in src/theme`);
 	if (cms === 'sanity') console.log(`  ${step}) open http://localhost:3000/studio to start editing content`);
 }
 

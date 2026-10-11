@@ -32,32 +32,9 @@ const MyComponent = () => {
 };
 ```
 
-### Function-based approach
-
-```jsx
-import { createGSAPMatchMedia } from '@utils/useAnimation';
-import gsap from 'gsap';
-
-const MyComponent = () => {
-    const elementRef = useRef(null);
-
-    useEffect(() => {
-        const cleanup = createGSAPMatchMedia(({ isDesktop, isMobile }) => {
-            gsap.from(elementRef.current, {
-                y: isDesktop ? '2rem' : '1rem',
-            });
-        });
-
-        return cleanup;
-    }, []);
-
-    return <div ref={elementRef}>Content</div>;
-};
-```
-
 ## Default Breakpoints
 
-The defaults are derived from `theme.grid.breakpoints` (`m` = tablet threshold, `l` = desktop threshold), so layout and animations can never desync — retune the theme and these follow:
+The defaults are built from `mq` in `@tackl` (`m` = tablet threshold, `l` = desktop threshold) — the same breakpoint tokens (`src/theme/grid/index.ts`) that generate the SCSS `bp()` / `bpd()` mixins, so layout and animations can never desync. Retune the tokens and these follow:
 
 -   `isMobile`: below `m` (default `(max-width: 699.98px)`)
 -   `isTablet`: `m` up to `l` (default `(min-width: 700px) and (max-width: 1023.98px)`)
@@ -65,9 +42,11 @@ The defaults are derived from `theme.grid.breakpoints` (`m` = tablet threshold, 
 
 ## Custom Breakpoints
 
-You can override or extend the default breakpoints:
+You can override or extend the default breakpoints. Build queries from `mq` to stay on the token scale, or pass any media query string:
 
 ```jsx
+import { mq } from '@tackl';
+
 useAnimation(
     ({ isDesktop, isTablet, isMobile }) => {
         // Your animation logic
@@ -75,7 +54,7 @@ useAnimation(
     { scope: elementRef },
     {
         isTablet: '(min-width: 768px) and (max-width: 1023px)',
-        isLargeDesktop: '(min-width: 1440px)',
+        isLargeDesktop: mq.up.xxl,
     }
 );
 ```

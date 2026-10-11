@@ -18,7 +18,12 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile || bun install
 
-      - name: Lint (Biome)
+      # Generated from the TS tokens — fails if src/theme changed without
+      # running `bun run styles`
+      - name: Check generated styles
+        run: bun run styles --check
+
+      - name: Lint (Biome + Stylelint)
         run: bun run lint
 
       - name: Type-check

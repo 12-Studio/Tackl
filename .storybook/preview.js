@@ -1,18 +1,18 @@
 /** @type { import('@storybook/nextjs').Preview } */
 
-import { withThemeFromJSXProvider } from '@storybook/addon-themes';
-import { GlobalStyle, theme } from '@theme';
+import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { inter } from '@theme/fonts';
-import { ThemeProvider } from 'styled-components';
 
 // Styles
 // ------------
-import '@/css/global.css';
+// NOTE • Same order as app/(site)/layout.tsx — tokens first, then globals.
+// Component modules bring their own CSS; no provider is needed.
+import '@/css/tokens.css';
+import '@/css/global.scss';
 
-// import './fonts.css';
-
-// Add the font variable class
-document.body.classList.add(inter.variable);
+// NOTE • On <html>, like app/(site)/layout.tsx — the --font-* tokens on :root
+// read --inter, so it has to be set at the root to resolve
+document.documentElement.classList.add(inter.variable);
 
 const customViewports = {
 	mobile: {
@@ -52,23 +52,15 @@ const customViewports = {
 	},
 };
 
-// Create a theme decorator that wraps MDX content
-// NOTE • GlobalStyle emits the :root CSS variables the theme's var() references resolve to
-const withTheme = StoryFn => (
-	<ThemeProvider theme={theme}>
-		<GlobalStyle />
-		<StoryFn />
-	</ThemeProvider>
-);
-
+// NOTE • Runtime themes are CSS overrides on html[data-theme] — add a theme
+// here once you define its token overrides (see src/theme/index.ts)
 export const decorators = [
-	withTheme,
-	withThemeFromJSXProvider({
+	withThemeByDataAttribute({
 		themes: {
-			light: theme,
+			default: 'default',
 		},
-		defaultTheme: 'light',
-		Provider: ThemeProvider,
+		defaultTheme: 'default',
+		attributeName: 'data-theme',
 	}),
 ];
 

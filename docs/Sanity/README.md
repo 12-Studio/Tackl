@@ -28,7 +28,7 @@ Use this document as a **replication spec** for embedding Sanity CMS into a Next
 | `@portabletext/react` | 6.x | Rich text rendering |
 | `server-only` | — | Guard server-only fetch modules |
 
-**Build command:** `next build --webpack` (via `bun run build`).
+**Build command:** `bun run build` — generates the token CSS (`bun run styles`), then `next build` with Turbopack.
 
 **Node:** `>= 24`.
 

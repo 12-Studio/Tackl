@@ -1,8 +1,8 @@
 ![Tackl Banner](/src/images/readme-banner.png)
 
-✨ An animation-first Next.js starter kit for agencies: styled-components, a zero-JS grid system, CSS-variable design tokens, GSAP + Lenis, and a CMS-ready data layer — tuned so the out-of-the-box Lighthouse story is something you can show a client. ✨
+✨ An animation-first Next.js starter kit for agencies: zero-runtime SCSS CSS Modules, a zero-JS grid system, CSS-variable design tokens, GSAP + Lenis, and a CMS-ready data layer — tuned so the out-of-the-box Lighthouse story is something you can show a client. ✨
 
-![Version Number](https://img.shields.io/badge/Version-4.2.0-8000FF)
+![Version Number](https://img.shields.io/badge/Version-5.0.0-8000FF)
 ![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
 
 > Full guides live in [`docs/`](./docs) — this README is the map.
@@ -22,9 +22,9 @@ cd my-app && bun install && bun run dev
 
 The CLI keeps your existing `.git`/remote, prunes the CMS you didn't pick (code, dependencies, docs, env keys), and installs with bun. `bun create tackl` and `npm create tackl@latest` work too.
 
-Open [http://localhost:3000](http://localhost:3000). On the very first run a **setup wizard** greets you: a full-screen form that walks through every design token — colours, spacing, motion, fonts (with upload) and the full type scale — writes your answers into `src/theme`, then **deletes itself**. Skip it to keep the starter defaults. ➜ [docs/Tackl/SetupWizard.md](./docs/Tackl/SetupWizard.md)
+Open [http://localhost:3000](http://localhost:3000). Set your design tokens in `src/theme` (colours, spacing, motion, fonts) and your type styles in `src/css/tackl/_type.scss` — straight from the Figma file.
 
-After that, the placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(site)/(home)/page.tsx`) and start building.
+The placeholder screen you see is `src/components/DeleteMe` — delete it (and its usage in `app/(site)/(home)/page.tsx`) and start building.
 
 Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.). `.env` is gitignored; `.env.example` is the documented template.
 
@@ -36,63 +36,82 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 | `bun run build` | Production build (Turbopack) |
 | `bun run start` | Serve the production build |
 | `bun run type-check` | TypeScript, no emit |
-| `bun run lint` / `lint:fix` | Biome check / auto-fix |
+| `bun run lint` / `lint:fix` | Biome (TS/JS/JSON/CSS) + Stylelint (SCSS) check / auto-fix |
+| `bun run styles` | Regenerate `tokens.css` + breakpoint/grid SCSS from the TS tokens (runs before dev/build) |
 | `bun run format` | Biome format |
 | `bun run test` | Playwright smoke test against the production build |
 | `bun run storybook` | Storybook dev on :6006 |
 | `bun run build-storybook` | Static Storybook build |
 | `bun run lighthouse` | Lighthouse CI run |
 | `bun run commit` | Optional guided commit-message prompt |
-| `git commit` | Husky pre-commit runs lint + type-check first |
+| `git commit` | Husky pre-commit checks generated styles, then runs lint + type-check |
+
+### Editor setup
+
+Open the repo in VS Code or Cursor and accept the recommended extensions (`.vscode/extensions.json`): **Biome** (TS/JS formatting + lint), **Stylelint** (SCSS lint), **CSS Variable Autocomplete** (token autocomplete with colour swatches, read from `tokens.css`) and **SCSS IntelliSense** (completion for `bp()`, the type mixins, `vw()`, `alpha()`). The shared `.vscode/settings.json` wires them up.
+
+### Working with styles
+
+- **Tokens** (colours, spacing, gaps, radii, motion, fonts, breakpoints, grid) live in `src/theme/**` as TS. `bun run dev` / `build` regenerate `src/css/tokens.css` and the breakpoint/grid SCSS from them — never edit the generated files.
+- **Type styles** are hand-written mixins in `src/css/tackl/_type.scss`.
+- **Components** style themselves from a `styles.module.scss` next to `index.tsx`; the Tackl SCSS layer is injected, so no imports. ➜ [WritingComponents](./docs/Tackl/WritingComponents.md)
 
 ## 🎯 What's in the box
 
-- **First-run setup wizard** — an interactive, self-deleting overlay on first `bun dev` that fills in every theme token (brand colours, spacing, motion, font uploads, the per-breakpoint type scale) and writes them straight into `src/theme`
 - **Next.js 16.3 (App Router)** — server-owned document shell, working `metadata`/`viewport` exports, Turbopack dev *and* prod builds, with Cache Components and Partial Prefetching on by default so routes prerender a static shell, stream the dynamic parts, and share one prefetched App Shell per route instead of one payload per `<Link>`
 - **TypeScript everywhere** — strict, with typed design tokens that derive from the values (add a token, the type follows)
-- **styled-components v6** — SSR wired via the registry; one polymorphic `Div` primitive instead of a component per HTML tag
+- **SCSS CSS Modules, zero runtime** — static, per-route CSS; a globally injected SCSS layer (breakpoint, type and spacing mixins) so modules need no imports; Stylelint catches unknown tokens
 - **Tackl theming** — every design token is a CSS custom property on `:root`; runtime theming (dark mode, white-label) is a CSS override, not a re-render
 - **Waffl grid** — a 12/6/2-column grid with **zero JavaScript**; plain and server-rendered elements are first-class grid children
 - **GSAP + ScrollTrigger + Lenis** — smooth scrolling and scroll animations, pre-wired to share one ticker, with `prefers-reduced-motion` users automatically getting native scroll and no rAF loop
 - **View Transitions** — page transitions via the View Transitions API with a typed `Link`/router wrapper
 - **Storybook 10** — token-aware (the preview renders the same `:root` variables as the app), with a live `Theme/Overview` story showing every current token — colours, fonts, the type scale with role descriptors, spacing, radii and motion — straight from the theme objects
-- **Quality gates that actually run** — Biome + strict TypeScript enforced by the Husky pre-commit hook *and* a GitHub Actions workflow (lint → type-check → build → Playwright smoke test) that ships with every scaffold; the guided commit-message flow stays available as `bun run commit`
+- **Quality gates that actually run** — Biome + Stylelint + strict TypeScript enforced by the Husky pre-commit hook *and* a GitHub Actions workflow (generated-styles check → lint → type-check → build → Playwright smoke test) that ships with every scaffold; the guided commit-message flow stays available as `bun run commit`
 - **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time. **Draft preview works with both**: Sanity via the Presentation tool (plus embedded Studio at `/studio`, example schemas, and an offer to run `sanity init`), Dato via a secret-gated toggle for the Web Previews plugin — `fetchContent` serves draft content automatically while draft mode is on
 - **SEO plumbing** — `metadata`/`viewport` exports, `sitemap.xml` and `robots.txt` (staging deploys auto-blocked from indexing), all driven by one `NEXT_PUBLIC_SITE_URL`
 - **AI-agent ready (vendor-neutral)** — [`AGENTS.md`](./AGENTS.md) teaches the Tackl conventions to any agent (Cursor, Claude Code, Copilot, Zed, Aider…); [`skills/`](./skills) holds deep-dive Agent Skills; and MCP servers ship pre-configured (`.mcp.json` + `.cursor/mcp.json`) — Next.js devtools plus Chrome DevTools, so agents can inspect builds and drive a real browser against your dev server (screencast tools need `ffmpeg` on PATH)
 
 ### Performance posture
 
-The kit ships **~210 KB of gzipped JS** on first load. That budget is spent deliberately: React + Next (~120 KB), GSAP + ScrollTrigger + Lenis (~45 KB), styled-components (~13 KB). Everything else is engineered to cost nothing at runtime — the grid is pure CSS, the token system is CSS variables (no theme re-renders), `sideEffects` is configured so unused exports tree-shake, fonts load as a single variable-font file, and reduced-motion users skip the animation stack entirely.
+The kit ships **~190 KB of gzipped JS** on first load. That budget is spent deliberately: React + Next (~120 KB) and GSAP + ScrollTrigger + Lenis (~45 KB). Everything else is engineered to cost nothing at runtime — styles are static SCSS modules (no styling runtime, no style serialisation during streaming), the grid is pure CSS, the token system is CSS variables (no theme re-renders), `sideEffects` is configured so unused exports tree-shake, fonts load as a single variable-font file, and reduced-motion users skip the animation stack entirely.
 
 ## 🧠 Core concepts (5-minute tour)
 
-### 1. One component: `Div`
+### 1. SCSS modules, nothing to import
 
-Tackl exports **one** semantic primitive. Pick the rendered tag with `as`:
+Every component styles itself from a `styles.module.scss` next to it. The Tackl SCSS layer — breakpoint, type and spacing mixins, `vw()`, `alpha()` — is injected into every `.scss` file, so modules start writing immediately:
 
 ```tsx
-import { Div } from '@tackl';
+import s from './styles.module.scss';
 
-<Div as='section' $pad>…</Div>
-<Div as='h1' $m='2/6' $l='3/9'>Heading</Div>
+<section className={s.jacket} data-pad>
+	<h1 className='t-displayL'>Heading</h1>
+</section>
 ```
 
-Every `Div` accepts spacing props (`$mar`, `$pad`, …), responsive grid-span props (`$s`…`$uber`), and — because it's a real `styled.div` — all normal HTML attributes, fully typed. In styles files you fix the tag once: `styled(Div).attrs({ as: 'header' })`.
+```scss
+.jacket {
+	background: alpha(--brand-c1, 20);
+
+	@include bp(l) {
+		padding-inline: var(--gap-xl);
+	}
+}
+```
+
+Type styles and section spacing are also global: `t-captionL` / `data-type='captionL'`, `data-pad` / `data-mar='top'` — on any element.
 
 ➜ [docs/Tackl/WritingComponents.md](./docs/Tackl/WritingComponents.md)
 
 ### 2. Tokens are CSS variables
 
-Raw values live once in `src/theme/*`; `GlobalStyle` emits them on `:root`; everything — styled-components, plain CSS, Server Components — references them:
+Raw values live once in `src/theme/*`; `bun run styles` generates them onto `:root` in `src/css/tokens.css`; SCSS, plain CSS, Server Components and JS (`theme` from `@theme`) all reference them:
 
-```tsx
-background: ${getBrand('c1')};        /* → var(--brand-c1) */
-border-color: ${getBrand('c1', 20)};  /* → color-mix(in srgb, var(--brand-c1) 20%, transparent) */
-```
-
-```css
-.card { padding: var(--space-m); }     /* plain CSS works too */
+```scss
+.card {
+	padding: var(--space-m);
+	border-color: alpha(--brand-c1, 20);  /* → color-mix(in srgb, var(--brand-c1) 20%, transparent) */
+}
 ```
 
 Dark mode / white-labeling = redefine variables under `html[data-theme='…']`. No JS.
@@ -101,30 +120,30 @@ Dark mode / white-labeling = redefine variables under `html[data-theme='…']`. 
 
 ### 3. The Waffl grid
 
-`Grid` (from `@waffl`) renders a plain `<waffl-grid>` tag — no web component, no client JS. Children span the full grid by default; span props opt into columns per breakpoint:
+`Grid` (from `@waffl`) renders a plain `<waffl-grid>` tag — no web component, no client JS. Children span the full grid by default; `Col` opts into columns per breakpoint:
 
 ```tsx
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
-	<Div as='article' $m='2/6' $l='1/7'>Half on desktop</Div>
+	<Col as='article' $m='2/6' $l='1/7'>Half on desktop</Col>
 	<figure>Plain elements work too — full width by default</figure>
 </Grid>
 ```
 
-### 4. Mobile-first breakpoints: `bp`
+### 4. Mobile-first breakpoints: `bp()`
 
-Base styles are mobile. `bp.m`, `bp.l`, … layer upwards with `min-width` queries:
+Base styles are mobile. `bp(m)`, `bp(l)`, … layer upwards with `min-width` queries — generated from the same breakpoint tokens JS reads (`mq` / `breakpoints` from `@tackl`, e.g. for `gsap.matchMedia`):
 
-```tsx
-import { bp } from '@tackl';
-
-font-size: 1.8rem;              /* mobile default */
-${bp.m` font-size: 2.4rem; `}   /* ≥ 700px */
-${bp.l` font-size: 3.2rem; `}   /* ≥ 1024px */
+```scss
+.title {
+	font-size: 1.8rem;                       /* mobile default */
+	@include bp(m) { font-size: 2.4rem; }    /* ≥ 700px */
+	@include bp(l) { font-size: 3.2rem; }    /* ≥ 1024px */
+}
 ```
 
-(`bpd` exists for the rare max-width case.)
+(`bpd()` exists for the rare max-width case.)
 
 ### 5. Motion, responsibly
 
@@ -138,7 +157,7 @@ ${bp.l` font-size: 3.2rem; `}   /* ≥ 1024px */
 flowchart TD
     VT[ViewTransitions] --> HTML[html + Inter font variable]
     HTML --> BODY[body]
-    BODY --> P[Providers - client boundary\nregistry · ThemeProvider · GlobalStyle · Contexts]
+    BODY --> P[Providers - client boundary\nContexts · CookieBar · GridExposer]
     P --> H[Header]
     P --> MAIN[main#page]
     MAIN --> SS[SmoothScroll - Lenis]
@@ -155,7 +174,7 @@ flowchart TD
     ├── app/                    # Routes (App Router)
     │   ├── (site)/             # The website — its own root layout
     │   │   ├── layout.tsx      # Server shell: html/body, metadata, chrome
-    │   │   ├── Providers.tsx   # Client providers (styled-components, contexts)
+    │   │   ├── Providers.tsx   # Client providers (contexts, cookie bar, dev grid)
     │   │   └── (home)/         # Home route group
     │   ├── (studio)/           # Embedded Sanity Studio at /studio (Sanity scaffolds)
     │   ├── api/draft-mode/     # Draft preview on/off — adapter-agnostic via @cms/draft
@@ -173,11 +192,15 @@ flowchart TD
     │   ├── theme/              # Design tokens + the tackl toolkit
     │   │   ├── colors|space|gap|borderRadius|easing|time|fonts|grid/
     │   │   ├── cssVariables/   # toVarRefs / toVarDeclarations helpers
-    │   │   └── tackl/          # Div, getters, bp/bpd, alpha, type styles, waffl grid
-    │   ├── css/global.css      # Reset, waffl default rule, reduced-motion fallback
+    │   │   └── tackl/          # Col, Waffl Grid, breakpoints/mq, alpha, getVw
+    │   ├── css/
+    │   │   ├── tackl/          # Injected SCSS layer: bp(), type + spacing mixins, vw(), alpha()
+    │   │   ├── utilities/      # Global type (t-*) and spacing (data-pad/mar) utilities
+    │   │   ├── tokens.css      # GENERATED :root design tokens
+    │   │   └── global.scss     # Layers, reset, grid rules, reduced-motion fallback
     │   ├── config.ts           # siteUrl (drives metadataBase, sitemap, robots)
     │   ├── utils/              # Hooks and helpers (incl. viewTransitions)
-    │   └── types/              # Shared + ambient types (styled DefaultTheme, waffl-grid tag)
+    │   └── types/              # Shared + ambient types (CSS custom props, waffl-grid tag)
     ├── tests/                  # Playwright specs (smoke test included)
     ├── sanity/                 # Studio schemas (Sanity scaffolds; config: sanity.config.ts)
     ├── docs/                   # The full documentation set
@@ -188,23 +211,25 @@ flowchart TD
     ├── CLAUDE.md               # Claude Code → imports AGENTS.md
     ├── .env.example            # Documented environment template
     ├── LICENSE                 # MIT
-    ├── biome.json              # Lint + format config
-    ├── next.config.js          # Images, compiler settings
+    ├── scripts/build-styles.ts # Generates tokens.css + breakpoint/grid SCSS from src/theme
+    ├── biome.json              # Lint + format config (TS/JS/JSON/CSS)
+    ├── .stylelintrc.json       # SCSS lint config
+    ├── next.config.js          # Images, Sass options, compiler settings
     └── tsconfig.json           # Strict TS + path aliases (@tackl, @waffl, @theme, @cms, …)
 
 ## 📚 Documentation index
 
 | Guide | What it covers |
 | --- | --- |
-| [SetupWizard](./docs/Tackl/SetupWizard.md) | The first-run theme setup wizard and how it removes itself |
-| [WritingComponents](./docs/Tackl/WritingComponents.md) | File anatomy, comment style, imports, `Div`, grid spans, `bp` |
+| [WritingComponents](./docs/Tackl/WritingComponents.md) | File anatomy, comment style, SCSS modules, mixins, grid spans, `bp()` |
 | [Theming](./docs/Tackl/Theming.md) | Tokens, CSS variables, opacity, runtime theming |
 | [AppArchitecture](./docs/Tackl/AppArchitecture.md) | The app shell, Providers, data flow |
 | [WafflGrid](./docs/Tackl/WafflGrid.md) · [GridSystemProps](./docs/Tackl/GridSystemProps.md) | Grid internals and prop reference |
-| [SemanticComponents](./docs/Tackl/SemanticComponents.md) | The `Div` primitive in depth |
+| [SemanticComponents](./docs/Tackl/SemanticComponents.md) | `Col` and the spacing attributes in depth |
 | [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
 | [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
 | [CMS](./docs/CMS.md) | The `@cms` adapter seam and choosing Dato/Sanity |
+| [MigratingFromV4](./docs/Tackl/MigratingFromV4.md) | Upgrading a Tackl 4 project from styled-components to SCSS modules |
 | [MigratingFromV3](./docs/Tackl/MigratingFromV3.md) | Phased playbook for upgrading a Tackl 3 project |
 | [DatoCMS](./docs/DatoCMS) | Querying, images, structured text, SEO |
 | [Sanity](./docs/Sanity/README.md) | Setting up the Sanity variant |
@@ -212,7 +237,7 @@ flowchart TD
 
 ## ✍️ Committing
 
-Husky's pre-commit hook runs the quality gates (`bun run lint` + `bun run type-check`) on every `git commit`, and the CI workflow repeats them — plus a production build and the Playwright smoke test — on every push and PR. Want a hand writing the message? `bun run commit` runs the guided prompt: describe the change, pick a type, and it formats a consistent message for you.
+Husky's pre-commit hook runs the quality gates (`bun run styles --check` + `bun run lint` + `bun run type-check`) on every `git commit`, and the CI workflow repeats them — plus a production build and the Playwright smoke test — on every push and PR. Want a hand writing the message? `bun run commit` runs the guided prompt: describe the change, pick a type, and it formats a consistent message for you.
 
 ## 👥 Authors & Maintainers
 

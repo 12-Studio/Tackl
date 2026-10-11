@@ -1,8 +1,5 @@
-'use client';
-
 // Imports
 // ------------
-import { typeRoles, typeScale } from '@tackl/type';
 import { borderRadiusValues } from '@theme/borderRadius';
 import { baseColors } from '@theme/colors';
 import { easingValues } from '@theme/easing';
@@ -13,171 +10,190 @@ import { timeValues } from '@theme/time';
 
 // Styles + Interfaces
 // ------------
-import * as S from './styles';
+import s from './styles.module.scss';
 
 // Constants
 // ------------
 const SPECIMEN = 'The quick brown fox jumps over the lazy dog';
 
-// NOTE • Type styles grouped by role so each pair sits under its descriptor
-const TYPE_ROLE_STYLES: { role: keyof typeof typeRoles; styles: (keyof typeof typeScale)[] }[] = [
-	{ role: 'display', styles: ['displayL', 'displayS'] },
-	{ role: 'headline', styles: ['headlineL', 'headlineS'] },
-	{ role: 'title', styles: ['titleL', 'titleS'] },
-	{ role: 'body', styles: ['bodyL', 'bodyS'] },
-	{ role: 'caption', styles: ['captionL', 'captionS'] },
+// NOTE • Type styles grouped by role, each with a note on when to reach for
+// it. Names match the mixins in src/css/tackl/_type.scss — each specimen
+// renders with its global .t-* class, so it always shows the real style.
+const TYPE_ROLES = [
+	{
+		role: 'display',
+		note: 'The largest and most prominent type style. Used for hero headlines, landing page banners, or key marketing moments where typography needs to make an impact. Typically reserved for one or two instances per page to avoid visual noise.',
+		styles: ['displayL', 'displayS'],
+	},
+	{
+		role: 'headline',
+		note: 'Primary section titles and major UI headings. Use to break up page content and establish hierarchy. Great for page headers, feature sections, or card headers when you want clear emphasis but less dominance than Display.',
+		styles: ['headlineL', 'headlineS'],
+	},
+	{
+		role: 'title',
+		note: 'Component-level titles: card titles, form section labels, modal titles, button text (when larger than body), navigation items. This is a versatile style used throughout the interface to label or name elements.',
+		styles: ['titleL', 'titleS'],
+	},
+	{
+		role: 'body',
+		note: 'The main paragraph and content text style. Use for all long-form content, descriptions, and supporting copy. Small (S) is helpful for secondary or supporting text, Large (L) for primary reading text.',
+		styles: ['bodyL', 'bodyS'],
+	},
+	{
+		role: 'caption',
+		note: 'The smallest text style. Use for meta information, image captions, legal disclaimers, timestamps, overlines, and other supporting microcopy. Avoid using below 12px for accessibility where possible.',
+		styles: ['captionL', 'captionS'],
+	},
 ];
 
 // Component
 // ------------
-// NOTE • A live view of every theme token — it reads the same objects the
-// setup wizard writes, so it always shows the current theme in action.
+// NOTE • A live view of every theme token — it reads the token objects in
+// src/theme directly, so it always shows the current theme in action.
 const ThemeShowcase = () => {
 	// Render
 	return (
-		<S.Jacket>
-			<S.Block>
-				<S.BlockTitle>Colours</S.BlockTitle>
+		<main className={s.jacket}>
+			<section className={s.block}>
+				<h2 className={s.blockTitle}>Colours</h2>
 				{Object.entries(baseColors).map(([group, colours]) => (
-					<S.SwatchGroup key={group}>
-						<S.GroupLabel>{group}</S.GroupLabel>
-						<S.Row>
+					<div className={s.swatchGroup} key={group}>
+						<h3 className={s.groupLabel}>{group}</h3>
+						<div className={s.row}>
 							{Object.entries(colours).map(([name, value]) => (
-								<S.SwatchCard key={name}>
-									<S.SwatchChip style={{ background: `var(--${group}-${name})` }} />
-									<S.TokenName>{name}</S.TokenName>
-									<S.TokenValue>{value}</S.TokenValue>
-								</S.SwatchCard>
+								<div className={s.swatchCard} key={name}>
+									<div className={s.swatchChip} style={{ background: `var(--${group}-${name})` }} />
+									<p className={s.tokenName}>{name}</p>
+									<p className={s.tokenValue}>{value}</p>
+								</div>
 							))}
-						</S.Row>
-					</S.SwatchGroup>
+						</div>
+					</div>
 				))}
-			</S.Block>
+			</section>
 
-			<S.Block>
-				<S.BlockTitle>Fonts</S.BlockTitle>
-				<S.SwatchGroup>
-					<S.GroupLabel>Registered</S.GroupLabel>
+			<section className={s.block}>
+				<h2 className={s.blockTitle}>Fonts</h2>
+				<div className={s.swatchGroup}>
+					<h3 className={s.groupLabel}>Registered</h3>
 					{Object.entries(fontVariables).map(([name, cssVariable]) => (
-						<S.SpecimenRow key={name}>
-							<S.TokenValue>
+						<div className={s.specimenRow} key={name}>
+							<p className={s.tokenValue}>
 								{name} · var({cssVariable})
-							</S.TokenValue>
-							<S.FontRow style={{ fontFamily: `var(${cssVariable})` }}>
+							</p>
+							<p className={s.fontRow} style={{ fontFamily: `var(${cssVariable})` }}>
 								Aa Bb Cc 0123456789 — {SPECIMEN}
-							</S.FontRow>
-						</S.SpecimenRow>
+							</p>
+						</div>
 					))}
-				</S.SwatchGroup>
-				<S.SwatchGroup>
-					<S.GroupLabel>Roles</S.GroupLabel>
+				</div>
+				<div className={s.swatchGroup}>
+					<h3 className={s.groupLabel}>Roles</h3>
 					{Object.entries(fontFamilies).map(([role, stack]) => (
-						<S.SpecimenRow key={role}>
-							<S.TokenValue>
+						<div className={s.specimenRow} key={role}>
+							<p className={s.tokenValue}>
 								{role} · {stack}
-							</S.TokenValue>
-							<S.FontRow style={{ fontFamily: stack }}>Aa Bb Cc — {SPECIMEN}</S.FontRow>
-						</S.SpecimenRow>
+							</p>
+							<p className={s.fontRow} style={{ fontFamily: stack }}>
+								Aa Bb Cc — {SPECIMEN}
+							</p>
+						</div>
 					))}
-				</S.SwatchGroup>
-			</S.Block>
+				</div>
+			</section>
 
-			<S.Block>
-				<S.BlockTitle>Type scale</S.BlockTitle>
-				{TYPE_ROLE_STYLES.map(({ role, styles }) => (
-					<S.SwatchGroup key={role}>
-						<S.GroupLabel>{role}</S.GroupLabel>
-						<S.RoleNote>{typeRoles[role]}</S.RoleNote>
-						{styles.map(name => {
-							const entry = typeScale[name];
-
-							return (
-								<S.SpecimenRow key={name}>
-									<S.TokenValue>
-										{name} · {entry.base.family}/{entry.base.weight} · {entry.base.size}
-										{entry.xl?.size ? ` → ${entry.xl.size} (bp.xl)` : ''}
-									</S.TokenValue>
-									<S.Specimen $style={name}>{SPECIMEN}</S.Specimen>
-								</S.SpecimenRow>
-							);
-						})}
-					</S.SwatchGroup>
+			<section className={s.block}>
+				<h2 className={s.blockTitle}>Type scale</h2>
+				{TYPE_ROLES.map(({ role, note, styles }) => (
+					<div className={s.swatchGroup} key={role}>
+						<h3 className={s.groupLabel}>{role}</h3>
+						<p className={s.roleNote}>{note}</p>
+						{styles.map(name => (
+							<div className={s.specimenRow} key={name}>
+								<p className={s.tokenValue}>
+									{name} · .t-{name} · @include {name}
+								</p>
+								<p className={`t-${name}`}>{SPECIMEN}</p>
+							</div>
+						))}
+					</div>
 				))}
-			</S.Block>
+			</section>
 
-			<S.Block>
-				<S.BlockTitle>Spacing</S.BlockTitle>
+			<section className={s.block}>
+				<h2 className={s.blockTitle}>Spacing</h2>
 				{Object.entries(spaceValues).map(([name, value]) => (
-					<S.BarRow key={name}>
-						<S.TokenName>{name}</S.TokenName>
-						<S.Bar style={{ width: value }} />
-						<S.TokenValue>{value}</S.TokenValue>
-					</S.BarRow>
+					<div className={s.barRow} key={name}>
+						<p className={s.tokenName}>{name}</p>
+						<div className={s.bar} style={{ width: value }} />
+						<p className={s.tokenValue}>{value}</p>
+					</div>
 				))}
-			</S.Block>
+			</section>
 
-			<S.Block>
-				<S.BlockTitle>Gaps</S.BlockTitle>
+			<section className={s.block}>
+				<h2 className={s.blockTitle}>Gaps</h2>
 				{Object.entries(gapValues).map(([name, value]) => (
-					<S.BarRow key={name}>
-						<S.TokenName>{name}</S.TokenName>
-						<S.Bar style={{ width: value }} />
-						<S.TokenValue>{value}</S.TokenValue>
-					</S.BarRow>
+					<div className={s.barRow} key={name}>
+						<p className={s.tokenName}>{name}</p>
+						<div className={s.bar} style={{ width: value }} />
+						<p className={s.tokenValue}>{value}</p>
+					</div>
 				))}
-			</S.Block>
+			</section>
 
-			<S.Block>
-				<S.BlockTitle>Radius</S.BlockTitle>
-				<S.Row>
+			<section className={s.block}>
+				<h2 className={s.blockTitle}>Radius</h2>
+				<div className={s.row}>
 					{Object.entries(borderRadiusValues).map(([name, value]) => (
-						<S.SwatchCard key={name}>
-							<S.RadiusBox style={{ borderRadius: `var(--br-${name})` }} />
-							<S.TokenName>{name}</S.TokenName>
-							<S.TokenValue>{value}</S.TokenValue>
-						</S.SwatchCard>
+						<div className={s.swatchCard} key={name}>
+							<div className={s.radiusBox} style={{ borderRadius: `var(--br-${name})` }} />
+							<p className={s.tokenName}>{name}</p>
+							<p className={s.tokenValue}>{value}</p>
+						</div>
 					))}
-				</S.Row>
-			</S.Block>
+				</div>
+			</section>
 
-			<S.Block>
-				<S.BlockTitle>Motion</S.BlockTitle>
-				<S.SwatchGroup>
-					<S.GroupLabel>Timing — hover to play (with bezzy)</S.GroupLabel>
-					<S.Row>
+			<section className={s.block}>
+				<h2 className={s.blockTitle}>Motion</h2>
+				<div className={s.swatchGroup}>
+					<h3 className={s.groupLabel}>Timing — hover to play (with bezzy)</h3>
+					<div className={s.row}>
 						{Object.entries(timeValues).map(([name, value]) => (
-							<S.MotionChip key={name}>
+							<div className={s.motionChip} key={name}>
 								<span
 									style={{
 										transitionDuration: value,
 										transitionTimingFunction: 'var(--easing-bezzy)',
 									}}
 								/>
-								<S.TokenName>{name}</S.TokenName>
-								<S.TokenValue>{value}</S.TokenValue>
-							</S.MotionChip>
+								<p className={s.tokenName}>{name}</p>
+								<p className={s.tokenValue}>{value}</p>
+							</div>
 						))}
-					</S.Row>
-				</S.SwatchGroup>
-				<S.SwatchGroup>
-					<S.GroupLabel>Easing — hover to play (at --time-m)</S.GroupLabel>
-					<S.Row>
+					</div>
+				</div>
+				<div className={s.swatchGroup}>
+					<h3 className={s.groupLabel}>Easing — hover to play (at --time-m)</h3>
+					<div className={s.row}>
 						{Object.entries(easingValues).map(([name, value]) => (
-							<S.MotionChip key={name}>
+							<div className={s.motionChip} key={name}>
 								<span
 									style={{
 										transitionDuration: 'var(--time-m)' as string,
 										transitionTimingFunction: value,
 									}}
 								/>
-								<S.TokenName>{name}</S.TokenName>
-								<S.TokenValue>{value}</S.TokenValue>
-							</S.MotionChip>
+								<p className={s.tokenName}>{name}</p>
+								<p className={s.tokenValue}>{value}</p>
+							</div>
 						))}
-					</S.Row>
-				</S.SwatchGroup>
-			</S.Block>
-		</S.Jacket>
+					</div>
+				</div>
+			</section>
+		</main>
 	);
 };
 

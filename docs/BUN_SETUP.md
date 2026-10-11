@@ -40,14 +40,17 @@ All scripts are run with **`bun run <script>`**. No change to script bodies; onl
 
 | Script        | Command / purpose                         |
 |---------------|--------------------------------------------|
-| `dev`         | `bun run dev` – start dev server           |
-| `build`       | `bun run build` – production build         |
+| `dev`         | `bun run dev` – generate styles, then start the dev server |
+| `build`       | `bun run build` – generate styles, then production build   |
 | `start`       | `bun run start` – run production build    |
-| `lint`        | `bun run lint` – run linter                |
-| `lint:fix`    | `bun run lint:fix` – lint + fix            |
+| `styles`      | `bun run styles` – regenerate `src/css/tokens.css` + breakpoint/grid SCSS from the TS tokens (`--check` fails if stale) |
+| `lint`        | `bun run lint` – Biome (TS/JS/JSON/CSS) + Stylelint (SCSS) |
+| `lint:fix`    | `bun run lint:fix` – lint + fix (both tools) |
 | `format`      | `bun run format` – format code             |
 | `format:check`| `bun run format:check` – check only        |
 | `type-check`  | `bun run type-check` – TypeScript check    |
+| `test`        | `bun run test` – Playwright smoke test     |
+| `storybook`   | `bun run storybook` – generate styles, then Storybook dev |
 | `outdated`    | `bun run outdated` – see outdated deps     |
 
 ### One-off commands (no script): use `bunx`
@@ -62,9 +65,12 @@ bunx npm-check-updates -u  # update package.json to latest, then run bun install
 The hook lives in `.husky/pre-commit` (husky 9 — no `package.json` config block) and runs the quality gates with Bun:
 
 ```sh
+bun run styles --check
 bun run lint
 bun run type-check
 ```
+
+`styles --check` fails the commit when a token in `src/theme` changed but the generated CSS wasn't regenerated — run `bun run styles` and commit the result.
 
 The interactive commit-message wizard is optional — run it with `bun run commit`. Husky is installed via the `prepare` script, which Bun runs automatically on `bun install`.
 
@@ -152,7 +158,7 @@ bun pm cache rm          # clear Bun cache if needed
 So CI and Netlify use the same install and build as locally:
 
 - **Install:** `bun install` (or `bun install --frozen-lockfile` in CI to fail if lockfile is out of date).
-- **Build:** `bun run build`.
+- **Build:** `bun run build` — it runs `bun run styles` first, so the generated token CSS is always fresh. Sass compiles through `sass-embedded` (a native binary installed per platform by `bun install`; nothing extra to configure on Netlify or CI).
 
 **Netlify example** (`netlify.toml`):
 
@@ -173,6 +179,8 @@ Set `NODE_VERSION` to match the Node version you support (e.g. `20` or `24`). Le
   with:
     bun-version: latest
 - run: bun install --frozen-lockfile
+- run: bun run styles --check
+- run: bun run lint
 - run: bun run build
 ```
 
@@ -203,7 +211,7 @@ In the other project you can add a short `docs/bun.md` (or similar) that points 
 - [ ] Bun installed (`bun --version` works).
 - [ ] Old lockfiles and `node_modules` removed (if migrating).
 - [ ] `bun install` run; `bun.lock` created.
-- [ ] `.husky/pre-commit` runs its commands with `bun run <script>`.
+- [ ] `.husky/pre-commit` runs its commands with `bun run <script>` (`styles --check`, `lint`, `type-check`).
 - [ ] `package.json`: add `"outdated": "bunx npm-check-updates"` so you can run `bun run outdated` (since `bun outdated` is unreliable).
 - [ ] `bun.lock` committed.
 - [ ] CI/Netlify: build command = `bun run build`, install = `bun install` (and `NODE_VERSION` set if needed).

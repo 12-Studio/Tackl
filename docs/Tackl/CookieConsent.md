@@ -60,6 +60,18 @@ const unsubscribe = onConsentChange(consent => {
 :global(html:not([data-cookie-consent~='marketing'])) .embed { display: none; }
 ```
 
+## Google Analytics, ready to switch on
+
+`src/components/Analytics` (rendered in `app/(site)/layout.tsx`) is GA4, wired the right way:
+
+- **Off by default:** it renders nothing until `NEXT_PUBLIC_GA_ID` is set (e.g. `G-XXXXXXX`).
+- **When set:**
+  - it loads only after the visitor accepts analytics cookies, and starts the moment they do;
+  - the Content-Security-Policy opens up to Google's domains automatically (see [Security.md](./Security.md));
+  - GA4's enhanced measurement records client-side navigations as page views.
+
+Using a different tool? Copy the pattern: wrap the script in `ConsentGate` with its category, and add its origins to the CSP.
+
 ## Cookie settings link
 
 Put this somewhere permanent, usually the footer:

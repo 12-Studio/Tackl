@@ -4,6 +4,13 @@ Tackl 5 replaces styled-components with **SCSS CSS Modules** and removes the fir
 
 Work on a dedicated branch, one phase per commit. Coming from v3? Do [MigratingFromV3.md](./MigratingFromV3.md) first.
 
+## Why the change
+
+- **styled-components' future is uncertain.** Its maintainer put it into maintenance mode in March 2025. There has been some renewed activity since (React Server Components support and 6.4/6.5 releases in 2026), but it rests on a single maintainer, who is looking for co-maintainers. Much of the React ecosystem has moved away from runtime CSS-in-JS. Building a starter kit on it is a long-term risk.
+- **CSS Modules is the durable alternative.** It's built into Next.js, standard across bundlers, and doesn't depend on any one library's roadmap.
+- **Performance.** There's no styling runtime in the client bundle and no style serialisation while the page streams, and no provider is needed to style a component. Styles ship as static, cached, per-route CSS. On the starter's homepage this removed ~23 KB of gzipped JS and a third of the HTML. It matters most on heavy pages — Three.js / WebGL scenes, GSAP-driven sections — where main-thread time spent generating styles competes with rendering.
+- **As close to plain CSS as it gets for now.** Modules are real CSS (via SCSS for mixins and breakpoints), with tokens as native custom properties and cascade layers for ordering. That knowledge transfers, and native CSS keeps closing the gap — nesting, `color-mix()`, `@layer`, and soon typed `attr()`.
+
 ---
 
 ## What was removed

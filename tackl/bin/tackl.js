@@ -174,6 +174,7 @@ const CMS = {
 // with every scaffold so quality gates run from the first push.
 const REPO_CARGO = [
 	'tackl',
+	'docs/plans',
 	'.github/FUNDING.yml',
 	'.github/ISSUE_TEMPLATE.md',
 	'.github/PULL_REQUEST_TEMPLATE.md',

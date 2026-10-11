@@ -19,7 +19,7 @@ Design tokens live in `src/theme` and type styles in `src/css/tackl/_type.scss` 
 
 1. Verifies the directory is empty (an existing `.git`, `.gitignore`, `README.md` or `LICENSE` is fine — your repo's `.git` and remote are kept)
 2. Downloads the latest tagged release of the template (falls back to `main` if none)
-3. Prunes repo-only cargo (the CLI itself, `.github`) and the unused CMS adapter
+3. Prunes repo-only cargo (the CLI itself, `.github` templates, internal `docs/plans`) and the unused CMS adapter
 4. Sets your package name, initialises git if needed, and runs `bun install`
 
 ## Options

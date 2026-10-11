@@ -1,5 +1,69 @@
 const path = require('node:path');
 
+// Security headers
+// ------------
+// NOTE • A Content-Security-Policy without nonces. Nonces would make every
+// page render per request, switching off static rendering and Partial
+// Prerendering, and the experimental SRI mode can't hash the inline scripts
+// Next streams page data with, so inline scripts stay allowed. Everything
+// else is locked to this origin: no third-party scripts, plugins, <base>
+// hijacking, foreign form targets or framing by other sites.
+// NOTE • Adding a third-party service? Add its origins below — e.g. a YouTube
+// embed needs `frame-src https://www.youtube-nocookie.com`.
+const isDev = process.env.NODE_ENV === 'development';
+const hasGoogleAnalytics = Boolean(process.env.NEXT_PUBLIC_GA_ID);
+
+const googleAnalytics = {
+	script: ['https://www.googletagmanager.com'],
+	connect: [
+		'https://*.google-analytics.com',
+		'https://*.analytics.google.com',
+		'https://*.googletagmanager.com',
+		'https://www.google.com',
+	],
+};
+
+const contentSecurityPolicy = {
+	'default-src': ["'self'"],
+	// NOTE • React needs eval in development only, for its debugging stacks
+	'script-src': [
+		"'self'",
+		"'unsafe-inline'",
+		...(isDev ? ["'unsafe-eval'"] : []),
+		...(hasGoogleAnalytics ? googleAnalytics.script : []),
+	],
+	'style-src': ["'self'", "'unsafe-inline'"],
+	// NOTE • https: covers CMS images and media served straight from their CDNs
+	'img-src': ["'self'", 'blob:', 'data:', 'https:'],
+	'media-src': ["'self'", 'blob:', 'https:'],
+	'font-src': ["'self'"],
+	'connect-src': ["'self'", ...(hasGoogleAnalytics ? googleAnalytics.connect : [])],
+	'frame-src': ["'self'"],
+	'object-src': ["'none'"],
+	'base-uri': ["'self'"],
+	'form-action': ["'self'"],
+	// NOTE • 'self' rather than 'none' so the site can preview inside its own
+	// embedded Studio (Sanity's Presentation tool)
+	'frame-ancestors': ["'self'"],
+	'upgrade-insecure-requests': [],
+};
+
+const securityHeaders = [
+	{
+		key: 'Content-Security-Policy',
+		value: Object.entries(contentSecurityPolicy)
+			.map(([directive, sources]) => [directive, ...sources].join(' '))
+			.join('; '),
+	},
+	// NOTE • Two years, this host only — add includeSubDomains once every
+	// subdomain is HTTPS
+	{ key: 'Strict-Transport-Security', value: 'max-age=63072000' },
+	{ key: 'X-Content-Type-Options', value: 'nosniff' },
+	{ key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+	{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+	{ key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()' },
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	// Sass — styles are SCSS CSS Modules (styles.module.scss) plus the global
@@ -152,6 +216,12 @@ const nextConfig = {
 	// force all chunk hashes to change and bust browser caches without touching
 	// source. Concatenated with the NEXT_HASH_SALT env var when both are set.
 	// outputHashSalt: 'tackl',
+
+	// Security headers on every route except the embedded Sanity Studio, which
+	// loads its own scripts and APIs and manages its own policy
+	async headers() {
+		return [{ source: '/((?!studio).*)', headers: securityHeaders }];
+	},
 
 	// Compiler settings
 	compiler: {

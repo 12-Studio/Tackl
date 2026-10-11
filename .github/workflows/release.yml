@@ -58,6 +58,9 @@ jobs:
             echo "::notice::tackl@$version is already on npm — nothing to publish. Bump tackl/package.json to release a new CLI."
             exit 0
           fi
+          # Smoke-test the CLI with only its own dependencies installed — the
+          # same setup a `bunx tackl` user gets
+          npm install --no-save --no-package-lock --ignore-scripts
           node bin/tackl.js --help > /dev/null
           npm publish --provenance --access public
           echo "::notice::Published tackl@$version"

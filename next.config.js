@@ -75,6 +75,11 @@ const nextConfig = {
 	experimental: {
 		webVitalsAttribution: ['CLS', 'LCP'],
 
+		// A 404 for URLs that match no route (app/global-not-found.tsx). The
+		// app has more than one root layout — (site), plus (studio) with Sanity —
+		// so a root app/not-found.tsx has no layout to render inside.
+		globalNotFound: true,
+
 		// Turbopack persistent cache — saves compilation work under `.next` and
 		// restores it on the next run. Both default to `true` as of 16.3; they
 		// are spelled out here so the trade-off is visible.

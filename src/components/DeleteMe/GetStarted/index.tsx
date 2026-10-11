@@ -53,6 +53,7 @@ rm -r src/components/DeleteMe`,
 // ------------
 const GetStarted = () => (
 	<Section
+		index='06'
 		id='start'
 		eyebrow='Get started'
 		title='Three steps to a new site'

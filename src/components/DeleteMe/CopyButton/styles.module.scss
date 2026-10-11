@@ -2,7 +2,7 @@
 	display: inline-flex;
 	align-items: stretch;
 	max-width: 100%;
-	border: 1px solid alpha(--global-white, 30);
+	border: 1px solid alpha(--global-black, 30);
 }
 
 .command {
@@ -24,14 +24,14 @@
 	@include captionL;
 
 	padding: var(--gap-sm) var(--gap-m);
-	border-left: 1px solid alpha(--global-white, 30);
-	color: var(--global-black);
-	background: var(--global-white);
+	border-left: 1px solid alpha(--global-black, 30);
+	color: var(--global-white);
+	background: var(--global-black);
 	cursor: pointer;
 	transition: background var(--time-s) var(--easing-bezzy);
 
 	&:hover {
-		background: alpha(--global-white, 85);
+		background: alpha(--global-black, 85);
 	}
 }
 

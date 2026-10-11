@@ -20,8 +20,8 @@
 .column {
 	display: none;
 	grid-column: auto;
-	background: alpha(--brand-c1, 8);
-	border-inline: 1px dashed alpha(--brand-c1, 30);
+	background: alpha(--global-black, 3);
+	border-inline: 1px solid alpha(--global-black, 10);
 
 	&:nth-child(-n + 2) {
 		display: block;
@@ -53,22 +53,21 @@
 }
 
 .cell {
-	@include captionL;
-
 	display: grid;
 	place-items: center;
-	min-height: 5.6rem;
+	min-height: 6.4rem;
 	padding: var(--gap-xs);
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 	font-size: 1.2rem;
 	text-align: center;
-	color: var(--global-white);
-	background: alpha(--brand-c1, 35);
-	border: 1px solid var(--brand-c1);
+	color: var(--brand-c4);
+	background: var(--global-black);
 
 	&[data-tone='soft'] {
-		background: alpha(--global-white, 8);
-		border-color: alpha(--global-white, 40);
+		color: var(--global-black);
+		background: transparent;
+		outline: 1px solid var(--global-black);
+		outline-offset: -1px;
 	}
 
 	@include bp(l) {
@@ -79,5 +78,5 @@
 .caption {
 	@include captionS;
 
-	color: alpha(--global-white, 60);
+	color: alpha(--global-black, 60);
 }

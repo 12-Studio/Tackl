@@ -19,18 +19,18 @@
 
 	padding: var(--gap-xs) var(--gap-s);
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	color: alpha(--global-white, 70);
-	border: 1px solid alpha(--global-white, 20);
+	color: alpha(--global-black, 70);
+	border: 1px solid alpha(--global-black, 20);
 	cursor: pointer;
 
 	&:hover {
-		color: var(--global-white);
+		color: var(--global-black);
 	}
 
 	&[aria-pressed='true'] {
-		color: var(--global-black);
-		background: var(--global-white);
-		border-color: var(--global-white);
+		color: var(--global-white);
+		background: var(--global-black);
+		border-color: var(--global-black);
 	}
 }
 
@@ -40,14 +40,14 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-xs);
-	color: alpha(--global-white, 60);
+	color: alpha(--global-black, 60);
 
 	input {
 		@include bodyS;
 
 		padding: var(--gap-s) var(--gap-sm);
-		color: var(--global-white);
-		border: 1px solid alpha(--global-white, 25);
+		color: var(--global-black);
+		border: 1px solid alpha(--global-black, 25);
 
 		&:focus-visible {
 			border-color: var(--brand-c1);
@@ -59,7 +59,7 @@
 	min-height: 12rem;
 	padding: var(--gap-m);
 	overflow-wrap: anywhere;
-	border: 1px dashed alpha(--global-white, 20);
+	border: 1px dashed alpha(--global-black, 20);
 }
 
 // NOTE • Names the group for screen readers; the buttons label themselves visually

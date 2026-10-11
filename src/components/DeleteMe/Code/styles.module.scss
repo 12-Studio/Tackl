@@ -1,20 +1,19 @@
+@use '../swiss' as *;
+
 .jacket {
 	display: flex;
 	flex-direction: column;
 	min-width: 0;
-	border: 1px solid alpha(--global-white, 12);
-	border-left: 3px solid var(--brand-c1);
-	background: alpha(--global-white, 4);
+	background: alpha(--global-black, 4);
+	border: 1px solid alpha(--global-black, 12);
 }
 
 .label {
-	@include captionS;
+	@include label;
 
 	padding: var(--gap-s) var(--gap-m);
-	border-bottom: 1px solid alpha(--global-white, 12);
-	color: alpha(--global-white, 60);
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
+	border-bottom: 1px solid alpha(--global-black, 12);
+	color: alpha(--global-black, 62);
 }
 
 .pre {
@@ -23,11 +22,11 @@
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 	font-size: 1.3rem;
 	line-height: 1.7;
-	color: alpha(--global-white, 85);
+	color: var(--global-black);
 	tab-size: 2;
 
 	@include bp(l) {
 		padding: var(--gap-l);
-		font-size: 1.4rem;
+		font-size: 1.35rem;
 	}
 }

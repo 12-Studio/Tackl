@@ -1,8 +1,8 @@
+@use '../swiss' as *;
+
 .jacket {
-	border-top: 1px solid alpha(--global-white, 10);
-	background:
-		radial-gradient(60% 80% at 50% 120%, alpha(--brand-c1, 30), transparent),
-		var(--global-black);
+	color: var(--brand-c4);
+	background: var(--global-black);
 
 	waffl-grid {
 		row-gap: var(--gap-xl);
@@ -10,34 +10,42 @@
 }
 
 .title {
-	@include headlineL;
+	font-family: var(--font-heading);
+	font-weight: var(--weight-light);
+	font-size: 22vw;
+	line-height: 0.8;
+	letter-spacing: -0.06em;
+	margin-left: -0.05em;
 
-	margin-bottom: var(--gap-m);
+	@include bp(l) {
+		font-size: min(18vw, 26rem);
+	}
 }
 
 .text {
 	@include bodyS;
 
-	color: alpha(--global-white, 70);
+	font-weight: var(--weight-light);
+	color: alpha(--brand-c4, 70);
 
 	code {
-		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-		font-size: 0.9em;
-		color: var(--global-white);
+		@include mono;
+
+		color: var(--brand-c4);
 	}
 }
 
 .meta {
-	@include captionL;
+	@include label;
 
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
 	gap: var(--gap-xs);
-	color: alpha(--global-white, 60);
+	color: alpha(--brand-c4, 60);
 
 	a {
-		color: var(--global-white);
+		color: var(--brand-c4);
 		text-decoration: underline;
 		text-underline-offset: 0.3em;
 	}

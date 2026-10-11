@@ -1,5 +1,7 @@
+@use '../swiss' as *;
+
 .blocks {
-	row-gap: var(--gap-xxl);
+	row-gap: var(--gap-uber);
 }
 
 .block {
@@ -7,20 +9,24 @@
 	flex-direction: column;
 	gap: var(--gap-m);
 	min-width: 0;
+	padding-top: var(--gap-sm);
+
+	@include hairline(top);
 }
 
 .title {
-	@include titleS;
+	@include mediumLight;
 }
 
 .text {
-	@include captionL;
+	@include bodyS;
 
-	color: alpha(--global-white, 70);
+	font-weight: var(--weight-light);
+	color: alpha(--global-black, 75);
 
 	code {
-		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-		font-size: 0.9em;
-		color: var(--global-white);
+		@include mono;
+
+		color: var(--global-black);
 	}
 }

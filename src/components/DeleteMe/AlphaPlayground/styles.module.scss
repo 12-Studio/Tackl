@@ -19,11 +19,11 @@
 	width: 4rem;
 	height: 4rem;
 	background: var(--swatch);
-	border: 1px solid alpha(--global-white, 25);
+	border: 1px solid alpha(--global-black, 25);
 	cursor: pointer;
 
 	&[aria-pressed='true'] {
-		outline: 2px solid var(--global-white);
+		outline: 2px solid var(--global-black);
 		outline-offset: 3px;
 	}
 }
@@ -38,8 +38,7 @@
 	output {
 		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 		color: var(--brand-c1);
-		filter: brightness(1.6);
-	}
+			}
 
 	input {
 		width: 100%;
@@ -50,8 +49,8 @@
 // NOTE • A checkerboard behind the paint shows the transparency
 .preview {
 	height: 12rem;
-	border: 1px solid alpha(--global-white, 15);
-	background: repeating-conic-gradient(alpha(--global-white, 14) 0 25%, transparent 0 50%) 0 0 / 2.4rem 2.4rem;
+	border: 1px solid alpha(--global-black, 15);
+	background: repeating-conic-gradient(alpha(--global-black, 14) 0 25%, transparent 0 50%) 0 0 / 2.4rem 2.4rem;
 }
 
 .paint {

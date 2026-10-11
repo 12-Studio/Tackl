@@ -1,120 +1,88 @@
+@use '../swiss' as *;
+
 .jacket {
 	position: relative;
-	display: flex;
-	align-items: flex-end;
-	min-height: 100svh;
-	padding-block: var(--gap-uber) var(--gap-xl);
+	padding-block: var(--gap-l);
 	overflow: hidden;
-	background:
-		radial-gradient(70% 60% at 50% 115%, alpha(--brand-c1, 35), transparent),
-		var(--global-black);
-
-	@include bp(l) {
-		padding-bottom: var(--gap-huge);
-	}
 }
 
-// SECTION • Backdrop
-.backdrop {
-	position: absolute;
-	inset: 0;
-
-	waffl-grid {
-		height: 100%;
-	}
-}
-
-.column {
-	--index: 0; // set per column inline, for the staggered rise
-
-	display: none;
-	grid-column: auto;
-	border-inline: 1px solid alpha(--global-white, 6);
-	background: linear-gradient(to top, alpha(--brand-c1, 12), transparent 70%);
-	transform-origin: bottom;
-	animation: column-rise var(--time-l) var(--easing-bezzy) both;
-	animation-delay: calc(var(--index) * 40ms);
-
-	&:nth-child(-n + 2) {
-		display: block;
-	}
-
-	@include bp(m) {
-		&:nth-child(-n + 6) {
-			display: block;
-		}
-	}
-
-	@include bp(l) {
-		display: block;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		animation: none;
-	}
-}
-
-@keyframes column-rise {
-	from {
-		transform: scaleY(0);
-	}
-}
-
-// SECTION • Content
+// NOTE • A poster: the meta line at the top, the title filling the space,
+// then the tagline and stats — all inside one screen
 .content {
 	position: relative;
+	grid-template-rows: auto 1fr;
 	row-gap: var(--gap-l);
+	min-height: calc(100svh - var(--gap-l) * 2);
 }
 
-.eyebrow {
-	@include captionL;
+// SECTION • Meta row — the top line of the poster
+.meta,
+.metaEnd {
+	@include label;
 
-	color: var(--brand-c1);
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
+	align-self: start;
+	padding-top: var(--gap-s);
+
+	@include hairline(top);
 }
 
-.title {
-	@include displayL;
-
-	margin-block: var(--gap-s) var(--gap-m);
-	font-weight: var(--weight-medium);
+.metaEnd {
+	display: none;
 
 	@include bp(l) {
-		font-size: clamp(9.6rem, 14vw, 20rem);
-		line-height: 0.9;
-		letter-spacing: -0.04em;
+		display: block;
+		text-align: right;
 	}
+}
 
-	// NOTE • Optical alignment — at display sizes the T's built-in side
-	// bearing pushes its stroke right of the column line
-	margin-left: -0.04em;
+.meta + .meta {
+	display: none;
+
+	@include bp(m) {
+		display: block;
+	}
+}
+
+// SECTION • Title
+.title {
+	align-self: end;
+	font-family: var(--font-heading);
+	font-weight: var(--weight-light);
+	font-size: 34vw;
+	line-height: 0.78;
+	letter-spacing: -0.06em;
+
+	// NOTE • Optical alignment — at this size the T's built-in side bearing
+	// pushes its stroke right of the column line
+	margin-left: -0.05em;
+
+	@include bp(l) {
+		font-size: min(24vw, 34rem);
+	}
 }
 
 .tagline {
 	@include bodyL;
 
-	max-width: 32ch;
-	color: alpha(--global-white, 75);
-
-	@include bp(l) {
-		max-width: 40ch;
-	}
+	align-self: end;
+	max-width: 30ch;
+	font-weight: var(--weight-light);
+	text-shadow: 0 0 1.2rem var(--brand-c4);
 }
 
 .actions {
+	align-self: end;
 	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--gap-m);
-	margin-top: var(--gap-xl);
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--gap-sm);
 }
 
 .link {
-	@include captionL;
+	@include label;
 
 	text-decoration: underline;
-	text-underline-offset: 0.3em;
+	text-underline-offset: 0.4em;
 
 	&:hover {
 		color: var(--brand-c1);
@@ -126,16 +94,21 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-xs);
-	padding-top: var(--gap-m);
-	border-top: 1px solid alpha(--global-white, 15);
+	padding-top: var(--gap-sm);
+
+	@include hairline(top);
 }
 
 .value {
-	@include titleL;
+	@include mediumLight;
+
+	@include bp(l) {
+		font-size: 4.8rem;
+	}
 }
 
 .label {
-	@include captionS;
+	@include label;
 
-	color: alpha(--global-white, 60);
+	color: alpha(--global-black, 62);
 }

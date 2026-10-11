@@ -79,6 +79,7 @@ const Card = () => (
 // ------------
 const HowItWorks = () => (
 	<Section
+		index='02'
 		id='how'
 		eyebrow='How it works'
 		title='Tokens in, static CSS out'

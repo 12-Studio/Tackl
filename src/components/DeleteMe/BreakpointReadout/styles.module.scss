@@ -15,14 +15,14 @@
 
 	padding: var(--gap-xs) var(--gap-sm);
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	color: alpha(--global-white, 50);
-	border: 1px solid alpha(--global-white, 15);
+	color: alpha(--global-black, 62);
+	border: 1px solid alpha(--global-black, 15);
 	transition:
 		background var(--time-s) var(--easing-bezzy),
 		color var(--time-s) var(--easing-bezzy);
 
 	&[data-active] {
-		color: var(--global-white);
+		color: var(--global-black);
 		background: var(--brand-c1);
 		border-color: var(--brand-c1);
 	}
@@ -31,10 +31,10 @@
 .status {
 	@include captionL;
 
-	color: alpha(--global-white, 70);
+	color: alpha(--global-black, 70);
 
 	code {
 		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-		color: var(--global-white);
+		color: var(--global-black);
 	}
 }

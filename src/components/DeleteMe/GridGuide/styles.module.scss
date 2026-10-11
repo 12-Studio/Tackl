@@ -1,9 +1,10 @@
+@use '../swiss' as *;
+
 // SECTION • Viewport readout
 // NOTE • Only the line for the current breakpoint shows
 .viewport {
-	padding: var(--gap-sm) var(--gap-m);
-	border-left: 3px solid var(--brand-c1);
-	background: alpha(--brand-c1, 10);
+	padding-left: var(--gap-m);
+	border-left: 1px solid var(--global-black);
 }
 
 .breakpoint {
@@ -36,20 +37,22 @@
 
 // SECTION • Demos
 .plain {
-	@include captionL;
+	@include bodyS;
+
+	font-weight: var(--weight-light);
 
 	display: grid;
 	place-items: center;
 	min-height: 8rem;
 	padding: var(--gap-m);
 	text-align: center;
-	border: 1px solid alpha(--global-white, 40);
-	background: alpha(--global-white, 6);
+	border: 1px solid alpha(--global-black, 40);
+	background: alpha(--global-black, 6);
 }
 
 .nested {
 	row-gap: var(--gap-s);
-	outline: 1px dashed alpha(--global-white, 40);
+	outline: 1px dashed alpha(--global-black, 40);
 	outline-offset: 6px;
 }
 
@@ -64,16 +67,20 @@
 }
 
 .playgroundCopy {
-	@include captionL;
+	@include bodyS;
 
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-sm);
-	color: alpha(--global-white, 70);
+	padding-top: var(--gap-sm);
+	font-weight: var(--weight-light);
+	color: alpha(--global-black, 75);
+
+	@include hairline(top);
 }
 
 .playgroundTitle {
-	@include titleL;
+	@include mediumLight;
 
-	color: var(--global-white);
+	color: var(--global-black);
 }

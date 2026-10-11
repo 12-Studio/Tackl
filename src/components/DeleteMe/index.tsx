@@ -7,6 +7,9 @@ import Hero from './Hero';
 import HowItWorks from './HowItWorks';
 import Outro from './Outro';
 import Styling from './Styling';
+// Styles
+// ------------
+import s from './styles.module.scss';
 import Why from './Why';
 
 // Component
@@ -15,7 +18,7 @@ import Why from './Why';
 // works. Everything it needs lives in this folder: delete the folder (and
 // its usage in app/(site)/(home)/page.tsx) when you start building.
 const DeleteMe = () => (
-	<>
+	<div className={s.jacket}>
 		<Hero />
 		<Why />
 		<HowItWorks />
@@ -24,7 +27,7 @@ const DeleteMe = () => (
 		<Features />
 		<GetStarted />
 		<Outro />
-	</>
+	</div>
 );
 
 // Exports

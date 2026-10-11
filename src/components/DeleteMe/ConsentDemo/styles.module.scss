@@ -14,15 +14,15 @@
 		@include captionL;
 
 		padding: var(--gap-xs) var(--gap-sm);
-		color: alpha(--global-white, 50);
-		border: 1px dashed alpha(--global-white, 25);
+		color: alpha(--global-black, 62);
+		border: 1px dashed alpha(--global-black, 25);
 
 		&::before {
 			content: '✕ ';
 		}
 
 		&[data-granted] {
-			color: var(--global-white);
+			color: var(--global-black);
 			border: 1px solid var(--feedback-positive);
 
 			&::before {
@@ -38,12 +38,12 @@
 
 	align-self: flex-start;
 	padding: var(--gap-sm) var(--gap-m);
-	color: var(--global-black);
-	background: var(--global-white);
+	color: var(--global-white);
+	background: var(--global-black);
 	cursor: pointer;
 
 	&:hover {
-		background: alpha(--global-white, 85);
+		background: alpha(--global-black, 85);
 	}
 }
 
@@ -58,11 +58,11 @@
 
 	padding: var(--gap-l);
 	text-align: center;
-	color: alpha(--global-white, 60);
-	border: 1px dashed alpha(--global-white, 25);
+	color: alpha(--global-black, 60);
+	border: 1px dashed alpha(--global-black, 25);
 
 	&[data-open] {
-		color: var(--global-white);
+		color: var(--global-black);
 		border: 1px solid var(--feedback-positive);
 		background: alpha(--feedback-positive, 12);
 	}

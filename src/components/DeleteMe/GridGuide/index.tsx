@@ -19,6 +19,7 @@ const COLUMNS = Array.from({ length: 12 }, (_, index) => index + 1);
 // ------------
 const GridGuide = () => (
 	<Section
+		index='03'
 		id='grid'
 		eyebrow='The grid'
 		title='A 12-column grid on CSS grid'

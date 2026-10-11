@@ -1,39 +1,43 @@
+@use '../swiss' as *;
+
 .steps {
-	row-gap: var(--gap-xxl);
+	row-gap: var(--gap-uber);
 }
 
 .step {
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-m);
+	padding-top: var(--gap-sm);
+
+	@include hairline(top);
 }
 
 .copy {
 	display: flex;
 	flex-direction: column;
-	gap: var(--gap-s);
+	gap: var(--gap-sm);
 
 	@include bp(l) {
-		min-height: 15rem;
+		min-height: 18rem;
 	}
 }
 
 .index {
-	@include captionS;
+	@include label;
 
-	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	color: var(--brand-c1);
-	text-transform: uppercase;
+	color: alpha(--global-black, 62);
 }
 
 .title {
-	@include titleS;
+	@include mediumLight;
 }
 
 .text {
-	@include captionL;
+	@include bodyS;
 
-	color: alpha(--global-white, 70);
+	font-weight: var(--weight-light);
+	color: alpha(--global-black, 75);
 }
 
 .code {

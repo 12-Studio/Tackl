@@ -11,8 +11,8 @@ import s from './styles.module.scss';
 const Outro = () => (
 	<footer className={s.jacket} data-pad>
 		<Grid $isFixed>
+			<p className={s.title}>Tackl</p>
 			<Col $m='1/5' $l='1/8'>
-				<p className={s.title}>That's Tackl.</p>
 				<p className={s.text}>
 					This page lives in <code>src/components/DeleteMe</code>. Delete the folder (and its import in{' '}
 					<code>app/(site)/(home)/page.tsx</code>) and start building.

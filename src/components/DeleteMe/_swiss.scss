@@ -1,0 +1,55 @@
+// Swiss
+// ------------
+// NOTE • The landing page's design language — paper, ink, hairlines and
+// large light type. Only used inside DeleteMe; delete it with the folder.
+// NOTE • Partials don't get the injected Tackl layer, hence the explicit @use
+@use 'tackl' as *;
+
+// Small uppercase label — eyebrows, captions, table heads
+@mixin label {
+	@include captionS;
+
+	font-weight: var(--weight-medium);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+@mixin mono {
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	font-size: 0.92em;
+	letter-spacing: 0;
+}
+
+// One-pixel ink rule
+@mixin hairline($side: top, $strength: 100) {
+	border-#{$side}: 1px solid alpha(--global-black, $strength);
+}
+
+// Big, light headline — the page's signature
+@mixin bigLight {
+	font-family: var(--font-heading);
+	font-weight: var(--weight-light);
+	font-size: 4.4rem;
+	line-height: 1;
+	letter-spacing: -0.035em;
+
+	@include bp(m) {
+		font-size: 6.4rem;
+	}
+
+	@include bp(l) {
+		font-size: clamp(7.2rem, 6.6vw, 10.4rem);
+	}
+}
+
+@mixin mediumLight {
+	font-family: var(--font-heading);
+	font-weight: var(--weight-light);
+	font-size: 2.6rem;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+
+	@include bp(l) {
+		font-size: 3.2rem;
+	}
+}

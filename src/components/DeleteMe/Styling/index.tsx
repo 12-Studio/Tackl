@@ -15,6 +15,7 @@ import s from './styles.module.scss';
 // ------------
 const Styling = () => (
 	<Section
+		index='04'
 		id='styling'
 		eyebrow='Styling'
 		title='Tokens, type and spacing — live'

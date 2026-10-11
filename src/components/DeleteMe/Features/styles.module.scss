@@ -1,66 +1,58 @@
-.list {
-	row-gap: var(--gap-m);
+@use '../swiss' as *;
 
-	@include bp(l) {
-		row-gap: var(--gap-l);
-	}
+.list {
+	row-gap: var(--gap-xl);
 }
 
 .feature {
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-sm);
-	padding: var(--gap-l);
-	border: 1px solid alpha(--global-white, 12);
-	background: alpha(--global-white, 3);
-	transition:
-		border-color var(--time-m) var(--easing-bezzy),
-		background var(--time-m) var(--easing-bezzy);
+	padding-top: var(--gap-sm);
 
-	&:hover {
-		border-color: alpha(--brand-c1, 70);
-		background: alpha(--brand-c1, 8);
-	}
+	@include hairline(top);
 }
 
 .title {
-	@include titleS;
+	@include mediumLight;
 }
 
 .text {
-	@include captionL;
+	@include bodyS;
 
 	flex: 1;
-	color: alpha(--global-white, 70);
+	font-weight: var(--weight-light);
+	color: alpha(--global-black, 75);
 }
 
 .where {
+	@include mono;
 	@include captionS;
 
-	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	color: var(--brand-c1);
-	filter: brightness(1.6);
+	color: alpha(--global-black, 62);
 }
 
 // SECTION • Live demo
 .demo {
 	row-gap: var(--gap-l);
-	margin-top: var(--gap-xxl);
-	padding-top: var(--gap-xl);
-	border-top: 1px dashed alpha(--global-white, 12);
+	margin-top: var(--gap-uber);
 }
 
 .demoCopy {
-	@include captionL;
+	@include bodyS;
 
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-sm);
-	color: alpha(--global-white, 70);
+	padding-top: var(--gap-sm);
+	font-weight: var(--weight-light);
+	color: alpha(--global-black, 75);
+
+	@include hairline(top);
 }
 
 .demoTitle {
-	@include titleL;
+	@include mediumLight;
 
-	color: var(--global-white);
+	color: var(--global-black);
 }

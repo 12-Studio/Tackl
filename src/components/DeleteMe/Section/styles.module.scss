@@ -1,42 +1,69 @@
+@use '../swiss' as *;
+
 .jacket {
 	position: relative;
-	border-top: 1px solid alpha(--global-white, 10);
 }
 
 .header {
-	display: flex;
-	flex-direction: column;
-	gap: var(--gap-m);
-	margin-bottom: var(--gap-xl);
+	row-gap: var(--gap-m);
+	margin-bottom: var(--gap-xxl);
 
 	@include bp(l) {
-		margin-bottom: var(--gap-huge);
+		margin-bottom: var(--gap-uber);
+	}
+
+	&::before {
+		@include hairline(top);
+
+		content: '';
+		grid-column: 1 / -1;
+		margin-bottom: var(--gap-m);
 	}
 }
 
-.eyebrow {
-	@include captionL;
+.label {
+	@include label;
 
-	color: var(--brand-c1);
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
+	display: flex;
+	gap: var(--gap-sm);
+}
+
+.index {
+	@include mono;
+
+	color: alpha(--global-black, 62);
+}
+
+.lead {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-l);
 }
 
 .title {
-	@include headlineL;
+	@include bigLight;
+
+	max-width: 14ch;
 }
 
 .intro {
-	@include bodyS;
+	@include bodyL;
 
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-sm);
-	color: alpha(--global-white, 70);
+	max-width: 44ch;
+	font-weight: var(--weight-light);
+	color: alpha(--global-black, 70);
 
 	code {
-		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-		font-size: 0.9em;
-		color: var(--global-white);
+		@include mono;
+
+		color: var(--global-black);
+	}
+
+	a {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
 	}
 }

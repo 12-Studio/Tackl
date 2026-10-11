@@ -2,6 +2,7 @@
 // ------------
 import Grid, { Col } from '@waffl';
 import CopyButton from '../CopyButton';
+import HeroBackdrop from '../HeroBackdrop';
 
 // Styles
 // ------------
@@ -9,13 +10,12 @@ import s from './styles.module.scss';
 
 // Constants
 // ------------
-const MAX_COLUMNS = 12;
 const REPO_URL = 'https://github.com/12-Studio/Tackl';
 
 const STATS = [
 	{ value: '100', label: 'Lighthouse, out of the box' },
-	{ value: '0 KB', label: 'styling runtime' },
-	{ value: '12', label: 'column grid' },
+	{ value: '0 KB', label: 'Styling runtime' },
+	{ value: '12', label: 'Column grid' },
 	{ value: '3', label: 'CMS options' },
 ];
 
@@ -23,35 +23,31 @@ const STATS = [
 // ------------
 const Hero = () => (
 	<header className={s.jacket}>
-		{/* NOTE • The real grid, drawn as the backdrop — 2, 6 or 12 columns as the viewport grows */}
-		<div className={s.backdrop} aria-hidden='true'>
-			<Grid $isFixed>
-				{Array.from({ length: MAX_COLUMNS }, (_, index) => (
-					<span
-						// biome-ignore lint/suspicious/noArrayIndexKey: a fixed, static list of identical columns
-						key={index}
-						className={s.column}
-						style={{ '--index': index }}
-					/>
-				))}
-			</Grid>
-		</div>
+		<HeroBackdrop />
 
 		<Grid $isFixed className={s.content}>
-			<Col $m='1/7' $l='1/13'>
-				<p className={s.eyebrow}>The Next.js starter kit by 12 Studio</p>
-				<h1 className={s.title}>Tackl</h1>
-				<p className={s.tagline}>
-					An animation-first foundation for marketing sites. Next.js 16, React 19, SCSS modules, a 12-column
-					grid and every production default already done — so day one is spent on the design, not the setup.
-				</p>
+			<Col $m='1/4' $l='1/4' className={s.meta}>
+				The Next.js starter kit
+			</Col>
+			<Col $m='4/7' $l='4/10' className={s.meta}>
+				Animation-first, built on a grid
+			</Col>
+			<Col $l='10/13' className={s.metaEnd}>
+				By 12 Studio
+			</Col>
 
-				<div className={s.actions}>
-					<CopyButton text='bunx tackl' />
-					<a className={s.link} href={REPO_URL}>
-						View on GitHub
-					</a>
-				</div>
+			<h1 className={s.title}>Tackl</h1>
+
+			<Col $m='1/5' $l='1/8' className={s.tagline}>
+				An animation-first foundation for marketing sites. Next.js 16, React 19, SCSS modules and a 12-column
+				grid, with every production default already done.
+			</Col>
+
+			<Col $m='5/7' $l='10/13' className={s.actions}>
+				<CopyButton text='bunx tackl' />
+				<a className={s.link} href={REPO_URL}>
+					View on GitHub →
+				</a>
 			</Col>
 
 			{/* NOTE • Each stat is a column on the same grid as the backdrop: 2 per row, then 4 across from l */}

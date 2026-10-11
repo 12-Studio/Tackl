@@ -77,6 +77,7 @@ const FEATURES = [
 // ------------
 const Features = () => (
 	<Section
+		index='05'
 		id='features'
 		eyebrow='Batteries included'
 		title='Everything a real site needs'

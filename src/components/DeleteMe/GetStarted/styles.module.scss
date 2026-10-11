@@ -1,3 +1,5 @@
+@use '../swiss' as *;
+
 .steps {
 	row-gap: var(--gap-xxl);
 }
@@ -7,26 +9,29 @@
 	flex-direction: column;
 	gap: var(--gap-sm);
 	min-width: 0;
+	padding-top: var(--gap-sm);
+
+	@include hairline(top);
 }
 
 .index {
-	@include displayS;
+	@include bigLight;
 
-	color: var(--brand-c1);
-	line-height: 1;
+	line-height: 0.9;
 }
 
 .title {
-	@include titleS;
+	@include mediumLight;
 }
 
 .text {
-	@include captionL;
+	@include bodyS;
 
-	color: alpha(--global-white, 70);
+	font-weight: var(--weight-light);
+	color: alpha(--global-black, 75);
 
 	@include bp(l) {
-		min-height: 9rem;
+		min-height: 10rem;
 	}
 }
 
@@ -35,7 +40,7 @@
 }
 
 .cta {
-	margin-top: var(--gap-huge);
+	margin-top: var(--gap-uber);
 }
 
 .ctaInner {
@@ -46,10 +51,10 @@
 }
 
 .link {
-	@include captionL;
+	@include label;
 
 	text-decoration: underline;
-	text-underline-offset: 0.3em;
+	text-underline-offset: 0.4em;
 
 	&:hover {
 		color: var(--brand-c1);

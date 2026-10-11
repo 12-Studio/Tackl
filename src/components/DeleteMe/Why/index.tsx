@@ -32,6 +32,7 @@ const REASONS = [
 // ------------
 const Why = () => (
 	<Section
+		index='01'
 		id='why'
 		eyebrow='Why Tackl'
 		title='Why it exists'

@@ -1,10 +1,11 @@
+@use '../swiss' as *;
+
 .jacket {
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-m);
 	padding: var(--gap-m);
-	border: 1px solid alpha(--global-white, 12);
-	background: alpha(--global-white, 3);
+	border: 1px solid var(--global-black);
 
 	@include bp(l) {
 		padding: var(--gap-l);
@@ -12,7 +13,7 @@
 }
 
 .muted {
-	color: alpha(--global-white, 50);
+	color: alpha(--global-black, 62);
 }
 
 // SECTION • Toolbar
@@ -28,33 +29,33 @@
 	display: flex;
 	margin: 0;
 	padding: 0;
-	border: 1px solid alpha(--global-white, 20);
+	border: 1px solid alpha(--global-black, 20);
 }
 
 .tab {
 	@include captionL;
 
 	padding: var(--gap-s) var(--gap-m);
-	color: alpha(--global-white, 70);
+	color: alpha(--global-black, 70);
 	cursor: pointer;
 	transition:
 		background var(--time-s) var(--easing-bezzy),
 		color var(--time-s) var(--easing-bezzy);
 
 	& + & {
-		border-left: 1px solid alpha(--global-white, 20);
+		border-left: 1px solid alpha(--global-black, 20);
 	}
 
 	&:hover {
-		color: var(--global-white);
+		color: var(--global-black);
 	}
 
 	&[aria-pressed='true'] {
-		color: var(--global-black);
-		background: var(--global-white);
+		color: var(--global-white);
+		background: var(--global-black);
 
 		.muted {
-			color: alpha(--global-black, 60);
+			color: alpha(--global-white, 60);
 		}
 	}
 }
@@ -107,8 +108,8 @@
 	gap: var(--gap-s) var(--gutter);
 	padding: var(--gutter);
 	min-height: 24rem;
-	border: 1px solid alpha(--global-white, 15);
-	background: var(--global-black);
+	border: 1px solid alpha(--global-black, 15);
+	background: var(--brand-c4);
 }
 
 .overlay {
@@ -121,8 +122,8 @@
 	pointer-events: none;
 
 	span {
-		background: alpha(--brand-c1, 10);
-		border-inline: 1px dashed alpha(--brand-c1, 35);
+		background: alpha(--global-black, 3);
+		border-inline: 1px solid alpha(--global-black, 10);
 	}
 }
 
@@ -134,36 +135,36 @@
 	justify-content: center;
 	gap: var(--gap-xxs);
 	min-width: 0;
-	color: var(--global-white);
-	background: alpha(--brand-c1, 40);
-	border: 1px solid var(--brand-c1);
+	color: var(--brand-c4);
+	background: var(--global-black);
 	cursor: pointer;
 	transition: background var(--time-s) var(--easing-bezzy);
 
-	&:hover {
-		background: alpha(--brand-c1, 55);
-	}
-
 	&[data-inherited] {
-		background: alpha(--brand-c1, 18);
-		border-style: dashed;
+		color: var(--global-black);
+		background: var(--brand-c4);
+		outline: 1px dashed var(--global-black);
+		outline-offset: -1px;
 	}
 
 	&[aria-pressed='true'] {
-		outline: 2px solid var(--global-white);
-		outline-offset: -2px;
+		color: var(--global-white);
+		background: var(--brand-c1);
+		outline: none;
 	}
 }
 
 .itemLabel {
 	@include titleS;
+
+	font-weight: var(--weight-light);
 }
 
 .itemValue {
 	@include captionS;
 
 	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	color: alpha(--global-white, 75);
+	opacity: 0.75;
 }
 
 // SECTION • Controls
@@ -182,7 +183,6 @@
 	code {
 		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 		color: var(--brand-c1);
-		filter: brightness(1.6);
 	}
 }
 
@@ -200,28 +200,28 @@
 .stepperLabel {
 	@include captionS;
 
-	color: alpha(--global-white, 60);
+	color: alpha(--global-black, 60);
 }
 
 .stepperControls {
 	display: flex;
 	align-items: stretch;
-	border: 1px solid alpha(--global-white, 25);
+	border: 1px solid alpha(--global-black, 25);
 
 	button {
 		@include captionL;
 
 		width: 4rem;
 		height: 4rem;
-		color: var(--global-white);
+		color: var(--global-black);
 		cursor: pointer;
 
 		&:hover:not(:disabled) {
-			background: alpha(--global-white, 10);
+			background: alpha(--global-black, 10);
 		}
 
 		&:disabled {
-			color: alpha(--global-white, 25);
+			color: alpha(--global-black, 25);
 			cursor: not-allowed;
 		}
 	}
@@ -233,7 +233,7 @@
 		place-items: center;
 		min-width: 4.4rem;
 		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-		border-inline: 1px solid alpha(--global-white, 25);
+		border-inline: 1px solid alpha(--global-black, 25);
 	}
 }
 
@@ -247,17 +247,17 @@
 	@include captionL;
 
 	padding: var(--gap-s) var(--gap-m);
-	border: 1px solid alpha(--global-white, 30);
-	color: var(--global-white);
+	border: 1px solid alpha(--global-black, 30);
+	color: var(--global-black);
 	cursor: pointer;
 
 	&:hover:not(:disabled) {
-		background: alpha(--global-white, 10);
+		background: alpha(--global-black, 10);
 	}
 
 	&:disabled {
-		color: alpha(--global-white, 30);
-		border-color: alpha(--global-white, 12);
+		color: alpha(--global-black, 30);
+		border-color: alpha(--global-black, 12);
 		cursor: not-allowed;
 	}
 }

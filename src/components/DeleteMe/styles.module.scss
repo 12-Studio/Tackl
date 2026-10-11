@@ -1,0 +1,16 @@
+@use 'swiss' as *;
+
+// NOTE • The landing page sits on paper — the rest of the kit stays dark
+.jacket {
+	color: var(--global-black);
+	background: var(--brand-c4);
+
+	::selection {
+		color: var(--global-white);
+		background: var(--global-black);
+	}
+
+	:focus-visible {
+		outline-color: var(--global-black);
+	}
+}

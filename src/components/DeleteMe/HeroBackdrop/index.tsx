@@ -4,7 +4,7 @@
 // ------------
 import Grid from '@waffl';
 import { useRef } from 'react';
-import AsciiField from '../AsciiField';
+import HeroField from '../HeroField';
 
 // Styles
 // ------------
@@ -18,7 +18,7 @@ const COLUMNS = Array.from({ length: 12 }, (_, index) => index);
 // Component
 // ------------
 // NOTE • The hero's backdrop: the real grid drawn as hairline columns, and
-// the ASCII field measuring those same columns for its rising wave
+// the WebGL field measuring those same columns
 const HeroBackdrop = () => {
 	// Refs
 	const columnsRef = useRef<HTMLDivElement>(null);
@@ -26,7 +26,7 @@ const HeroBackdrop = () => {
 	// Render
 	return (
 		<div ref={columnsRef} className={s.jacket} aria-hidden='true'>
-			<AsciiField columnsRef={columnsRef} />
+			<HeroField columnsRef={columnsRef} />
 			<Grid $isFixed className={s.grid}>
 				{COLUMNS.map(column => (
 					<span key={column} className={s.column} style={{ '--index': column }} />

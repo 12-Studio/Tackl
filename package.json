@@ -55,6 +55,9 @@
 		"react-dom": "^19.3.0",
 		"sanity": "^6.18.0"
 	},
+	"overrides": {
+		"lighthouse": "13.5.0"
+	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.15",
 		"@lhci/cli": "^0.15.1",

@@ -42,7 +42,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 | `bun run test` | Playwright specs against the production build |
 | `bun run storybook` | Storybook dev on :6006 |
 | `bun run build-storybook` | Static Storybook build |
-| `bun run lighthouse` | Lighthouse CI — fails below 100 in any category (also runs in CI) |
+| `bun run lighthouse` | Lighthouse CI — Performance/Best Practices 90+, SEO 100, Agentic Browsing all passing (also runs in CI) |
 | `bun run commit` | Optional guided commit-message prompt |
 | `git commit` | Husky pre-commit checks generated styles, then runs lint + type-check |
 
@@ -183,6 +183,7 @@ flowchart TD
     │   ├── api/draft-mode/     # Draft preview on/off — adapter-agnostic via @cms/draft
     │   ├── sitemap.ts          # /sitemap.xml
     │   ├── robots.ts           # /robots.txt (blocks staging deploys)
+    │   ├── llms.txt/           # /llms.txt — a Markdown site map for AI agents
     │   ├── global-not-found.tsx # 404 for URLs that match no route
     │   ├── global-error.tsx    # Last-resort error page (root layout crashed)
     │   └── icon.svg            # Favicon
@@ -215,7 +216,7 @@ flowchart TD
     ├── AGENTS.md               # Vendor-neutral agent instructions
     ├── CLAUDE.md               # Claude Code → imports AGENTS.md
     ├── .env.example            # Documented environment template
-├── lighthouserc.js         # Lighthouse CI — 100 in every category or CI fails
+├── lighthouserc.js         # Lighthouse CI thresholds (CI fails below them)
     ├── LICENSE                 # MIT
     ├── scripts/build-styles.ts # Generates tokens.css + breakpoint/grid SCSS from src/theme
     ├── biome.json              # Lint + format config (TS/JS/JSON/CSS)
@@ -242,7 +243,7 @@ flowchart TD
 | [MigratingFromV3](./docs/Tackl/MigratingFromV3.md) | Phased playbook for upgrading a Tackl 3 project |
 | [DatoCMS](./docs/DatoCMS) | Querying, images, structured text, SEO |
 | [Sanity](./docs/Sanity/README.md) | Setting up the Sanity variant |
-| [Lighthouse](./docs/Lighthouse.md) | The 100-or-fail Lighthouse CI check |
+| [Lighthouse](./docs/Lighthouse.md) | The Lighthouse CI check and its thresholds |
 
 ## ✍️ Committing
 

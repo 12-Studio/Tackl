@@ -26,7 +26,7 @@ Work on a dedicated branch, one phase per commit. Coming from v3? Do [MigratingF
 | `import * as S from './styles'` | `import s from './styles.module.scss'` |
 | `<S.Jacket>` | `<section className={s.jacket}>` — classes are camelCase |
 | `styled(Div).attrs({ as: 'header' })(…)` | A plain `<header>` in the JSX, styled by a module class |
-| `<Div as='h1' $m='2/6' $l='3/9'>` | `<Col as='h1' $m='2/6' $l='3/9'>` (`import { Col } from '@tackl'`) — only when it needs spans |
+| `<Div as='h1' $m='2/6' $l='3/9'>` | `<Col as='h1' $m='2/6' $l='3/9'>` (`import { Col } from '@waffl'`) — only when it needs spans |
 | `<Div as='section' $pad>` | `<section data-pad>` |
 | `$padTop` / `$padBottom` / `$marTop` / `$marBottom` | `data-pad='top'` / `data-pad='bottom'` / `data-mar='top'` / `data-mar='bottom'` (values combine: `data-mar='top bottom'`) |
 | Spacing in a styled block | `@include pad;` · `@include pad(top);` · `@include mar(bottom);` |

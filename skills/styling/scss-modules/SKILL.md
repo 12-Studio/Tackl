@@ -114,8 +114,7 @@ file so the `.t-*` class and `[data-type]` selector are generated.
 ## Grid
 
 ```tsx
-import { Col } from '@tackl';
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
 	<Col as='article' $m='2/6' $l='3/9'>Spans by breakpoint</Col>
@@ -123,7 +122,7 @@ import Grid from '@waffl';
 </Grid>
 ```
 
-- Direct grid children span `1 / -1` unless they set `--col-{bp}` (which `Col` does).
+- Direct grid children span `1 / -1`; narrow one with `Col` span props (`$m='2/6'`). Never set the internal `--col-*` variables by hand.
 - Each breakpoint falls back to the one below; spans never leak into nested grids.
 - Grid switches → data attributes: `$isFixed`, `$noGutter`, `$noMargin`, `$isFullscreen`, `$isCenter`.
 
@@ -133,7 +132,7 @@ import Grid from '@waffl';
   `src/css/tackl/_breakpoints.scss` and `_grid.scss` (also runs before dev/build/storybook).
   Never edit generated files.
 - JS: `theme` from `@theme` (var() refs), and from `@tackl`: `breakpoints`, `mq.up.m` /
-  `mq.down.m` (for `gsap.matchMedia`), `alpha()`, `getVw()`.
+  `mq.down.m` (for `gsap.matchMedia`), `alpha()`, `getVw()`. `Grid` and `Col` come from `@waffl`.
 - Runtime theming: override tokens in CSS, e.g. `html[data-theme='dark'] { --brand-c1: #9b30ff; }`.
 
 ## Common mistakes

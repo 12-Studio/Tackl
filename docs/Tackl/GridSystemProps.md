@@ -2,10 +2,10 @@
 
 The span props — `$s`, `$sm`, `$m`, `$l`, `$xl`, `$xxl`, `$huge`, `$uber` — position a child inside a [Waffl grid](./WafflGrid.md). They're accepted by two components:
 
-- **`<Col>`** (from `@tackl`) — the grid child. See [Col & spacing attributes](./SemanticComponents.md).
+- **`<Col>`** (`import { Col } from '@waffl'`) — the grid child. See [Col & spacing attributes](./SemanticComponents.md).
 - **`<Grid>`** (from `@waffl`) — so a grid can itself sit inside another grid.
 
-Each prop sets a `--col-{breakpoint}` custom property; the `waffl-grid` rules in `src/css/global.scss` turn those into `grid-column` at the matching breakpoint.
+Under the hood each prop sets an internal `--col-{breakpoint}` custom property (never set these yourself); the `waffl-grid` rules in `src/css/global.scss` turn those into `grid-column` at the matching breakpoint.
 
 ## Breakpoints
 
@@ -59,8 +59,7 @@ Spans don't inherit: a child of a nested grid starts from full width regardless 
 ### Content column
 
 ```tsx
-import { Col } from '@tackl';
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
 	<Col as='article' className={s.content} $m='2/6' $l='4/10'>…</Col>
@@ -103,25 +102,10 @@ One per row on mobile, two on tablet (3 of 6), three on desktop (4 of 12). Give 
 </Grid>
 ```
 
-### Spans without `Col`
-
-The props are shorthand for custom properties, so any direct grid child can set them by hand:
-
-```tsx
-<figure className={s.media} style={{ '--col-m': '1/4', '--col-l': '7/13' }}>…</figure>
-```
-
-```scss
-// or in the module
-.media {
-	--col-m: 1/4;
-	--col-l: 7/13;
-}
-```
-
 ## Troubleshooting
 
 - **Span ignored** — the element must be a *direct* child of the `<waffl-grid>`. A wrapper element in between breaks it; put the span on the wrapper instead.
 - **Overflowing the grid** — a line number beyond `columns + 1` at that breakpoint (e.g. `'1/13'` on the 6-column tablet grid) creates implicit columns. Use `-1` or set a span for that breakpoint.
 - **Span looks wrong at one size** — remember the fallback: an unset breakpoint uses the nearest one below it. Set the breakpoint explicitly to change it.
-- **A module rule overrides the span** — setting `grid-column` in an unlayered module class beats the grid layer. Set `--col-*` in the module instead.
+- **A module rule overrides the span** — setting `grid-column` in an unlayered module class beats the grid layer. Leave `grid-column` out of module classes on grid children and use span props instead.
+- **Need spans on another component** (a `Link`, an `Image`)? Wrap it in a `Col`, or render it with `as`: `<Col as={Link} href='/work' $m='2/6'>`.

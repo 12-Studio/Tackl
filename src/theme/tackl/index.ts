@@ -3,14 +3,6 @@
 import { theme } from '@theme';
 import { getVw as useVw, getVwMobile as useVwMobile, getVwTablet as useVwTablet } from '@utils/getVw';
 
-// SECTION • Grid Column
-// ------------
-// NOTE • The grid child with responsive spans — pick the tag with `as`:
-//   <Col as='article' $m='2/6' $l='3/9'>…</Col>
-// Children without spans don't need it: every direct child of a grid spans
-// the full width by default (see the waffl-grid rules in src/css/global.scss).
-export { default as Col } from './col';
-
 // SECTION • Breakpoints for JS
 // ------------
 // NOTE • The same values that generate the SCSS bp() / bpd() mixins — use

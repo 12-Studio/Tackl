@@ -1,10 +1,9 @@
 // Imports
 // ------------
-import { splitSpans } from '@tackl/col';
-
 // Interfaces
 // ------------
 import type * as I from './interface';
+import { splitSpans } from './spans';
 
 // Component
 // ------------
@@ -12,7 +11,8 @@ import type * as I from './interface';
 // client code. All styling lives in src/css/global.scss (the grid layer);
 // the boolean props become data attributes:
 //   <Grid $isFixed $noGutter> → <waffl-grid data-fixed data-no-gutter>
-// Direct children span the full grid by default; narrow them with <Col>.
+// Direct children span the full grid by default; narrow them with <Col>,
+// exported alongside: import Grid, { Col } from '@waffl'
 const Grid = ({ $noMargin, $isFixed, $isFullscreen, $isCenter, $noGutter, style, ...props }: I.GridProps) => {
 	// Derived
 	const { spans, rest } = splitSpans(props);
@@ -35,3 +35,5 @@ const Grid = ({ $noMargin, $isFixed, $isFullscreen, $isCenter, $noGutter, style,
 // ------------
 Grid.displayName = 'Grid';
 export default Grid;
+export { default as Col } from './Col';
+export type { ColProps, GridProps, SpanProps } from './interface';

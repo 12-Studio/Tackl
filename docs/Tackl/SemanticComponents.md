@@ -20,11 +20,10 @@ The element is whatever the markup says, accepts every HTML attribute, and works
 
 ## `<Col>`
 
-`Col` (from `@tackl`) is a polymorphic grid child. It renders the tag you pick with `as` (default `div`) and turns its span props into `--col-*` custom properties that the grid reads.
+`Col` (`import { Col } from '@waffl'`) is a polymorphic grid child. It renders the tag you pick with `as` (default `div`) and turns its span props into internal `--col-*` custom properties that the grid reads — always use the props, never the variables.
 
 ```tsx
-import { Col } from '@tackl';
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
 	<Col as='article' className={s.content} $m='2/6' $l='3/9'>…</Col>
@@ -93,7 +92,7 @@ The polymorphic `Div` primitive and its spacing props have been removed. Map old
 
 | Before | After |
 | --- | --- |
-| `import { Div } from '@tackl'` | Plain JSX tags; `import { Col } from '@tackl'` only for spanned grid children |
+| `import { Div } from '@tackl'` | Plain JSX tags; `import { Col } from '@waffl'` only for spanned grid children |
 | `<Div as='section'>` | `<section>` |
 | `<Div as='article' $m='2/6' $l='3/9'>` (in a grid) | `<Col as='article' $m='2/6' $l='3/9'>` |
 | `<Div $pad>` | `<div data-pad>` |

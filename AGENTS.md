@@ -28,7 +28,7 @@ The only layout primitive is **`Col`** — a grid child with responsive spans. P
 with `as`; it accepts span props (`$s`…`$uber`) and every prop of that tag, fully typed:
 
 ```tsx
-import { Col } from '@tackl';
+import { Col } from '@waffl';
 
 <Col as='article' $m='2/6' $l='3/9' className={s.card}>…</Col>
 ```
@@ -43,9 +43,9 @@ by default, so `as='div'` is never needed.
 
 | Import | Use for | Never write |
 | --- | --- | --- |
-| `import { Col, breakpoints, mq, alpha, getVw } from '@tackl'` | Grid column, JS breakpoints, colour/viewport utils | `import { Div, getBrand, bp } from '@tackl'` (removed) |
+| `import { breakpoints, mq, alpha, getVw } from '@tackl'` | JS breakpoints, colour/viewport utils | `import { Div, getBrand, bp, Col } from '@tackl'` (removed / moved) |
 | `import s from './styles.module.scss'` | A component's styles | `import * as S from './styles'`, `import styled …` |
-| `import Grid from '@waffl'` | The grid container (**default** import) | `import { Grid } from '@waffl'`, deep paths, `import { Waffl }` |
+| `import Grid, { Col } from '@waffl'` | The grid (**default** import) and its column (named) | `import { Grid } from '@waffl'`, deep paths, `import { Waffl }` |
 | `import { theme } from '@theme'` | Tokens in JS (GSAP, inline styles) — `var()` references | Hard-coded token values |
 | `import { cx } from '@utils/cx'` | Joining class names | Template-string juggling with `undefined` |
 | `import { fetchContent, GET_HOME } from '@cms'` | CMS data | importing a CMS adapter folder directly |
@@ -76,7 +76,7 @@ Component.stories.tsx  # optional Storybook story
 - **`'use client'` only when the component needs it** (hooks, events, browser APIs) — styling
   never requires it.
 - No CSS-in-JS, Tailwind, LESS, or inline styles — except CSS custom properties for dynamic
-  values (`style={{ '--progress': value }}`, `--col-*` on grid children).
+  values (`style={{ '--progress': value }}`).
 
 ### File layout & comments
 
@@ -189,12 +189,12 @@ existing file, match the labels and order already there.
 `Grid` (from `@waffl`) renders a plain `<waffl-grid>` tag — no web component, no shadow
 DOM, no client code. All grid styling lives in `src/css/global.scss`. Direct children span
 the full grid by default via the `waffl-grid > :where(*)` rule — **plain and
-server-rendered elements included**. Use `Col` (or set `--col-*` yourself) only for
-children that need a narrower span; each breakpoint falls back to the one below.
+server-rendered elements included**. Use `Col` with span props (`$s`, `$m`, `$l`…) only for
+children that need a narrower span; each breakpoint falls back to the one below. Spans are
+always set through those props — never write the underlying `--col-*` variables yourself.
 
 ```tsx
-import { Col } from '@tackl';
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
 	<Col as='article' $m='1/4' $l='1/7'>Narrower on larger screens</Col>

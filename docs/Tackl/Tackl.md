@@ -10,8 +10,8 @@ scripts/build-styles.ts      generator (`bun run styles`, runs before dev/build/
 src/css/tokens.css           GENERATED :root custom properties
 src/css/tackl/               the injected SCSS layer (mixins/functions only, zero CSS output)
 src/css/global.scss          the only global stylesheet (reset, base, grid, utilities layers)
-src/theme/tackl/index.ts     `@tackl` — Col, breakpoints, mq, alpha, getVw…
-src/theme/tackl/waffl/       `Grid` — `import Grid from '@waffl'`
+src/theme/tackl/index.ts     `@tackl` — breakpoints, mq, alpha, getVw…
+src/theme/tackl/waffl/       `Grid` + `Col` — `import Grid, { Col } from '@waffl'`
 ```
 
 ## 1. Design Tokens
@@ -109,11 +109,10 @@ See [SemanticComponents.md](./SemanticComponents.md).
 
 ## 6. Waffl Grid & `Col`
 
-`Grid` (`import Grid from '@waffl'`) is a server component rendering a plain `<waffl-grid>` tag. Every direct child spans the full width by default (`waffl-grid > :where(*)`), so plain and server-rendered elements need no props. Narrow a child with `Col` from `@tackl`:
+`Grid` (`import Grid from '@waffl'`) is a server component rendering a plain `<waffl-grid>` tag. Every direct child spans the full width by default (`waffl-grid > :where(*)`), so plain and server-rendered elements need no props. Narrow a child with `Col`, exported alongside it:
 
 ```tsx
-import Grid from '@waffl';
-import { Col } from '@tackl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
 	<Col as='article' $m='2/6' $l='3/9'>Narrower on larger screens</Col>
@@ -123,7 +122,6 @@ import { Col } from '@tackl';
 
 - `Grid` props become data attributes: `$isFixed` → `data-fixed` (max-width 1440px), `$noGutter`, `$noMargin`, `$isFullscreen`, `$isCenter`. It also takes span props, so a grid can sit inside another grid.
 - `Col` is polymorphic (`as`) and takes span props `$s $sm $m $l $xl $xxl $huge $uber` (grid-column values like `'2/6'`, `'1/-1'`, `'span 3'`) plus any props of the chosen tag. Each breakpoint falls back to the one below.
-- Spans can also be set by hand: `style={{ '--col-m': '2/6' }}`.
 - Columns: s 2 / m 6 / l 12.
 
 See [WafflGrid.md](./WafflGrid.md) and [GridSystemProps.md](./GridSystemProps.md).

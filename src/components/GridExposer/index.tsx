@@ -25,9 +25,8 @@
 
 // Imports
 // ------
-import { Col } from '@tackl';
 import { theme } from '@theme';
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 import { useCallback, useEffect, useState } from 'react';
 
 // Styles

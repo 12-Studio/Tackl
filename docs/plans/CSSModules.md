@@ -598,6 +598,7 @@ What changed from the plan while building it:
 - **Icon** SVGs are `aria-hidden` — the styled wrapper had hidden Biome's a11y rule.
 - **Storybook** sets the `next/font` class on `<html>` (it was on `<body>`), so `--font-*`
   on `:root` resolves to Inter.
+- **`Col` lives in `@waffl`** (`import Grid, { Col } from '@waffl'`), not `@tackl` — it only works inside a grid. Spans are set only through its props; the `--col-*` variables are internal.
 - **`cx()`** (`src/utils/cx.ts`) added for joining module, utility and prop class names.
 - **Verified in Phase 1**: Turbopack honours `additionalData`, `loadPaths` and
   `implementation`; edits to injected partials hot-reload; production CSS contains no

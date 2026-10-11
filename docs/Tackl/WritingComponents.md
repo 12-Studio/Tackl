@@ -295,11 +295,10 @@ Prefer a `data-*` attribute over a conditional class when the change is a state 
 
 ## Using the grid
 
-`Grid` (from `@waffl`) renders a plain `<waffl-grid>`. Every direct child spans the full width by default; reach for `<Col>` (from `@tackl`) only when a child needs a narrower span:
+`Grid` (from `@waffl`) renders a plain `<waffl-grid>`. Every direct child spans the full width by default; reach for `<Col>` (also from `@waffl`) only when a child needs a narrower span:
 
 ```tsx
-import { Col } from '@tackl';
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
 	{/* full on mobile, cols 2–6 of 6 on tablet, cols 3–9 of 12 on desktop */}
@@ -317,7 +316,7 @@ Each span falls back to the breakpoint below it, so `$l` alone stays full-width 
 | Import | Gives you | Use for |
 | --- | --- | --- |
 | `./styles.module.scss` | `s` — the module's class names | Every component's styles |
-| `@tackl` | `Col`, `breakpoints`, `mq`, `alpha`, `getVw`, `getVwTablet`, `getVwMobile` | Grid children, breakpoints and colour/viewport helpers in JS |
+| `@tackl` | `breakpoints`, `mq`, `alpha`, `getVw`, `getVwTablet`, `getVwMobile` | Breakpoints and colour/viewport helpers in JS |
 | `@waffl` | `Grid` (default export) | The grid container |
 | `@theme` | `theme` — tokens as `var()` references | JS that needs a token (GSAP, inline styles) |
 | `@utils/cx` | `cx` | Joining class names |

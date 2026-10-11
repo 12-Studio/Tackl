@@ -5,8 +5,7 @@ Waffl is Tackl's responsive column grid: a server-rendered `<waffl-grid>` elemen
 ## Overview
 
 ```tsx
-import { Col } from '@tackl';
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
 	<Col as='article' $m='2/6' $l='3/9'>Narrower on larger screens</Col>
@@ -16,7 +15,7 @@ import Grid from '@waffl';
 
 - **`Grid`** (default export of `@waffl`) renders a plain `<waffl-grid>` tag. There is no JavaScript custom element, no shadow DOM and no client code — it's a Server Component.
 - **Every direct child spans the full width** unless told otherwise.
-- **`Col`** (from `@tackl`) narrows a child per breakpoint via span props.
+- **`Col`** (named export from `@waffl`) narrows a child per breakpoint via span props.
 
 ```mermaid
 flowchart TD
@@ -110,24 +109,17 @@ The inner grid builds its own column tracks (2 / 6 / 12) inside the area it span
 
 Spans never leak between levels. The `--col-*` properties are registered with `@property … { inherits: false }`, and each `waffl-grid` also resets them to `initial` (for browsers without `@property`). A nested grid's children start from full width, whatever the parent's spans were.
 
-## Setting spans by hand
+## Spanning other components
 
-`Col` only sets custom properties, so any element can do the same through `style` — useful when the element is already another component or you don't want a wrapper:
+Spans are always set through `Col`'s props — the `--col-*` variables are internal. To span a component that renders its own element (a `Link`, an `Image`), render it through `Col` with `as`, or wrap it:
 
 ```tsx
-<Link href='/work' style={{ '--col-m': '2/6', '--col-l': '3/9' }}>…</Link>
+<Col as={Link} href='/work' $m='2/6' $l='3/9'>…</Col>
+
+<Col $m='1/4' $l='7/13'>
+	<Image … />
+</Col>
 ```
-
-Or in a module, on a direct child of a grid:
-
-```scss
-.media {
-	--col-m: 1/4;
-	--col-l: 7/13;
-}
-```
-
-`style` accepts `--*` keys with full typing (`src/types/css.d.ts`), so no casts are needed.
 
 ## Debugging
 

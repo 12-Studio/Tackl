@@ -123,8 +123,7 @@ Dark mode / white-labeling = redefine variables under `html[data-theme='…']`. 
 `Grid` (from `@waffl`) renders a plain `<waffl-grid>` tag — no web component, no client JS. Children span the full grid by default; `Col` opts into columns per breakpoint:
 
 ```tsx
-import { Col } from '@tackl';
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
 	<Col as='article' $m='2/6' $l='1/7'>Half on desktop</Col>

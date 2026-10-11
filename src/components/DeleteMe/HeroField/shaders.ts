@@ -1,6 +1,9 @@
 // Shaders
 // ------------
-export const MAX_COLUMNS = 12;
+export const MAX_COLUMNS = 24;
+
+// NOTE • How many click pulses can be in flight at once
+export const MAX_PULSES = 8;
 
 // NOTE • A full-screen triangle; the fragment shader does all the work
 export const VERTEX = /* glsl */ `#version 300 es
@@ -10,9 +13,11 @@ void main() {
 }`;
 
 // NOTE • The grid as a blueprint in the dark: hairline column edges and a
-// dot lattice inside the columns, lit by a torch that follows the pointer.
-// A click sends a wave of light rolling out from the pointer: a bright crest
-// lights the grid as it passes, with a fading glow in its wake.
+// dot lattice inside the columns, lit by a torch on the bottom edge that
+// follows the pointer sideways.
+// Each click sends a wave of light rolling out from the pointer: a bright
+// crest lights the grid as it passes, with a fading glow in its wake. Waves
+// from several clicks overlap and add up.
 export const FRAGMENT = /* glsl */ `#version 300 es
 precision highp float;
 
@@ -23,11 +28,11 @@ uniform float uTime;
 // The grid's columns, measured from the DOM: (left, right) per column
 uniform vec2 uColumns[${MAX_COLUMNS}];
 uniform int uColumnCount;
-// The torch — eased, and wandering on its own while the visitor is idle
+// The torch — on the bottom edge, eased after the pointer's x, and swaying on
+// its own while the visitor is idle
 uniform vec2 uPointer;
-// The last click, and the seconds since it (large when there hasn't been one)
-uniform vec2 uClick;
-uniform float uClickAge;
+// Recent clicks: (x, y, seconds since) — large when the slot is unused
+uniform vec3 uPulses[${MAX_PULSES}];
 uniform vec3 uDeep;
 uniform vec3 uAccent;
 uniform vec3 uLight;
@@ -86,15 +91,22 @@ void main() {
 	vec2 toPointer = p - uPointer;
 	float torch = exp(-dot(toPointer, toPointer) / (radius * radius));
 
-	// The wave: a crest rolling out from the click, widening and fading as it
-	// travels, with a softer glow left in its wake
-	float progress = clamp(uClickAge / WAVE_SECONDS, 0.0, 1.0);
-	float front = length(uResolution) * 0.95 * easeOut(progress);
-	float behind = front - length(p - uClick);
-	float width = mix(90.0, 320.0, progress) * uDpr;
-	float crest = exp(-pow(behind / (width * 0.45), 2.0));
-	float wake = behind > 0.0 ? exp(-behind / (width * 1.8)) * 0.6 : 0.0;
-	float wave = (crest + wake) * pow(1.0 - progress, 1.2);
+	// The waves: a crest rolling out from each click, widening and fading as
+	// it travels, with a softer glow left in its wake
+	float wave = 0.0;
+	vec3 haze = vec3(0.0);
+	for (int i = 0; i < ${MAX_PULSES}; i++) {
+		float progress = clamp(uPulses[i].z / WAVE_SECONDS, 0.0, 1.0);
+		if (progress >= 1.0) continue;
+		float front = length(uResolution) * 0.95 * easeOut(progress);
+		float behind = front - length(p - uPulses[i].xy);
+		float width = mix(90.0, 320.0, progress) * uDpr;
+		float crest = exp(-pow(behind / (width * 0.45), 2.0));
+		float wake = behind > 0.0 ? exp(-behind / (width * 1.8)) * 0.6 : 0.0;
+		wave += (crest + wake) * pow(1.0 - progress, 1.2);
+		// The wave is light, not just lit lines — a faint haze rides the crest
+		haze += mix(uAccent, uLight, crest * crest) * (crest + wake * 0.5) * pow(1.0 - progress, 1.6) * 0.32;
+	}
 	float light = torch + wave * 1.3;
 
 	float edge = smoothstep(1.4 * uDpr, 0.0, edgeDistance(p.x));
@@ -105,8 +117,7 @@ void main() {
 
 	float value = edge * (0.14 + light * 1.2) + dots * (0.1 + light * 1.1) + fill * light * 1.6;
 	vec3 colour = ramp(0.3 + min(light, 1.0) * 0.7) * value;
-	// The wave is light, not just lit lines — a faint haze rides the crest
-	colour += mix(uAccent, uLight, crest * crest) * (crest + wake * 0.5) * pow(1.0 - progress, 1.6) * 0.32;
+	colour += haze;
 
 	// NOTE • Emit light over the page's own background: colour becomes alpha,
 	// so black stays transparent. The veil dims the field behind the headline.

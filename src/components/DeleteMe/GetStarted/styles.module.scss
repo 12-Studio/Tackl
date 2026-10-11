@@ -1,13 +1,5 @@
 @use '../keynote' as *;
 
-.steps {
-	row-gap: var(--gap-m);
-
-	@include bp(l) {
-		row-gap: var(--gap-l);
-	}
-}
-
 .index {
 	@include stat;
 

@@ -64,7 +64,7 @@ const GetStarted = () => (
 			</p>
 		}
 	>
-		<Grid $isFixed className={s.steps}>
+		<Grid $isFixed>
 			{STEPS.map(({ title, text, label, code }, index) => (
 				<Tile key={title} $l={`${index * 4 + 1}/span 4`}>
 					<span className={s.index}>{index + 1}</span>

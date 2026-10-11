@@ -88,7 +88,7 @@ const Features = () => (
 			</p>
 		}
 	>
-		<Grid $isFixed className={s.list}>
+		<Grid $isFixed>
 			{FEATURES.map(({ title, text, where }) => (
 				<Tile key={title} $m='span 3' $l='span 4'>
 					<h3 className={s.title}>{title}</h3>

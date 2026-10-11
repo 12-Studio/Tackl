@@ -139,7 +139,8 @@
 // SECTION • Waffl Grid
 // NOTE • <Grid> (@waffl) renders a plain <waffl-grid> tag — all of its
 // styling lives here. Columns, gutters and max width come from the grid
-// tokens (src/theme/grid → generated _grid.scss).
+// tokens (src/theme/grid → generated _grid.scss). Rows and columns share
+// one gutter, so stacked children sit as far apart as side-by-side ones.
 // NOTE • Span variables must not inherit — otherwise a grid nested inside a
 // spanned column would pass the parent's spans to its own children.
 // Registered here; the --col-* reset on waffl-grid covers browsers without
@@ -164,7 +165,7 @@
 		display: grid;
 		contain: layout;
 		grid-template-columns: var(--grid-columns);
-		column-gap: var(--grid-gutter);
+		gap: var(--grid-gutter);
 		padding-inline: var(--grid-margin);
 		margin: 0 auto;
 		width: 100%;
@@ -182,7 +183,7 @@
 		}
 
 		&[data-no-gutter] {
-			column-gap: 0;
+			gap: 0;
 		}
 
 		&[data-no-margin] {

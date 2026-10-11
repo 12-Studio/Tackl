@@ -14,30 +14,21 @@
 	inset: 0;
 	pointer-events: none;
 
+	// NOTE • One full-height row of cells; any beyond the column count wrap
+	// into zero-height rows and are clipped, so the overlay always matches
+	// the grid's columns — whatever they are
 	waffl-grid {
+		grid-template-rows: 100%;
+		grid-auto-rows: 0;
 		height: 100%;
+		overflow: hidden;
 	}
 }
 
 .column {
-	display: none;
 	grid-column: auto;
 	border-radius: 0.6rem;
 	background: alpha(--brand-c1, 9);
-
-	&:nth-child(-n + 2) {
-		display: block;
-	}
-
-	@include bp(m) {
-		&:nth-child(-n + 6) {
-			display: block;
-		}
-	}
-
-	@include bp(l) {
-		display: block;
-	}
 }
 
 // SECTION • Stage
@@ -47,11 +38,6 @@
 	flex-direction: column;
 	gap: var(--gap-s);
 	padding-block: var(--gap-m);
-
-	// NOTE • Cells that stack on smaller grids need a little air between rows
-	waffl-grid {
-		row-gap: var(--gap-s);
-	}
 }
 
 .cell {

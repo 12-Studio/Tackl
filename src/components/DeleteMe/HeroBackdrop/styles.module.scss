@@ -3,38 +3,27 @@
 	inset: 0;
 	pointer-events: none;
 
-	// NOTE • Fade the field out at the bottom into the page
-	mask-image: linear-gradient(to bottom, black 70%, transparent);
+	// NOTE • Fade the field into the page — only over the last few percent,
+	// so the torch on the bottom edge still shows its top half
+	mask-image: linear-gradient(to bottom, black 94%, transparent);
 }
 
 .grid {
 	position: relative;
+	grid-template-rows: 100%;
+	grid-auto-rows: 0;
 	height: 100%;
+	overflow: hidden;
 }
 
 .column {
 	--index: 0; // set per column inline, for the staggered draw-in
 
-	display: none;
 	grid-column: auto;
 	border-inline: 1px solid alpha(--global-white, 5);
 	transform-origin: bottom;
 	animation: column-draw var(--time-l) var(--easing-bezzy) both;
 	animation-delay: calc(var(--index) * 40ms);
-
-	&:nth-child(-n + 2) {
-		display: block;
-	}
-
-	@include bp(m) {
-		&:nth-child(-n + 6) {
-			display: block;
-		}
-	}
-
-	@include bp(l) {
-		display: block;
-	}
 
 	@media (prefers-reduced-motion: reduce) {
 		animation: none;

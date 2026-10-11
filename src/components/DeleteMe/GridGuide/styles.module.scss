@@ -54,7 +54,6 @@
 }
 
 .nested {
-	row-gap: var(--gap-s);
 	outline: 1px dashed alpha(--global-white, 30);
 	outline-offset: 6px;
 	border-radius: 1.2rem;
@@ -62,11 +61,9 @@
 
 // SECTION • Playground
 .playground {
-	margin-bottom: var(--gap-m);
-
-	@include bp(l) {
-		margin-bottom: var(--gap-l);
-	}
+	// NOTE • Stacked grids sit a gutter apart, like the rows inside them
+	// stylelint-disable-next-line csstools/value-no-unknown-custom-properties -- set on every <waffl-grid> by the grid layer
+	margin-bottom: var(--grid-gutter);
 }
 
 .playgroundCopy {

@@ -1,13 +1,5 @@
 @use '../keynote' as *;
 
-.list {
-	row-gap: var(--gap-m);
-
-	@include bp(l) {
-		row-gap: var(--gap-l);
-	}
-}
-
 .title {
 	@include tileTitle;
 }

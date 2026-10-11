@@ -22,7 +22,7 @@ const Why = () => (
 			</p>
 		}
 	>
-		<Grid $isFixed className={s.bento}>
+		<Grid $isFixed>
 			<Tile $m='1/7' $l='1/9' tone='glow' className={s.hero}>
 				<p className={s.kicker}>Performance</p>
 				<p className={s.stat}>100</p>
@@ -41,8 +41,8 @@ const Why = () => (
 
 			<Tile $m='4/7' $l='1/5'>
 				<p className={s.kicker}>Grid</p>
-				<p className={s.stat}>12</p>
-				<p className={s.text}>Columns, on CSS grid. 6 on tablets, 2 on phones.</p>
+				<p className={s.stat}>∞</p>
+				<p className={s.text}>Columns, on CSS grid — any count per breakpoint. 2, 6 and 12 out of the box.</p>
 			</Tile>
 
 			<Tile $m='1/4' $l='5/9'>

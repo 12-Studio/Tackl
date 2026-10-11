@@ -73,7 +73,7 @@ const HowItWorks = () => (
 		title='Tokens in. Static CSS out.'
 		intro={<p>Styling is SCSS CSS Modules, compiled at build time. A Server Component can be styled directly.</p>}
 	>
-		<Grid $isFixed className={s.bento}>
+		<Grid $isFixed>
 			{STEPS.map(({ title, text, label, code }, index) => (
 				<Tile key={title} $l={index % 2 ? '7/13' : '1/7'}>
 					<p className={s.index}>Step {index + 1}</p>

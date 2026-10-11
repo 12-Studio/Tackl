@@ -45,7 +45,7 @@ Boolean props become data attributes on the `<waffl-grid>`:
 | Prop | Attribute | Effect |
 | --- | --- | --- |
 | `$isFixed` | `data-fixed` | `max-width: 1440px` (the `maxSize` token), centred |
-| `$noGutter` | `data-no-gutter` | `column-gap: 0` |
+| `$noGutter` | `data-no-gutter` | `gap: 0` — no space between columns or rows |
 | `$noMargin` | `data-no-margin` | `padding-inline: 0` — no side margins |
 | `$isFullscreen` | `data-fullscreen` | `height: 100%` |
 | `$isCenter` | `data-center` | `place-items: center` |
@@ -55,7 +55,7 @@ Boolean props become data attributes on the `<waffl-grid>`:
 // → <waffl-grid data-fixed data-no-gutter>…</waffl-grid>
 ```
 
-`Grid` also accepts the span props (`$s` … `$uber`) so it can sit inside another grid, plus any HTML attribute (`className`, `id`, `data-pad`, `aria-*`…). Its `className` is where you add component-specific layout, e.g. `row-gap`.
+`Grid` also accepts the span props (`$s` … `$uber`) so it can sit inside another grid, plus any HTML attribute (`className`, `id`, `data-pad`, `aria-*`…). Its `className` is where you add component-specific layout. Rows and columns share the gutter (`gap: var(--grid-gutter)`); set `row-gap` there to break from it.
 
 ## Full-width by default
 

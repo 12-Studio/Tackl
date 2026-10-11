@@ -89,7 +89,7 @@ Stacked full-width on mobile, side by side from 700px.
 </Grid>
 ```
 
-One per row on mobile, two on tablet (3 of 6), three on desktop (4 of 12). Give the grid a `row-gap` in its module class (`.cards { row-gap: var(--grid-gutter); }`).
+One per row on mobile, two on tablet (3 of 6), three on desktop (4 of 12). Rows are a gutter apart, the same as columns — override `row-gap` in the grid's module class if a layout needs something else.
 
 ### Nested grid
 

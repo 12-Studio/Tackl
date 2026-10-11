@@ -26,7 +26,7 @@ const Styling = () => (
 			</p>
 		}
 	>
-		<Grid $isFixed className={s.blocks}>
+		<Grid $isFixed>
 			<Tile $l='1/7'>
 				<h3 className={s.title}>Colour and opacity</h3>
 				<p className={s.text}>

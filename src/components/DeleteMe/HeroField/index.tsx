@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react';
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import { FRAGMENT, MAX_COLUMNS, VERTEX } from './shaders';
+import { FRAGMENT, MAX_COLUMNS, MAX_PULSES, VERTEX } from './shaders';
 import s from './styles.module.scss';
 
 // Constants
@@ -17,8 +17,7 @@ const MAX_DPR = 1.5;
 // NOTE • Starts a few seconds in, so the still frame shows it mid-flow
 const TIME_OFFSET = 8;
 
-// NOTE • Seconds since the last click before there's been one — far past
-// the end of the pulse
+// NOTE • The age of an unused pulse slot — far past the end of a pulse
 const NO_CLICK = 1000;
 
 // NOTE • Software renderers draw on the CPU — every frame would block the
@@ -44,14 +43,18 @@ const UNIFORMS = [
 	'uColumns',
 	'uColumnCount',
 	'uPointer',
-	'uClick',
-	'uClickAge',
+	'uPulses',
 	'uDeep',
 	'uAccent',
 	'uLight',
 ] as const;
 
 type Uniform = (typeof UNIFORMS)[number];
+
+// NOTE • Releasing the GPU context waits a tick: StrictMode (and Fast
+// Refresh) unmount and remount straight away, and a lost context can't be
+// reused — the remount cancels the pending release instead
+const pendingRelease = new WeakMap<HTMLCanvasElement, number>();
 type Colour = [number, number, number];
 
 // Helpers
@@ -93,9 +96,10 @@ const link = (gl: WebGL2RenderingContext) => {
 // Component
 // ------------
 // NOTE • The hero's WebGL backdrop: the grid as a blueprint in the dark, lit
-// by a torch that follows the pointer, with a pulse on click (see
-// shaders.ts). It's fed the real grid columns — measured from the DOM, so
-// it always lines up — the pointer, the last click and the brand colours.
+// by a torch on the hero's bottom edge that follows the pointer sideways,
+// with a pulse per click (see shaders.ts). It's fed the real grid columns —
+// measured from the DOM, so it always lines up — the pointer, the recent
+// clicks and the brand colours.
 // Renders on GSAP's ticker — the one shared loop — once the visitor has
 // interacted and only while on screen. Reduced-motion users, software
 // renderers and devices that can't hold ~20fps get a still frame; without
@@ -107,6 +111,7 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 	// Effects
 	useEffect(() => {
 		const canvas = canvasRef.current;
+		if (canvas) window.clearTimeout(pendingRelease.get(canvas));
 		const gl = canvas?.getContext('webgl2', { alpha: true, antialias: false, premultipliedAlpha: false });
 		if (!canvas || !gl) return;
 
@@ -134,10 +139,13 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 		let columns = new Float32Array(MAX_COLUMNS * 2);
 		let columnCount = 0;
 		const pointer = { x: 0, y: 0 };
-		const target = { x: 0, y: 0 };
-		const click = { x: 0, y: 0 };
+		const target = { x: 0 };
+		// NOTE • One slot per pulse in flight: (x, y, clicked at). Each click
+		// takes the oldest slot, so a fresh click adds a pulse rather than
+		// restarting the last one
+		const pulses = Array.from({ length: MAX_PULSES }, () => ({ x: 0, y: 0, at: Number.NEGATIVE_INFINITY }));
+		const pulseData = new Float32Array(MAX_PULSES * 3);
 		let lastMove = Number.NEGATIVE_INFINITY;
-		let clickedAt = Number.NEGATIVE_INFINITY;
 
 		// NOTE • Size the canvas and re-measure the columns (they move at
 		// every breakpoint)
@@ -148,7 +156,11 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 			canvas.height = Math.round(bounds.height * dpr);
 			gl.viewport(0, 0, canvas.width, canvas.height);
 
-			const measured = [...(columnsRef.current?.querySelector('waffl-grid')?.children ?? [])]
+			// NOTE • Columns past the current count wrap into a clipped,
+			// zero-height row. offsetHeight is the layout size, so it ignores the
+			// columns' scaleY draw-in — a bounding rect would read 0 mid-animation
+			const measured = [...(columnsRef.current?.querySelectorAll<HTMLElement>('waffl-grid > *') ?? [])]
+				.filter(child => child.offsetHeight > 0)
 				.map(child => child.getBoundingClientRect())
 				.filter(rect => rect.width > 0)
 				.slice(0, MAX_COLUMNS)
@@ -157,10 +169,10 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 			columns.set(measured.flat());
 			columnCount = measured.length;
 
-			if (lastMove === Number.NEGATIVE_INFINITY) {
-				pointer.x = target.x = canvas.width * 0.5;
-				pointer.y = target.y = canvas.height * 0.45;
-			}
+			// NOTE • The torch sits on the bottom edge, so only its top half shows —
+			// the pointer only moves it sideways
+			pointer.y = 0;
+			if (lastMove === Number.NEGATIVE_INFINITY) pointer.x = target.x = canvas.width * 0.5;
 		};
 
 		const draw = (time: number) => {
@@ -170,8 +182,10 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 			gl.uniform2fv(uniforms.uColumns, columns);
 			gl.uniform1i(uniforms.uColumnCount, columnCount);
 			gl.uniform2f(uniforms.uPointer, pointer.x, pointer.y);
-			gl.uniform2f(uniforms.uClick, click.x, click.y);
-			gl.uniform1f(uniforms.uClickAge, Math.min(time - clickedAt, NO_CLICK));
+			pulses.forEach((pulse, index) => {
+				pulseData.set([pulse.x, pulse.y, Math.min(time - pulse.at, NO_CLICK)], index * 3);
+			});
+			gl.uniform3fv(uniforms.uPulses, pulseData);
 			gl.uniform3fv(uniforms.uDeep, colours.uDeep);
 			gl.uniform3fv(uniforms.uAccent, colours.uAccent);
 			gl.uniform3fv(uniforms.uLight, colours.uLight);
@@ -180,33 +194,30 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 			gl.drawArrays(gl.TRIANGLES, 0, 3);
 		};
 
-		// NOTE • Ease towards the real pointer; when idle, wander on a slow
-		// figure-of-eight so the torch still shows itself
+		// NOTE • Ease sideways towards the real pointer; when idle, sway
+		// slowly from side to side so the torch still shows itself
 		const followPointer = (time: number, deltaTime: number) => {
-			if (performance.now() - lastMove > IDLE_MS) {
-				target.x = canvas.width * (0.5 + 0.3 * Math.sin(time * 0.31));
-				target.y = canvas.height * (0.45 + 0.18 * Math.sin(time * 0.47));
-			}
+			if (performance.now() - lastMove > IDLE_MS) target.x = canvas.width * (0.5 + 0.3 * Math.sin(time * 0.31));
 			const ease = 1 - Math.exp(-deltaTime / POINTER_EASE_MS);
 			pointer.x += (target.x - pointer.x) * ease;
-			pointer.y += (target.y - pointer.y) * ease;
 		};
 
 		const handlePointer = (event: PointerEvent) => {
 			const bounds = canvas.getBoundingClientRect();
 			target.x = (event.clientX - bounds.left) * dpr;
-			target.y = (bounds.bottom - event.clientY) * dpr;
 			lastMove = performance.now();
 		};
 
-		// NOTE • A click (or tap) over the hero starts the pulse from that point
+		// NOTE • A click (or tap) over the hero sends a pulse out from exactly
+		// that point — unlike the torch, pulses go anywhere
 		const handleClick = (event: PointerEvent) => {
 			const bounds = canvas.getBoundingClientRect();
 			if (event.clientY < bounds.top || event.clientY > bounds.bottom) return;
 			handlePointer(event);
-			click.x = target.x;
-			click.y = target.y;
-			clickedAt = gsap.ticker.time;
+			const oldest = pulses.reduce((a, b) => (b.at < a.at ? b : a));
+			oldest.x = target.x;
+			oldest.y = (bounds.bottom - event.clientY) * dpr;
+			oldest.at = gsap.ticker.time;
 		};
 		window.addEventListener('pointermove', handlePointer, { passive: true });
 		window.addEventListener('pointerdown', handleClick, { passive: true });
@@ -280,7 +291,11 @@ const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 			for (const type of INTERACTIONS) window.removeEventListener(type, handleInteraction);
 			resizeObserver.disconnect();
 			visibility.disconnect();
-			gl.getExtension('WEBGL_lose_context')?.loseContext();
+			const lose = gl.getExtension('WEBGL_lose_context');
+			pendingRelease.set(
+				canvas,
+				window.setTimeout(() => lose?.loseContext())
+			);
 		};
 	}, [columnsRef]);
 

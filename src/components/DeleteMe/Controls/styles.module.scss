@@ -1,0 +1,65 @@
+@use '../keynote' as *;
+
+.stepper {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+}
+
+.stepperLabel {
+	@include captionS;
+
+	color: alpha(--global-white, 62);
+}
+
+.stepperControls {
+	display: flex;
+	align-items: stretch;
+	padding: var(--gap-xxs);
+	border-radius: var(--br-round);
+	background: alpha(--global-white, 8);
+
+	button {
+		@include captionL;
+
+		width: 3.6rem;
+		height: 3.6rem;
+		border-radius: 50%;
+		color: var(--global-white);
+		cursor: pointer;
+
+		&:hover:not(:disabled) {
+			background: alpha(--global-white, 12);
+		}
+
+		&:disabled {
+			color: alpha(--global-white, 25);
+			cursor: not-allowed;
+		}
+	}
+
+	output {
+		@include captionL;
+
+		display: grid;
+		place-items: center;
+		min-width: 4rem;
+		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	}
+}
+
+.toggle {
+	@include captionL;
+
+	display: flex;
+	align-items: center;
+	gap: var(--gap-s);
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	cursor: pointer;
+
+	input {
+		width: 1.6rem;
+		height: 1.6rem;
+		accent-color: var(--brand-c1);
+	}
+}

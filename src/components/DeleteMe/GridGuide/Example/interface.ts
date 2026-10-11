@@ -5,6 +5,7 @@ export interface ExampleProps {
 	title: string;
 	children: React.ReactNode;
 	demo: React.ReactNode;
-	code: string;
+	// NOTE • Optional for demos that render their own (live) code
+	code?: string;
 	label?: string;
 }

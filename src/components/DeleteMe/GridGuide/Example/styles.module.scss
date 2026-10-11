@@ -1,11 +1,9 @@
 @use '../../keynote' as *;
 
 .jacket {
-	margin-bottom: var(--gap-m);
-
-	@include bp(l) {
-		margin-bottom: var(--gap-l);
-	}
+	// NOTE • Stacked grids sit a gutter apart, like the rows inside them
+	// stylelint-disable-next-line csstools/value-no-unknown-custom-properties -- set on every <waffl-grid> by the grid layer
+	margin-bottom: var(--grid-gutter);
 }
 
 .copy {

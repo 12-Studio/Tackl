@@ -23,7 +23,7 @@ const Example = ({ id, title, children, demo, code, label = 'tsx' }: I.ExamplePr
 				<div className={s.text}>{children}</div>
 			</div>
 			{demo}
-			<Code label={label} code={code} />
+			{code && <Code label={label} code={code} />}
 		</Tile>
 	</Grid>
 );

@@ -1,0 +1,41 @@
+// NOTE • Unlayered, so these beat the grid layer's own --grid-columns at
+// each breakpoint — for the demo grid and its overlay alike. The counts are
+// set inline by the component; these defaults match the tokens.
+.jacket {
+	--columns-s: 2;
+	--columns-m: 6;
+	--columns-l: 12;
+
+	waffl-grid {
+		--grid-columns: repeat(var(--columns-s), 1fr);
+
+		@include bp(m) {
+			--grid-columns: repeat(var(--columns-m), 1fr);
+		}
+
+		@include bp(l) {
+			--grid-columns: repeat(var(--columns-l), 1fr);
+		}
+	}
+}
+
+// NOTE • One row of numbered cells — any beyond the current column count
+// wrap into zero-height rows and are clipped
+.row {
+	grid-template-rows: auto;
+	grid-auto-rows: 0;
+	row-gap: 0;
+	overflow: hidden;
+
+	> * {
+		min-width: 0;
+		overflow: hidden;
+	}
+}
+
+.steppers {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-m);
+	margin-top: calc(var(--gap-m) * -1);
+}

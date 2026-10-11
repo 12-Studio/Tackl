@@ -5,6 +5,7 @@
 import { theme } from '@theme';
 import { startTransition, useState, ViewTransition } from 'react';
 import Code from '../Code';
+import { Stepper, Toggle } from '../Controls';
 import CopyButton from '../CopyButton';
 // Styles + Interfaces
 // ------------
@@ -97,14 +98,11 @@ const GridPlayground = () => {
 					))}
 				</fieldset>
 
-				<label className={s.toggle}>
-					<input
-						type='checkbox'
-						checked={!hasGutter}
-						onChange={() => update(() => setHasGutter(value => !value))}
-					/>
-					$noGutter
-				</label>
+				<Toggle
+					label='$noGutter'
+					isChecked={!hasGutter}
+					onChange={() => update(() => setHasGutter(value => !value))}
+				/>
 			</div>
 
 			{/* SECTION • Preview */}
@@ -207,36 +205,6 @@ const GridPlayground = () => {
 		</div>
 	);
 };
-
-// NOTE • − value + control for one number
-const Stepper = ({
-	label,
-	value,
-	onDecrease,
-	onIncrease,
-	isMin,
-	isMax,
-}: {
-	label: string;
-	value: number;
-	onDecrease: () => void;
-	onIncrease: () => void;
-	isMin: boolean;
-	isMax: boolean;
-}) => (
-	<div className={s.stepper}>
-		<span className={s.stepperLabel}>{label}</span>
-		<div className={s.stepperControls}>
-			<button type='button' onClick={onDecrease} disabled={isMin} aria-label={`Decrease ${label.toLowerCase()}`}>
-				−
-			</button>
-			<output aria-live='polite'>{value}</output>
-			<button type='button' onClick={onIncrease} disabled={isMax} aria-label={`Increase ${label.toLowerCase()}`}>
-				+
-			</button>
-		</div>
-	</div>
-);
 
 // Exports
 // ------------

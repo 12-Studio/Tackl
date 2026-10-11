@@ -2,6 +2,7 @@
 
 // Imports
 // ------------
+import { theme } from '@theme';
 import Grid from '@waffl';
 import { useRef } from 'react';
 import HeroField from '../HeroField';
@@ -12,8 +13,9 @@ import s from './styles.module.scss';
 
 // Constants
 // ------------
-// NOTE • One cell per column of the widest grid — CSS shows 2, 6 or 12
-const COLUMNS = Array.from({ length: 12 }, (_, index) => index);
+// NOTE • One cell per column of the widest grid in the tokens — extras wrap
+// into a clipped second row, so only the current breakpoint's columns show
+const COLUMNS = Array.from({ length: Math.max(...Object.values(theme.grid.columns)) }, (_, index) => index);
 
 // Component
 // ------------

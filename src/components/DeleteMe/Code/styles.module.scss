@@ -28,3 +28,48 @@
 	color: alpha(--global-white, 88);
 	tab-size: 2;
 }
+
+// SECTION • Syntax
+// NOTE • Every colour is derived from the brand colour — hue-shifted with
+// relative colour syntax — so the highlighting follows a rebrand
+.pre [data-token] {
+	--hue-shift: 0;
+
+	color: oklch(from var(--brand-c1) 84% 0.11 calc(h + var(--hue-shift)));
+}
+
+.pre [data-token='comment'] {
+	font-style: italic;
+	color: alpha(--global-white, 42);
+}
+
+.pre [data-token='keyword'] {
+	color: oklch(from var(--brand-c1) 74% 0.17 h);
+}
+
+.pre [data-token='tag'],
+.pre [data-token='type'] {
+	--hue-shift: -70;
+}
+
+.pre [data-token='string'] {
+	--hue-shift: 150;
+}
+
+.pre [data-token='attr'],
+.pre [data-token='prop'] {
+	--hue-shift: 40;
+}
+
+.pre [data-token='variable'],
+.pre [data-token='number'] {
+	--hue-shift: -130;
+}
+
+.pre [data-token='function'] {
+	--hue-shift: -35;
+}
+
+.pre [data-token='punctuation'] {
+	color: alpha(--global-white, 50);
+}

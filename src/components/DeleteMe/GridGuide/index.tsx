@@ -5,16 +5,13 @@ import Demo, { Cell } from '../Demo';
 import GridPlayground from '../GridPlayground';
 import Section from '../Section';
 import Tile from '../Tile';
+import ColumnCount from './ColumnCount';
 import Example from './Example';
+import Switches from './Switches';
 
 // Styles
 // ------------
 import s from './styles.module.scss';
-
-// Constants
-// ------------
-// NOTE • One labelled cell per column of the widest (12-column) grid
-const COLUMNS = Array.from({ length: 12 }, (_, index) => index + 1);
 
 // Component
 // ------------
@@ -27,8 +24,8 @@ const GridGuide = () => (
 			<>
 				<p>
 					Tackl's grid renders one plain tag, styled by static CSS — no client code. Columns, gutters and
-					breakpoints come from the tokens, and every example below is the real thing, drawn over a live
-					overlay of the columns.
+					breakpoints come from the tokens: 2, 6 and 12 columns out of the box, but any count you like. Every
+					example below is the real thing, drawn over a live overlay of the columns.
 				</p>
 				<p className={s.viewport}>
 					<span className={s.breakpoint} data-bp='s'>
@@ -58,28 +55,11 @@ const GridGuide = () => (
 			</Tile>
 		</Grid>
 
-		<Example
-			id='grid-columns'
-			title='2, 6, 12'
-			demo={
-				<Demo>
-					<Grid $isFixed>
-						{COLUMNS.map(column => (
-							<Cell key={column} label={`${column}`} $s='span 1' />
-						))}
-					</Grid>
-				</Demo>
-			}
-			code={`
-// src/theme/grid/index.ts
-columns: { s: 2, m: 6, l: 12 },
-gutter: { s: '2.4rem', m: '2.4rem', l: '3.6rem' },
-breakpoints: { s: '320px', sm: '390px', m: '700px', l: '1024px', xl: '1200px', … },`}
-			label='Grid tokens'
-		>
+		<Example id='grid-columns' title='Any number of columns' demo={<ColumnCount />}>
 			<p>
-				Mobile-first: 2 columns on phones, 6 on tablets, 12 from 1024px. Change the counts, gutters or
-				breakpoints in the grid tokens and every grid follows.
+				12 is just the default. The column count is a token per breakpoint — 2 on phones, 6 on tablets, 12 from
+				1024px — so a 5, 8 or 16-column grid is one number away. Step the counts and every grid on the site
+				would follow; gutters and breakpoints are tokens too.
 			</p>
 		</Example>
 
@@ -107,40 +87,40 @@ import Grid from '@waffl';
 		</Example>
 
 		<Example
-			id='grid-spans'
-			title='Spans'
+			id='grid-col'
+			title='Col — any element'
 			demo={
 				<Demo>
 					<Grid $isFixed>
-						<Cell label="$m='1/4' $l='1/7'" $m='1/4' $l='1/7' />
-						<Cell label="$m='4/7' $l='7/13'" $m='4/7' $l='7/13' />
-					</Grid>
-					<Grid $isFixed>
-						<Cell label="$l='1/5'" $m='1/3' $l='1/5' />
-						<Cell label="$l='5/9'" $m='3/5' $l='5/9' />
-						<Cell label="$l='9/13'" $m='5/7' $l='9/13' />
-					</Grid>
-					<Grid $isFixed>
-						<Cell label="$l='span 3'" $m='span 2' $l='span 3' tone='soft' />
-						<Cell label="$l='span 9'" $m='span 4' $l='span 9' tone='soft' />
+						<Cell as='article' label="<article> $m='1/4' $l='1/7'" $m='1/4' $l='1/7' />
+						<Cell as='aside' label="<aside> $m='4/7' $l='7/13'" $m='4/7' $l='7/13' />
+						<Cell as='header' label="<header> $l='span 3'" $m='span 2' $l='span 3' tone='soft' />
+						<Cell as='section' label="<section> $l='span 9'" $m='span 4' $l='span 9' tone='soft' />
 					</Grid>
 				</Demo>
 			}
 			code={`
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 
 <Grid $isFixed>
-  <Col $m='1/4' $l='1/7'>Half</Col>
-  <Col $m='4/7' $l='7/13'>Half</Col>
+  <Col as='article' $m='1/4' $l='1/7'>Story</Col>
+  <Col as='aside' $m='4/7' $l='7/13'>Related</Col>
+  <Col as='header' $l='span 3'>Sidebar</Col>
+  <Col as='section' $l='span 9'>Content</Col>
 </Grid>
 
-<Grid $isFixed>
-  <Col $l='span 3'>Sidebar</Col>
-  <Col $l='span 9'>Content</Col>
-</Grid>`}
+// as='a' takes an anchor's props — href, target… — fully typed
+<Col as='a' href='/work' $l='span 4'>Our work</Col>`}
 		>
 			<p>
-				A span is any <code>grid-column</code> value: start and end lines (<code>'1/7'</code>), a span (
+				<code>Col</code> isn't a wrapper — it <em>is</em> the element. It renders a <code>div</code> by default;{' '}
+				<code>as</code> makes it any tag (<code>article</code>, <code>section</code>, <code>li</code>,{' '}
+				<code>a</code>, <code>figure</code>…), and it takes that tag's own props, fully typed. All it adds is
+				where the element sits on the grid.
+			</p>
+			<p>
+				That's what the <code>$s</code>, <code>$m</code>, <code>$l</code>… props set: the element's{' '}
+				<code>grid-column</code> at each breakpoint. Start and end lines (<code>'1/7'</code>), a span (
 				<code>'span 3'</code>) or <code>'1/-1'</code> for everything. Lines count from 1, so a 12-column grid
 				ends on line 13.
 			</p>
@@ -148,7 +128,7 @@ import Grid from '@waffl';
 
 		<Example
 			id='grid-responsive'
-			title='Responsive spans'
+			title='One prop per breakpoint'
 			demo={
 				<Demo>
 					<Grid $isFixed>
@@ -159,8 +139,8 @@ import Grid from '@waffl';
 			}
 			code={`
 <Grid $isFixed>
-  <Col $s='1/-1' $m='1/3' $l='1/4'>Aside</Col>
-  <Col $s='1/-1' $m='3/7' $l='4/13'>Main</Col>
+  <Col as='aside' $s='1/-1' $m='1/3' $l='1/4'>Aside</Col>
+  <Col as='main' $s='1/-1' $m='3/7' $l='4/13'>Main</Col>
 </Grid>
 
 // $s $sm $m $l $xl $xxl $huge $uber — one prop per breakpoint token`}
@@ -197,34 +177,16 @@ import Grid from '@waffl';
 		>
 			<p>
 				A <code>Grid</code> takes span props too, so it can sit inside another grid as a column. Inside, it's a
-				fresh grid with its own columns — spans never leak from the parent into a nested grid.
+				fresh grid with its own columns — placement never leaks from the parent into a nested grid.
 			</p>
 		</Example>
 
-		<Example
-			id='grid-switches'
-			title='Switches'
-			demo={
-				<Demo hasOverlay={false}>
-					<Grid $isFixed $noGutter>
-						<Cell label='$noGutter' $m='span 2' $l='span 4' />
-						<Cell label='$noGutter' $m='span 2' $l='span 4' tone='soft' />
-						<Cell label='$noGutter' $m='span 2' $l='span 4' />
-					</Grid>
-				</Demo>
-			}
-			code={`
-<Grid $isFixed>      // max-width 1440px, centred
-<Grid $noGutter>     // no space between columns
-<Grid $noMargin>     // no outer margin
-<Grid $isCenter>     // centre items both ways
-<Grid $isFullscreen> // full height
-
-// They render as data attributes: <waffl-grid data-fixed data-no-gutter>`}
-		>
+		<Example id='grid-switches' title='Switches' demo={<Switches />}>
 			<p>
-				Layout switches are boolean props that become data attributes, styled in the grid layer of{' '}
-				<code>global.scss</code>. Without <code>$isFixed</code> a grid runs edge to edge.
+				Layout switches are boolean props on <code>Grid</code>. Each becomes a data attribute (
+				<code>&lt;waffl-grid data-fixed data-no-gutter&gt;</code>), styled in the grid layer of{' '}
+				<code>global.scss</code>. Toggle them to see what each does — without <code>$isFixed</code> a grid runs
+				edge to edge.
 			</p>
 		</Example>
 	</Section>

@@ -1,13 +1,5 @@
 @use '../keynote' as *;
 
-.bento {
-	row-gap: var(--gap-m);
-
-	@include bp(l) {
-		row-gap: var(--gap-l);
-	}
-}
-
 .index {
 	@include eyebrow;
 }

@@ -18,7 +18,7 @@
 	@include headlineS;
 
 	padding-bottom: var(--gap-s);
-	border-bottom: 1px solid fade(--global-white, 10);
+	border-bottom: 1px solid trans(--global-white, 10);
 }
 
 .groupLabel {
@@ -33,7 +33,7 @@
 	@include bodyS;
 
 	max-width: 72rem;
-	color: fade(--global-white, 60);
+	color: trans(--global-white, 60);
 }
 
 .swatchGroup {
@@ -57,7 +57,7 @@
 
 .swatchChip {
 	height: 6rem;
-	border: 1px solid fade(--global-white, 10);
+	border: 1px solid trans(--global-white, 10);
 	border-radius: var(--br-s);
 }
 
@@ -69,7 +69,7 @@
 	@include captionS;
 
 	font-family: var(--font-mono);
-	color: fade(--global-white, 50);
+	color: trans(--global-white, 50);
 	overflow-wrap: anywhere;
 }
 
@@ -82,14 +82,14 @@
 	flex-direction: column;
 	gap: var(--gap-xs);
 	padding-bottom: var(--gap-m);
-	border-bottom: 1px dashed fade(--global-white, 8);
+	border-bottom: 1px dashed trans(--global-white, 8);
 }
 
 .bar {
 	height: 1.6rem;
 	max-width: 100%;
 	border-radius: var(--br-xs);
-	background: fade(--brand-c1, 60);
+	background: trans(--brand-c1, 60);
 }
 
 .barRow {
@@ -107,7 +107,7 @@
 	width: 10rem;
 	height: 10rem;
 	border: 1px solid var(--brand-c1);
-	background: fade(--brand-c1, 15);
+	background: trans(--brand-c1, 15);
 }
 
 // NOTE • Hover a chip to feel the timing/easing — duration and curve come in
@@ -118,7 +118,7 @@
 	gap: var(--gap-xs);
 	width: 16rem;
 	padding: var(--gap-s);
-	border: 1px solid fade(--global-white, 10);
+	border: 1px solid trans(--global-white, 10);
 	border-radius: var(--br-m);
 
 	&:hover > span {

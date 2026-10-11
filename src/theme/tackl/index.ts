@@ -36,7 +36,7 @@ export const mq = {
 // SECTION • Color Utilities
 // ------------
 // NOTE • Mixes any color with transparency via color-mix — the JS twin of
-// fade() in SCSS. Accepts a CSS variable name ('--brand-c1'), a theme token
+// trans() in SCSS. Accepts a CSS variable name ('--brand-c1'), a theme token
 // (already a var() reference), or any color value. The browser resolves it,
 // so runtime theme overrides still apply to the translucent result.
 // Usage: gsap.to(el, { backgroundColor: alpha('--brand-c1', 20) });

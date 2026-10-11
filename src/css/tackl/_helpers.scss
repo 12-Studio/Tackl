@@ -15,8 +15,8 @@
 // Translucent colour via color-mix — the SCSS twin of alpha() in @tackl.
 // Accepts a token name or any colour value.
 // NOTE • Not named alpha(): Sass ships a built-in alpha() colour function
-// Usage: background: fade(--brand-c1, 20);
-@function fade($color, $opacity) {
+// Usage: background: trans(--brand-c1, 20);
+@function trans($color, $opacity) {
 	$value: $color;
 
 	@if meta.type-of($color) == 'string' and string.index($color, '--') == 1 {

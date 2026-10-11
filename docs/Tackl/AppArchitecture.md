@@ -216,7 +216,7 @@ components             import s from './styles.module.scss'
 ```
 
 - The generated files are committed and never hand-edited — change a token in `src/theme`, then run `bun run styles` (or just `bun run dev`). The pre-commit hook runs `bun run styles --check` to catch stale output.
-- `next.config.js` injects the Tackl SCSS layer (`src/css/tackl` — mixins and functions only, no CSS output) into every `.scss` file via `sassOptions.additionalData`, so `bp()`, the type and spacing mixins, `vw()` and `fade()` need no imports.
+- `next.config.js` injects the Tackl SCSS layer (`src/css/tackl` — mixins and functions only, no CSS output) into every `.scss` file via `sassOptions.additionalData`, so `bp()`, the type and spacing mixins, `vw()` and `trans()` need no imports.
 - `global.scss` declares `@layer reset, base, grid, utilities;`. Component modules are unlayered, so module CSS always wins without specificity games.
 
 See [Tackl.md](./Tackl.md) and [Theming.md](./Theming.md) for the details.

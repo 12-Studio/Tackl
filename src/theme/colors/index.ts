@@ -3,7 +3,7 @@
 
 // NOTE • This file exports the colors object, the colors object is used to store all the colors for the application.
 
-// REVIEW — Usage: color: var(--brand-c1);  or  fade(--brand-c1, 50) for opacity (SCSS)
+// REVIEW — Usage: color: var(--brand-c1);  or  trans(--brand-c1, 50) for opacity (SCSS)
 
 // Imports
 // ------------
@@ -38,7 +38,7 @@ export const baseColors = {
 // ------------
 // SECTION • Color Tokens
 // NOTE • Each color is a plain var() reference resolved by the browser.
-// Need opacity? fade(--brand-c1, 50) in SCSS, alpha('--brand-c1', 50) in JS —
+// Need opacity? trans(--brand-c1, 50) in SCSS, alpha('--brand-c1', 50) in JS —
 // both emit color-mix(in srgb, var(--brand-c1) 50%, transparent)
 export const colors = {
 	brand: toVarRefs('brand', baseColors.brand),

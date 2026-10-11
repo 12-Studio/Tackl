@@ -8,7 +8,7 @@
 	height: 100svh;
 	overflow: hidden;
 	background:
-		radial-gradient(60% 80% at 50% 110%, fade(--brand-c1, 30), transparent),
+		radial-gradient(60% 80% at 50% 110%, trans(--brand-c1, 30), transparent),
 		var(--global-black);
 }
 
@@ -19,7 +19,7 @@
 .hint {
 	@include captionL;
 
-	color: fade(--global-white, 60);
+	color: trans(--global-white, 60);
 }
 
 .spacer {

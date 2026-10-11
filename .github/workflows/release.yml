@@ -1,0 +1,63 @@
+name: Release
+
+# Publishing a GitHub release publishes the CLI (tackl/) to npm when its
+# version is new — no local `npm publish`, no npm login on your machine.
+#
+# One-time setup (pick one):
+# - Trusted publishing (recommended, no secret): npmjs.com → tackl → Settings
+#   → Trusted publisher → GitHub Actions, repo 12-Studio/Tackl, workflow
+#   release.yml.
+# - Or an automation token: add it as the NPM_TOKEN repository secret.
+#
+# This workflow is repo-only — the CLI prunes it from scaffolded projects.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # npm trusted publishing + provenance
+
+jobs:
+  cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      # A release tagged 5.2.0 while package.json still says 5.1.0 means the
+      # version bump was forgotten — fail loudly rather than ship a mismatch
+      - name: Check the release tag matches package.json
+        if: github.event_name == 'release'
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "${TAG#v}" != "$version" ]; then
+            echo "::error::Release $TAG doesn't match package.json version $version"
+            exit 1
+          fi
+
+      - name: Publish the CLI if its version is new
+        working-directory: tackl
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if npm view "tackl@$version" version > /dev/null 2>&1; then
+            echo "::notice::tackl@$version is already on npm — nothing to publish. Bump tackl/package.json to release a new CLI."
+            exit 0
+          fi
+          node bin/tackl.js --help > /dev/null
+          npm publish --provenance --access public
+          echo "::notice::Published tackl@$version"

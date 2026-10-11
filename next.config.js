@@ -12,6 +12,9 @@ const path = require('node:path');
 // embed needs `frame-src https://www.youtube-nocookie.com`.
 const isDev = process.env.NODE_ENV === 'development';
 const hasGoogleAnalytics = Boolean(process.env.NEXT_PUBLIC_GA_ID);
+// NOTE • Netlify injects its feedback drawer (an app.netlify.com iframe) into
+// deploy previews and branch deploys — never production
+const isNetlifyPreview = ['deploy-preview', 'branch-deploy'].includes(process.env.CONTEXT ?? '');
 
 const googleAnalytics = {
 	script: ['https://www.googletagmanager.com'],
@@ -38,7 +41,7 @@ const contentSecurityPolicy = {
 	'media-src': ["'self'", 'blob:', 'https:'],
 	'font-src': ["'self'"],
 	'connect-src': ["'self'", ...(hasGoogleAnalytics ? googleAnalytics.connect : [])],
-	'frame-src': ["'self'"],
+	'frame-src': ["'self'", ...(isNetlifyPreview ? ['https://app.netlify.com'] : [])],
 	'object-src': ["'none'"],
 	'base-uri': ["'self'"],
 	'form-action': ["'self'"],

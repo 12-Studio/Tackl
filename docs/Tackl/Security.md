@@ -35,6 +35,8 @@ upgrade-insecure-requests
 
 **Why inline scripts are allowed.** Next streams each page's data to the browser in inline `<script>` tags. A policy without `'unsafe-inline'` needs a fresh nonce on every request. Next can only add one when every page renders per request, which switches off static rendering and Partial Prerendering. Next's experimental SRI mode doesn't help either: it hashes script files, not those inline scripts, and in testing the page never hydrated. For a marketing site, static rendering is worth more than a nonce. The Next.js docs give this same policy for apps without nonces.
 
+**Netlify previews:** on deploy previews and branch deploys (Netlify's `CONTEXT` build variable), `frame-src` also allows `https://app.netlify.com`, so Netlify's feedback drawer can load. Production never gets it.
+
 **Why `frame-ancestors 'self'` rather than `'none'`:** so the site can preview inside its own embedded Studio (Sanity's Presentation tool).
 
 ## Adding a third-party service

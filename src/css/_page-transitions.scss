@@ -1,0 +1,75 @@
+// Page Transitions
+// ------------
+// NOTE • The animations for React's <ViewTransition> (see @parts/PageTransition).
+// Each navigation picks a view-transition-class (pageFade, navForward,
+// navBack) and the rules below animate its snapshots. The root snapshot
+// stays still, so the header and any fixed chrome never move; only the page
+// content animates.
+// NOTE • These selectors are global by nature — a CSS Module would hash the
+// class names inside ::view-transition-*(), so they live here instead.
+
+@layer base {
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation: none;
+	}
+
+	// Clicks during a transition reach the live page instead of the overlay
+	::view-transition {
+		pointer-events: none;
+	}
+
+	::view-transition-old(.pageFade) {
+		animation: var(--time-s) ease-in both vt-fade reverse;
+	}
+
+	::view-transition-new(.pageFade) {
+		animation: var(--time-m) ease-out var(--time-s) both vt-fade;
+	}
+
+	::view-transition-old(.navForward),
+	::view-transition-old(.navBack) {
+		animation:
+			var(--time-s) ease-in both vt-fade reverse,
+			var(--time-l) var(--easing-bezzy3) both vt-slide reverse;
+	}
+
+	::view-transition-new(.navForward),
+	::view-transition-new(.navBack) {
+		animation:
+			var(--time-m) ease-out var(--time-s) both vt-fade,
+			var(--time-l) var(--easing-bezzy3) both vt-slide;
+	}
+
+	// Forward: old content leaves left, new arrives from the right — back mirrors it
+	::view-transition-old(.navForward),
+	::view-transition-new(.navBack) {
+		--vt-slide: -60px;
+	}
+
+	::view-transition-new(.navForward),
+	::view-transition-old(.navBack) {
+		--vt-slide: 60px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		::view-transition-old(*),
+		::view-transition-new(*),
+		::view-transition-group(*) {
+			animation-duration: 0s !important; // beats every transition class above
+			animation-delay: 0s !important;
+		}
+	}
+
+	@keyframes vt-fade {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes vt-slide {
+		from {
+			translate: var(--vt-slide) 0;
+		}
+	}
+}

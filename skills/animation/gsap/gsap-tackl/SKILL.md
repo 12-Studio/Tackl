@@ -128,7 +128,7 @@ useGSAP(
 
 Route transitions are React's built-in `<ViewTransition>` — Next.js navigations are already transitions, so there is no provider or custom router. Wrap each page's content in `PageTransition` (`@parts/PageTransition`) and tag direction with `transitionTypes={[NAV_FORWARD]}` / `[NAV_BACK]` on a plain `next/link` (or `router.push(href, { transitionTypes })`). Untyped navigations crossfade.
 
-The animations are CSS keyframes on `::view-transition-old/new(.pageFade|.navForward|.navBack)` in `src/css/global.scss` — not GSAP. Don't drive page transitions with GSAP tweens on the pseudo-elements; it fights React's timing. Use GSAP for in-page motion once the new page has mounted.
+The animations are CSS keyframes on `::view-transition-old/new(.pageFade|.navForward|.navBack)` in `src/css/_page-transitions.scss` — not GSAP. Don't drive page transitions with GSAP tweens on the pseudo-elements; it fights React's timing. Use GSAP for in-page motion once the new page has mounted.
 
 ## Sanity / CMS content
 

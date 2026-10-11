@@ -251,7 +251,7 @@ on unmount or when a matchMedia condition stops matching.
   enter/exit never fire). Untyped navigations crossfade; tag direction with plain `next/link`
   or `useRouter` from `next/navigation`: `<Link href='/work' transitionTypes={[NAV_FORWARD]}>`,
   `router.push('/', { transitionTypes: [NAV_BACK] })`. Animations are CSS on
-  `::view-transition-*(.className)` in `src/css/global.scss`. Shared-element morphs:
+  `::view-transition-*(.className)` in `src/css/_page-transitions.scss`. Shared-element morphs:
   `<ViewTransition name='…' share='morph' default='none'>` on both sides. See
   `node_modules/next/dist/docs/01-app/02-guides/view-transitions.md`.
 - Dynamically load non-critical client components; wrap them in `Suspense` with a fallback.

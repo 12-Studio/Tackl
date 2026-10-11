@@ -15,7 +15,7 @@ import type * as I from './interface';
 export const NAV_FORWARD = 'nav-forward';
 export const NAV_BACK = 'nav-back';
 
-// Transition type → view-transition-class (the CSS lives in src/css/global.scss)
+// Transition type → view-transition-class (the CSS lives in src/css/_page-transitions.scss)
 const pageAnimation = {
 	[NAV_FORWARD]: 'navForward',
 	[NAV_BACK]: 'navBack',

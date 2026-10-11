@@ -10,6 +10,7 @@ scripts/build-styles.ts      generator (`bun run styles`, runs before dev/build/
 src/css/tokens.css           GENERATED :root custom properties
 src/css/tackl/               the injected SCSS layer (mixins/functions only, zero CSS output)
 src/css/global.scss          the only global stylesheet (reset, base, grid, utilities layers)
+src/css/_page-transitions.scss  ::view-transition-* animations, loaded by global.scss
 src/theme/tackl/index.ts     `@tackl` — breakpoints, mq, alpha, getVw…
 src/theme/tackl/waffl/       `Grid` + `Col` — `import Grid, { Col } from '@waffl'`
 ```

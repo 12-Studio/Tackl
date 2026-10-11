@@ -47,12 +47,12 @@ You decide which links count as forward and which as back, based on the site's h
 
 ## Changing the animation
 
-The animations are plain CSS keyframes in `src/css/global.scss`, under "Page transitions". Each transition class gets its own `::view-transition-old(.class)` / `::view-transition-new(.class)` rules.
+The animations are plain CSS keyframes in `src/css/_page-transitions.scss`. Each transition class gets its own `::view-transition-old(.class)` / `::view-transition-new(.class)` rules.
 
 To add a type:
 
 1. Map it in `pageAnimation` in `src/components/PageTransition/index.tsx`.
-2. Style it in `global.scss`.
+2. Style it in `_page-transitions.scss`.
 
 The root snapshot is held still, so the `Header` and any fixed chrome stay put while the page content animates. `::view-transition { pointer-events: none; }` keeps the page clickable mid-transition. `prefers-reduced-motion` collapses every transition to an instant swap.
 

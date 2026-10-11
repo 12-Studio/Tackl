@@ -5,7 +5,13 @@
 import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
 import CookieBar from '@parts/CookieBar';
-import GridExposer from '@parts/GridExposer';
+import dynamic from 'next/dynamic';
+
+// Dev Tools
+// ------------
+// NOTE • Loaded lazily and only in development, so neither the overlay's JS
+// nor its CSS ships in production builds
+const GridExposer = process.env.NODE_ENV === 'development' ? dynamic(() => import('@parts/GridExposer')) : null;
 
 // Component
 // ------------
@@ -16,7 +22,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
 			{/* GridExposer only rendered in development environment */}
-			{process.env.NODE_ENV === 'development' && <GridExposer />}
+			{GridExposer && <GridExposer />}
 
 			{/* CookieBar only rendered in production environment */}
 			{process.env.NODE_ENV === 'production' && <CookieBar />}

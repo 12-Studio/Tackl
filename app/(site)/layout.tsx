@@ -1,5 +1,7 @@
 // Imports
 // ------------
+
+import { consentScript } from '@parts/CookieBar/consent';
 import Header from '@parts/Header';
 import SmoothScroll from '@parts/SmoothScroll';
 import { inter } from '@theme/fonts';
@@ -47,6 +49,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<ViewTransitions>
 			<html lang='en' className={inter.variable} suppressHydrationWarning>
+				<head>
+					{/* NOTE • Marks returning visitors' cookie choice before first paint, so the server-rendered CookieBar never flashes (src/components/CookieBar/consent.ts) */}
+					{/* biome-ignore lint/security/noDangerouslySetInnerHtml: static inline script built from constants — no user input */}
+					<script dangerouslySetInnerHTML={{ __html: consentScript }} />
+				</head>
 				<body>
 					<Providers>
 						<Header />

@@ -41,6 +41,12 @@
 			{
 				"importFrom": ["src/css/tokens.css"]
 			}
+		],
+		"selector-pseudo-class-no-unknown": [
+			true,
+			{
+				"ignorePseudoClasses": ["global", "local"]
+			}
 		]
 	}
 }

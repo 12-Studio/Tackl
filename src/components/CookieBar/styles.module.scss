@@ -43,3 +43,10 @@
 		}
 	}
 }
+
+// NOTE • A valid stored choice marks <html> before first paint (see
+// consent.ts), so the server-rendered banner never flashes for returning
+// visitors
+:global(html[data-cookie-consent]) .jacket {
+	display: none;
+}

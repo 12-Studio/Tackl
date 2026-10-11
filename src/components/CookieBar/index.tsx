@@ -29,7 +29,7 @@ import { cx } from '@utils/cx';
 import { isDocument } from '@utils/isDocument';
 import { storage } from '@utils/useLocalStorage';
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { CONSENT_ATTRIBUTE, CONSENT_KEY, CONSENT_TTL_MS } from './consent';
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
@@ -37,9 +37,6 @@ import s from './styles.module.scss';
 
 // Constants
 // ------------
-const CONSENT_KEY = 'tackl-cookie-consent';
-const CONSENT_TTL_MS = 1000 * 60 * 60 * 24 * 365;
-
 export const COOKIE_CONSENT_EVENT = 'tackl:cookie-consent';
 
 // Helpers
@@ -61,6 +58,7 @@ export const getCookieConsent = (): boolean | null => {
 export const resetCookieConsent = (): void => {
 	if (!isDocument()) return;
 	storage.remove(CONSENT_KEY);
+	document.documentElement.removeAttribute(CONSENT_ATTRIBUTE);
 	window.dispatchEvent(new CustomEvent(COOKIE_CONSENT_EVENT, { detail: { accepted: null } }));
 };
 
@@ -99,11 +97,15 @@ const CookieBar = ({
 	onDeclineRef.current = onDecline;
 
 	// State
-	const [isVisible, setIsVisible] = useState(false);
+	// NOTE • Rendered on the server so the banner paints with the page; for
+	// returning visitors the head script in app/(site)/layout.tsx has already
+	// marked <html>, and CSS keeps it hidden until it's removed below
+	const [isVisible, setIsVisible] = useState(true);
 
 	// Handlers
 	const storeChoice = useCallback((accepted: boolean) => {
 		storage.set<I.ConsentRecord>(CONSENT_KEY, { accepted, at: new Date().toISOString() });
+		document.documentElement.setAttribute(CONSENT_ATTRIBUTE, accepted ? 'accepted' : 'declined');
 		window.dispatchEvent(new CustomEvent(COOKIE_CONSENT_EVENT, { detail: { accepted } }));
 		setIsVisible(false);
 	}, []);
@@ -120,14 +122,13 @@ const CookieBar = ({
 	};
 
 	// Effects
-	// NOTE • On every visit: show the banner when there's no valid choice,
-	// otherwise re-fire the stored choice so integrations initialise here
+	// NOTE • On every visit: keep the banner when there's no valid choice,
+	// otherwise drop it and re-fire the stored choice so integrations
+	// initialise here
 	useEffect(() => {
 		const consent = getCookieConsent();
-		if (consent === null) {
-			setIsVisible(true);
-			return;
-		}
+		if (consent === null) return;
+		setIsVisible(false);
 		if (consent) {
 			onAcceptRef.current();
 		} else {

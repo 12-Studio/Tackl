@@ -115,7 +115,7 @@ import '@parts/AnimationPlugins';
 const Providers = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
-			{process.env.NODE_ENV === 'development' && <GridExposer />}
+			{GridExposer && <GridExposer />}
 			{process.env.NODE_ENV === 'production' && <CookieBar />}
 			<Contexts>{children}</Contexts>
 		</>
@@ -268,9 +268,10 @@ User Interaction → Client Component → Providers → Root Layout
 ### Development Environment
 
 ```typescript
-{process.env.NODE_ENV === 'development' && (
-    <GridExposer />
-)}
+// Lazy, dev-only — neither its JS nor its CSS ships in production
+const GridExposer = process.env.NODE_ENV === 'development' ? dynamic(() => import('@parts/GridExposer')) : null;
+
+{GridExposer && <GridExposer />}
 ```
 
 - **GridExposer**: Visual grid overlay for development
@@ -283,7 +284,7 @@ User Interaction → Client Component → Providers → Root Layout
 {process.env.NODE_ENV === 'production' && <CookieBar />}
 ```
 
-- **CookieBar**: GDPR compliance
+- **CookieBar**: GDPR compliance. It's server-rendered so it paints with the page instead of popping in after hydration (which would make it a late LCP element); an inline `<head>` script (`src/components/CookieBar/consent.ts`) marks `<html data-cookie-consent>` for returning visitors before first paint, so it never flashes for them
 - **Performance**: Optimized builds
 - **Security**: Production-ready security measures
 

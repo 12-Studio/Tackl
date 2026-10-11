@@ -98,10 +98,6 @@ const Hero = () => {
 					.to(title, { scale: ZOOM_SCALE, ease: 'power4.in', duration: ZOOM_END }, 0)
 					.to(title, { autoAlpha: 0, duration: 0.04 }, ZOOM_END - 0.04);
 			}
-			// NOTE • The backdrop (the WebGL field and its CSS columns) fades out
-			// as the page comes up, so no grid lingers behind the content
-			const backdrop = jacket.querySelector(':scope > [aria-hidden]');
-			if (backdrop) timeline.to(backdrop, { autoAlpha: 0, duration: 1 - ZOOM_END }, ZOOM_END);
 			timeline.set({}, {}, 1);
 
 			// NOTE • The zoom origin must be measured unscaled, so rewind, measure,

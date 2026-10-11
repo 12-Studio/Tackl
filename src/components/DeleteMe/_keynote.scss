@@ -28,7 +28,11 @@ $tile-radius: var(--br-l);
 	padding: var(--gap-l);
 	overflow: hidden;
 	border-radius: $tile-radius;
-	background: alpha(--global-white, 10);
+
+	// NOTE • Opaque — the hero's grid sits behind the whole page, and should
+	// show in the gutters around tiles, not through them. The same shade as
+	// 10% white over black.
+	background: color-mix(in srgb, var(--global-white) 10%, var(--global-black));
 
 	// NOTE • Depth from a hairline ring and a top highlight, not a border
 	box-shadow:

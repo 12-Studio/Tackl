@@ -6,7 +6,7 @@
 	&[data-tone='glow'] {
 		background:
 			radial-gradient(80% 70% at 50% 120%, alpha(--brand-c1, 45), transparent 70%),
-			alpha(--global-white, 10);
+			color-mix(in srgb, var(--global-white) 10%, var(--global-black));
 	}
 
 	// SECTION • Photo tiles

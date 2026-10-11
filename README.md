@@ -2,7 +2,7 @@
 
 ✨ An animation-first Next.js starter kit for agencies: zero-runtime SCSS CSS Modules, a zero-JS grid system, CSS-variable design tokens, GSAP + Lenis, and a CMS-ready data layer — tuned so the out-of-the-box Lighthouse story is something you can show a client. ✨
 
-![Version Number](https://img.shields.io/badge/Version-5.1.0-8000FF)
+![Version Number](https://img.shields.io/badge/Version-5.2.0-8000FF)
 ![Includes](https://img.shields.io/badge/Includes-GSAP_+_Lenis_-8000FF)
 
 > Full guides live in [`docs/`](./docs) — this README is the map.
@@ -39,10 +39,10 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 | `bun run lint` / `lint:fix` | Biome (TS/JS/JSON/CSS) + Stylelint (SCSS) check / auto-fix |
 | `bun run styles` | Regenerate `tokens.css` + breakpoint/grid SCSS from the TS tokens (runs before dev/build) |
 | `bun run format` | Biome format |
-| `bun run test` | Playwright smoke test against the production build |
+| `bun run test` | Playwright specs against the production build |
 | `bun run storybook` | Storybook dev on :6006 |
 | `bun run build-storybook` | Static Storybook build |
-| `bun run lighthouse` | Lighthouse CI run |
+| `bun run lighthouse` | Lighthouse CI — fails below 100 in any category (also runs in CI) |
 | `bun run commit` | Optional guided commit-message prompt |
 | `git commit` | Husky pre-commit checks generated styles, then runs lint + type-check |
 
@@ -175,11 +175,16 @@ flowchart TD
     │   ├── (site)/             # The website — its own root layout
     │   │   ├── layout.tsx      # Server shell: html/body, metadata, chrome
     │   │   ├── Providers.tsx   # Client providers (contexts, cookie bar, dev grid)
+    │   │   ├── not-found.tsx   # 404 when a page calls notFound()
+    │   │   ├── error.tsx       # Error page — keeps the site chrome
+    │   │   ├── opengraph-image.tsx # Generated share card (src/utils/ogImage.tsx)
     │   │   └── (home)/         # Home route group
     │   ├── (studio)/           # Embedded Sanity Studio at /studio (Sanity scaffolds)
     │   ├── api/draft-mode/     # Draft preview on/off — adapter-agnostic via @cms/draft
     │   ├── sitemap.ts          # /sitemap.xml
     │   ├── robots.ts           # /robots.txt (blocks staging deploys)
+    │   ├── global-not-found.tsx # 404 for URLs that match no route
+    │   ├── global-error.tsx    # Last-resort error page (root layout crashed)
     │   └── icon.svg            # Favicon
     ├── src/
     │   ├── cms/                # CMS seam — import from '@cms' only
@@ -201,7 +206,7 @@ flowchart TD
     │   ├── config.ts           # siteUrl (drives metadataBase, sitemap, robots)
     │   ├── utils/              # Hooks and helpers
     │   └── types/              # Shared + ambient types (CSS custom props, waffl-grid tag)
-    ├── tests/                  # Playwright specs (smoke test included)
+    ├── tests/                  # Playwright specs (smoke, consent, 404 + headers)
     ├── sanity/                 # Studio schemas (Sanity scaffolds; config: sanity.config.ts)
     ├── docs/                   # The full documentation set
     ├── skills/                 # Agent Skills (deep-dive SKILL.md playbooks)
@@ -210,11 +215,12 @@ flowchart TD
     ├── AGENTS.md               # Vendor-neutral agent instructions
     ├── CLAUDE.md               # Claude Code → imports AGENTS.md
     ├── .env.example            # Documented environment template
+├── lighthouserc.js         # Lighthouse CI — 100 in every category or CI fails
     ├── LICENSE                 # MIT
     ├── scripts/build-styles.ts # Generates tokens.css + breakpoint/grid SCSS from src/theme
     ├── biome.json              # Lint + format config (TS/JS/JSON/CSS)
     ├── .stylelintrc.json       # SCSS lint config
-    ├── next.config.js          # Images, Sass options, compiler settings
+    ├── next.config.js          # Images, Sass options, security headers + CSP
     └── tsconfig.json           # Strict TS + path aliases (@tackl, @waffl, @theme, @cms, …)
 
 ## 📚 Documentation index
@@ -227,7 +233,8 @@ flowchart TD
 | [WafflGrid](./docs/Tackl/WafflGrid.md) · [GridSystemProps](./docs/Tackl/GridSystemProps.md) | Grid internals and prop reference |
 | [SemanticComponents](./docs/Tackl/SemanticComponents.md) | `Col` and the spacing attributes in depth |
 | [PageTransitions](./docs/Tackl/PageTransitions.md) | Route transitions with React's `<ViewTransition>` |
-| [CookieConsent](./docs/Tackl/CookieConsent.md) | The consent manager, gating scripts by category |
+| [CookieConsent](./docs/Tackl/CookieConsent.md) | The consent manager, gating scripts by category, analytics |
+| [Security](./docs/Tackl/Security.md) | Security headers and the Content-Security-Policy |
 | [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
 | [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
 | [CMS](./docs/CMS.md) | The `@cms` adapter seam and choosing Dato/Sanity |
@@ -235,7 +242,7 @@ flowchart TD
 | [MigratingFromV3](./docs/Tackl/MigratingFromV3.md) | Phased playbook for upgrading a Tackl 3 project |
 | [DatoCMS](./docs/DatoCMS) | Querying, images, structured text, SEO |
 | [Sanity](./docs/Sanity/README.md) | Setting up the Sanity variant |
-| [Lighthouse](./docs/Lighthouse.md) | Performance auditing |
+| [Lighthouse](./docs/Lighthouse.md) | The 100-or-fail Lighthouse CI check |
 
 ## ✍️ Committing
 

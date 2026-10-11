@@ -258,7 +258,17 @@ on unmount or when a matchMedia condition stops matching.
 - **Anything that sets non-essential cookies (analytics, pixels, embeds) must be
   consent-gated:** wrap it in `<ConsentGate category='analytics'>` (`@parts/ConsentGate`) or
   check `hasConsent('analytics')` from `@parts/CookieBar/consent`. Never load it unconditionally.
-  See [docs/Tackl/CookieConsent.md](./docs/Tackl/CookieConsent.md).
+  See [docs/Tackl/CookieConsent.md](./docs/Tackl/CookieConsent.md). GA4 is built in —
+  `@parts/Analytics`, switched on by `NEXT_PUBLIC_GA_ID`.
+- **Security headers and a CSP** are set in `next.config.js`. A new third-party script,
+  embed, font CDN or API **must** have its origins added to `contentSecurityPolicy` there,
+  or the browser blocks it. See [docs/Tackl/Security.md](./docs/Tackl/Security.md).
+- **404s and errors:** `app/(site)/not-found.tsx` (for `notFound()`), `app/global-not-found.tsx`
+  (unmatched URLs), `app/(site)/error.tsx` and `app/global-error.tsx` all render
+  `@parts/StatusPage`. Call `notFound()` for missing CMS content rather than rendering empty.
+- **Share images:** `app/(site)/opengraph-image.tsx` is the default card. Give a page its own
+  card with an `opengraph-image.tsx` beside its `page.tsx` that returns
+  `createOgImage({ title })` from `@utils/ogImage`.
 - Optimise images (WebP/AVIF, explicit width/height, lazy loading).
 
 ---
@@ -285,8 +295,10 @@ on unmount or when a matchMedia condition stops matching.
   Stylelint also flags `var(--…)` names that aren't real tokens.
 - Changed a token in `src/theme`? `bun run styles` regenerates the CSS (the pre-commit hook
   fails on stale generated files).
-- `bun run test` — Playwright smoke test (builds and boots the production app; add
+- `bun run test` — Playwright specs (builds and boots the production app; add
   specs to `tests/` as features land).
+- CI also runs Lighthouse (`lighthouserc.js`) and **fails below 100 in any category** —
+  don't loosen a threshold to get green without saying why.
 - For anything visual or interactive, verify against the running app (`bun run dev`), not
   just types — the pre-configured `chrome-devtools` MCP can drive the browser for you.
 

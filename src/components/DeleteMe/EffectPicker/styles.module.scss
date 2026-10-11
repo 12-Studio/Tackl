@@ -1,0 +1,63 @@
+.jacket {
+	position: absolute;
+	z-index: 1;
+	bottom: var(--gap-l);
+	left: 50%;
+	display: flex;
+	gap: var(--gap-xxs);
+	width: max-content;
+	max-width: calc(100% - var(--gap-l) * 2);
+	margin: 0;
+	padding: var(--gap-xxs);
+	overflow-x: auto;
+	border: 1px solid alpha(--global-white, 10);
+	border-radius: var(--br-round);
+	background: alpha(--global-black, 55);
+	backdrop-filter: blur(2rem);
+	transform: translateX(-50%);
+	scrollbar-width: none;
+}
+
+.legend {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.option {
+	@include captionL;
+
+	display: inline-flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: var(--gap-xs);
+	padding: var(--gap-xs) var(--gap-m);
+	border-radius: var(--br-round);
+	font-weight: var(--weight-medium);
+	color: alpha(--global-white, 75);
+	cursor: pointer;
+	transition:
+		background var(--time-s) var(--easing-bezzy),
+		color var(--time-s) var(--easing-bezzy);
+
+	&:hover {
+		color: var(--global-white);
+	}
+
+	&[aria-pressed='true'] {
+		color: var(--global-black);
+		background: var(--global-white);
+
+		.number {
+			color: alpha(--global-black, 55);
+		}
+	}
+}
+
+.number {
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	color: alpha(--global-white, 45);
+}

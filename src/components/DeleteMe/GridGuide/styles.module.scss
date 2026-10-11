@@ -52,3 +52,28 @@
 	outline: 1px dashed alpha(--global-white, 40);
 	outline-offset: 6px;
 }
+
+// SECTION • Playground
+.playground {
+	row-gap: var(--gap-l);
+	padding-bottom: var(--gap-xl);
+
+	@include bp(l) {
+		padding-bottom: var(--gap-huge);
+	}
+}
+
+.playgroundCopy {
+	@include captionL;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+	color: alpha(--global-white, 70);
+}
+
+.playgroundTitle {
+	@include titleL;
+
+	color: var(--global-white);
+}

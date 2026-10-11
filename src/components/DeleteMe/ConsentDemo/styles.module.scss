@@ -1,0 +1,69 @@
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	min-width: 0;
+}
+
+.state {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-s);
+
+	li {
+		@include captionL;
+
+		padding: var(--gap-xs) var(--gap-sm);
+		color: alpha(--global-white, 50);
+		border: 1px dashed alpha(--global-white, 25);
+
+		&::before {
+			content: '✕ ';
+		}
+
+		&[data-granted] {
+			color: var(--global-white);
+			border: 1px solid var(--feedback-positive);
+
+			&::before {
+				content: '✓ ';
+				color: var(--feedback-positive);
+			}
+		}
+	}
+}
+
+.button {
+	@include captionL;
+
+	align-self: flex-start;
+	padding: var(--gap-sm) var(--gap-m);
+	color: var(--global-black);
+	background: var(--global-white);
+	cursor: pointer;
+
+	&:hover {
+		background: alpha(--global-white, 85);
+	}
+}
+
+.note {
+	@include captionS;
+
+	color: var(--feedback-warning);
+}
+
+.gate {
+	@include captionL;
+
+	padding: var(--gap-l);
+	text-align: center;
+	color: alpha(--global-white, 60);
+	border: 1px dashed alpha(--global-white, 25);
+
+	&[data-open] {
+		color: var(--global-white);
+		border: 1px solid var(--feedback-positive);
+		background: alpha(--feedback-positive, 12);
+	}
+}

@@ -41,3 +41,26 @@
 	color: var(--brand-c1);
 	filter: brightness(1.6);
 }
+
+// SECTION • Live demo
+.demo {
+	row-gap: var(--gap-l);
+	margin-top: var(--gap-xxl);
+	padding-top: var(--gap-xl);
+	border-top: 1px dashed alpha(--global-white, 12);
+}
+
+.demoCopy {
+	@include captionL;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+	color: alpha(--global-white, 70);
+}
+
+.demoTitle {
+	@include titleL;
+
+	color: var(--global-white);
+}

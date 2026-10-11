@@ -63,7 +63,7 @@
 // SECTION • Content
 .content {
 	position: relative;
-	row-gap: var(--gap-xl);
+	row-gap: var(--gap-l);
 }
 
 .eyebrow {
@@ -85,6 +85,10 @@
 		line-height: 0.9;
 		letter-spacing: -0.04em;
 	}
+
+	// NOTE • Optical alignment — at display sizes the T's built-in side
+	// bearing pushes its stroke right of the column line
+	margin-left: -0.04em;
 }
 
 .tagline {
@@ -118,22 +122,12 @@
 }
 
 // SECTION • Stats
-.stats {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: var(--gap-l) var(--gap-m);
-	padding-top: var(--gap-l);
-	border-top: 1px solid alpha(--global-white, 15);
-
-	@include bp(m) {
-		grid-template-columns: repeat(4, 1fr);
-	}
-}
-
 .stat {
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-xs);
+	padding-top: var(--gap-m);
+	border-top: 1px solid alpha(--global-white, 15);
 }
 
 .value {

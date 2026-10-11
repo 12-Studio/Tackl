@@ -1,0 +1,40 @@
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+}
+
+.scale {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-xs);
+}
+
+.key {
+	@include captionL;
+
+	padding: var(--gap-xs) var(--gap-sm);
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	color: alpha(--global-white, 50);
+	border: 1px solid alpha(--global-white, 15);
+	transition:
+		background var(--time-s) var(--easing-bezzy),
+		color var(--time-s) var(--easing-bezzy);
+
+	&[data-active] {
+		color: var(--global-white);
+		background: var(--brand-c1);
+		border-color: var(--brand-c1);
+	}
+}
+
+.status {
+	@include captionL;
+
+	color: alpha(--global-white, 70);
+
+	code {
+		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+		color: var(--global-white);
+	}
+}

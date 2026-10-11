@@ -1,0 +1,280 @@
+.jacket {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-m);
+	padding: var(--gap-m);
+	border: 1px solid alpha(--global-white, 12);
+	background: alpha(--global-white, 3);
+
+	@include bp(l) {
+		padding: var(--gap-l);
+	}
+}
+
+.muted {
+	color: alpha(--global-white, 50);
+}
+
+// SECTION • Toolbar
+.toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--gap-sm);
+}
+
+.tabs {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	border: 1px solid alpha(--global-white, 20);
+}
+
+.tab {
+	@include captionL;
+
+	padding: var(--gap-s) var(--gap-m);
+	color: alpha(--global-white, 70);
+	cursor: pointer;
+	transition:
+		background var(--time-s) var(--easing-bezzy),
+		color var(--time-s) var(--easing-bezzy);
+
+	& + & {
+		border-left: 1px solid alpha(--global-white, 20);
+	}
+
+	&:hover {
+		color: var(--global-white);
+	}
+
+	&[aria-pressed='true'] {
+		color: var(--global-black);
+		background: var(--global-white);
+
+		.muted {
+			color: alpha(--global-black, 60);
+		}
+	}
+}
+
+.toggle {
+	@include captionL;
+
+	display: flex;
+	align-items: center;
+	gap: var(--gap-s);
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	cursor: pointer;
+
+	input {
+		width: 1.6rem;
+		height: 1.6rem;
+		accent-color: var(--brand-c1);
+	}
+}
+
+// SECTION • Preview
+// NOTE • The frame narrows to each device's design width so the preview
+// reads like the real thing
+.frame {
+	margin-inline: auto;
+	width: 100%;
+	transition: max-width var(--time-l) var(--easing-bezzy);
+
+	&[data-device='s'] {
+		max-width: 39rem;
+	}
+
+	&[data-device='m'] {
+		max-width: 70rem;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+.preview {
+	--columns: 12;
+	--gutter: 0px;
+
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+	grid-auto-rows: minmax(7.2rem, auto);
+	gap: var(--gap-s) var(--gutter);
+	padding: var(--gutter);
+	min-height: 24rem;
+	border: 1px solid alpha(--global-white, 15);
+	background: var(--global-black);
+}
+
+.overlay {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+	gap: 0 var(--gutter);
+	padding-inline: var(--gutter);
+	pointer-events: none;
+
+	span {
+		background: alpha(--brand-c1, 10);
+		border-inline: 1px dashed alpha(--brand-c1, 35);
+	}
+}
+
+.item {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--gap-xxs);
+	min-width: 0;
+	color: var(--global-white);
+	background: alpha(--brand-c1, 40);
+	border: 1px solid var(--brand-c1);
+	cursor: pointer;
+	transition: background var(--time-s) var(--easing-bezzy);
+
+	&:hover {
+		background: alpha(--brand-c1, 55);
+	}
+
+	&[data-inherited] {
+		background: alpha(--brand-c1, 18);
+		border-style: dashed;
+	}
+
+	&[aria-pressed='true'] {
+		outline: 2px solid var(--global-white);
+		outline-offset: -2px;
+	}
+}
+
+.itemLabel {
+	@include titleS;
+}
+
+.itemValue {
+	@include captionS;
+
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	color: alpha(--global-white, 75);
+}
+
+// SECTION • Controls
+.controls {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--gap-m) var(--gap-l);
+}
+
+.selection {
+	@include captionL;
+
+	flex-basis: 100%;
+
+	code {
+		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+		color: var(--brand-c1);
+		filter: brightness(1.6);
+	}
+}
+
+.steppers {
+	display: flex;
+	gap: var(--gap-m);
+}
+
+.stepper {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-xs);
+}
+
+.stepperLabel {
+	@include captionS;
+
+	color: alpha(--global-white, 60);
+}
+
+.stepperControls {
+	display: flex;
+	align-items: stretch;
+	border: 1px solid alpha(--global-white, 25);
+
+	button {
+		@include captionL;
+
+		width: 4rem;
+		height: 4rem;
+		color: var(--global-white);
+		cursor: pointer;
+
+		&:hover:not(:disabled) {
+			background: alpha(--global-white, 10);
+		}
+
+		&:disabled {
+			color: alpha(--global-white, 25);
+			cursor: not-allowed;
+		}
+	}
+
+	output {
+		@include captionL;
+
+		display: grid;
+		place-items: center;
+		min-width: 4.4rem;
+		font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+		border-inline: 1px solid alpha(--global-white, 25);
+	}
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap-s);
+}
+
+.action {
+	@include captionL;
+
+	padding: var(--gap-s) var(--gap-m);
+	border: 1px solid alpha(--global-white, 30);
+	color: var(--global-white);
+	cursor: pointer;
+
+	&:hover:not(:disabled) {
+		background: alpha(--global-white, 10);
+	}
+
+	&:disabled {
+		color: alpha(--global-white, 30);
+		border-color: alpha(--global-white, 12);
+		cursor: not-allowed;
+	}
+}
+
+// SECTION • Code
+.code {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-s);
+}
+
+// NOTE • Names the group for screen readers; the buttons label themselves visually
+.legend {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}

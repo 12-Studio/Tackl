@@ -1,7 +1,8 @@
 // Imports
 // ------------
-import Grid from '@waffl';
+import Grid, { Col } from '@waffl';
 import Demo, { Cell } from '../Demo';
+import GridPlayground from '../GridPlayground';
 import Section from '../Section';
 import Example from './Example';
 
@@ -43,6 +44,18 @@ const GridGuide = () => (
 			</>
 		}
 	>
+		<Grid $isFixed className={s.playground}>
+			<Col $m='1/6' $l='1/7' className={s.playgroundCopy}>
+				<h3 className={s.playgroundTitle}>Try it</h3>
+				<p>
+					Pick a device, click a block and move it. The preview uses the real column counts and gutters,
+					blocks without their own value inherit from the breakpoint below (dashed), and the code is yours to
+					copy.
+				</p>
+			</Col>
+			<GridPlayground />
+		</Grid>
+
 		<Example
 			id='grid-columns'
 			title='2, 6, 12'

@@ -16,9 +16,8 @@ const RESET_AFTER_MS = 2000;
 
 // Component
 // ------------
-// NOTE • A shell command with a copy button — the only client component on
-// the landing page
-const CopyButton = ({ text, className }: I.CopyButtonProps) => {
+// NOTE • Copies a shell command (shown beside the button) or a code block
+const CopyButton = ({ text, label, className }: I.CopyButtonProps) => {
 	// State
 	const [isCopied, setIsCopied] = useState(false);
 
@@ -41,6 +40,14 @@ const CopyButton = ({ text, className }: I.CopyButtonProps) => {
 	}, [isCopied]);
 
 	// Render
+	const button = (
+		<button type='button' className={s.button} onClick={handleCopy}>
+			<span aria-live='polite'>{isCopied ? 'Copied' : (label ?? 'Copy')}</span>
+		</button>
+	);
+
+	if (label) return <div className={cx(s.jacket, s.solo, className)}>{button}</div>;
+
 	return (
 		<div className={cx(s.jacket, className)}>
 			<code className={s.command}>
@@ -49,9 +56,7 @@ const CopyButton = ({ text, className }: I.CopyButtonProps) => {
 				</span>
 				{text}
 			</code>
-			<button type='button' className={s.button} onClick={handleCopy}>
-				<span aria-live='polite'>{isCopied ? 'Copied' : 'Copy'}</span>
-			</button>
+			{button}
 		</div>
 	);
 };

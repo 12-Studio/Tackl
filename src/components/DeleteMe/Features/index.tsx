@@ -1,6 +1,7 @@
 // Imports
 // ------------
 import Grid, { Col } from '@waffl';
+import ConsentDemo from '../ConsentDemo';
 import Section from '../Section';
 
 // Styles
@@ -94,6 +95,19 @@ const Features = () => (
 					<code className={s.where}>{where}</code>
 				</Col>
 			))}
+		</Grid>
+
+		<Grid $isFixed className={s.demo}>
+			<Col $m='1/6' $l='1/5' className={s.demoCopy}>
+				<h3 className={s.demoTitle}>Try the consent manager</h3>
+				<p>
+					This is the real cookie banner. Open the settings, change your choice, and watch the state and the
+					gated box update — no reload.
+				</p>
+			</Col>
+			<Col $l='5/13'>
+				<ConsentDemo />
+			</Col>
 		</Grid>
 	</Section>
 );

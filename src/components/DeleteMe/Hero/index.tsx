@@ -38,7 +38,7 @@ const Hero = () => (
 		</div>
 
 		<Grid $isFixed className={s.content}>
-			<Col $m='1/6' $l='1/10'>
+			<Col $m='1/7' $l='1/13'>
 				<p className={s.eyebrow}>The Next.js starter kit by 12 Studio</p>
 				<h1 className={s.title}>Tackl</h1>
 				<p className={s.tagline}>
@@ -54,14 +54,13 @@ const Hero = () => (
 				</div>
 			</Col>
 
-			<Col as='ul' $m='1/7' $l='1/13' className={s.stats}>
-				{STATS.map(({ value, label }) => (
-					<li key={label} className={s.stat}>
-						<span className={s.value}>{value}</span>
-						<span className={s.label}>{label}</span>
-					</li>
-				))}
-			</Col>
+			{/* NOTE • Each stat is a column on the same grid as the backdrop: 2 per row, then 4 across from l */}
+			{STATS.map(({ value, label }) => (
+				<Col key={label} $s='span 1' $m='span 3' $l='span 3' className={s.stat}>
+					<span className={s.value}>{value}</span>
+					<span className={s.label}>{label}</span>
+				</Col>
+			))}
 		</Grid>
 	</header>
 );

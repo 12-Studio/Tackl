@@ -34,3 +34,11 @@
 		background: alpha(--global-white, 85);
 	}
 }
+
+.solo {
+	align-self: flex-start;
+
+	.button {
+		border-left: 0;
+	}
+}

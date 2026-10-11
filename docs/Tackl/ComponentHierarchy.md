@@ -58,12 +58,12 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
 - Exports site-wide `metadata` and `viewport`
 - Imports `@css/tokens.css` (generated design tokens) then `@css/global.scss`
-- Provides the `html`/`body` structure (Inter font variable, view transitions)
+- Provides the `html`/`body` structure (Inter font variable)
 - Renders `Header` before `main#page` for correct landmark semantics
 - Fetches global/site-wide CMS data (server component, so it's async-capable)
 - Wraps page content in `SmoothScroll` inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
-**Note**: `main#page` gets `view-transition-name: page` from `src/css/global.scss` — there is no inline style.
+**Note**: page transitions are opted into per page with `PageTransition` — see [PageTransitions.md](./PageTransitions.md).
 
 ### 2. Providers (`app/(site)/Providers.tsx`)
 

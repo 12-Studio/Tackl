@@ -245,7 +245,15 @@ on unmount or when a matchMedia condition stops matching.
 - **Partial Prefetching is on**, so a `<Link>` fetches the route's shared App Shell rather
   than a per-link payload. Only add `<Link prefetch={true}>` when the destination reads
   `params`/`searchParams` and you need that resolved before the click.
-- Route transitions: `useTransitionRouter` from the view-transitions utils.
+- **Route transitions use React's built-in `<ViewTransition>`** (React 19.3 / Next 16.4 —
+  no config, no wrapper provider, no custom router). Wrap each `page.tsx`'s content in
+  `PageTransition` from `@parts/PageTransition` (never a layout — layouts persist, so their
+  enter/exit never fire). Untyped navigations crossfade; tag direction with plain `next/link`
+  or `useRouter` from `next/navigation`: `<Link href='/work' transitionTypes={[NAV_FORWARD]}>`,
+  `router.push('/', { transitionTypes: [NAV_BACK] })`. Animations are CSS on
+  `::view-transition-*(.className)` in `src/css/global.scss`. Shared-element morphs:
+  `<ViewTransition name='…' share='morph' default='none'>` on both sides. See
+  `node_modules/next/dist/docs/01-app/02-guides/view-transitions.md`.
 - Dynamically load non-critical client components; wrap them in `Suspense` with a fallback.
 - Optimise images (WebP/AVIF, explicit width/height, lazy loading).
 

@@ -199,7 +199,7 @@ flowchart TD
     │   │   ├── tokens.css      # GENERATED :root design tokens
     │   │   └── global.scss     # Layers, reset, grid rules, reduced-motion fallback
     │   ├── config.ts           # siteUrl (drives metadataBase, sitemap, robots)
-    │   ├── utils/              # Hooks and helpers (incl. viewTransitions)
+    │   ├── utils/              # Hooks and helpers
     │   └── types/              # Shared + ambient types (CSS custom props, waffl-grid tag)
     ├── tests/                  # Playwright specs (smoke test included)
     ├── sanity/                 # Studio schemas (Sanity scaffolds; config: sanity.config.ts)
@@ -226,6 +226,7 @@ flowchart TD
 | [AppArchitecture](./docs/Tackl/AppArchitecture.md) | The app shell, Providers, data flow |
 | [WafflGrid](./docs/Tackl/WafflGrid.md) · [GridSystemProps](./docs/Tackl/GridSystemProps.md) | Grid internals and prop reference |
 | [SemanticComponents](./docs/Tackl/SemanticComponents.md) | `Col` and the spacing attributes in depth |
+| [PageTransitions](./docs/Tackl/PageTransitions.md) | Route transitions with React's `<ViewTransition>` |
 | [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
 | [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
 | [CMS](./docs/CMS.md) | The `@cms` adapter seam and choosing Dato/Sanity |

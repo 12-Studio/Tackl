@@ -90,7 +90,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 - ✅ Site-wide `metadata` and `viewport` exports
 - ✅ Imports `@css/tokens.css` then `@css/global.scss` — styles are static CSS, no runtime
 - ✅ Header rendered as a sibling before `main` (landmark semantics)
-- ✅ `main#page` picks up `view-transition-name: page` from `src/css/global.scss`
+- ✅ No view-transition wrapper — pages opt in with `PageTransition` (React's `<ViewTransition>`), see [PageTransitions.md](./PageTransitions.md)
 - ✅ SmoothScroll wraps page content inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
 ### 2. Providers (`app/(site)/Providers.tsx`)

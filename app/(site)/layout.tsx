@@ -5,7 +5,6 @@ import { consentScript } from '@parts/CookieBar/consent';
 import Header from '@parts/Header';
 import SmoothScroll from '@parts/SmoothScroll';
 import { inter } from '@theme/fonts';
-import { ViewTransitions } from '@utils/viewTransitions';
 import type { Metadata, Viewport } from 'next';
 import { isSiteUrlConfigured, siteUrl } from '@/config';
 import Providers from './Providers';
@@ -47,26 +46,24 @@ export const viewport: Viewport = {
 // ------------
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<ViewTransitions>
-			<html lang='en' className={inter.variable} suppressHydrationWarning>
-				<head>
-					{/* NOTE • Marks returning visitors' cookie choice before first paint, so the server-rendered CookieBar never flashes (src/components/CookieBar/consent.ts) */}
-					{/* biome-ignore lint/security/noDangerouslySetInnerHtml: static inline script built from constants — no user input */}
-					<script dangerouslySetInnerHTML={{ __html: consentScript }} />
-				</head>
-				<body>
-					<Providers>
-						<Header />
+		<html lang='en' className={inter.variable} suppressHydrationWarning>
+			<head>
+				{/* NOTE • Marks returning visitors' cookie choice before first paint, so the server-rendered CookieBar never flashes (src/components/CookieBar/consent.ts) */}
+				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: static inline script built from constants — no user input */}
+				<script dangerouslySetInnerHTML={{ __html: consentScript }} />
+			</head>
+			<body>
+				<Providers>
+					<Header />
 
-						<main id='page'>
-							<SmoothScroll>{children}</SmoothScroll>
-						</main>
+					<main id='page'>
+						<SmoothScroll>{children}</SmoothScroll>
+					</main>
 
-						{/* NOTE • A non-fixed Footer belongs inside the scrolled content — render it at the end of your page, inside SmoothScroll */}
-					</Providers>
-				</body>
-			</html>
-		</ViewTransitions>
+					{/* NOTE • A non-fixed Footer belongs inside the scrolled content — render it at the end of your page, inside SmoothScroll */}
+				</Providers>
+			</body>
+		</html>
 	);
 };
 

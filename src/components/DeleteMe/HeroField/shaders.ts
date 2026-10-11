@@ -11,8 +11,8 @@ void main() {
 
 // NOTE • The grid as a blueprint in the dark: hairline column edges and a
 // dot lattice inside the columns, lit by a torch that follows the pointer.
-// A click sends two waves out from the pointer: the first lights the whole
-// grid, the second follows it and puts the dark back, leaving the torch.
+// A click sends a wave of light rolling out from the pointer: a bright crest
+// lights the grid as it passes, with a fading glow in its wake.
 export const FRAGMENT = /* glsl */ `#version 300 es
 precision highp float;
 
@@ -34,11 +34,8 @@ uniform vec3 uLight;
 
 out vec4 outColor;
 
-// The click pulse: the light wave's travel time, how long the dark wave
-// waits before following, and its own travel time
-const float REVEAL_SECONDS = 0.9;
-const float DARK_DELAY = 0.7;
-const float DARK_SECONDS = 1.2;
+// How long the wave takes to roll across the screen
+const float WAVE_SECONDS = 2.6;
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -71,12 +68,7 @@ float edgeDistance(float x) {
 
 float easeOut(float t) {
 	t = clamp(t, 0.0, 1.0);
-	return 1.0 - pow(1.0 - t, 3.0);
-}
-
-float easeInOut(float t) {
-	t = clamp(t, 0.0, 1.0);
-	return t * t * (3.0 - 2.0 * t);
+	return 1.0 - (1.0 - t) * (1.0 - t);
 }
 
 // Brand ramp: deep brand → brand → white as t goes 0 → 1
@@ -94,18 +86,16 @@ void main() {
 	vec2 toPointer = p - uPointer;
 	float torch = exp(-dot(toPointer, toPointer) / (radius * radius));
 
-	// The click: a light wave reveals everything inside it, a dark wave
-	// follows and takes it back. Both fronts glow as they pass.
-	float reach = length(uResolution) * 1.1;
-	float soft = 60.0 * uDpr;
-	float fromClick = length(p - uClick);
-	float lightFront = reach * easeOut(uClickAge / REVEAL_SECONDS);
-	float darkFront = reach * easeInOut((uClickAge - DARK_DELAY) / DARK_SECONDS);
-	float revealed = smoothstep(darkFront - soft, darkFront + soft, fromClick) * (1.0 - smoothstep(lightFront - soft, lightFront + soft, fromClick));
-	float isPulsing = step(uClickAge, DARK_DELAY + DARK_SECONDS);
-	float fronts = exp(-pow((fromClick - lightFront) / (24.0 * uDpr), 2.0)) * (1.0 - easeOut(uClickAge / (REVEAL_SECONDS + 0.4)));
-	fronts += 0.4 * exp(-pow((fromClick - darkFront) / (40.0 * uDpr), 2.0)) * step(DARK_DELAY, uClickAge);
-	float light = max(torch, revealed * 0.85 * isPulsing) + fronts * isPulsing * 0.6;
+	// The wave: a crest rolling out from the click, widening and fading as it
+	// travels, with a softer glow left in its wake
+	float progress = clamp(uClickAge / WAVE_SECONDS, 0.0, 1.0);
+	float front = length(uResolution) * 0.95 * easeOut(progress);
+	float behind = front - length(p - uClick);
+	float width = mix(90.0, 320.0, progress) * uDpr;
+	float crest = exp(-pow(behind / (width * 0.45), 2.0));
+	float wake = behind > 0.0 ? exp(-behind / (width * 1.8)) * 0.6 : 0.0;
+	float wave = (crest + wake) * pow(1.0 - progress, 1.2);
+	float light = torch + wave * 1.3;
 
 	float edge = smoothstep(1.4 * uDpr, 0.0, edgeDistance(p.x));
 	float pitch = 24.0 * uDpr;
@@ -115,6 +105,8 @@ void main() {
 
 	float value = edge * (0.14 + light * 1.2) + dots * (0.1 + light * 1.1) + fill * light * 1.6;
 	vec3 colour = ramp(0.3 + min(light, 1.0) * 0.7) * value;
+	// The wave is light, not just lit lines — a faint haze rides the crest
+	colour += mix(uAccent, uLight, crest * crest) * (crest + wake * 0.5) * pow(1.0 - progress, 1.6) * 0.32;
 
 	// NOTE • Emit light over the page's own background: colour becomes alpha,
 	// so black stays transparent. The veil dims the field behind the headline.

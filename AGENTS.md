@@ -11,24 +11,29 @@ skills live in [`skills/`](./skills) (see the end of this file).
 
 ## The one rule that trips agents up most
 
-**There is exactly one semantic component: the polymorphic `Div`.** Per-tag components
-(`Section`, `Main`, `H1`, `P`, `Nav`, …) **do not exist** — never import them.
+**Styles are SCSS CSS Modules — there is no CSS-in-JS.** styled-components, `Div`, the
+`$pad`/`$mar` props, theme getters (`getBrand`, `getGap`, …) and `@tackl/type` **do not
+exist** — never import or recreate them. Write plain JSX tags and style them from the
+component's `styles.module.scss`:
 
 ```tsx
-import { Div } from '@tackl';
+import s from './styles.module.scss';
 
-<Div as='section' $pad>…</Div>
-<Div as='h1' $m='2/6' $l='3/9'>Heading</Div>
+<section className={s.jacket} data-pad>
+	<h1 className='t-displayL'>Heading</h1>
+</section>
 ```
 
-Pick the tag with the `as` prop, or fix it in a styles file with `.attrs`:
+The only layout primitive is **`Col`** — a grid child with responsive spans. Pick the tag
+with `as`; it accepts span props (`$s`…`$uber`) and every prop of that tag, fully typed:
 
 ```tsx
-export const Jacket = styled(Div).attrs({ as: 'header' })(/* … */);
+import { Col } from '@tackl';
+
+<Col as='article' $m='2/6' $l='3/9' className={s.card}>…</Col>
 ```
 
-`Div` is a real `styled.div`, so it accepts spacing props (`$mar`, `$pad`, …), responsive
-grid-span props (`$s`…`$uber`), and every normal HTML attribute — all fully typed.
+Children that don't need a narrower span don't need `Col` at all (see the grid section).
 
 ---
 
@@ -36,10 +41,15 @@ grid-span props (`$s`…`$uber`), and every normal HTML attribute — all fully 
 
 | Import | Use for | Never write |
 | --- | --- | --- |
-| `import { Div, bp, bpd, alpha, getBrand, … } from '@tackl'` | Primitives, breakpoints, theme getters | `import { Section } from '@tackl'` (doesn't exist) |
-| `import { headlineL, bodyL } from '@tackl/type'` | Typography styles | `import … from '@/theme/tackl/type'` |
+| `import { Col, breakpoints, mq, alpha, getVw } from '@tackl'` | Grid column, JS breakpoints, colour/viewport utils | `import { Div, getBrand, bp } from '@tackl'` (removed) |
+| `import s from './styles.module.scss'` | A component's styles | `import * as S from './styles'`, `import styled …` |
 | `import Grid from '@waffl'` | The grid container (**default** import) | `import { Grid } from '@waffl'`, deep paths, `import { Waffl }` |
+| `import { theme } from '@theme'` | Tokens in JS (GSAP, inline styles) — `var()` references | Hard-coded token values |
+| `import { cx } from '@utils/cx'` | Joining class names | Template-string juggling with `undefined` |
 | `import { fetchContent, GET_HOME } from '@cms'` | CMS data | importing a CMS adapter folder directly |
+
+SCSS needs **no imports**: the Tackl layer (`bp()`, type and spacing mixins, `vw()`,
+`fade()`) is injected into every `.scss` file via `sassOptions.additionalData`.
 
 When editing existing files, normalise any legacy imports to the forms above.
 
@@ -50,16 +60,21 @@ When editing existing files, normalise any legacy imports to the forms above.
 Each component is a folder under `src/components/ComponentName/`:
 
 ```
-index.tsx          # the component — logic and markup only
-styles.ts          # ALL styled-components for this component
-interface.ts       # prop types
+index.tsx              # the component — logic and markup only
+styles.module.scss     # ALL styles for this component
+interface.ts           # prop types
 Component.stories.tsx  # optional Storybook story
 ```
 
 - **Functional components only.** Type props from `./interface.ts`.
-- **No styled-components in `index.tsx`** — style in `styles.ts`, import as `import * as S from './styles'`.
-- The **outermost styled component is always `Jacket`**; inner ones get descriptive names (`Title`, `Content`, `Coat`).
-- No CSS modules, inline styles, SASS/LESS, or Tailwind.
+- **Styles live in `styles.module.scss`**, imported as `import s from './styles.module.scss'`.
+- The **outermost class is always `.jacket`**; inner ones get descriptive camelCase names
+  (`.title`, `.content`, `.coat`, `.removeButton` → `s.removeButton`).
+- **Write the tag in JSX** (`<header className={s.jacket}>`) — there is no `.attrs({ as })`.
+- **`'use client'` only when the component needs it** (hooks, events, browser APIs) — styling
+  never requires it.
+- No CSS-in-JS, Tailwind, LESS, or inline styles — except CSS custom properties for dynamic
+  values (`style={{ '--progress': value }}`, `--col-*` on grid children).
 
 ### File layout & comments
 
@@ -75,7 +90,7 @@ import { use, useRef } from 'react';
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
-import * as S from './styles';
+import s from './styles.module.scss';
 
 // Component
 // ------------
@@ -90,7 +105,11 @@ const Header = ({ socials = [] }: I.HeaderProps) => {
 	useAnimation(() => { /* … */ }, { scope: jacketRef });
 
 	// Render
-	return <S.Jacket ref={jacketRef}>{/* … */}</S.Jacket>;
+	return (
+		<header ref={jacketRef} className={s.jacket} data-state={menuOpen ? 'open' : 'closed'}>
+			{/* … */}
+		</header>
+	);
 };
 
 // Exports
@@ -109,35 +128,53 @@ existing file, match the labels and order already there.
 
 ## Styling & theming
 
-- Style with styled-components in `styles.ts`. Prefer CSS custom properties for dynamic values.
 - **Design tokens are CSS variables on `:root`** (`--brand-c1`, `--space-m`, `--gap-l`,
-  `--br-m`, `--time-m`, `--easing-bezzy`, `--font-heading`). Theme getters resolve to
-  `var()` references, so in plain CSS or Server Components you can use `var(--space-m)`
-  directly. See [docs/Tackl/Theming.md](./docs/Tackl/Theming.md).
-- Getters: `getBrand`, `getGlobal`, `getFeedback`, `getSpace`, `getGap`, `getRadius`,
-  `getEase`, `getTime`, `getFont`, `getFontWeight`.
-- **Translucent colors:** `alpha()` from `@tackl` — `alpha('--brand-c1', 20)` or
-  `alpha(props.theme.colors.global.white, 15)` — wraps the color in `color-mix`.
-- **Breakpoints are NOT CSS variables** (media queries can't read them). Use `bp`/`bpd`
-  from `@tackl`. **Mobile-first**: base styles are the mobile styles; `bp.m`, `bp.l`, …
-  layer changes upward with `min-width` queries. `bpd` is the rare `max-width` case.
+  `--br-m`, `--time-m`, `--easing-bezzy`, `--font-heading`, `--weight-medium`). They're
+  **generated** from the TS token files in `src/theme/**` into `src/css/tokens.css` by
+  `bun run styles` (runs automatically before dev/build/storybook). Edit the TS, never the
+  generated files (`tokens.css`, `src/css/tackl/_breakpoints.scss`, `_grid.scss`).
+  See [docs/Tackl/Theming.md](./docs/Tackl/Theming.md).
+- **Use tokens with `var()`** in SCSS. In JS, `theme` from `@theme` holds the same `var()`
+  references (`theme.colors.brand.c1`).
+- **Translucent colors:** `fade(--brand-c1, 20)` in SCSS, `alpha('--brand-c1', 20)` in JS —
+  both emit `color-mix`. (`fade`, not `alpha`, in SCSS: Sass has a built-in `alpha()`.)
+- **Breakpoints are NOT CSS variables** (media queries can't read them). **Mobile-first**:
+  base styles are mobile; `@include bp(m) { … }`, `bp(l)`, … layer changes upward with
+  `min-width`. `@include bpd(m) { … }` is the rare `max-width` case. In JS use
+  `breakpoints` / `mq` from `@tackl` (`mq.up.l` → `'(min-width: 1024px)'`).
+- **Type** is hand-written in `src/css/tackl/_type.scss` (from Figma). Use a style as a
+  mixin (`@include captionL;`), a global class (`className='t-captionL'`) or a data
+  attribute (`data-type='captionL'`). New style → write the mixin and add it to `$type-styles`.
+- **Section spacing** on the `--space-*` scale: `data-pad` / `data-mar` on any element
+  (`data-pad`, `data-pad='top'`, `data-mar='top bottom'`), or `@include pad(top);` / `mar()`.
+- **State goes in data attributes**, not class toggling: `data-state='open'` → `&[data-state='open']`.
+- **Cascade layers:** `global.scss` declares `@layer reset, base, grid, utilities`; modules are
+  unlayered, so module CSS always beats globals and utilities — no specificity hacks, no `!important`.
+- Module rules must sit under a local class (`.jacket p {}` is fine); bare top-level tag
+  selectors belong in `src/css/global.scss`.
 
-```ts
-// components/Example/styles.ts
-import styled, { css } from 'styled-components';
-import { alpha, bp, Div, getBrand, getEase, getTime } from '@tackl';
-import { bodyS } from '@tackl/type';
+```scss
+// components/Example/styles.module.scss — no imports needed
+.jacket {
+	display: flex;
+	padding: var(--gap-l);
+	background: fade(--brand-c3, 40);
+	transition: background var(--time-m) var(--easing-bezzy);
 
-export const Jacket = styled(Div).attrs({ as: 'section' })(
-	() => css`
-		display: flex;
-		padding: var(--gap-l);
-		background: ${alpha('--brand-c3', 40)};
-		transition: background ${getTime('m')} ${getEase('bezzy')};
+	@include bp(l) {
+		padding: var(--gap-xl);
+	}
 
-		${bp.l` padding: var(--gap-xl); `}
-	`
-);
+	&[data-state='open'] {
+		background: var(--brand-c1);
+	}
+}
+
+.title {
+	@include headlineL;
+
+	font-size: vw(48);
+}
 ```
 
 ---
@@ -145,20 +182,23 @@ export const Jacket = styled(Div).attrs({ as: 'section' })(
 ## The Waffl grid
 
 `Grid` (from `@waffl`) renders a plain `<waffl-grid>` tag — no web component, no shadow
-DOM, no side-effect import to register (never import `WebComponent`; it doesn't exist).
-Direct children span the full grid by default via the `waffl-grid > :where(*)` rule in
-`src/css/global.css` — **plain and server-rendered elements included**. Add span props
-(`$s`/`$m`/`$l`…) only to children that need a narrower span.
+DOM, no client code. All grid styling lives in `src/css/global.scss`. Direct children span
+the full grid by default via the `waffl-grid > :where(*)` rule — **plain and
+server-rendered elements included**. Use `Col` (or set `--col-*` yourself) only for
+children that need a narrower span; each breakpoint falls back to the one below.
 
 ```tsx
+import { Col } from '@tackl';
 import Grid from '@waffl';
-import { Div } from '@tackl';
 
 <Grid $isFixed>
-	<Div as='article' $m='1/4' $l='1/7'>Narrower on larger screens</Div>
-	<figure>Full width by default — no props, no styled-component</figure>
+	<Col as='article' $m='1/4' $l='1/7'>Narrower on larger screens</Col>
+	<figure>Full width by default — no props, no component</figure>
 </Grid>
 ```
+
+Grid switches (`$isFixed`, `$noGutter`, `$noMargin`, `$isFullscreen`, `$isCenter`) render as
+data attributes (`data-fixed`, …). A `Grid` also takes span props, so grids can nest.
 
 ---
 
@@ -224,7 +264,10 @@ on unmount or when a matchMedia condition stops matching.
 ## Before you finish
 
 - `bun run type-check` — must pass (strict, no emit).
-- `bun run lint` — Biome check.
+- `bun run lint` — Biome (TS/JS/JSON/CSS) **and** Stylelint (`.scss` — Biome can't parse SCSS).
+  Stylelint also flags `var(--…)` names that aren't real tokens.
+- Changed a token in `src/theme`? `bun run styles` regenerates the CSS (the pre-commit hook
+  fails on stale generated files).
 - `bun run test` — Playwright smoke test (builds and boots the production app; add
   specs to `tests/` as features land).
 - For anything visual or interactive, verify against the running app (`bun run dev`), not

@@ -45,6 +45,7 @@ Our animation system follows a specific pattern for animating components in and 
 import { useState, useRef } from 'react';
 import gsap from 'gsap';
 import { useAnimation } from '@utils/useAnimation';
+import s from './styles.module.scss';
 
 interface ComponentProps {}
 
@@ -98,11 +99,15 @@ const Component = ({}: ComponentProps) => {
     );
 
     return (
-        <Container ref={containerRef}>
+        <div ref={containerRef} className={s.container}>
             <button onClick={() => setIsVisible(true)}>Show</button>
             <button onClick={() => setExit(true)}>Hide</button>
-            {isVisible && <AnimatedElement ref={animatedElementRef}>Content</AnimatedElement>}
-        </Container>
+            {isVisible && (
+                <div ref={animatedElementRef} className={s.animatedElement}>
+                    Content
+                </div>
+            )}
+        </div>
     );
 };
 
@@ -174,26 +179,24 @@ ease: "cubic-bezier(0.5,0,0,1)",
 ease: "power1.inOut",
 ```
 
-## Styled Components Setup
+## Styles Setup
 
-Your styled components should include initial states for animations:
+Set the initial animation states in the component's `styles.module.scss`:
 
-```typescript
-import styled from 'styled-components';
+```scss
+.container {
+	position: relative;
+	overflow: hidden; // Hide elements outside container
+}
 
-export const Container = styled.div`
-    position: relative;
-    overflow: hidden; // Hide elements outside container
-`;
+.animatedElement {
+	// Initial state for enter animation
+	transform: translateX(-100%); // Start off-screen
 
-export const AnimatedElement = styled.div`
-    // Initial state for enter animation
-    transform: translateX(-100%); // Start off-screen
-
-    // Or use GSAP's autoAlpha for opacity
-    // opacity: 0;
-    // visibility: hidden;
-`;
+	// Or use GSAP's autoAlpha for opacity
+	// opacity: 0;
+	// visibility: hidden;
+}
 ```
 
 ## Best Practices
@@ -316,10 +319,10 @@ See `src/components/Test/index.tsx` for a complete working example of the animat
 
 -   **GSAP**: Animation library
 -   **React**: Component framework
--   **styled-components**: Styling (optional)
+-   **SCSS CSS Modules**: Styling (`styles.module.scss`)
 
 ## Related Files
 
 -   `src/utils/useAnimation.ts` - Core animation hook
 -   `src/components/Test/index.tsx` - Example implementation
--   `src/components/Test/styles.ts` - Example styles
+-   `src/components/Test/styles.module.scss` - Example styles

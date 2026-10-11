@@ -1,87 +1,160 @@
-# Tackl 3 - Website Starter Kit Documentation
+# Tackl — The Theme & Styling Layer
 
 ## Overview
 
-Tackl 3 is a comprehensive Next.js starter kit designed for building scalable, performant web applications. It includes a robust styling system, component library, and development tools.
+Tackl is the design-system layer of the starter kit: TypeScript design tokens, a small injected SCSS toolkit, the Waffl grid, and a handful of JS helpers. Components are styled with **SCSS CSS Modules** (`styles.module.scss`) — static CSS, compiled at build time, with no styling runtime in the client bundle and no provider. Server Components can be styled directly.
 
-## Core Features
+```
+src/theme/**                 TS design tokens — the single source of truth
+scripts/build-styles.ts      generator (`bun run styles`, runs before dev/build/storybook)
+src/css/tokens.css           GENERATED :root custom properties
+src/css/tackl/               the injected SCSS layer (mixins/functions only, zero CSS output)
+src/css/global.scss          the only global stylesheet (reset, base, grid, utilities layers)
+src/theme/tackl/index.ts     `@tackl` — Col, breakpoints, mq, alpha, getVw…
+src/theme/tackl/waffl/       `Grid` — `import Grid from '@waffl'`
+```
 
-### 1. Theme System
+## 1. Design Tokens
 
-The theme system (`src/theme/index.ts`) provides:
+Token values live in `src/theme/<group>/index.ts` (colors, space, gap, borderRadius, easing, time, fonts, grid). The generator turns them into CSS custom properties on `:root` in `src/css/tokens.css`:
 
--   Brand color management with alpha variations
--   Responsive breakpoints
--   Spacing scales
--   Typography settings
--   Animation easings
+`--brand-c1…c5`, `--global-white|black`, `--feedback-positive|negative|warning`, `--space-s|m|l|xl|col`, `--gap-xxs…uber`, `--br-xs|s|m|l|round`, `--easing-bezzy|bezzy2|bezzy3`, `--time-s|m|l`, `--font-heading|body|mono|script`, `--weight-light…black`.
 
-Raw token values are emitted once as CSS custom properties on `:root`, and the theme object exposes `var()` references to them — so tokens work identically in styled-components, plain CSS and Server Components, and can be overridden at runtime (e.g. `html[data-theme='dark']`). See [Theming.md](./Theming.md) for the full guide.
+- Use them anywhere as `var(--space-m)` — modules, `global.scss`, inline styles.
+- To change a value, edit the token file and run `bun run styles` (or just `bun run dev`). Never hand-edit the generated files (`tokens.css`, `_breakpoints.scss`, `_grid.scss`) — the pre-commit hook runs `bun run styles --check`.
+- Runtime theming is a CSS override: `html[data-theme='dark'] { --brand-c1: #9b30ff; }`.
+- In JS (e.g. GSAP), the `theme` object from `@theme` holds the same `var()` references: `gsap.to(el, { color: theme.colors.brand.c1 })`.
 
-### 2. Tackl Semantic Components
+See [Theming.md](./Theming.md) for the full guide.
 
-Tackl provides one polymorphic semantic component with built-in styling capabilities:
+## 2. The Injected SCSS Layer (`src/css/tackl`)
 
-#### The `Div` Component
+`next.config.js` prepends `@use 'tackl' as *;` to every `.scss` file (`sassOptions.additionalData`), so these are available with **no imports**. The layer emits no CSS on its own.
 
--   `import { Div } from '@tackl'` — a properly typed `styled.div`
--   Pick the rendered tag with the `as` prop: `<Div as='section' $pad>`, `<Div as='h1' $m='2/6' $l='3/9'>`
--   In styles files, fix the tag with `styled(Div).attrs({ as: 'header' })(...)`
--   Supports responsive margin/padding props:
-    -   `$marBottom`, `$marTop`, `$mar`,
-    -   `$padBottom`, `$padTop`, `$pad`,
--   Supports responsive grid span props (`$s`, `$sm`, `$m`, `$l`, `$xl`, `$xxl`, `$huge`, `$uber`)
--   Accepts all normal HTML attributes (`style`, `aria-*`, event handlers, etc.) with full typing
+| Helper | Usage |
+| --- | --- |
+| `bp($key)` | `@include bp(m) { … }` — mobile-first `min-width` query |
+| `bpd($key)` | `@include bpd(m) { … }` — the rare `max-width` case (0.02px under) |
+| `fade($color, $opacity)` | `background: fade(--brand-c1, 20);` — translucent color via `color-mix` |
+| `vw($px, $design: desktop)` | `font-size: vw(48);` · `margin: vw(24, mobile);` |
+| `noscrollbars` | `@include noscrollbars;` |
+| `pad($side)` / `mar($side)` | `@include pad;` · `@include pad(top);` · `@include mar(bottom);` — sides: `block` (default), `top`, `bottom` |
+| Type mixins | `@include headlineL;` — `displayL displayS headlineL headlineS titleL titleS bodyL bodyS captionL captionS` |
+| Variables | `$breakpoints`, `$columns`, `$gutters`, `$grid-max`, `$design-widths` |
 
-#### Typography
+If an editor needs it for IntelliSense, `@use 'tackl' as *;` at the top of a file is a harmless fallback.
 
--   Global text styles live in `@tackl/type` (e.g. `headlineL`, `bodyL`) and are applied via `Div` with the matching `as` tag (`as='h1'` … `as='h6'`, `as='p'`, `as='span'`)
--   Responsive font sizing
--   Consistent line heights
--   Font family management
+## 3. Writing Styles
 
-### 3. Waffl Grid System
+```tsx
+// src/components/Example/index.tsx
+import { cx } from '@utils/cx';
+import type * as I from './interface';
+import s from './styles.module.scss';
 
-A flexible grid system for layout management. The styled `Grid` component (`import Grid from '@waffl'`) renders a plain `<waffl-grid>` tag — no web component, no shadow DOM — with configurable:
+const Example = ({ isOpen, className }: I.ExampleProps) => (
+	<section className={cx(s.jacket, className)} data-state={isOpen ? 'open' : 'closed'} data-pad>
+		<h2 className={cx(s.title, 't-headlineL')}>Title</h2>
+	</section>
+);
+```
 
--   Column layouts
--   Gaps and spacing
--   Responsive behaviors
--   Full-width children by default (the `waffl-grid > :where(*)` rule in `src/css/global.css`), so plain and server-rendered elements participate without span props
+```scss
+// src/components/Example/styles.module.scss
+.jacket {
+	display: flex;
+	background: fade(--brand-c3, 40);
+	transition: background var(--time-m) var(--easing-bezzy);
 
-### 4. Responsive Breakpoints
+	@include bp(l) {
+		gap: var(--gap-xl);
+	}
 
-Built-in breakpoint utilities for consistent responsive design across your application.
+	&[data-state='open'] {
+		background: var(--brand-c1);
+	}
+}
 
-### 5. Development Tools
+.title {
+	color: var(--brand-c1);
+}
+```
 
-#### Storybook Integration
+- The outermost class is `.jacket`; classes are camelCase (`s.removeButton`).
+- Tags are written in JSX — there is no polymorphic styling primitive.
+- Dynamic state → `data-*` attributes (`&[data-state='open']`); dynamic values → custom properties (`style={{ '--progress': value }}`).
+- Bare tag selectors at the top level of a module aren't allowed (CSS Modules pure mode); nest them under a class (`.jacket p {}`) or put them in `global.scss`.
+- `cx()` from `@utils/cx` joins class names, skipping falsy values.
 
--   Component development environment
--   Located in `/storybook` directory
+See [WritingComponents.md](./WritingComponents.md) for the full conventions.
 
-#### Grid Exposer
+## 4. Typography
 
-Development tool for visualizing grid layout and alignment
+Type styles are hand-written mixins in `src/css/tackl/_type.scss` (from the Figma file). Each style is available three ways:
 
-### 6. Project Structure
+- mixin in a module: `@include captionL;`
+- global class: `<p className='t-captionL'>`
+- data attribute: `<p data-type='captionL'>`
 
-Organized file structure optimized for scalability and maintainability
+To add a style, write the mixin, then add its name to `$type-styles` at the bottom of `_type.scss` — the class and attribute are generated from that list.
 
-### 7. Custom Font Management
+## 5. Section Spacing
 
-Tackl provides a centralized approach to managing custom fonts across your application:
+Section spacing steps along `--space-*` (s → m at `bp(m)` → l at `bp(l)`):
 
-#### Font Configuration
+- HTML, on any element: `<section data-pad>` (top + bottom), `data-pad='top'`, `data-pad='bottom'`, `data-mar='top bottom'` (values combine).
+- SCSS: `@include pad;`, `@include pad(top);`, `@include mar(bottom);`
 
-Custom fonts are defined in `/src/theme/fonts.js`:
+See [SemanticComponents.md](./SemanticComponents.md).
 
--   Use `next/font/local` for self-hosted fonts
--   Use `next/font/google` for Google Fonts
--   Each font is configured with:
-    -   Source files/weights
-    -   Display strategy
-    -   Preloading settings
-    -   CSS variable name
+## 6. Waffl Grid & `Col`
 
-Example configuration:
+`Grid` (`import Grid from '@waffl'`) is a server component rendering a plain `<waffl-grid>` tag. Every direct child spans the full width by default (`waffl-grid > :where(*)`), so plain and server-rendered elements need no props. Narrow a child with `Col` from `@tackl`:
+
+```tsx
+import Grid from '@waffl';
+import { Col } from '@tackl';
+
+<Grid $isFixed>
+	<Col as='article' $m='2/6' $l='3/9'>Narrower on larger screens</Col>
+	<figure>Full width by default</figure>
+</Grid>
+```
+
+- `Grid` props become data attributes: `$isFixed` → `data-fixed` (max-width 1440px), `$noGutter`, `$noMargin`, `$isFullscreen`, `$isCenter`. It also takes span props, so a grid can sit inside another grid.
+- `Col` is polymorphic (`as`) and takes span props `$s $sm $m $l $xl $xxl $huge $uber` (grid-column values like `'2/6'`, `'1/-1'`, `'span 3'`) plus any props of the chosen tag. Each breakpoint falls back to the one below.
+- Spans can also be set by hand: `style={{ '--col-m': '2/6' }}`.
+- Columns: s 2 / m 6 / l 12.
+
+See [WafflGrid.md](./WafflGrid.md) and [GridSystemProps.md](./GridSystemProps.md).
+
+## 7. Breakpoints
+
+Tokens in `src/theme/grid/index.ts`: `s` 320, `sm` 390, `m` 700, `l` 1024, `xl` 1200, `xxl` 1400, `huge` 1600, `uber` 1800 (px). Mobile-first. Media queries can't read CSS variables, so breakpoints are build-time values:
+
+- SCSS: `@include bp(m) { … }` / `@include bpd(m) { … }`
+- JS (`@tackl`): `breakpoints.m` → `'700px'`, `mq.up.m` → `'(min-width: 700px)'`, `mq.down.m` → `'(max-width: 699.98px)'`. `useAnimation`'s `isMobile`/`isTablet`/`isDesktop` defaults are built from `mq`.
+
+## 8. JS Utilities (`@tackl`)
+
+| Export | Purpose |
+| --- | --- |
+| `Col` | Grid child with responsive spans |
+| `breakpoints`, `mq` | Breakpoint values and media query strings |
+| `alpha(color, opacity)` | JS twin of `fade()`: `alpha('--brand-c1', 20)` → `color-mix(in srgb, var(--brand-c1) 20%, transparent)` |
+| `getVw(px)`, `getVwTablet(px)`, `getVwMobile(px)` | px → vw against the design widths (JS twins of `vw()`) |
+
+## 9. Cascade Layers
+
+`global.scss` declares `@layer reset, base, grid, utilities;`. Component modules are unlayered, so module CSS always beats the reset, grid and utilities without specificity games or `!important`.
+
+## 10. Fonts
+
+`next/font` instances live in `src/theme/fonts/index.ts` (Inter by default, a variable font loaded as one file, exposed as `--inter` on `<html>`). Raw stacks and weights live in `src/theme/fonts/values.ts` and become `--font-*` / `--weight-*` tokens. To add a font: create the instance in `fonts/index.ts`, register its variable in `fontVariables`, reference it in `fontFamilies`, add its `.variable` class to `<html>` in `app/(site)/layout.tsx`, and run `bun run styles`.
+
+## 11. Tooling
+
+- `bun run lint` runs Biome (TS/JS/JSON/CSS) and Stylelint (`**/*.scss`, `stylelint-config-standard-scss`). Stylelint checks every `var(--…)` against `tokens.css`, so token typos fail lint.
+- `browserslist: ["baseline widely available"]` drives JS and CSS prefixing.
+- **Grid Exposer** — a development-only grid overlay, rendered from `app/(site)/Providers.tsx`.
+- **Storybook** — configured in `.storybook/`; `bun run storybook` regenerates styles first.

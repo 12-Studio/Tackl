@@ -31,7 +31,7 @@ import { time } from './time';
 // Theme Configuration
 // ------------
 export const theme: Theme = {
-	// SECTION • Colors (Brand, Global, Social, Feedback)
+	// SECTION • Colors (Brand, Global, Feedback)
 	colors: colors,
 	// SECTION • Space (Section Spacing)
 	space: space,

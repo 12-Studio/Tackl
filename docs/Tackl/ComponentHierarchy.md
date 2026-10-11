@@ -13,17 +13,14 @@ RootLayout (app/(site)/layout.tsx)
 ├── ViewTransitions
 │   └── html > body
 │       └── Providers (app/(site)/Providers.tsx)
-│           ├── StyledComponentsRegistry
-│           │   └── ThemeProvider
-│           │       ├── GlobalStyle
-│           │       ├── GridExposer (dev only)
-│           │       ├── CookieBar (prod only)
-│           │       └── Contexts
-│           │           ├── Header
-│           │           └── main#page
-│           │               └── SmoothScroll
-│           │                   └── Page Components
-│           │                       └── Content Components
+│           ├── GridExposer (dev only)
+│           ├── CookieBar (prod only)
+│           └── Contexts (GlobalContext + PerformanceProvider)
+│               ├── Header
+│               └── main#page
+│                   └── SmoothScroll
+│                       └── Page Components
+│                           └── Content Components
 ```
 
 ## Detailed Component Breakdown
@@ -60,13 +57,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 **Responsibilities**:
 
 - Exports site-wide `metadata` and `viewport`
-- Imports global CSS
+- Imports `@css/tokens.css` (generated design tokens) then `@css/global.scss`
 - Provides the `html`/`body` structure (Inter font variable, view transitions)
 - Renders `Header` before `main#page` for correct landmark semantics
 - Fetches global/site-wide CMS data (server component, so it's async-capable)
 - Wraps page content in `SmoothScroll` inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
-**Note**: `main#page` gets `view-transition-name: page` from `src/css/global.css` — there is no inline style.
+**Note**: `main#page` gets `view-transition-name: page` from `src/css/global.scss` — there is no inline style.
 
 ### 2. Providers (`app/(site)/Providers.tsx`)
 
@@ -80,24 +77,20 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 import '@parts/AnimationPlugins';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <StyledComponentsRegistry>
-            <ThemeProvider theme={theme}>
-                <GlobalStyle />
-                {process.env.NODE_ENV === 'development' && <GridExposer />}
-                {process.env.NODE_ENV === 'production' && <CookieBar />}
-                <Contexts>{children}</Contexts>
-            </ThemeProvider>
-        </StyledComponentsRegistry>
-    );
+	return (
+		<>
+			{process.env.NODE_ENV === 'development' && <GridExposer />}
+			{process.env.NODE_ENV === 'production' && <CookieBar />}
+			<Contexts>{children}</Contexts>
+		</>
+	);
 };
 ```
 
 **Key Features**:
 
 - **Side-Effect Import**: Animation plugins (the only side-effect import — the Waffl grid needs no client-side registration)
-- **Theme Provider**: Styled Components theme context
-- **Global Styles**: CSS custom properties and global styles
+- **No Styling Provider**: styles are static CSS (tokens + `global.scss` + CSS Modules), so nothing here exists for styling
 - **Environment Detection**: Different components for dev/prod
 - **Performance Contexts**: Performance optimization contexts
 - **No Document Shell**: `html`/`body` and site chrome live in `app/(site)/layout.tsx`, so page content stays server-rendered
@@ -186,10 +179,10 @@ Content Component → Providers → Root Layout
 // Content Component
 const [state, setState] = useState();
 
-// Providers
-<ThemeProvider theme={theme}>
-    {/* Theme updates affect all children */}
-</ThemeProvider>
+// Providers → Contexts
+<GlobalContext.Provider value={contextValue}>
+    {/* Context updates reach every consumer below */}
+</GlobalContext.Provider>
 
 // Root Layout
 // Receives updated data through props
@@ -198,23 +191,19 @@ const [state, setState] = useState();
 ### 3. Context Data Flow
 
 ```
-ThemeProvider → All Child Components
-       ↓
-   Theme Context
+Contexts → All Client Components
+    ↓
+GlobalContext (lenisRef, menuOpen) + PerformanceContext
 ```
 
 **Example**:
 
 ```typescript
-// Providers (app/(site)/Providers.tsx)
-<ThemeProvider theme={theme}>
-    <Contexts>
-        <Page>
-            <Content /> {/* Has access to theme */}
-        </Page>
-    </Contexts>
-</ThemeProvider>
+// Any client component below Providers
+const { menuOpen, setMenuOpen } = use(GlobalContext);
 ```
+
+Design tokens are not React context — they are CSS custom properties on `:root`, available to every component (server or client) via `var(--brand-c1)` and friends.
 
 ## Environment-Specific Rendering
 
@@ -260,7 +249,7 @@ ThemeProvider → All Child Components
 - **Code Splitting**: Automatic code splitting
 - **Lazy Loading**: Dynamic imports
 - **Animation**: Optimized GSAP + Lenis
-- **Theme**: Efficient theme switching
+- **Static CSS**: No styling runtime; CSS Modules are split per route
 
 ### 3. Development Performance
 
@@ -309,13 +298,15 @@ const Content = ({ data }: HomeProps) => {
 
 ### 3. Theme Usage Pattern
 
-```typescript
-// Any component within ThemeProvider
-const StyledComponent = styled.div`
-	color: ${props => props.theme.colors.primary};
-	font-family: ${props => props.theme.font.family.body};
-`;
+```scss
+// Any component's styles.module.scss — server or client
+.jacket {
+	color: var(--brand-c1);
+	font-family: var(--font-body);
+}
 ```
+
+In JS (e.g. GSAP), use the `theme` object from `@theme`, which holds the same `var()` references: `gsap.to(el, { color: theme.colors.brand.c1 })`.
 
 ## Debugging Tips
 

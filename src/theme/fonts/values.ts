@@ -15,7 +15,7 @@ export const fontVariables = {
 
 // SECTION • Raw Font Stacks
 // NOTE • Emitted as --font-{key} on :root in the generated tokens.css.
-// --inter is set on <html> by next/font (see app/layout.tsx)
+// --inter is set on <html> by next/font (see app/(site)/layout.tsx)
 export const fontFamilies = {
 	heading: `var(--inter), Arial, sans-serif`,
 	body: `var(--inter), Arial, sans-serif`,

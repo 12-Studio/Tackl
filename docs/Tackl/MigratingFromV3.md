@@ -1,5 +1,7 @@
 # Migrating a Project from Tackl 3 to Tackl 4
 
+> **Tackl 5 note:** the v4 target described here is built on styled-components (`Div`, getters, `bp`, `@tackl/type`), which Tackl 5 has replaced with SCSS CSS Modules. After landing on v4, continue with [MigratingFromV4.md](./MigratingFromV4.md).
+
 A phased playbook for converting an existing Tackl 3 project to the Tackl 4 architecture. Written to be executed by an AI coding agent (Claude Code, Cursor…) or a human, one phase per commit, on a dedicated branch.
 
 **Strategy:** Tackl 4's engine files (theme, tackl toolkit, app shell, configs) are *replaced wholesale* from the Tackl 4 template — do not try to edit v3 files into v4 shape. Your project's **values** (brand colors, spacing, fonts, metadata) and **components** are then ported onto the new engine. Get the latest template with:

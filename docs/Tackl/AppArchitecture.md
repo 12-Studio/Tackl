@@ -2,7 +2,7 @@
 
 ## Overview
 
-Tackl uses a server-first architecture where the site's root layout owns the entire document shell and a single client-side `Providers` component handles browser-only concerns. This architecture leverages Next.js 15's App Router capabilities while maintaining clean separation of concerns.
+Tackl uses a server-first architecture where the site's root layout owns the entire document shell and a single client-side `Providers` component handles browser-only concerns. This architecture leverages the Next.js App Router capabilities while maintaining clean separation of concerns.
 
 The app has **two root layouts** via route groups (route groups don't affect URLs): `app/(site)/layout.tsx` is the website — everything described below — and `app/(studio)/layout.tsx` is a bare `html`/`body` shell for the embedded Sanity Studio at `/studio` (present in Sanity scaffolds; pruned by the CLI otherwise). There is no top-level layout in `app/`; only `sitemap.ts`, `robots.ts`, and `icon.svg` live at the `app/` root.
 
@@ -56,7 +56,7 @@ app/
 **Responsibilities**:
 
 - Exports site-wide `metadata` (metadataBase, title default + template, description, robots, openGraph) and `viewport` (width, initialScale, themeColor)
-- Imports global CSS styles
+- Imports the stylesheets in order: `@css/tokens.css` (generated design tokens) then `@css/global.scss` (reset, base, grid, utilities)
 - Renders the `html`/`body` structure with the Inter font variable
 - Renders site chrome: `Header` before `main#page` for correct landmark semantics
 - Fetches global/site-wide CMS data (it's async-capable, so data fetching happens here or in a dedicated server component)
@@ -88,9 +88,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
 - ✅ Server-side rendered by default
 - ✅ Site-wide `metadata` and `viewport` exports
-- ✅ Imports global styles (`@css/global.css`)
+- ✅ Imports `@css/tokens.css` then `@css/global.scss` — styles are static CSS, no runtime
 - ✅ Header rendered as a sibling before `main` (landmark semantics)
-- ✅ `main#page` picks up `view-transition-name: page` from `src/css/global.css`
+- ✅ `main#page` picks up `view-transition-name: page` from `src/css/global.scss`
 - ✅ SmoothScroll wraps page content inside `main` (a non-fixed Footer belongs inside the scrolled content, at the end of a page)
 
 ### 2. Providers (`app/(site)/Providers.tsx`)
@@ -101,33 +101,32 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
 **Responsibilities**:
 
-- Registers the AnimationPlugins side-effect import (the Waffl grid needs no client-side registration — it renders a plain `<waffl-grid>` tag styled by `Grid` from `@waffl`)
-- Provides theme context via Styled Components
-- Injects global styles
+- Registers the AnimationPlugins side-effect import (the Waffl grid needs no client-side registration — `Grid` from `@waffl` is a server component rendering a plain `<waffl-grid>` tag)
 - Manages environment-specific tools (GridExposer/CookieBar)
-- Provides performance contexts
+- Provides the global and performance contexts (`Contexts`)
+
+Styling needs no provider: every style is static CSS (the global stylesheet plus per-component CSS Modules), so nothing in `Providers` exists for styles.
 
 ```typescript
 'use client';
 
+import '@parts/AnimationPlugins';
+
 const Providers = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <StyledComponentsRegistry>
-            <ThemeProvider theme={theme}>
-                <GlobalStyle />
-                {process.env.NODE_ENV === 'development' && <GridExposer />}
-                {process.env.NODE_ENV === 'production' && <CookieBar />}
-                <Contexts>{children}</Contexts>
-            </ThemeProvider>
-        </StyledComponentsRegistry>
-    );
+	return (
+		<>
+			{process.env.NODE_ENV === 'development' && <GridExposer />}
+			{process.env.NODE_ENV === 'production' && <CookieBar />}
+			<Contexts>{children}</Contexts>
+		</>
+	);
 };
 ```
 
 **Key Features**:
 
 - ✅ Client-side providers only — no document shell, so page content stays server-rendered
-- ✅ Styled Components theme provider + registry
+- ✅ No styling provider, registry or global-style injection — styles are static CSS
 - ✅ Development tools (GridExposer)
 - ✅ Production tools (CookieBar)
 - ✅ Animation plugins (side-effect import)
@@ -194,6 +193,29 @@ const Content = ({ data }: HomeProps) => {
 - ✅ Dynamic content
 - ✅ Animations and effects
 
+Only reach for `'use client'` when a component needs hooks, refs or event handlers — styling never requires it. Server Components import their `styles.module.scss` directly.
+
+## Styles Pipeline
+
+Styles are SCSS CSS Modules plus one global stylesheet, compiled to static CSS at build time:
+
+```
+src/theme/**  (TS design tokens — the source of truth)
+      ↓  bun run styles  (scripts/build-styles.ts — runs before dev, build and storybook)
+src/css/tokens.css                 :root custom properties (--brand-c1, --space-m…)
+src/css/tackl/_breakpoints.scss    $breakpoints + bp() / bpd()
+src/css/tackl/_grid.scss           columns, gutters, max width, design widths
+      ↓
+app/(site)/layout.tsx  imports @css/tokens.css, then @css/global.scss
+components             import s from './styles.module.scss'
+```
+
+- The generated files are committed and never hand-edited — change a token in `src/theme`, then run `bun run styles` (or just `bun run dev`). The pre-commit hook runs `bun run styles --check` to catch stale output.
+- `next.config.js` injects the Tackl SCSS layer (`src/css/tackl` — mixins and functions only, no CSS output) into every `.scss` file via `sassOptions.additionalData`, so `bp()`, the type and spacing mixins, `vw()` and `fade()` need no imports.
+- `global.scss` declares `@layer reset, base, grid, utilities;`. Component modules are unlayered, so module CSS always wins without specificity games.
+
+See [Tackl.md](./Tackl.md) and [Theming.md](./Theming.md) for the details.
+
 ## Data Flow
 
 ### 1. Server-Side Data Flow
@@ -209,7 +231,7 @@ Data Fetching → Static Content → Page Content → Interactive Content
 ```
 User Interaction → Content Component → Providers → Root Layout
         ↓                ↓                ↓            ↓
-   State Update → Re-render → Theme Update → Data Refresh
+   State Update → Re-render → Context Update → Data Refresh
 ```
 
 ## Performance Optimizations
@@ -226,7 +248,8 @@ User Interaction → Content Component → Providers → Root Layout
 - **Code Splitting**: Components are loaded only when needed
 - **Lazy Loading**: Heavy components are loaded dynamically
 - **Animation Optimization**: GSAP + Lenis for smooth animations
-- **Theme Management**: Efficient theme switching
+- **Static CSS**: No styling runtime in the client bundle; CSS Modules are split per route and cached
+- **Theming**: Runtime theme switches override CSS custom properties (e.g. `html[data-theme='dark']`) — no re-render
 
 ### 3. Development Optimizations
 
@@ -303,6 +326,6 @@ User Interaction → Content Component → Providers → Root Layout
 
 ## Conclusion
 
-This architecture provides a robust foundation for building scalable, performant web applications with Next.js 15. The separation of concerns between server and client components ensures optimal performance while maintaining clean, maintainable code.
+This architecture provides a robust foundation for building scalable, performant web applications with Next.js. The separation of concerns between server and client components ensures optimal performance while maintaining clean, maintainable code.
 
 For more specific implementation details, refer to the individual component documentation in the `docs/` directory.

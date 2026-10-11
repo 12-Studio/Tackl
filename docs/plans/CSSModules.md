@@ -1,6 +1,9 @@
 # Plan: styled-components → CSS Modules (SCSS)
 
-Status: **agreed** · Branch: `css-modules` · Target release: **Tackl 5.0.0** (breaking)
+Status: **implemented** · Branch: `css-modules` · Release: **Tackl 5.0.0** (breaking)
+
+> Implementation notes (where the build differs from the original plan) are
+> collected in **§14** at the end.
 
 ## Why
 
@@ -73,7 +76,7 @@ src/
       _index.scss            ← @forward all of the below
       _breakpoints.scss      ← GENERATED: $breakpoints map, bp(), bpd()
       _grid.scss             ← GENERATED: $columns, $gutters, $grid-max, $design-widths
-      _functions.scss        ← vw(), fade()
+      _helpers.scss          ← vw(), fade(), noscrollbars
       _spacing.scss          ← pad(), mar() mixins
       _type.scss             ← HAND-WRITTEN: displayL … captionS mixins
     tokens.css               ← GENERATED: :root { --brand-c1: …; … }
@@ -186,7 +189,7 @@ const nextConfig = {
 // src/css/tackl/_index.scss
 @forward 'breakpoints';
 @forward 'grid';
-@forward 'functions';
+@forward 'helpers';
 @forward 'spacing';
 @forward 'type';
 ```
@@ -231,7 +234,7 @@ return <aside className={s.jacket}>…</aside>;
 If `additionalData` doesn't work under Turbopack (verified in Phase 1), the
 fallback is one line per module, `@use 'tackl' as *;`. It costs nothing at runtime.
 
-### Helpers (`_functions.scss`)
+### Helpers (`_helpers.scss`)
 
 ```scss
 // px → vw against a design width (mirrors getVw / getVwTablet / getVwMobile)
@@ -567,3 +570,32 @@ Header → Footer → Icon → DeleteMe → GridExposer (data attributes + `--co
 - **GSAP easing.** If GSAP needs the easing tokens, the generator can emit a JS map for `CustomEase`.
 - **`experimental.inlineCss` / `cssChunking`.** A/B test them once the migration is
   done; measure, don't assume.
+
+## 14. Implementation notes
+
+What changed from the plan while building it:
+
+- **`_functions.scss` → `_helpers.scss`**: it also holds the `noscrollbars` mixin.
+- **Font weights are tokens too**: `--weight-light … --weight-black` are generated
+  alongside `--font-*`, so the hand-written type mixins use `var(--weight-regular)`.
+- **`typeRoles` lives in ThemeShowcase** (the only place that shows the role notes),
+  not in the Storybook Typography page.
+- **Non-inheriting span variables**: `--col-*` are registered with
+  `@property … { inherits: false }` and reset on every `waffl-grid`, so a grid nested in a
+  spanned column never inherits the parent's spans.
+- **Utilities load via `meta.load-css`** at the end of `global.scss`, so the `@layer`
+  order is declared first. `additionalData` doesn't reach files loaded that way, so the
+  utility partials `@use 'tackl'` explicitly.
+- **Stylelint** also uses `stylelint-value-no-unknown-custom-properties`, checking every
+  `var(--…)` against `tokens.css`.
+- **`.vscode/settings.json`** is committed alongside `extensions.json` (`.gitignore` now
+  ignores `.vscode/*` except those two).
+- **Components that no longer need `'use client'`**: Header, Footer, DeleteMe and
+  ThemeShowcase are Server Components now.
+- **Icon** SVGs are `aria-hidden` — the styled wrapper had hidden Biome's a11y rule.
+- **Storybook** sets the `next/font` class on `<html>` (it was on `<body>`), so `--font-*`
+  on `:root` resolves to Inter.
+- **`cx()`** (`src/utils/cx.ts`) added for joining module, utility and prop class names.
+- **Verified in Phase 1**: Turbopack honours `additionalData`, `loadPaths` and
+  `implementation`; edits to injected partials hot-reload; production CSS contains no
+  output from the injected layer; `@storybook/nextjs` honours `sassOptions`.

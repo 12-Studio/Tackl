@@ -255,6 +255,10 @@ on unmount or when a matchMedia condition stops matching.
   `<ViewTransition name='…' share='morph' default='none'>` on both sides. See
   `node_modules/next/dist/docs/01-app/02-guides/view-transitions.md`.
 - Dynamically load non-critical client components; wrap them in `Suspense` with a fallback.
+- **Anything that sets non-essential cookies (analytics, pixels, embeds) must be
+  consent-gated:** wrap it in `<ConsentGate category='analytics'>` (`@parts/ConsentGate`) or
+  check `hasConsent('analytics')` from `@parts/CookieBar/consent`. Never load it unconditionally.
+  See [docs/Tackl/CookieConsent.md](./docs/Tackl/CookieConsent.md).
 - Optimise images (WebP/AVIF, explicit width/height, lazy loading).
 
 ---

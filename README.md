@@ -227,6 +227,7 @@ flowchart TD
 | [WafflGrid](./docs/Tackl/WafflGrid.md) · [GridSystemProps](./docs/Tackl/GridSystemProps.md) | Grid internals and prop reference |
 | [SemanticComponents](./docs/Tackl/SemanticComponents.md) | `Col` and the spacing attributes in depth |
 | [PageTransitions](./docs/Tackl/PageTransitions.md) | Route transitions with React's `<ViewTransition>` |
+| [CookieConsent](./docs/Tackl/CookieConsent.md) | The consent manager, gating scripts by category |
 | [PerformanceContext](./docs/Tackl/PerformanceContext.md) | Reduced-motion and device signals |
 | [Motion](./docs/Motion.md) · [GSAP](./docs/GSAP) | Animation patterns |
 | [CMS](./docs/CMS.md) | The `@cms` adapter seam and choosing Dato/Sanity |

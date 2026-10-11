@@ -284,7 +284,7 @@ const GridExposer = process.env.NODE_ENV === 'development' ? dynamic(() => impor
 {process.env.NODE_ENV === 'production' && <CookieBar />}
 ```
 
-- **CookieBar**: GDPR compliance. It's server-rendered so it paints with the page instead of popping in after hydration (which would make it a late LCP element); an inline `<head>` script (`src/components/CookieBar/consent.ts`) marks `<html data-cookie-consent>` for returning visitors before first paint, so it never flashes for them
+- **CookieBar**: a cookie consent manager (Accept All / Accept Necessary / per-category choices) — see [CookieConsent.md](./CookieConsent.md). It's server-rendered so it paints with the page instead of popping in after hydration (which would make it a late LCP element); an inline `<head>` script (`src/components/CookieBar/consent.ts`) marks `<html data-cookie-consent>` for returning visitors before first paint, so it never flashes for them
 - **Performance**: Optimized builds
 - **Security**: Production-ready security measures
 

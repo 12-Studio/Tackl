@@ -60,7 +60,7 @@ const Example = ({ isOpen, className }: I.ExampleProps) => (
 3. Tokens are CSS variables — always `var(--…)`, never hard-coded values:
    `--brand-c1…c5`, `--global-white|black`, `--feedback-*`, `--space-s|m|l|xl|col`,
    `--gap-xxs…uber`, `--br-xs|s|m|l|round`, `--easing-bezzy*`, `--time-s|m|l`,
-   `--font-heading|body|mono|script`, `--weight-light…black`.
+   `--font-heading|body|mono|script|serif`, `--weight-light…black`.
 4. Mobile-first: base styles, then `@include bp(m) { … }`, `bp(l)`, … (min-width).
    `@include bpd(m) { … }` only for the rare max-width case.
 5. Module rules must sit under a local class. Bare top-level tag selectors go in

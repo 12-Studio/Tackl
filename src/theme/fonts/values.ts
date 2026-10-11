@@ -21,6 +21,8 @@ export const fontFamilies = {
 	body: `var(--inter), Arial, sans-serif`,
 	mono: `var(--inter), Arial, sans-serif`,
 	script: `var(--inter), Arial, sans-serif`,
+	// NOTE • A system stack — no font download (used by the CookieBar heading)
+	serif: `Georgia, 'Times New Roman', serif`,
 };
 
 // SECTION • Raw Font Weights

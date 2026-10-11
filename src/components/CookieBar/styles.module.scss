@@ -1,52 +1,156 @@
 .jacket {
 	position: fixed;
-	inset: auto var(--gap-l) var(--gap-l);
+	inset: auto var(--gap-s) var(--gap-s);
 	z-index: 12;
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap-m);
+	max-height: calc(100dvh - var(--gap-s) * 2);
+	overflow-y: auto;
 	padding: var(--gap-l);
-	background: var(--global-white);
-	color: var(--global-black);
-	border-radius: var(--br-l);
+	background: var(--global-black);
+	color: var(--global-white);
+	border: 1px solid alpha(--global-white, 15);
 
 	@include bp(m) {
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
+		inset: auto auto var(--gap-l) var(--gap-l);
+		width: 44rem;
+		padding: var(--gap-xl);
+	}
+}
+
+.title {
+	font-family: var(--font-serif);
+	font-weight: var(--weight-regular);
+	font-size: 3.2rem;
+	line-height: 1.1;
+
+	@include bp(m) {
+		font-size: 4rem;
+	}
+}
+
+.message {
+	@include captionL;
+
+	line-height: 1.5;
+	color: alpha(--global-white, 80);
+}
+
+.link {
+	@include captionL;
+
+	color: var(--global-white);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration-thickness: 2px;
+	}
+}
+
+// SECTION • Preferences
+.choices {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-sm);
+	min-width: 0;
+	margin: 0;
+	padding: var(--gap-m) 0;
+	border: 0;
+	border-block: 1px solid alpha(--global-white, 15);
+}
+
+// NOTE • Read by screen readers, hidden visually — the heading already
+// frames the choices
+.legend {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.choice {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	column-gap: var(--gap-sm);
+	align-items: center;
+	cursor: pointer;
+
+	input {
+		width: 1.6rem;
+		height: 1.6rem;
+		accent-color: var(--global-white);
+		cursor: inherit;
+
+		&:disabled {
+			opacity: 0.5;
+		}
 	}
 
-	p {
-		@include captionL;
+	&:has(input:disabled) {
+		cursor: default;
 	}
+}
 
-	> div {
-		display: flex;
-		align-items: center;
-		gap: var(--gap-s);
-	}
+.label {
+	@include captionL;
 
-	// NOTE • Accept and Decline share one style on purpose — equal
-	// prominence keeps the choice genuinely free
+	color: var(--global-white);
+}
+
+.description {
+	@include captionS;
+
+	grid-column: 2;
+	line-height: 1.4;
+	color: alpha(--global-white, 60);
+}
+
+// SECTION • Actions
+// NOTE • Both choices sit side by side at the same size — rejecting is as
+// easy as accepting
+.actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--gap-s);
+
 	button {
 		@include captionL;
 
-		padding: var(--gap-s) var(--gap-l);
-		border-radius: var(--br-round);
-		background: var(--brand-c1);
-		color: var(--global-white);
+		padding: var(--gap-sm) var(--gap-m);
+		border: 1px solid var(--global-white);
 		cursor: pointer;
-		transition: opacity var(--time-s) var(--easing-bezzy);
+		transition:
+			background var(--time-s) var(--easing-bezzy),
+			color var(--time-s) var(--easing-bezzy);
+	}
+}
 
-		&:hover {
-			opacity: 0.85;
-		}
+.primary {
+	background: var(--global-white);
+	color: var(--global-black);
+
+	&:hover {
+		background: alpha(--global-white, 85);
+	}
+}
+
+.secondary {
+	background: var(--global-black);
+	color: var(--global-white);
+
+	&:hover {
+		background: alpha(--global-white, 10);
 	}
 }
 
 // NOTE • A valid stored choice marks <html> before first paint (see
 // consent.ts), so the server-rendered banner never flashes for returning
-// visitors
-:global(html[data-cookie-consent]) .jacket {
+// visitors. A banner reopened from openCookieSettings() stays visible.
+:global(html[data-cookie-consent]) .jacket:not([data-reopened]) {
 	display: none;
 }

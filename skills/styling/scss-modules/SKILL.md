@@ -75,7 +75,7 @@ const Example = ({ isOpen, className }: I.ExampleProps) => (
 | Breakpoint up / down | `@include bp(m) { … }` · `@include bpd(m) { … }` |
 | Type style | `@include displayL;` … `@include captionS;` |
 | Section spacing | `@include pad;` `@include pad(top);` `@include mar(bottom);` |
-| Translucent colour | `alpha(--brand-c1, 20)` (same as `alpha()` in JS) |
+| Translucent colour | `alpha(--brand-c1, 20)` — opacity 0–100, `20%` also accepted (same as `alpha()` in JS) |
 | px → vw | `vw(48)` (desktop 1440) · `vw(24, mobile)` · `vw(32, tablet)` |
 | Hide scrollbars | `@include noscrollbars;` |
 | Grid values | `$breakpoints`, `$columns`, `$gutters`, `$grid-max`, `$design-widths` |

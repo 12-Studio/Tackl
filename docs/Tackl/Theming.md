@@ -96,7 +96,7 @@ alpha(--brand-c1, 20)   →  color-mix(in srgb, var(--brand-c1) 20%, transparent
 alpha('--brand-c1', 20) → color-mix(in srgb, var(--brand-c1) 20%, transparent)
 ```
 
-They accept a token name (`--brand-c1`) or any colour value (`alpha()` also takes a theme token, which is already a `var()` reference). Opacity is clamped to 0–100; at 100 the colour is returned unchanged. The browser does the mixing, so translucent colours follow runtime overrides. The SCSS and JS helpers share the name `alpha` and the same arguments. (The SCSS one replaces Sass's legacy global `alpha($color)`; use `color.channel()` from `sass:color` if you ever need to read a colour's alpha channel.)
+They accept a token name (`--brand-c1`) or any colour value (`alpha()` also takes a theme token, which is already a `var()` reference). Opacity is 0–100 (in SCSS `20` and `20%` are the same), clamped to that range; at 100 the colour is returned unchanged. A value between 0 and 1 in SCSS — the `rgba()` habit, e.g. `alpha(--brand-c1, 0.2)` — compiles to under 1% and prints a build warning. The browser does the mixing, so translucent colours follow runtime overrides. The SCSS and JS helpers share the name `alpha` and the same arguments. (The SCSS one replaces Sass's legacy global `alpha($color)`; use `color.channel()` from `sass:color` if you ever need to read a colour's alpha channel.)
 
 ## Runtime theming
 

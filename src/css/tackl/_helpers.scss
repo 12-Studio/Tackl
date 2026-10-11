@@ -13,7 +13,8 @@
 }
 
 // Translucent colour via color-mix — same name and signature as alpha() in
-// @tackl (JS). Accepts a token name or any colour value.
+// @tackl (JS). Accepts a token name or any colour value, and an opacity
+// from 0 to 100 (20 and 20% both mean 20%).
 // NOTE • Deliberately shadows Sass's legacy global alpha($color) — for reading
 // a colour's alpha channel, use color.channel() from sass:color instead.
 // Usage: background: alpha(--brand-c1, 20);
@@ -24,11 +25,22 @@
 		$value: var(#{$color});
 	}
 
-	@if $opacity >= 100 {
+	@if meta.type-of($opacity) != 'number' or not (math.is-unitless($opacity) or math.unit($opacity) == '%') {
+		@error 'alpha(): opacity must be a number from 0 to 100 (or a percentage), got #{meta.inspect($opacity)}';
+	}
+
+	$percent: math.clamp(0, math.div($opacity, $opacity * 0 + 1), 100);
+
+	// NOTE • rgba() habit guard — alpha(--brand-c1, 0.2) is 0.2%, not 20%
+	@if $percent > 0 and $percent < 1 {
+		@warn 'alpha(#{meta.inspect($color)}, #{$opacity}) is #{$percent}% opacity — the scale is 0–100, did you mean #{$percent * 100}?';
+	}
+
+	@if $percent >= 100 {
 		@return $value;
 	}
 
-	@return color-mix(in srgb, #{$value} #{math.clamp(0, $opacity, 100) * 1%}, transparent);
+	@return color-mix(in srgb, #{$value} #{$percent * 1%}, transparent);
 }
 
 // Hides scrollbars while keeping the element scrollable

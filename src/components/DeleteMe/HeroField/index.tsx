@@ -4,20 +4,22 @@
 // ------------
 import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
-import { MAX_COLUMNS, VERTEX } from './effects/common';
-
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
+import { FRAGMENT, MAX_COLUMNS, VERTEX } from './shaders';
 import s from './styles.module.scss';
 
 // Constants
 // ------------
 const MAX_DPR = 1.5;
 
-// NOTE • Effects start a few seconds in, so the still frame shows them
-// mid-flow rather than at their first frame
+// NOTE • Starts a few seconds in, so the still frame shows it mid-flow
 const TIME_OFFSET = 8;
+
+// NOTE • Seconds since the last click before there's been one — far past
+// the end of the pulse
+const NO_CLICK = 1000;
 
 // NOTE • Software renderers draw on the CPU — every frame would block the
 // main thread, so they get a still frame instead
@@ -42,6 +44,8 @@ const UNIFORMS = [
 	'uColumns',
 	'uColumnCount',
 	'uPointer',
+	'uClick',
+	'uClickAge',
 	'uDeep',
 	'uAccent',
 	'uLight',
@@ -49,11 +53,6 @@ const UNIFORMS = [
 
 type Uniform = (typeof UNIFORMS)[number];
 type Colour = [number, number, number];
-
-interface Program {
-	program: WebGLProgram;
-	uniforms: Record<Uniform, WebGLUniformLocation | null>;
-}
 
 // Helpers
 // ------------
@@ -74,9 +73,9 @@ const compile = (gl: WebGL2RenderingContext, type: number, source: string) => {
 	return null;
 };
 
-const link = (gl: WebGL2RenderingContext, fragmentSource: string): Program | null => {
+const link = (gl: WebGL2RenderingContext) => {
 	const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
-	const fragment = compile(gl, gl.FRAGMENT_SHADER, fragmentSource);
+	const fragment = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT);
 	const program = gl.createProgram();
 	if (!vertex || !fragment || !program) return null;
 	gl.attachShader(program, vertex);
@@ -84,26 +83,26 @@ const link = (gl: WebGL2RenderingContext, fragmentSource: string): Program | nul
 	gl.bindAttribLocation(program, 0, 'aPosition');
 	gl.linkProgram(program);
 	if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return null;
-	const uniforms = Object.fromEntries(
-		UNIFORMS.map(name => [name, gl.getUniformLocation(program, name)])
-	) as Program['uniforms'];
+	const uniforms = Object.fromEntries(UNIFORMS.map(name => [name, gl.getUniformLocation(program, name)])) as Record<
+		Uniform,
+		WebGLUniformLocation | null
+	>;
 	return { program, uniforms };
 };
 
 // Component
 // ------------
-// NOTE • The hero's WebGL backdrop. Each effect is a fragment shader fed the
-// real grid columns (measured from the DOM, so it always lines up), the
-// pointer and the brand colours.
+// NOTE • The hero's WebGL backdrop: the grid as a blueprint in the dark, lit
+// by a torch that follows the pointer, with a pulse on click (see
+// shaders.ts). It's fed the real grid columns — measured from the DOM, so
+// it always lines up — the pointer, the last click and the brand colours.
 // Renders on GSAP's ticker — the one shared loop — once the visitor has
 // interacted and only while on screen. Reduced-motion users, software
 // renderers and devices that can't hold ~20fps get a still frame; without
 // WebGL2 it doesn't draw at all and the CSS columns remain.
-const HeroField = ({ columnsRef, effect, className }: I.HeroFieldProps) => {
+const HeroField = ({ columnsRef, className }: I.HeroFieldProps) => {
 	// Refs
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const effectRef = useRef(effect);
-	const redrawRef = useRef<(() => void) | null>(null);
 
 	// Effects
 	useEffect(() => {
@@ -119,12 +118,11 @@ const HeroField = ({ columnsRef, effect, className }: I.HeroFieldProps) => {
 		gl.enable(gl.BLEND);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-		// NOTE • Effects compile on first use, then stay cached
-		const programs = new Map<string, Program | null>();
-		const programFor = (id: string, source: string) => {
-			if (!programs.has(id)) programs.set(id, link(gl, source));
-			return programs.get(id) ?? null;
-		};
+		const linked = link(gl);
+		if (!linked) return;
+		const { program, uniforms } = linked;
+		// biome-ignore lint/correctness/useHookAtTopLevel: WebGL's useProgram, not a React hook
+		gl.useProgram(program);
 
 		const colours = {
 			uDeep: readColour('--brand-c2', [0.22, 0.01, 0.47]),
@@ -137,7 +135,9 @@ const HeroField = ({ columnsRef, effect, className }: I.HeroFieldProps) => {
 		let columnCount = 0;
 		const pointer = { x: 0, y: 0 };
 		const target = { x: 0, y: 0 };
+		const click = { x: 0, y: 0 };
 		let lastMove = Number.NEGATIVE_INFINITY;
+		let clickedAt = Number.NEGATIVE_INFINITY;
 
 		// NOTE • Size the canvas and re-measure the columns (they move at
 		// every breakpoint)
@@ -164,18 +164,14 @@ const HeroField = ({ columnsRef, effect, className }: I.HeroFieldProps) => {
 		};
 
 		const draw = (time: number) => {
-			const { fragment, id } = effectRef.current;
-			const current = programFor(id, fragment);
-			if (!current) return;
-			const { program, uniforms } = current;
-			// biome-ignore lint/correctness/useHookAtTopLevel: WebGL's useProgram, not a React hook
-			gl.useProgram(program);
 			gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
 			gl.uniform1f(uniforms.uDpr, dpr);
 			gl.uniform1f(uniforms.uTime, time + TIME_OFFSET);
 			gl.uniform2fv(uniforms.uColumns, columns);
 			gl.uniform1i(uniforms.uColumnCount, columnCount);
 			gl.uniform2f(uniforms.uPointer, pointer.x, pointer.y);
+			gl.uniform2f(uniforms.uClick, click.x, click.y);
+			gl.uniform1f(uniforms.uClickAge, Math.min(time - clickedAt, NO_CLICK));
 			gl.uniform3fv(uniforms.uDeep, colours.uDeep);
 			gl.uniform3fv(uniforms.uAccent, colours.uAccent);
 			gl.uniform3fv(uniforms.uLight, colours.uLight);
@@ -185,7 +181,7 @@ const HeroField = ({ columnsRef, effect, className }: I.HeroFieldProps) => {
 		};
 
 		// NOTE • Ease towards the real pointer; when idle, wander on a slow
-		// figure-of-eight so pointer-driven effects still show themselves
+		// figure-of-eight so the torch still shows itself
 		const followPointer = (time: number, deltaTime: number) => {
 			if (performance.now() - lastMove > IDLE_MS) {
 				target.x = canvas.width * (0.5 + 0.3 * Math.sin(time * 0.31));
@@ -202,7 +198,18 @@ const HeroField = ({ columnsRef, effect, className }: I.HeroFieldProps) => {
 			target.y = (bounds.bottom - event.clientY) * dpr;
 			lastMove = performance.now();
 		};
+
+		// NOTE • A click (or tap) over the hero starts the pulse from that point
+		const handleClick = (event: PointerEvent) => {
+			const bounds = canvas.getBoundingClientRect();
+			if (event.clientY < bounds.top || event.clientY > bounds.bottom) return;
+			handlePointer(event);
+			click.x = target.x;
+			click.y = target.y;
+			clickedAt = gsap.ticker.time;
+		};
 		window.addEventListener('pointermove', handlePointer, { passive: true });
+		window.addEventListener('pointerdown', handleClick, { passive: true });
 
 		const debug = gl.getExtension('WEBGL_debug_renderer_info');
 		const renderer = String(gl.getParameter(debug ? debug.UNMASKED_RENDERER_WEBGL : gl.RENDERER));
@@ -249,16 +256,6 @@ const HeroField = ({ columnsRef, effect, className }: I.HeroFieldProps) => {
 		};
 		for (const type of INTERACTIONS) window.addEventListener(type, handleInteraction, { passive: true });
 
-		// NOTE • Switching effect gives the new one a fresh watchdog, and a
-		// still frame when it isn't animating
-		redrawRef.current = () => {
-			frames = 0;
-			slowTotal = 0;
-			isTooSlow = false;
-			draw(gsap.ticker.time);
-			start();
-		};
-
 		measure();
 		draw(0);
 		canvas.dataset.ready = '';
@@ -278,19 +275,14 @@ const HeroField = ({ columnsRef, effect, className }: I.HeroFieldProps) => {
 
 		return () => {
 			stop();
-			redrawRef.current = null;
 			window.removeEventListener('pointermove', handlePointer);
+			window.removeEventListener('pointerdown', handleClick);
 			for (const type of INTERACTIONS) window.removeEventListener(type, handleInteraction);
 			resizeObserver.disconnect();
 			visibility.disconnect();
 			gl.getExtension('WEBGL_lose_context')?.loseContext();
 		};
 	}, [columnsRef]);
-
-	useEffect(() => {
-		effectRef.current = effect;
-		redrawRef.current?.();
-	}, [effect]);
 
 	// Render
 	return <canvas ref={canvasRef} className={`${s.jacket} ${className ?? ''}`} />;

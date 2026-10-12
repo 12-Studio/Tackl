@@ -72,7 +72,7 @@ bun run type-check
 
 `styles --check` fails the commit when a token in `src/theme` changed but the generated CSS wasn't regenerated — run `bun run styles` and commit the result.
 
-The interactive commit-message wizard is optional — run it with `bun run commit`. Husky is installed via the `prepare` script, which Bun runs automatically on `bun install`.
+A plain `git commit` runs the interactive commit-message prompt (`-m`, amends and merges skip it). Husky and the repo-local commit editor are set up by the `prepare` script, which Bun runs automatically on `bun install`.
 
 ### Outdated packages: workaround for `bun outdated`
 

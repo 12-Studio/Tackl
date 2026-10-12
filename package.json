@@ -33,8 +33,8 @@
 		"storybook": "bun run styles && storybook dev -p 6006",
 		"build-storybook": "bun run styles && storybook build",
 		"serve": "serve ./out",
-		"commit": "node .gitmessage.js",
-		"prepare": "husky",
+		"commit": "git commit",
+		"prepare": "husky && sh scripts/git-setup.sh",
 		"test": "playwright test",
 		"lighthouse": "bun run build && lhci autorun",
 		"outdated": "bunx npm-check-updates"

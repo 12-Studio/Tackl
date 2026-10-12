@@ -43,7 +43,7 @@ Copy `.env.example` to `.env` and fill in your values (the DatoCMS token, etc.).
 | `bun run storybook` | Storybook dev on :6006 |
 | `bun run build-storybook` | Static Storybook build |
 | `bun run lighthouse` | Lighthouse CI (desktop) — Performance 80, Best Practices 90, SEO 100, Agentic Browsing all passing (also runs in CI) |
-| `bun run commit` | Optional guided commit-message prompt |
+| `bun run commit` | Commit with the guided message prompt (same as `git commit`) |
 | `git commit` | Husky pre-commit checks generated styles, then runs lint + type-check |
 
 ### Editor setup
@@ -66,7 +66,7 @@ Open the repo in VS Code or Cursor and accept the recommended extensions (`.vsco
 - **GSAP + ScrollTrigger + Lenis** — smooth scrolling and scroll animations, pre-wired to share one ticker, with `prefers-reduced-motion` users automatically getting native scroll and no rAF loop
 - **View Transitions** — page transitions via the View Transitions API with a typed `Link`/router wrapper
 - **Storybook 10** — token-aware (the preview renders the same `:root` variables as the app), with a live `Theme/Overview` story showing every current token — colours, fonts, the type scale with role descriptors, spacing, radii and motion — straight from the theme objects
-- **Quality gates that actually run** — Biome + Stylelint + strict TypeScript enforced by the Husky pre-commit hook *and* a GitHub Actions workflow (generated-styles check → lint → type-check → build → Playwright smoke test) that ships with every scaffold; the guided commit-message flow stays available as `bun run commit`
+- **Quality gates that actually run** — Biome + Stylelint + strict TypeScript enforced by the Husky pre-commit hook *and* a GitHub Actions workflow (generated-styles check → lint → type-check → build → Playwright smoke test) that ships with every scaffold; a plain `git commit` then runs the guided commit-message prompt instead of opening an editor
 - **CMS adapters behind one seam** — app code imports `fetchContent` from `@cms`; DatoCMS (GraphQL) and Sanity (GROQ) adapters ship in the template, and the CLI prunes to your choice at scaffold time. **Draft preview works with both**: Sanity via the Presentation tool (plus embedded Studio at `/studio`, example schemas, and an offer to run `sanity init`), Dato via a secret-gated toggle for the Web Previews plugin — `fetchContent` serves draft content automatically while draft mode is on
 - **SEO plumbing** — `metadata`/`viewport` exports, `sitemap.xml` and `robots.txt` (staging deploys auto-blocked from indexing), all driven by one `NEXT_PUBLIC_SITE_URL`
 - **AI-agent ready (vendor-neutral)** — [`AGENTS.md`](./AGENTS.md) teaches the Tackl conventions to any agent (Cursor, Claude Code, Copilot, Zed, Aider…); [`skills/`](./skills) holds deep-dive Agent Skills; and MCP servers ship pre-configured (`.mcp.json` + `.cursor/mcp.json`) — Next.js devtools plus Chrome DevTools, so agents can inspect builds and drive a real browser against your dev server (screencast tools need `ffmpeg` on PATH)
@@ -246,7 +246,7 @@ flowchart TD
 
 ## ✍️ Committing
 
-Husky's pre-commit hook runs the quality gates (`bun run styles --check` + `bun run lint` + `bun run type-check`) on every `git commit`, and the CI workflow repeats them — plus a production build and the Playwright smoke test — on every push and PR. Want a hand writing the message? `bun run commit` runs the guided prompt: describe the change, pick a type, and it formats a consistent message for you.
+Husky's pre-commit hook runs the quality gates (`bun run styles --check` + `bun run lint` + `bun run type-check`) on every `git commit`, and the CI workflow repeats them — plus a production build and the Playwright smoke test — on every push and PR. Then, instead of an editor, `git commit` runs the guided message prompt: describe the change, pick a type, and it writes a consistent message and commits. `-m`, `-F`, amends and merges skip it and behave as usual (the prompt is `.husky/prepare-commit-msg`; `bun install` points this repo's `core.editor` at `scripts/commit-editor.sh` so no editor opens on top of it).
 
 ## 👥 Authors & Maintainers
 

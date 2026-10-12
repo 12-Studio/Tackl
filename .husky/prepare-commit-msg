@@ -1,0 +1,18 @@
+# Commit-message prompt — runs after the pre-commit quality gates.
+# Skipped whenever Git already has a message: -m/-F ("message"), merges,
+# squashes and amends ("commit") keep theirs.
+case "$2" in
+	message|merge|squash|commit) exit 0 ;;
+esac
+
+# No terminal to prompt in (a GUI client, CI) — leave the commit to Git
+if ! (: < /dev/tty) 2>/dev/null; then
+	exit 0
+fi
+
+exec < /dev/tty
+node .gitmessage.js --hook "$1" || exit 1
+
+# NOTE • Tells scripts/commit-editor.sh (this repo's core.editor) the message
+# is ready, so Git doesn't open an editor on top of the prompt
+touch "$(git rev-parse --git-dir)/tackl-message-ready"

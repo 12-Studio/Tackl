@@ -2,6 +2,11 @@ const prompts = require('prompts');
 const { execSync } = require('node:child_process');
 const fs = require('node:fs');
 
+// NOTE • Run by .husky/prepare-commit-msg as `--hook <message file>`: the
+// message goes into the file Git passed, and Git commits it
+const hookIndex = process.argv.indexOf('--hook');
+const messageFile = hookIndex > -1 ? process.argv[hookIndex + 1] : '.git/COMMIT_EDITMSG';
+
 (async () => {
 	try {
 		console.log('Starting commit message prompts...');
@@ -91,7 +96,7 @@ const fs = require('node:fs');
 			(response.notes ? `\nNotes: ${response.notes}` : '');
 
 		// Write to Git commit message file
-		fs.writeFileSync('.git/COMMIT_EDITMSG', commitMessage);
+		fs.writeFileSync(messageFile, commitMessage);
 		console.log('\nCommit message created successfully!');
 		process.exit(0);
 	} catch (err) {

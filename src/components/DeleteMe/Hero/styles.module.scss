@@ -38,13 +38,27 @@
 	font-size: 26vw;
 	line-height: 0.9;
 	letter-spacing: -0.06em;
-	background: linear-gradient(180deg, var(--global-white) 35%, alpha(--global-white, 55));
+	// NOTE • Opaque all the way down — the grey matches 55% white on black,
+	// but letters zooming over each other mustn't show through
+	background: linear-gradient(
+		180deg,
+		var(--global-white) 35%,
+		color-mix(in srgb, var(--global-white) 55%, var(--global-black))
+	);
 	background-clip: text;
 	color: transparent;
 
 	@include bp(l) {
 		font-size: min(19vw, 27.2rem);
 	}
+}
+
+// NOTE • Each letter is its own box so it can zoom at its own depth. The
+// title's gradient text (background-clip: text) can't paint through a
+// transformed child, so each letter inherits it and clips it to itself.
+.letter {
+	display: inline-block;
+	background: inherit;
 }
 
 .tagline {

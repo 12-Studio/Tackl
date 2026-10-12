@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 	},
 	description: 'The ultimate Next.js starter kit',
 	// NOTE • Indexing is gated on a real site URL — a deploy that forgot
-	// NEXT_PUBLIC_SITE_URL can't be indexed under the changeme.com fallback
+	// NEXT_PUBLIC_SITE_URL can't be indexed under the tackl.netlify.app fallback
 	robots: {
 		index: isSiteUrlConfigured,
 		follow: isSiteUrlConfigured,

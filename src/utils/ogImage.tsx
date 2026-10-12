@@ -5,8 +5,9 @@ import { ImageResponse } from 'next/og';
 
 // Exports
 // ------------
-// NOTE • The share card behind app/(site)/opengraph-image.tsx. Give a page
-// its own card by adding an opengraph-image.tsx next to its page.tsx:
+// NOTE • A generated share card. The site's default is the static
+// public/og.jpg; give a page its own generated card by adding an
+// opengraph-image.tsx next to its page.tsx:
 //
 // import { createOgImage, ogImageSize } from '@utils/ogImage';
 // export const size = ogImageSize;

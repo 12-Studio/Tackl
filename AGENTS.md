@@ -266,9 +266,9 @@ on unmount or when a matchMedia condition stops matching.
 - **404s and errors:** `app/(site)/not-found.tsx` (for `notFound()`), `app/global-not-found.tsx`
   (unmatched URLs), `app/(site)/error.tsx` and `app/global-error.tsx` all render
   `@parts/StatusPage`. Call `notFound()` for missing CMS content rather than rendering empty.
-- **Share images:** `app/(site)/opengraph-image.tsx` is the default card. Give a page its own
-  card with an `opengraph-image.tsx` beside its `page.tsx` that returns
-  `createOgImage({ title })` from `@utils/ogImage`.
+- **Share images:** `public/og.jpg` (1200 × 630) is the default card, set in the site
+  layout's `metadata`. Give a page its own card with an `opengraph-image.tsx` beside its
+  `page.tsx` that returns `createOgImage({ title })` from `@utils/ogImage`.
 - Optimise images (WebP/AVIF, explicit width/height, lazy loading).
 
 ---

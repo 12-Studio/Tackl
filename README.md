@@ -177,7 +177,6 @@ flowchart TD
     │   │   ├── Providers.tsx   # Client providers (contexts, cookie bar, dev grid)
     │   │   ├── not-found.tsx   # 404 when a page calls notFound()
     │   │   ├── error.tsx       # Error page — keeps the site chrome
-    │   │   ├── opengraph-image.tsx # Generated share card (src/utils/ogImage.tsx)
     │   │   └── (home)/         # Home route group
     │   ├── (studio)/           # Embedded Sanity Studio at /studio (Sanity scaffolds)
     │   ├── api/draft-mode/     # Draft preview on/off — adapter-agnostic via @cms/draft

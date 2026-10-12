@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import { useRef } from 'react';
 import CopyButton from '../CopyButton';
 import HeroBackdrop from '../HeroBackdrop';
-import { heroScroll } from '../HeroField/store';
+import { HERO_ZOOM_END, heroScroll } from '../HeroField/store';
 import HeroTweaks from '../HeroTweaks';
 
 // Styles
@@ -23,8 +23,18 @@ const REPO_URL = 'https://github.com/12-Studio/Tackl';
 // through the counter of its "c", the second brings the page up over the
 // hero while the WebGL torch rises out. Durations below are fractions of it.
 const SCROLL_VIEWPORTS = 2;
-const ZOOM_END = 0.5;
+const ZOOM_END = HERO_ZOOM_END;
 const ZOOM_SCALE = 60;
+
+// NOTE • The first section's headline fades in and grows from
+// HEADLINE_SCALE, starting HEADLINE_LEAD before the zoom ends (as the "c"
+// leaves) and taking HEADLINE_REVEAL of the scroll. It's pinned centre
+// screen from the zoom's end, and its stage holds it until the fade is done:
+// (0.18 - 0.05) of two viewports = 26svh, --stage-scroll in
+// PinnedStage/styles.module.scss — keep the two in step.
+const HEADLINE_LEAD = 0.05;
+const HEADLINE_REVEAL = 0.18;
+const HEADLINE_SCALE = 0.5;
 
 const TITLE = 'Tackl';
 
@@ -34,11 +44,12 @@ const COUNTER_LETTER = 'c';
 const COUNTER_X = 0.56;
 
 // NOTE • Letters sit at different depths, by how far they are from the
-// counter: the "c" rushes past the camera, its neighbours trail behind, the
-// outer letters further still. Each reaches ZOOM_SCALE ** depth (the "c"
-// the full zoom, the rest less) and starts LAG later per step out.
-const DEPTHS = [1, 0.62, 0.38];
-const LAG = 0.05;
+// counter: everything comes towards you, but the outer letters faster —
+// "a" and "k" outpace the "c", "T" and "l" more so — while the "c" keeps
+// its pace so the camera still flies through its counter. Each reaches
+// ZOOM_SCALE ** depth, and finishes LEAD sooner per step out.
+const DEPTHS = [1, 1.18, 1.36];
+const LEAD = 0.06;
 
 // Helpers
 // ------------
@@ -67,6 +78,25 @@ const findCounter = (title: HTMLElement, letter: HTMLElement) => {
 	};
 };
 
+// NOTE • Splitting the word into separate letters loses the font's
+// kerning (the "a" tucked under the "T"), so each pair's kerning is measured
+// with a canvas — the pair's width less each letter's — and put back as a
+// margin on the second letter
+const kern = (title: HTMLElement, letters: HTMLElement[]) => {
+	const context = document.createElement('canvas').getContext('2d');
+	if (!context) return;
+	const style = getComputedStyle(title);
+	context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+	const width = (text: string) => context.measureText(text).width;
+
+	letters.forEach((letter, index) => {
+		const previous = letters[index - 1]?.textContent ?? '';
+		const current = letter.textContent ?? '';
+		const pair = previous ? width(previous + current) - width(previous) - width(current) : 0;
+		letter.style.marginLeft = `calc(var(--paint-x) * -1 + ${pair}px)`;
+	});
+};
+
 // Component
 // ------------
 // NOTE • The hero stays pinned (position: sticky) behind the whole page.
@@ -93,12 +123,16 @@ const Hero = () => {
 			if (!jacket || !inner || !title || !cover) return;
 
 			const others = [...inner.children].filter(child => child !== title);
+			const headline = cover.querySelector<HTMLElement>('[data-section-header]');
 			const letters = [...title.querySelectorAll<HTMLElement>('[data-letter]')];
 			const counterIndex = TITLE.indexOf(COUNTER_LETTER);
 			const counterLetter = letters[counterIndex];
 			if (!counterLetter) return;
-			// NOTE • The nearest letter paints in front of the ones behind it
-			gsap.set(counterLetter, { position: 'relative', zIndex: 1 });
+			// NOTE • Nearer letters paint in front — the outer ones, furthest
+			// from the "c", are nearest the camera
+			letters.forEach((letter, index) => {
+				gsap.set(letter, { position: 'relative', zIndex: Math.abs(index - counterIndex) });
+			});
 			const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 			// NOTE • Paused, and driven by hand from the scroll below
@@ -116,13 +150,22 @@ const Hero = () => {
 				// Accelerating, like flying in — each letter at its own depth
 				letters.forEach((letter, index) => {
 					const steps = Math.min(Math.abs(index - counterIndex), DEPTHS.length - 1);
-					const start = steps * LAG;
 					timeline.to(
 						letter,
-						{ scale: ZOOM_SCALE ** DEPTHS[steps], ease: 'power4.in', duration: ZOOM_END - start },
-						start
+						{ scale: ZOOM_SCALE ** DEPTHS[steps], ease: 'power4.in', duration: ZOOM_END - steps * LEAD },
+						0
 					);
 				});
+			}
+			// NOTE • Then the next section's headline fades in and grows, pinned
+			// centre screen
+			if (headline) {
+				timeline.fromTo(
+					headline,
+					{ autoAlpha: 0, scale: isReducedMotion ? 1 : HEADLINE_SCALE },
+					{ autoAlpha: 1, scale: 1, ease: 'power2.out', duration: HEADLINE_REVEAL },
+					ZOOM_END - HEADLINE_LEAD
+				);
 			}
 			timeline.set({}, {}, 1);
 
@@ -130,7 +173,7 @@ const Hero = () => {
 			// the counter — the point every letter scales about
 			let edges: { left: number; right: number }[] = [];
 
-			// NOTE • Tracking opens up with the zoom, so letters never overlap:
+			// NOTE • Tracking opens up only where the zoom would make letters touch:
 			// working outward from the "c", each letter is pushed just far enough
 			// to keep its resting gap from its inner neighbour, scaled with that
 			// neighbour. At rest that's no push at all.
@@ -164,6 +207,7 @@ const Hero = () => {
 				const progress = timeline.progress();
 				timeline.progress(0);
 				gsap.set(letters, { x: 0 });
+				kern(title, letters);
 				const counter = findCounter(title, counterLetter);
 				const box = title.getBoundingClientRect();
 				if (counter) {
@@ -189,7 +233,10 @@ const Hero = () => {
 			let last = -1;
 			const update = () => {
 				const distance = SCROLL_VIEWPORTS * window.innerHeight;
-				const progress = gsap.utils.clamp(0, 1, 1 - cover.getBoundingClientRect().top / distance);
+				// NOTE • The cover rests one viewport down (right after the hero's
+				// screen), so this runs 0 → 1 over the first two viewports of scroll
+				const scrolled = window.innerHeight - cover.getBoundingClientRect().top;
+				const progress = gsap.utils.clamp(0, 1, scrolled / distance);
 				if (progress === last) return;
 				last = progress;
 				timeline.progress(progress);

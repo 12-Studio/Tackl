@@ -7,10 +7,10 @@
 }
 
 // NOTE • Stacked above the sticky hero but transparent, so the hero's
-// WebGL field shows through as the page's backdrop. It starts a viewport
-// below the hero: that first viewport of scroll is the hero's zoom.
+// WebGL field shows through as the page's backdrop. It follows the hero's
+// screen directly, so it reaches the top just as the hero's zoom ends —
+// where the first section's pinned headline takes over.
 .content {
 	position: relative;
 	z-index: 1;
-	margin-top: 100svh;
 }

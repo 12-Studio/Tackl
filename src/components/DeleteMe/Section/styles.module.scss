@@ -45,3 +45,10 @@
 		text-underline-offset: 0.2em;
 	}
 }
+
+// SECTION • Pinned stage
+// NOTE • The pinning and docking live in PinnedStage; the header just
+// drops its usual gap (the stage's own margin provides it)
+.pinned .header {
+	margin-bottom: 0;
+}

@@ -57,7 +57,16 @@
 // title's gradient text (background-clip: text) can't paint through a
 // transformed child, so each letter inherits it and clips it to itself.
 .letter {
+	// NOTE • The fill only paints inside each letter's box, and the tight
+	// tracking and line-height would cut through overhangs (the T's bar, the
+	// k and l ascenders) — padding gives the paint room, the negative margins
+	// give the space back so nothing moves
+	--paint-x: 0.12em;
+	--paint-y: 0.18em;
+
 	display: inline-block;
+	padding: var(--paint-y) var(--paint-x);
+	margin: calc(var(--paint-y) * -1) calc(var(--paint-x) * -1);
 	background: inherit;
 }
 

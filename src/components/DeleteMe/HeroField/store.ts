@@ -36,7 +36,10 @@ export const heroSettings = {
 // Scroll
 // ------------
 // NOTE • How far the page has scrolled over the hero, 0 → 1 — set by the
-// Hero's ScrollTrigger, read by the field to lift and grow the torch
+// Hero, read by the field to lift and grow the torch and by ScrollReveal
+// to hold cards back until the zoom is done (at HERO_ZOOM_END)
+export const HERO_ZOOM_END = 0.5;
+
 let scrollProgress = 0;
 const scrollListeners = new Set<() => void>();
 

@@ -7,6 +7,7 @@ import motionImage from '../images/motion.webp';
 import performanceImage from '../images/performance.webp';
 import runtimeImage from '../images/runtime.webp';
 import Odometer from '../Odometer';
+import ScrollReveal from '../ScrollReveal';
 import Section from '../Section';
 import Tile from '../Tile';
 
@@ -29,10 +30,12 @@ const SIZES = {
 const Why = () => (
 	<Section
 		id='why'
+		isPinned
 		title='Everything you need. Nothing you don’t.'
 		intro={<p>Every production default, done once and done properly.</p>}
 	>
 		<Grid $isFixed>
+			<ScrollReveal />
 			<Tile $m='1/7' $l='1/9' image={performanceImage} imageSizes={SIZES.twoThirds} className={s.hero}>
 				<p className={s.kicker}>Performance</p>
 				<p className={s.stat}>

@@ -3,6 +3,22 @@
 .jacket {
 	@include tile;
 
+	// SECTION • Reveal
+	// NOTE • Set by ScrollReveal: tiles wait hidden below their place, then
+	// rise and fade in, staggered by --reveal-delay
+	&[data-reveal] {
+		--reveal-delay: 0ms;
+
+		transition:
+			opacity 900ms cubic-bezier(0.2, 0, 0, 1) var(--reveal-delay),
+			translate 900ms cubic-bezier(0.2, 0, 0, 1) var(--reveal-delay);
+	}
+
+	&[data-reveal='hidden'] {
+		opacity: 0;
+		translate: 0 6rem;
+	}
+
 	&[data-tone='glow'] {
 		background:
 			radial-gradient(80% 70% at 50% 120%, alpha(--brand-c1, 45), transparent 70%),

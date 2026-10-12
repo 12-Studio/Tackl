@@ -21,7 +21,14 @@ const Tile = ({
 	className,
 	...props
 }: I.TileProps) => (
-	<Col as={as} {...props} className={cx(s.jacket, className)} data-tone={tone} data-image={image ? '' : undefined}>
+	<Col
+		as={as}
+		{...props}
+		className={cx(s.jacket, className)}
+		data-tone={tone}
+		data-image={image ? '' : undefined}
+		data-tile
+	>
 		{image && <ParticleImage image={image} sizes={imageSizes} className={s.image} />}
 		{children}
 	</Col>
